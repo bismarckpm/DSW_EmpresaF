@@ -1,7 +1,59 @@
+  
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$mercadoucab-font: 'Nunito Sans', sans-serif;
+$mercadoucab-primary: #39AFD0;
+$mercadoucab-secondary: #56C0DD ;
+
+body {
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #FFF;
+    color: #000;
+    font-family: $mercadoucab-font !important;
+    margin: 0px;
+}
+  
+html { height: 100%; box-sizing: border-box; margin: 0; }
+
+.mercadoucab-font{ font-family: $mercadoucab-font; }
+.text-white{ color: #FFF; }
+
+.header{ flex: 0 0 auto; max-height: 76px; z-index: 1; }
+.content{ flex: 1 1 auto; overflow-y: auto; z-index: 0; }
+.footer{ flex: 0 0 auto; z-index: 1; }
+
+mat-form-field.mat-form-field {
+    font-size: 14px;
+    font-family: $mercadoucab-font !important;
+    width: 250px;
+    color: #000;
+}
+
+mat-card{ font-family: $mercadoucab-font !important;}
+
+.mat-snack-bar-container{ background-color: #FFF; color: #000; }
+
+.mat-simple-snackbar, .mat-button-wrapper{ font-family: $mercadoucab-font !important; font-size: smaller; }
+
+
+.width-100{ width: 100%; }
+.width-75{ width: 75%; }
+
+.height-100{ height: 100%; }
+.height-fit{ height: fit-content !important; }
+
+.spacer { flex: 1 1 auto; }
+
+.btn-none { width: 40px; height: 40px; }
+
+.footer mat-toolbar{ box-shadow: 0px -2px 1px -1px rgba(0, 0, 0, 0.2); margin-top: 2px !important; }
+
+ngx-bottom-nav{ background: #212121; }
+ngx-bottom-nav-button:not(.active) { --ngx-bottom-nav-button-color: whitesmoke; }
+
+.text-center{ text-align: center; }
+.text-left{ text-align: left; }
 
 .ml-20{ margin-left: 20px !important; }
 .ml--15{ margin-left: -15px !important; }
@@ -13,3 +65,46 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mb-20{ margin-bottom: 20px !important; }
 .mb-40{ margin-bottom: 40px !important; }
 .my-4 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important;}
+
+:host ::ng-deep td.mat-cell { padding-left: 0px; }
+
+.rotate-180{ transform: rotate(180deg); }
+
+.slide-in-fwd-center {
+	-webkit-animation: slide-in-fwd-center 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-fwd-center 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes slide-in-fwd-center {
+    0% {
+        -webkit-transform: translateZ(-1400px);
+        transform: translateZ(-1400px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-fwd-center {
+    0% {
+        -webkit-transform: translateZ(-1400px);
+        transform: translateZ(-1400px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+.mat-tooltip{
+    font-size: small;
+    font-family: $mercadoucab-font;
+    background: black;
+}
