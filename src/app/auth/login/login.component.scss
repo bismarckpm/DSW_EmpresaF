@@ -5,10 +5,11 @@ $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
 
 .login-bg{
-    background-image: url(./../../../assets/images/loginbg.png);
-    background-position: center center;
+    background-image: url(./../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 65%;
 }
 
 mat-card{
