@@ -34,6 +34,6 @@ export class LoginComponent implements OnInit {
     let formData = new FormData();
     formData.append('email', this.signInForm.get('Email').value);
     formData.append('password', this.signInForm.get('Password').value);
-
+    
   } 
 }
