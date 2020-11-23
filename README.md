@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f81e4e8dfc9ebbe628e0803cc762af41db9ddd2b
 # MercadoUcab
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.
@@ -26,7 +29,10 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+<<<<<<< HEAD
+=======
 =======
 # DSW_Empresa6
 Repositorio Empresa 6
 >>>>>>> 24873ba5c78e15e6d528c137d01c22a60d0e820b
+>>>>>>> f81e4e8dfc9ebbe628e0803cc762af41db9ddd2b
