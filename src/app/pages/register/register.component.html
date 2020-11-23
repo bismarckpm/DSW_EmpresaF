@@ -1,0 +1,56 @@
+<mat-toolbar class="container-fluid mat-toolbar">
+    <div class="row d-flex align-items-center">
+        <a mat-icon-button  href="/" class="d-flex justify-content-start">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </a>
+        
+    </div>
+</mat-toolbar>
+<br>
+<div fxLayout fxLayoutAlign="center center ">
+    <mat-card-content fxLayout="column">
+        <mat-form-field appearance="fill" >
+        <mat-label>Mi ubicacion</mat-label>
+        <mat-select >
+            <mat-option *ngFor="let zone of zones, index as i" [value]="zone.value">{{zone.name}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+        <mat-label>Zona de instalacion</mat-label>
+        <mat-select>
+            <mat-option value="option">Terreno arenoso</mat-option>
+            <mat-option value="option">Techado</mat-option>
+            <mat-option value="option">Terraza</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+        <mat-label>Config Wifi</mat-label>
+        <mat-select>
+            <mat-option value="option">Hilery</mat-option>
+            <mat-option value="option">Victor</mat-option>
+            <mat-option value="option">Chema</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+        <mat-label>Metodos de ahorramiento</mat-label>
+        <mat-select>
+            <mat-option value="option">Automatico</mat-option>
+            <mat-option value="option">Manual</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill" >
+            <mat-label>Email</mat-label>
+            <input matInput type="email">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password">
+          </mat-form-field>
+        <br>
+    </mat-card-content>
+</div>     

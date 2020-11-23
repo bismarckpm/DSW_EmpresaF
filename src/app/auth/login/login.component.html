@@ -1,0 +1,40 @@
+<div fxFill class="login-bg content" fxLayout="column" fxLayoutAlign="center center">
+  <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
+    <mat-card fxLayout="row" fxLayoutAlign="center center">
+      <div class="login-container">
+        <div class="text-center logo-container">
+          <img height="75" src="assets/images/survey.png" alt="mercadoucab logo">
+        </div>
+        <div class="title-container">
+          <h1 class="sign-in-title text-center">LOGIN</h1>
+          <div class="linear-gradient-border mt-3"></div>
+        </div>
+        <form [formGroup]="signInForm" (ngSubmit)="handleSignIn()" fxLayout="column" fxLayoutAlign="center center">
+          <mat-form-field appearance="outline">
+            <mat-label>Username or Email <span class="trans">.</span></mat-label>
+            <input matInput formControlName="Email" class="form-control">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="Password" class="form-control">
+            <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <button class="width-login-btn" mat-raised-button [disabled]="!signInForm.valid || bSignIn || (checkingInputEmail())" fxLayoutAlign="center center">
+            <span *ngIf="!bSignIn" class="btn-login-text">LOGIN</span>
+            <mat-spinner *ngIf="bSignIn" mode="indeterminate" [diameter]="30"></mat-spinner>
+          </button>
+        </form>
+        <div class="links-container text-center" fxLayout="column" fxLayoutAlign="center center">
+          <a class="sl-link" routerLink="/auth/forgot-password">Forgot your password?</a>
+          <a class="sl-link" routerLink="/register">Register now</a>
+        </div>
+      </div>
+      <div class="image-container" fxLayoutAlign="center center" fxHide="true" fxShow.gt-sm>
+        <img width="100%" height="500" src="assets/images/encuestados.jpg">
+      </div>
+    </mat-card>
+  </div>
+</div>
+  
