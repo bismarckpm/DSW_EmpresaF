@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
-  }
+  },
+  
   
 ];
 
