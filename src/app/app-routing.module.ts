@@ -15,7 +15,10 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
   },
-  
+  {
+    path: 'config',
+    loadChildren: () => import('./config/config.module').then(m => m.ConfigModule),
+  },
   
 ];
 
