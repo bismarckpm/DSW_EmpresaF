@@ -25,6 +25,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -47,7 +48,8 @@ const MATERIAL_MODULES = [
   MatProgressBarModule,
   MatSnackBarModule,
   MatDialogModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  MatPaginatorModule
 ]
 
 
