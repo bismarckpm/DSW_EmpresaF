@@ -1,11 +1,4 @@
-<div class="container-fluid ">
-    <div class="row d-flex align-items-center">
-        <span class="d-flex justify-content-start" routerLink="/config/menuconfig">
-            <i class="fas fa-chevron-left"></i>
-        </span>
-        
-    </div>
-</div>
+
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
     <div>
         <mat-form-field >
@@ -51,7 +44,7 @@
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteMarca(element.position)"></i></span><span><i class="fas fa-edit" style="margin-left: 8px;cursor: pointer;" (click)="updateMarca(element.position)"></i></span></td>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteMarca(element.idMarca)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateMarca(element.idMarca)"></i></span></td>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
