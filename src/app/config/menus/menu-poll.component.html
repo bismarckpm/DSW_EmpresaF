@@ -1,34 +1,36 @@
+
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-        <mat-card fxLayout="row" fxLayoutAlign="center center">
-            <div class="menu-container">
-                <div class="title-container">
-                    <h1 class="text-center">MENU ESCUESTAS</h1>
-                 </div>
-                <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                    <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center">
-                        <span class="btn-send-text">Crear Encuestas</span>
-                    </button>
-                </div>
-                <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                    <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center">
-                        <span class="btn-send-text">Consultar Encuestas</span>
-                    </button>
-                </div>
-                <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                    <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center">
-                        <span class="btn-send-text">Actualizar Encuestas</span>
-                    </button>
-                </div>
-                <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                    <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center">
-                        <span class="btn-send-text">Eliminar Encuestas</span>
-                    </button>
-                </div>
-                <div class="links-container text-center" fxLayout="column" fxLayoutAlign="center center">
-                    <a class="sl-link" routerLink="/config/menuconfig">Volver</a>
-                </div>
-            </div>
-        </mat-card>
+    <div>
+        <mat-form-field >
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+        <i style="padding-left: 25px;color: #94d82d;cursor: pointer;" class="fas fa-plus fa-lg" (click)="addEncuesta()"></i>
     </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- idEncuesta Column -->
+        <ng-container matColumnDef="idEncuesta">
+          <th mat-header-cell *matHeaderCellDef> ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.idEncuesta}} </td>
+        </ng-container>
+      
+        <!-- nombreSubcategoria Column -->
+        <ng-container matColumnDef="nombreSubcategoria">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombreSubcategoria}} </td>
+        </ng-container>  
+
+        <!-- Symbol Icon -->
+        <ng-container matColumnDef="icons">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteEncuesta(element.idEncuesta)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateEncuesta(element.idEncuesta)"></i></span></td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" style="width: 80%;margin-left: auto;margin-right: auto;" showFirstLastButtons></mat-paginator>
 </div>
