@@ -13,11 +13,18 @@ import { MenuStudiesComponent } from './../config/menus/menu-studies.component';
 import { MenuUsersComponent } from './../config/menus/menu-users.component';
 import { SharedModule } from './../shared/shared.module';
 import { ConfigRoutingModule } from './config-routing.module';
+import { AddBrandComponent } from 'src/app/config/create/addBrand.component'
+import { AddCategoryComponent } from 'src/app/config/create/addCategory.component'
+import { AddPollComponent } from 'src/app/config/create/addPoll.component'
+import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component'
+import { AddStudyComponent } from 'src/app/config/create/addStudy.component'
+import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
+import { GlobalMenuComponent } from './global-menu.component'
 
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
     MenuPollComponent,MenuBrandComponent,MenuTypesComponent,MenuPresentationComponent,MenuCQuestionComponent,
-    MenuStudiesComponent,MenuUsersComponent
+    MenuStudiesComponent,MenuUsersComponent,AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent, GlobalMenuComponent
   ],
   imports: [
     ConfigRoutingModule,

@@ -1,12 +1,13 @@
 
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div>
-        <mat-form-field >
-            <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-        </mat-form-field>
-        <i style="padding-left: 25px;color: #94d82d;cursor: pointer;" class="fas fa-plus fa-lg" (click)="addEncuesta()"></i>
-    </div>
+  <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
+    <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuconfig"></a>
+      <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+          <i class="fas fa-plus fa-lg" (click)="addEncuesta()"></i>
+      </mat-form-field>
+  </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->

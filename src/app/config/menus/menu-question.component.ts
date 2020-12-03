@@ -1,7 +1,6 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-question',
@@ -14,7 +13,7 @@ export class MenuCQuestionComponent implements OnInit{
   dataSource:any;
   displayedColumns: string[] = ['idPregunta', 'descripcionPregunta', 'tipo','icons'];
   
-  constructor(private router: Router) { }
+  constructor() { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -57,11 +56,6 @@ export class MenuCQuestionComponent implements OnInit{
 
   addPregunta(){
     console.log("Add Pregunta");
-  }
-
-  signOut(){
-    localStorage.removeItem('adminLogged');
-    this.router.navigate([''], { replaceUrl: true });
   }
 
 }
