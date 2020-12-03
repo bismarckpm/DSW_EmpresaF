@@ -12,10 +12,12 @@ import { MenuPresentationComponent } from './../config/menus/menu-presentation.c
 import { MenuCQuestionComponent } from './../config/menus/menu-question.component';
 import { MenuStudiesComponent } from './../config/menus/menu-studies.component';
 import { MenuUsersComponent } from './../config/menus/menu-users.component';
+import { GlobalMenuComponent } from '././global-menu.component';
 
 const routes: Routes = [
   { 
     path: "", 
+    component:GlobalMenuComponent,
     children: [
     { path: "", component: QuestionsSetupComponent},
     { path: "menuconfig", component: MenuConfigComponent},
@@ -28,7 +30,7 @@ const routes: Routes = [
     { path: "menuquestion", component: MenuCQuestionComponent},
     { path: "menustudies", component: MenuStudiesComponent},
     { path: "menuusers", component: MenuUsersComponent}
-    ]
+    ],
   }
 ];
 
