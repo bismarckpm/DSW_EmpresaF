@@ -1,4 +1,6 @@
-import { Component} from '@angular/core';
+import { Component,OnInit, ViewChild} from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-menu-studies',
@@ -6,4 +8,52 @@ import { Component} from '@angular/core';
   styleUrls: ['./menu.component.scss']
 })
 
-export class MenuStudiesComponent {}
+export class MenuStudiesComponent implements OnInit{
+  element:any;
+  dataSource:any;
+  displayedColumns: string[] = ['idEstudio','estadoEstudio','nombreCliente','nombreSubcategoria','fecIniEstudio','fecFinEstudio','icons'];
+  constructor() { }
+  
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngOnInit(): void {
+    this.getEstudios();
+    
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  getEstudios(){
+    
+    this.element = [
+      {idEstudio: 1,estadoEstudio:'activo', nombreCliente: 'Carlos23',nombreSubcategoria:'Medicamentos',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 2,estadoEstudio:'activo', nombreCliente: 'LOPZ1998',nombreSubcategoria:'Frutas',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 3,estadoEstudio:'activo', nombreCliente: 'PaoVar',nombreSubcategoria:'Verduras',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 4,estadoEstudio:'inactivo', nombreCliente: 'Ofic14',nombreSubcategoria:'Pisos',fecIniEstudio:'01/01/2020',fecFinEstudio:'01/05/2020'},
+      {idEstudio: 5,estadoEstudio:'activo', nombreCliente: 'Escolar75',nombreSubcategoria:'Papeleria',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 6,estadoEstudio:'inactivo', nombreCliente: 'Comr',nombreSubcategoria:'Cuadernos',fecIniEstudio:'01/01/2020',fecFinEstudio:'01/05/2020'},
+      {idEstudio: 7,estadoEstudio:'activo', nombreCliente: 'Mueb4',nombreSubcategoria:'Vajillas',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 8,estadoEstudio:'inactivo', nombreCliente: 'Computadoras185',nombreSubcategoria:'Cubiertos',fecIniEstudio:'01/01/2020',fecFinEstudio:'01/05/2020'},
+      {idEstudio: 9,estadoEstudio:'activo', nombreCliente: 'Hi99',nombreSubcategoria:'Sofas',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+      {idEstudio: 10,estadoEstudio:'activo', nombreCliente: 'Masna74',nombreSubcategoria:'Perifericos',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
+    ];
+    this.dataSource = new MatTableDataSource(this.element);
+
+  }
+
+  deleteEstudio(idEstudio){
+    console.log(idEstudio)
+  }
+
+  updateEstudio(idEstudio){
+    console.log(idEstudio)
+  }
+
+  addEstudio(){
+    console.log("Add Estudio");
+  }
+}
