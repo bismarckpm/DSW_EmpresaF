@@ -114,7 +114,6 @@ CREATE TABLE encuestado(
 	genero ENUM('femenino','masculino','otro') NOT NULL,
 	estado_civil ENUM('soltero','casado','divorciado','viudo') NOT NULL,
 	ocupacion VARCHAR(64) NOT NULL,
-	nombre VARCHAR(64),
 	fk_parroquia INT NOT NULL,
 	fk_nivel_estudio INT NOT NULL,
 	PRIMARY KEY(codigo_encuestado),
