@@ -1,0 +1,36 @@
+mat-card{
+    -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+}
+
+mat-form-field{
+    width: 20rem;
+}
+
+.menu-bg{
+    background-image: url(./../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+.create-btn{
+    background: #56C0DD;
+    color: white;
+    font-size: large;
+}
+
+mat-card > div > div#add-title{
+    margin-right: auto ;
+    margin-left: auto ;
+    margin-top: auto;
+    margin-bottom: auto ;
+}
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
