@@ -8,6 +8,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'analitics',
+    loadChildren: () => import('./analitics/analitics.module').then(m => m.AnaliticsModule),
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
