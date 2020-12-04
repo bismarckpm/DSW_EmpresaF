@@ -13,6 +13,7 @@ import { MenuCQuestionComponent } from './../config/menus/menu-question.componen
 import { MenuStudiesComponent } from './../config/menus/menu-studies.component';
 import { MenuUsersComponent } from './../config/menus/menu-users.component';
 import { GlobalMenuComponent } from '././global-menu.component';
+import { AddBrandComponent } from 'src/app/config/create/addBrand.component';
 
 const routes: Routes = [
   { 
@@ -29,7 +30,8 @@ const routes: Routes = [
     { path: "menupresentation", component: MenuPresentationComponent},
     { path: "menuquestion", component: MenuCQuestionComponent},
     { path: "menustudies", component: MenuStudiesComponent},
-    { path: "menuusers", component: MenuUsersComponent}
+    { path: "menuusers", component: MenuUsersComponent},
+    { path: "addBrand", component: AddBrandComponent}
     ],
   }
 ];

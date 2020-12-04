@@ -1,5 +1,5 @@
 import { Component,OnInit} from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-addbrand',
@@ -10,9 +10,21 @@ import { Component,OnInit} from '@angular/core';
 
 export class AddBrandComponent implements OnInit{
     
-    constructor() { }
+  auxRes: any;
+  createMarcaForm: FormGroup;
+  admin: any;
+  token: string;
+  constructor(private formBuilder: FormBuilder) { }
 
-    ngOnInit(): void {
-    }
-  
+  ngOnInit(): void {
+    this.createMarcaForm = this.formBuilder.group({
+      Nombre: ['', Validators.required]
+    });
+  }
+
+  handleCreateMarca(){
+    let formData = new FormData();
+    formData.append('Nombre', this.createMarcaForm.get('Nombre').value);
+    console.log(this.createMarcaForm.get('Nombre').value)
+  } 
 }
