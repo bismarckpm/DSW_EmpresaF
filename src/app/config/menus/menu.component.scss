@@ -3,6 +3,22 @@
 $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
+
+
+.texto-entrada h1 {
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+.texto-entrada h1::after {
+  content: '';
+  display: block;
+  width: 70rem;
+  height: .5rem;
+  background-color: $mercadoucab-primary;
+  margin-top: 1rem;
+}
+
 table {
     width: 80%;
   }
@@ -44,8 +60,8 @@ mat-card{
     font-weight: 800;
 }
 
-.links-container{ 
-    padding-top: 40px; 
+.links-container{
+    padding-top: 40px;
     padding-bottom: 10px;
 
 }

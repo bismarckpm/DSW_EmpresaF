@@ -1,5 +1,8 @@
 
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+  <div class="texto-entrada">
+    <h1 >USUARIOS</h1>
+  </div>
   <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
     <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuconfig"></a>
       <mat-form-field>
@@ -11,37 +14,37 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
-      
+
         <!-- idUsuario Column -->
         <ng-container matColumnDef="idUsuario">
           <th mat-header-cell *matHeaderCellDef> ID</th>
           <td mat-cell *matCellDef="let element"> {{element.idUsuario}} </td>
         </ng-container>
-      
+
         <!-- nombreUsuario Column -->
         <ng-container matColumnDef="nombreUsuario">
           <th mat-header-cell *matHeaderCellDef> Nombre </th>
           <td mat-cell *matCellDef="let element"> {{element.nombreUsuario}} </td>
-        </ng-container>  
+        </ng-container>
 
         <!-- rolUsuario Column -->
         <ng-container matColumnDef="rolUsuario">
             <th mat-header-cell *matHeaderCellDef> Rol </th>
             <td mat-cell *matCellDef="let element"> {{element.rolUsuario}} </td>
-          </ng-container>  
+          </ng-container>
 
         <!-- estadoUsuario Column -->
         <ng-container matColumnDef="estadoUsuario">
             <th mat-header-cell *matHeaderCellDef> Estado </th>
             <td mat-cell *matCellDef="let element"> {{element.estadoUsuario}} </td>
-          </ng-container>  
+          </ng-container>
 
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteUsuario(element.idUsuario)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateUsuario(element.idUsuario)"></i></span></td>
         </ng-container>
-      
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
