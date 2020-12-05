@@ -8,6 +8,12 @@
         <class>ucab.dsw.entidades.Cliente</class>
         <class>ucab.dsw.entidades.Encuestado</class>
 
+        <class>ucab.dsw.entidades.Pais</class>
+        <class>ucab.dsw.entidades.Municipio</class>
+        <class>ucab.dsw.entidades.Parroquia</class>
+
+        <class>ucab.dsw.entidades.NivelEstudio</class>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyecto?serverTimezone=UTC"/>

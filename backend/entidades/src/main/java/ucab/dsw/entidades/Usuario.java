@@ -4,9 +4,14 @@ import javax.persistence.*;
 
 @Entity
 @Table( name = "usuario" )
-public class Usuario extends EntidadBase
+public class Usuario
 {
-    @Column( name = "nombre" )
+    @Id
+    @Column( name = "codigo_usuario" )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private long _id;
+
+    @Column( name = "nombre")
     private String _nombreUsuario;
 
     @Column( name = "estado" )
@@ -20,16 +25,22 @@ public class Usuario extends EntidadBase
     @JoinColumn( name = "fk_encuestado")
     private Encuestado _encuestado;
 
-    public Usuario( long id )
+  public Usuario(long _id) {
+    this._id = _id;
+  }
+
+  public Usuario()
     {
-        super( id );
+
     }
 
-    public Usuario()
-    {
+  public long get_id() {
+    return _id;
+  }
 
-    }
-
+  public void set_id(long _id) {
+    this._id = _id;
+  }
 
   public String get_nombreUsuario() {
     return _nombreUsuario;

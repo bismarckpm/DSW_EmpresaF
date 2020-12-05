@@ -6,5 +6,5 @@ import javax.ws.rs.core.Response;
 
 public interface IServicioUsuario {
 
-  public UsuarioDto addUser(UsuarioDto usuarioDto);
+  public Response addUser(UsuarioDto usuarioDto);
 }

@@ -2,9 +2,10 @@ package ucab.dsw.dtos;
 
 public class UsuarioDto extends DtoBase
 {
-    private String nombreUsuario;
     private ClienteDto clienteDto;
+    private String nombreUsuario;
     private String contrasena;
+
 
   public UsuarioDto(long id) throws Exception {
     super(id);
@@ -37,7 +38,17 @@ public class UsuarioDto extends DtoBase
     this.clienteDto = clienteDto;
   }
 
-  /*public String getNombreUsuario()
+  private EncuestadoDto encuestadoDto;
+
+  public EncuestadoDto getEncuestadoDto() {
+    return encuestadoDto;
+  }
+
+  public void setEncuestadoDto(EncuestadoDto encuestadoDto) {
+    this.encuestadoDto = encuestadoDto;
+  }
+
+/*public String getNombreUsuario()
     {
         return nombre;
     }

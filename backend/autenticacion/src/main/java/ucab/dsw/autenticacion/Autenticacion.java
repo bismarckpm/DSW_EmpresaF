@@ -1,9 +1,6 @@
 package ucab.dsw.autenticacion;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 
@@ -48,7 +45,7 @@ public class Autenticacion {
     return  jwtToken;
   }
 
-  public Claims decode(String token) {
+  public Claims decode(String token){
     String secret = "Clavesecreta02847585923hsddkwn";
     Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
       SignatureAlgorithm.HS256.getJcaName());

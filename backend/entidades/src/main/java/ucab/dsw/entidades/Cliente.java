@@ -4,20 +4,32 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente extends EntidadBase
+public class Cliente
 {
   @Column(name = "nombre")
   private String _nombre;
 
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "_cliente")
-  private Usuario _usuario;
+  @Id
+  @Column( name = "codigo_cliente" )
+  @GeneratedValue( strategy = GenerationType.IDENTITY )
+  private long _id;
 
-  public Cliente(long id) {
-    super(id);
+
+  public Cliente(long _id) {
+    this._id = _id;
   }
 
   public Cliente() {
 
+  }
+
+
+  public long get_id() {
+    return _id;
+  }
+
+  public void set_id(long _id) {
+    this._id = _id;
   }
 
   public String getNombre() {
@@ -28,12 +40,5 @@ public class Cliente extends EntidadBase
     this._nombre = nombre;
   }
 
-  public Usuario getUsuario() {
-    return _usuario;
-  }
-
-  public void setUsuario(Usuario usuario) {
-    this._usuario = usuario;
-  }
 
 }
