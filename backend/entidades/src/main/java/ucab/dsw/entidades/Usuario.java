@@ -1,6 +1,7 @@
 package ucab.dsw.entidades;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table( name = "usuario" )
@@ -17,6 +18,9 @@ public class Usuario
     @Column( name = "estado" )
     private String _estado;
 
+    @Column( name = "rol" )
+    private String _rol;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "fk_cliente")
     private Cliente _cliente;
@@ -24,6 +28,18 @@ public class Usuario
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "fk_encuestado")
     private Encuestado _encuestado;
+
+    @OneToMany(mappedBy = "_analista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SolicitudEstudio> _solicitudesEstudioAnalista;
+
+    @OneToMany(mappedBy = "_administrador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SolicitudEstudio> _solicitudesEstudioAdministrador;
+
+    @OneToMany(mappedBy = "_cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SolicitudEstudio> _solicitudesEstudioCliente;
+
+    @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Muestra> _muestras;
 
   public Usuario(long _id) {
     this._id = _id;
@@ -58,6 +74,13 @@ public class Usuario
     this._estado = _estado;
   }
 
+  public String get_rol() {
+    return _rol;
+  }
+
+  public void set_rol(String _rol) {
+    this._rol = _rol;
+  }
 
   public Cliente get_cliente() {
     return _cliente;
@@ -73,5 +96,37 @@ public class Usuario
 
   public void set_encuestado(Encuestado _encuestado) {
     this._encuestado = _encuestado;
+  }
+
+  public List<SolicitudEstudio> get_solicitudesEstudioAnalista() {
+    return _solicitudesEstudioAnalista;
+  }
+
+  public void set_solicitudesEstudioAnalista(List<SolicitudEstudio> _solicitudesEstudioAnalista) {
+    this._solicitudesEstudioAnalista = _solicitudesEstudioAnalista;
+  }
+
+  public List<SolicitudEstudio> get_solicitudesEstudioAdministrador() {
+    return _solicitudesEstudioAdministrador;
+  }
+
+  public void set_solicitudesEstudioAdministrador(List<SolicitudEstudio> _solicitudesEstudioAdministrador) {
+    this._solicitudesEstudioAdministrador = _solicitudesEstudioAdministrador;
+  }
+
+  public List<SolicitudEstudio> get_solicitudesEstudioCliente() {
+    return _solicitudesEstudioCliente;
+  }
+
+  public void set_solicitudesEstudioCliente(List<SolicitudEstudio> _solicitudesEstudioCliente) {
+    this._solicitudesEstudioCliente = _solicitudesEstudioCliente;
+  }
+
+  public List<Muestra> get_muestra() {
+    return _muestras;
+  }
+
+  public void set_muestra(List<Muestra> _muestras) {
+    this._muestras = _muestras;
   }
 }

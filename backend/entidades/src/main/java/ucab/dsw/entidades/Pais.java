@@ -11,7 +11,7 @@ public class Pais{
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   private long _id;
 
-  @Column( name = "nombre")
+  @Column( name = "nombre_pais")
   private String _nombre;
 
   public Pais(long _id) {

@@ -11,8 +11,17 @@
         <class>ucab.dsw.entidades.Pais</class>
         <class>ucab.dsw.entidades.Municipio</class>
         <class>ucab.dsw.entidades.Parroquia</class>
-
         <class>ucab.dsw.entidades.NivelEstudio</class>
+
+        <class>ucab.dsw.entidades.Categoria</class>
+        <class>ucab.dsw.entidades.Subcategoria</class>
+        <class>ucab.dsw.entidades.Marca</class>
+
+        <class>ucab.dsw.entidades.NivelSocioeconomico</class>
+        <class>ucab.dsw.entidades.SolicitudEstudio</class>
+        <class>ucab.dsw.entidades.Estudio</class>
+        <class>ucab.dsw.entidades.Encuesta</class>
+        <class>ucab.dsw.entidades.Muestra</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
@@ -21,6 +30,7 @@
             <property name="javax.persistence.jdbc.password" value="sasa"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="eclipselink.logging.level" value="FINE"/>
+          <property name="eclipselink.ddl-generation" value="create-tables" />
         </properties>
     </persistence-unit>
 

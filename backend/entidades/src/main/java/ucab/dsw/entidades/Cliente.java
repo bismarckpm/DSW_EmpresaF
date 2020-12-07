@@ -1,6 +1,7 @@
 package ucab.dsw.entidades;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cliente")
@@ -13,7 +14,6 @@ public class Cliente
   @Column( name = "codigo_cliente" )
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   private long _id;
-
 
   public Cliente(long _id) {
     this._id = _id;
@@ -40,5 +40,12 @@ public class Cliente
     this._nombre = nombre;
   }
 
+  public String get_nombre() {
+    return _nombre;
+  }
+
+  public void set_nombre(String _nombre) {
+    this._nombre = _nombre;
+  }
 
 }

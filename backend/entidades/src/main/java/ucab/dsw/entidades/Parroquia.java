@@ -16,7 +16,7 @@ public class Parroquia {
   private String _nombreParroquia;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn( name = "fk_muncipio")
+  @JoinColumn( name = "fk_municipio")
   private Municipio _municipio;
 
   @OneToMany( mappedBy = "_parroquia", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )

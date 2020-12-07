@@ -5,8 +5,6 @@ import ucab.dsw.servicio.usuario.ServicioCliente;
 import ucab.dsw.servicio.usuario.ServicioEncuestado;
 
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class ServicioUsuariosTest {
 
@@ -16,9 +14,9 @@ public class ServicioUsuariosTest {
     UsuarioDto usuarioDto = new UsuarioDto();
     ClienteDto clienteDto = new ClienteDto();
 
-    clienteDto.setNombre("pruebarepetida");
+    clienteDto.setNombre("pruebarepetida2");
     usuarioDto.setClienteDto(clienteDto);
-    usuarioDto.setNombreUsuario("pruebajjuser");
+    usuarioDto.setNombreUsuario("pruebajjo");
     usuarioDto.setContrasena("12345");
 
     Response resultado = servicio.addUser(usuarioDto);
@@ -35,12 +33,12 @@ public class ServicioUsuariosTest {
       EncuestadoDto encuestadoDto = new EncuestadoDto();
 
       encuestadoDto.setNumeroIdentificacion("15267");
-      encuestadoDto.setPrimerNombre("PruebaAdicionEncuestado");
+      encuestadoDto.setPrimerNombre("PruebaRol");
       encuestadoDto.setPrimerApellido("Prueba");
+      encuestadoDto.setSegundoApellido("Diaz");
       encuestadoDto.setDireccionComplemento("Alta vista");
 
-      DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
-      encuestadoDto.setFechaNacimiento(fecha.parse("06-11-2020"));
+      encuestadoDto.setFechaNacimiento("06-11-2020");
 
       encuestadoDto.setGenero("masculino");
       encuestadoDto.setEstadoCivil("Casado");
@@ -53,7 +51,7 @@ public class ServicioUsuariosTest {
       encuestadoDto.setNivelEstudio(nivelEstudioDto);
 
       usuarioDto.setEncuestadoDto(encuestadoDto);
-      usuarioDto.setNombreUsuario("pruebaEncuestadoAgains");
+      usuarioDto.setNombreUsuario("pruerolle00");
       usuarioDto.setContrasena("12345");
 
       Response resultado = servicio.addUser(usuarioDto);
@@ -63,5 +61,23 @@ public class ServicioUsuariosTest {
     catch (Exception ex){
       ex.getMessage();
     }
+  }
+
+  @Test
+  public void getClientTest(){
+
+    ServicioCliente servicio = new ServicioCliente();
+    Response resultado = servicio.getUsers();
+
+    Assert.assertEquals(resultado.getStatus(), 200);
+  }
+
+  @Test
+  public void getEncuestadoTest(){
+
+    ServicioEncuestado servicio = new ServicioEncuestado();
+    Response resultado = servicio.getUsers();
+
+    Assert.assertEquals(resultado.getStatus(), 200);
   }
 }

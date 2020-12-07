@@ -19,7 +19,6 @@ public class Autenticacion {
   private Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
     SignatureAlgorithm.HS256.getJcaName());
 
-  private JsonObject data;
 
   public Autenticacion() {
   }
@@ -31,11 +30,13 @@ public class Autenticacion {
 
   public String generateToken(UsuarioDto usuarioDto){
     String jwtToken = null;
+    DirectorioActivo directorio = new DirectorioActivo();
 
     if(isAuthenticated(usuarioDto)){
       Instant now = Instant.now();
       jwtToken = Jwts.builder()
         .claim("nombreUsuario", usuarioDto.getNombreUsuario())
+        .claim("rol", directorio.getEntry(usuarioDto))
         .setIssuedAt(Date.from(now))
         .setExpiration(Date.from(now.plus(5l, ChronoUnit.MINUTES)))
         .signWith(SignatureAlgorithm.HS256, hmacKey)

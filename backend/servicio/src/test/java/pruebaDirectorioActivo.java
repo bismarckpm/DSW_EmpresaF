@@ -12,7 +12,7 @@ public class pruebaDirectorioActivo
         user.setNombreUsuario( "danJiel" );
         user.setContrasena( "1234" );
         DirectorioActivo ldap = new DirectorioActivo();
-        ldap.addEntryToLdap( user );
+        ldap.addEntryToLdap( user, "cliente" );
     }
 
     @Test
@@ -38,7 +38,7 @@ public class pruebaDirectorioActivo
     {
         UsuarioDto user = new UsuarioDto();
         user.setNombreUsuario( "bismarckpm2" );
-        user.setContrasena( "MARIAPEPE" );
+        user.setContrasena( "MARIAPEPE123" );
         DirectorioActivo ldap = new DirectorioActivo();
         ldap.changePassword( user );
     }

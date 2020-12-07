@@ -14,7 +14,7 @@ public class ServicioAutenticacionTest {
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "pruebaEncuestadoAgains" );
+    usuarioDto.setNombreUsuario( "daniel" );
     usuarioDto.setContrasena("12345");
 
     Response resultado = servicio.login(usuarioDto);
@@ -24,7 +24,7 @@ public class ServicioAutenticacionTest {
   @Test
   public void decodeToken(){
     ServicioAutenticacion servicio = new ServicioAutenticacion();
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJub21icmVVc3VhcmlvIjoicHJ1ZWJhamo0NTQiLCJpYXQiOjE2MDcxMDg3NjcsImV4cCI6MTYwNzEwOTA2N30.Lg49lCDf59apkhaNqjbtoVuFsXZIBGjF__SiM6gniWM";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJub21icmVVc3VhcmlvIjoiYmlzbWFyY2twbTIiLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjA3MjE0MjYxLCJleHAiOjE2MDcyMTQ1NjF9.EdDKei-HmliSNMKstuvksw7EPAOMGziaWASmD5UXJJE";
     Response resultado = servicio.decodeToken(token);
     Assert.assertEquals(resultado.getStatus(), 200);
   }

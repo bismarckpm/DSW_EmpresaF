@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.autenticacion.Autenticacion;
 import ucab.dsw.servicio.AplicacionBase;
@@ -29,8 +30,11 @@ public class ServicioAutenticacion extends AplicacionBase {
       Autenticacion autenticacion = new Autenticacion();
       resultado = autenticacion.generateToken(usuarioDto);
 
+      DirectorioActivo directorioActivo = new DirectorioActivo();
+
       data = Json.createObjectBuilder()
         .add("token", resultado)
+        .add("rol", directorioActivo.getEntry(usuarioDto))
         .add("estado", "success")
         .add("code", 200)
         .build();

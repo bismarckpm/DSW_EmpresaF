@@ -86,7 +86,7 @@ public class DirectorioActivo
     /*
       Method that adds users to ldap
      */
-    public void addEntryToLdap(UsuarioDto user)
+    public void addEntryToLdap(UsuarioDto user, String rol)
     {
 
         try
@@ -100,6 +100,7 @@ public class DirectorioActivo
             entry.put( oc );
             entry.put( new BasicAttribute( "cn", user.getNombreUsuario() ) );
             entry.put( new BasicAttribute( "sn", user.getNombreUsuario() ) );
+            entry.put( new BasicAttribute( "description", rol ) );
             entry.put( new BasicAttribute( "userpassword", user.getContrasena() ) );
             entry.put( new BasicAttribute( "pwdLastSuccess", format.format( new Date() ) + "Z" ) );
             _ldapContext.createSubcontext( String.format( _userDirectory + "," + _directory, user.getNombreUsuario()), entry );
@@ -134,8 +135,9 @@ public class DirectorioActivo
     /*
      Method that obtains user data from ldap
     */
-    public void getEntry(UsuarioDto user)
+    public String getEntry(UsuarioDto user)
     {
+      String rol = null;
         try
         {
             connectLDAP( _user, _password );
@@ -149,8 +151,8 @@ public class DirectorioActivo
                 {
                     SearchResult res = ( SearchResult ) results.next();
                     Attributes atbs = res.getAttributes();
-                    Attribute atb = atbs.get( "cn" );
-                    String name = ( String ) atb.get();
+                    Attribute atb = atbs.get( "description" );
+                    rol = ( String ) atb.get();
                 }
             }
             else
@@ -166,6 +168,7 @@ public class DirectorioActivo
         {
             disconnectLDAP();
         }
+        return rol;
     }
 
     /*
@@ -199,12 +202,9 @@ public class DirectorioActivo
         try
         {
             connectLDAP( _user, _password );
-            ModificationItem[] modificationItems = new ModificationItem[ 2 ];
+            ModificationItem[] modificationItems = new ModificationItem[ 1 ];
             modificationItems[ 0 ] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
                                                            new BasicAttribute( "userpassword", user.getContrasena()
-                                                           ) );
-            modificationItems[ 1 ] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                                                           new BasicAttribute( "description", "NUEVO"
                                                            ) );
             _ldapContext.modifyAttributes(String.format(_userDirectory + "," + _directory, user.getNombreUsuario()), modificationItems );
         }

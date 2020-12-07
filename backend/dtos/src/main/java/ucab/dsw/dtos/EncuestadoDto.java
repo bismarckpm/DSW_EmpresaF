@@ -16,7 +16,7 @@ public class EncuestadoDto extends DtoBase{
 
   private String direccionComplemento;
 
-  private Date fechaNacimiento;
+  private String fechaNacimiento;
 
   private String genero;
 
@@ -83,11 +83,11 @@ public class EncuestadoDto extends DtoBase{
     this.direccionComplemento = direccionComplemento;
   }
 
-  public Date getFechaNacimiento() {
+  public String getFechaNacimiento() {
     return fechaNacimiento;
   }
 
-  public void setFechaNacimiento(Date fechaNacimiento) {
+  public void setFechaNacimiento(String fechaNacimiento) {
     this.fechaNacimiento = fechaNacimiento;
   }
 

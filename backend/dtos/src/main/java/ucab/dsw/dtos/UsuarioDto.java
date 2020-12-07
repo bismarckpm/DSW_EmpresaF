@@ -2,10 +2,10 @@ package ucab.dsw.dtos;
 
 public class UsuarioDto extends DtoBase
 {
-    private ClienteDto clienteDto;
     private String nombreUsuario;
     private String contrasena;
-
+    private String rol;
+    private ClienteDto clienteDto;
 
   public UsuarioDto(long id) throws Exception {
     super(id);
@@ -48,7 +48,15 @@ public class UsuarioDto extends DtoBase
     this.encuestadoDto = encuestadoDto;
   }
 
-/*public String getNombreUsuario()
+  public String getRol() {
+    return rol;
+  }
+
+  public void setRol(String rol) {
+    this.rol = rol;
+  }
+
+  /*public String getNombreUsuario()
     {
         return nombre;
     }
