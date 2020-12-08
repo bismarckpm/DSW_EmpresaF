@@ -2,6 +2,7 @@ package ucab.dsw.accesodatos;
 
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.Usuario;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -19,7 +20,7 @@ public class DaoSolicitudEstudio extends  Dao<SolicitudEstudio>{
   }
 
   public SolicitudEstudio getSolicitudesByCaracteristicas (SolicitudEstudio solicitud){
-    SolicitudEstudio resultado = null;
+    SolicitudEstudio resultado;
     try {
       resultado = this._em.createNamedQuery("getSolicitudesByCaracteristicas", SolicitudEstudio.class).
         setParameter("clienteId", solicitud.get_cliente()).
@@ -34,5 +35,19 @@ public class DaoSolicitudEstudio extends  Dao<SolicitudEstudio>{
     }
 
     return resultado;
+  }
+
+  public  List<SolicitudEstudio> getSolicitudesPendientesByAdmin(Long administradorId){
+    String estado = "solicitado";
+    try {
+      TypedQuery <SolicitudEstudio> solicitudes = this._em.createNamedQuery("getSolicitudesPendientesByAdmin", SolicitudEstudio.class);
+        solicitudes.setParameter("administradorId", administradorId).getResultList();
+
+      List<SolicitudEstudio> resultado = solicitudes.getResultList();
+      return resultado;
+    }
+    catch (Exception ex){
+      return null;
+    }
   }
 }

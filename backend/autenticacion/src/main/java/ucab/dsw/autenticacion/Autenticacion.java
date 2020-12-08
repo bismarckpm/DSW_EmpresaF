@@ -38,7 +38,7 @@ public class Autenticacion {
         .claim("nombreUsuario", usuarioDto.getNombreUsuario())
         .claim("rol", directorio.getEntry(usuarioDto))
         .setIssuedAt(Date.from(now))
-        .setExpiration(Date.from(now.plus(5l, ChronoUnit.MINUTES)))
+        .setExpiration(Date.from(now.plus(10800l, ChronoUnit.MINUTES)))
         .signWith(SignatureAlgorithm.HS256, hmacKey)
         .compact();
     }

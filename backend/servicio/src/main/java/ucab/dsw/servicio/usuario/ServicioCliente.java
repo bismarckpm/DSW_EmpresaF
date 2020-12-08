@@ -78,8 +78,8 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario 
   @Path("/getall")
   public Response getUsers() {
 
-    List<Usuario> usuarios = null;
-    JsonObject data = null;
+    List<Usuario> usuarios ;
+    JsonObject data;
     try {
 
       DaoUsuario dao = new DaoUsuario();
@@ -100,7 +100,7 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario 
         }
       }
         data = Json.createObjectBuilder()
-          .add("estado", 200)
+          .add("code", 200)
           .add("estado", "success")
           .add("usuarios", usuariosArray).build();
 

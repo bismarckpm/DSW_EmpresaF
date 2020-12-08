@@ -17,8 +17,8 @@ public class Muestra {
   private Usuario _encuestado;
 
   @ManyToOne
-  @JoinColumn(name = "fk_estudio")
-  private Estudio _estudio;
+  @JoinColumn(name = "fk_solicitud_estudio")
+  private SolicitudEstudio _solicitudEstudio;
 
   public Muestra(long _id) {
     this._id = _id;
@@ -43,11 +43,11 @@ public class Muestra {
     this._encuestado = _encuestado;
   }
 
-  public Estudio get_estudio() {
-    return _estudio;
+  public SolicitudEstudio get_solicitudEstudio() { 
+    return _solicitudEstudio;
   }
 
-  public void set_estudio(Estudio _estudio) {
-    this._estudio = _estudio;
+  public void set_solicitudEstudio(SolicitudEstudio _solicitudEstudio) {
+    this._solicitudEstudio = _solicitudEstudio;
   }
 }

@@ -1,11 +1,13 @@
 package ucab.dsw.entidades;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "solicitud_estudio")
 @NamedQueries({
-  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._marca=:marcaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico")
+  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._marca=:marcaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico"),
+  @NamedQuery(name = "getSolicitudesPendientesByAdmin", query = "select sol from SolicitudEstudio sol where sol._administrador =:administradorId")
 })
 public class SolicitudEstudio {
 
@@ -53,6 +55,9 @@ public class SolicitudEstudio {
   @ManyToOne
   @JoinColumn(name = "fk_nivel_socio")
   private NivelSocioeconomico _nivelSocioeconomico;
+
+  @OneToMany(mappedBy = "_solicitudEstudio", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Muestra> _muestras;
 
   public SolicitudEstudio(long _id) {
     this._id = _id;
@@ -158,5 +163,11 @@ public class SolicitudEstudio {
     this._nivelSocioeconomico = _nivelSocioeconomico;
   }
 
+  public List<Muestra> get_muestras() {
+    return _muestras;
+  }
 
+  public void set_muestras(List<Muestra> _muestras) {
+    this._muestras = _muestras;
+  }
 }

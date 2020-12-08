@@ -4,9 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.autenticacion.Autenticacion;
+import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.Usuario;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -14,6 +17,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path( "/auth" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -24,16 +28,27 @@ public class ServicioAutenticacion extends AplicacionBase {
   @Path("/login")
   public Response login(UsuarioDto usuarioDto){
     String resultado;
+    Long usuarioId = null;
     JsonObject data;
 
     try {
       Autenticacion autenticacion = new Autenticacion();
       resultado = autenticacion.generateToken(usuarioDto);
 
+      DaoUsuario dao = new DaoUsuario();
+      List<Usuario> usuario = dao.findAll(Usuario.class);
+
+      for(Usuario users:usuario){
+        if(users.get_nombreUsuario().equals(usuarioDto.getNombreUsuario())){
+           usuarioId = users.get_id();
+        }
+      }
+
       DirectorioActivo directorioActivo = new DirectorioActivo();
 
       data = Json.createObjectBuilder()
         .add("token", resultado)
+        .add("id", usuarioId)
         .add("rol", directorioActivo.getEntry(usuarioDto))
         .add("estado", "success")
         .add("code", 200)

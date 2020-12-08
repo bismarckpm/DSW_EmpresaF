@@ -14,7 +14,7 @@ public class ServicioAutenticacionTest {
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "daniel" );
+    usuarioDto.setNombreUsuario( "pruer" );
     usuarioDto.setContrasena("12345");
 
     Response resultado = servicio.login(usuarioDto);

@@ -12,7 +12,7 @@ public class ServicioSolicitudEstudioTest {
     ServicioSolicitudEstudio servicio = new ServicioSolicitudEstudio();
     SolicitudEstudioDto solicitudEstudioDto = new SolicitudEstudioDto();
 
-    solicitudEstudioDto.setEdadInicial(24);
+    solicitudEstudioDto.setEdadInicial(15);
     solicitudEstudioDto.setEdadfinal(25);
     solicitudEstudioDto.setGenero("femenino");
 

@@ -1,5 +1,7 @@
 package ucab.dsw.accesodatos;
 
+
+import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Usuario;
 
 import javax.persistence.EntityManager;
@@ -14,4 +16,5 @@ public class DaoUsuario extends Dao<Usuario>
     {
         super( _handler );
     }
+
 }

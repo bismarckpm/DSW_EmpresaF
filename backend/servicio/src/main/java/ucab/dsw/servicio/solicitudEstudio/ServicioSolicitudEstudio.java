@@ -1,9 +1,6 @@
 package ucab.dsw.servicio.solicitudEstudio;
 
-import ucab.dsw.accesodatos.DaoNivelSocioeconomico;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
-import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
@@ -59,8 +56,9 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
       }else{
-        Usuario usuario = new Usuario(81);
-        solicitudEstudio.set_analista(usuario);
+
+        Usuario usuario = new Usuario(82);
+        solicitudEstudio.set_administrador(usuario);
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
       }
@@ -85,14 +83,18 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     return  Response.ok().entity(data).build();
   }
 
-  public SolicitudEstudio asignarSolicitud(SolicitudEstudio solicitudEstudio){
+    private SolicitudEstudio asignarSolicitud(SolicitudEstudio solicitudEstudio){
     DaoSolicitudEstudio dao = new DaoSolicitudEstudio();
     SolicitudEstudio solicitudEstudioPrevia = dao.getSolicitudesByCaracteristicas(solicitudEstudio);
 
     if(solicitudEstudioPrevia != null){
+
       return solicitudEstudioPrevia;
+
     }else{
+
       return null;
+
     }
 
   }
