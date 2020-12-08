@@ -9,10 +9,28 @@
             </div>
         </div>
         <form [formGroup]="createMarcaForm" (ngSubmit)="handleCreateMarca()" fxLayout="column" fxLayoutAlign="center center">
-            <mat-form-field >
+            <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="Nombre" type="text">
-            </mat-form-field>  
+            </mat-form-field> 
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <input matInput formControlName="Tipo" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Capacidad</mat-label>
+                <input matInput formControlName="Capacidad" type="number">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad</mat-label>
+                <input matInput formControlName="Unidad" type="number">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Subcategorias</mat-label>
+                <mat-select formControlName="selectSubCategoria">
+                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.idSubcategoria">{{subCategoria.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>       
             <button mat-raised-button class="create-btn width-100" >Crear</button>
         </form>
     </mat-card>

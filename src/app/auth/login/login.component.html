@@ -12,7 +12,7 @@
         <form [formGroup]="signInForm" (ngSubmit)="handleSignIn()" fxLayout="column" fxLayoutAlign="center center">
           <mat-form-field appearance="outline">
             <mat-label>Username or Email <span class="trans">.</span></mat-label>
-            <input matInput formControlName="Email" class="form-control">
+            <input matInput formControlName="Email" class="form-control" type="text">
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
@@ -21,7 +21,7 @@
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
           </mat-form-field>
-          <button class="width-login-btn" mat-raised-button [disabled]="!signInForm.valid || bSignIn || (checkingInputEmail())" fxLayoutAlign="center center">
+          <button class="width-login-btn" mat-raised-button [disabled]="bSignIn " fxLayoutAlign="center center">
             <span *ngIf="!bSignIn" class="btn-login-text">LOGIN</span>
             <mat-spinner *ngIf="bSignIn" mode="indeterminate" [diameter]="30"></mat-spinner>
           </button>

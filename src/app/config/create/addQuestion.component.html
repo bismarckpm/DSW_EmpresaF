@@ -1,0 +1,46 @@
+<div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card" >
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/config/menuquestion"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">A</span>gregar pregunta</h1>
+            </div>
+        </div>
+        <form [formGroup]="createPreguntaForm" (ngSubmit)="handleCreatePregunta()" fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline" >
+                <mat-label>Descripcion</mat-label>
+                <input matInput formControlName="Nombre" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="selectTipo">
+                    <mat-option *ngFor="let tipo of tipos" [value]="tipo.idPregunta">{{tipo.name}}</mat-option>
+                </mat-select>
+            </mat-form-field> 
+            <div formArrayName="itemRows">
+                <div *ngFor="let itemrow of createPreguntaForm?.controls.itemRows.controls; let i=index" [formGroupName]="i" >
+                    <!--<h4>Invoice Row #{{ i + 1 }}</h4>-->
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Opcion</mat-label>
+                        <input matInput formControlName="Opcion" type="text">
+                    </mat-form-field>
+                    <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <button *ngIf="createPreguntaForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)" mat-raised-button class="delete-btn" >Eliminar</button>
+                    </div>
+                    <br>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <button mat-raised-button class="add-option width-100"  (click)="addNewRow()" >Agregar opcion</button>
+                </div>
+            </div>
+            <br>
+            <button mat-raised-button class="create-btn width-100" >Crear</button>
+        </form>
+    </mat-card>
+    <!--Muestra el form en formato json en tiempo real segun la data-->
+    <!--<pre>{{createPreguntaForm.value | json}}</pre>-->
+</div>
+
