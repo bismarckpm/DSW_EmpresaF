@@ -1,0 +1,48 @@
+<mat-toolbar class="container-fluid mat-toolbar">
+    <div class="row d-flex align-items-center">
+        <a mat-icon-button  routerLink="/analitics/sample" class="d-flex justify-content-start">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </a>    
+    </div>
+</mat-toolbar>
+<br>
+<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout fxLayoutAlign="center center ">
+        <mat-card-content fxLayout="column">
+            <mat-label>Nombre</mat-label>
+            <mat-form-field appearance="fill" >
+            <mat-label>{{info.nombre}}</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+            <br>
+            <mat-label>Apellido</mat-label>
+            <mat-form-field appearance="fill" >
+                <mat-label>{{info.apellido}}</mat-label>
+                    <input matInput type="text">
+                </mat-form-field>
+            <br>
+            <mat-label>Estado civil</mat-label>
+            <mat-form-field appearance="fill">
+            <mat-label>{{info.estadocivil}}</mat-label>
+            <mat-select>
+                <mat-option value="option">Casado</mat-option>
+                <mat-option value="option">Soltero</mat-option>
+                <mat-option value="option">Divorciado</mat-option>
+                <mat-option value="option">Viudo</mat-option>
+            </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <mat-form-field appearance="fill" >
+                <mat-label>{{info.fechanac}}</mat-label>
+                <input matInput type="date">
+              </mat-form-field>
+            <br>
+            <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
+                <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center" (click)="updateUsuario()">
+                    <span class="btn-send-text">Actualizar</span>
+                </button>
+            </div>
+        </mat-card-content>
+    </div>     
+</div>

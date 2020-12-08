@@ -3,6 +3,7 @@
 $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
+
 table {
     width: 80%;
 }
@@ -15,19 +16,6 @@ table {
     background-size: 65%;
 }
 
-h1:first-letter  { 
-    color:  $mercadoucab-blue; 
-} 
-
-.title-container{ margin-top: 20px; margin-bottom: 65px; }
-
-.sign-in-title{
-    height: 33px;
-    margin-block-start: 0;
-    margin-block-end: 0.67em;
-    font-family: $mercadoucab-font;
-}
-
 mat-card{
     padding: 150px;
     border-radius: 0;
@@ -35,7 +23,22 @@ mat-card{
     height: 675px;
 }
 
-.menu-container{
-    padding-left: 30px;
-    padding-right: 30px;
+
+h1:first-letter  { 
+    color:  $mercadoucab-blue; 
+} 
+
+
+.title-container{ margin-top: 20px; margin-bottom: 65px; }
+
+
+mat-form-field{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.fa-plus{
+    padding-left: 270px;
+    color: #94d82d;
+    cursor: pointer;
 }
