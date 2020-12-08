@@ -14,6 +14,10 @@ import { MenuStudiesComponent } from './../config/menus/menu-studies.component';
 import { MenuUsersComponent } from './../config/menus/menu-users.component';
 import { GlobalMenuComponent } from '././global-menu.component';
 import { AddBrandComponent } from 'src/app/config/create/addBrand.component';
+import { AddCategoryComponent } from 'src/app/config/create/addCategory.component';
+import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
+import { AddPollComponent } from 'src/app/config/create/addPoll.component';
+import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component'
 
 const routes: Routes = [
   { 
@@ -31,7 +35,11 @@ const routes: Routes = [
     { path: "menuquestion", component: MenuCQuestionComponent},
     { path: "menustudies", component: MenuStudiesComponent},
     { path: "menuusers", component: MenuUsersComponent},
-    { path: "addBrand", component: AddBrandComponent}
+    { path: "addBrand", component: AddBrandComponent},
+    { path: "addCategory", component: AddCategoryComponent},
+    { path: "addSubCategory", component: AddSubcategoryComponent},
+    { path: "addPoll", component: AddPollComponent},
+    { path: "addQuestion", component: AddQuestionComponent},
     ],
   }
 ];

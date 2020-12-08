@@ -1,6 +1,7 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-category',
@@ -12,7 +13,7 @@ export class MenuCategoryComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idCategoria', 'nombreCategoria','icons'];
-  constructor() { }
+  constructor(private router: Router) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -54,6 +55,7 @@ export class MenuCategoryComponent implements OnInit{
   }
 
   addCategoria(){
+    this.router.navigate(['/config/addCategory']);
     console.log("Add Categoria");
   }
 }

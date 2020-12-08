@@ -1,5 +1,5 @@
 import { Component,OnInit} from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-addcategory',
@@ -10,9 +10,21 @@ import { Component,OnInit} from '@angular/core';
 
 export class AddCategoryComponent implements OnInit{
     
-    constructor() { }
+  auxRes: any;
+  createCategoriaForm: FormGroup;
+  admin: any;
+  token: string;
+  constructor(private formBuilder: FormBuilder) { }
 
-    ngOnInit(): void {
-    }
-  
+  ngOnInit(): void {
+    this.createCategoriaForm = this.formBuilder.group({
+      Nombre: ['', Validators.required]
+    });
+  }
+
+  handleCreateCategoria(){
+    let formData = new FormData();
+    formData.append('Nombre', this.createCategoriaForm.get('Nombre').value);
+    console.log(this.createCategoriaForm.get('Nombre').value)
+  } 
 }

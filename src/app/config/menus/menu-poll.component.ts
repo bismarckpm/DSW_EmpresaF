@@ -1,6 +1,7 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-poll',
@@ -12,7 +13,7 @@ export class MenuPollComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idEncuesta', 'nombreSubcategoria','icons'];
-  constructor() { }
+  constructor(private router: Router) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -54,6 +55,6 @@ export class MenuPollComponent implements OnInit{
   }
 
   addEncuesta(){
-    console.log("Add Encuesta");
+    this.router.navigate(['/config/addPoll']);
   }
 }
