@@ -1,5 +1,8 @@
 
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+  <div class="texto-entrada">
+    <h1 >SUBCATEGORIAS</h1>
+  </div>
   <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
     <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuconfig"></a>
       <mat-form-field>
@@ -11,13 +14,13 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
-      
+
         <!-- idSubcategoria Column -->
         <ng-container matColumnDef="idSubcategoria">
           <th mat-header-cell *matHeaderCellDef> ID</th>
           <td mat-cell *matCellDef="let element"> {{element.idSubcategoria}} </td>
         </ng-container>
-      
+
         <!-- nombreSubcategoria Column -->
         <ng-container matColumnDef="nombreSubcategoria">
             <th mat-header-cell *matHeaderCellDef> Nombre </th>
@@ -28,14 +31,14 @@
         <ng-container matColumnDef="nombreCategoria">
           <th mat-header-cell *matHeaderCellDef> Categoria </th>
           <td mat-cell *matCellDef="let element"> {{element.nombreCategoria}} </td>
-        </ng-container>  
+        </ng-container>
 
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteSubcategoria(element.idSubcategoria)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateSubcategoria(element.idSubcategoria)"></i></span></td>
         </ng-container>
-      
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
