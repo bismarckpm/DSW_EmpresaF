@@ -19,22 +19,24 @@ public class DaoSolicitudEstudio extends  Dao<SolicitudEstudio>{
     this._em= _handler.getSession();
   }
 
-  public SolicitudEstudio getSolicitudesByCaracteristicas (SolicitudEstudio solicitud){
-    SolicitudEstudio resultado;
+  public List<SolicitudEstudio> getSolicitudesByCaracteristicas (SolicitudEstudio solicitud){
+
     try {
-      resultado = this._em.createNamedQuery("getSolicitudesByCaracteristicas", SolicitudEstudio.class).
-        setParameter("clienteId", solicitud.get_cliente()).
+       TypedQuery<SolicitudEstudio> array = this._em.createNamedQuery("getSolicitudesByCaracteristicas", SolicitudEstudio.class);
+        array.setParameter("clienteId", solicitud.get_cliente()).
         setParameter("marcaId", solicitud.get_marca()).
         setParameter("edadInicial", solicitud.get_edadInicial()).
         setParameter("edadFinal", solicitud.get_edadfinal()).
         setParameter("parroquiaId", solicitud.get_parroquia()).
-        setParameter("nivelSocioeconomico", solicitud.get_nivelSocioeconomico()).getSingleResult();
+        setParameter("genero", solicitud.get_genero()).
+        setParameter("nivelSocioeconomico", solicitud.get_nivelSocioeconomico()).getResultList();
+
+      List<SolicitudEstudio> resultado = array.getResultList();
+      return resultado;
     }
     catch (Exception ex){
       return null;
     }
-
-    return resultado;
   }
 
   public  List<SolicitudEstudio> getSolicitudesPendientesByAdmin(Long administradorId){

@@ -24,7 +24,7 @@ public class Estudio {
   @Column(name = "fecha_fin")
   private Date _fechaFin;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn( name = "fk_encuesta")
   private Encuesta _encuesta;
 

@@ -22,6 +22,9 @@ public class Subcategoria {
   @OneToMany(mappedBy = "_subcategoria", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Marca> _marcas;
 
+  @OneToMany(mappedBy = "_subcategoria", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Encuesta> _encuestas;
+
   public Subcategoria(long _id) {
     this._id = _id;
   }
@@ -60,5 +63,13 @@ public class Subcategoria {
 
   public void set_marcas(List<Marca> _marcas) {
     this._marcas = _marcas;
+  }
+
+  public List<Encuesta> get_encuestas() {
+    return _encuestas;
+  }
+
+  public void set_encuestas(List<Encuesta> _encuestas) {
+    this._encuestas = _encuestas;
   }
 }

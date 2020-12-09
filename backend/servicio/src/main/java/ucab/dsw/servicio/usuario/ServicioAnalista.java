@@ -1,16 +1,14 @@
 package ucab.dsw.servicio.usuario;
 
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -21,8 +19,9 @@ import java.util.List;
 public class ServicioAnalista extends AplicacionBase implements IServicioEmpleado{
 
 
-  @Path("/getsolicitudespendientes/{id}")
-  public Response getSolicitudesPendientes(@PathParam("id") long id){
+  @Path("/getsolicitudespendientes/{usuarioId}")
+  @GET
+  public Response getSolicitudesPendientes(@PathParam("usuarioId") long id){
     List<SolicitudEstudio> solicitudesPendientes;
     JsonObject data=null;
 
@@ -30,7 +29,6 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
       solicitudesPendientes = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
-      System.out.println(solicitudesPendientes);
 
       JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
 
@@ -76,6 +74,50 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
         .add("estado", "error").build();
 
       return Response.ok().entity(data).build();
+    }
+
+    System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @Path("/activarestudio/{solicitudId}")
+  @PUT
+  public Response activarEstudio(@PathParam("solicitudId") long id){
+
+    JsonObject data;
+
+    try {
+      SolicitudEstudio solicitud;
+      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+      solicitud = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
+
+     List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.getSolicitudesByCaracteristicas(solicitud);
+
+     for(SolicitudEstudio solicitudes:solicitudesEstudio){
+        if(solicitudes.get_analista() == solicitud.get_analista() &&
+          (solicitudes.get_estado().equals("procesado") || solicitudes.get_estado().equals("ejecutando") || solicitudes.get_estado().equals("culminado"))){
+            Estudio estudio = new Estudio(solicitudes.get_estudio().get_id());
+            solicitud.set_estudio(estudio);
+            solicitud.set_estado("procesado");
+            break;
+        }
+      }
+
+      SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitud);
+
+      System.out.println(solicitud.get_id());
+
+      data = Json.createObjectBuilder()
+        .add("code", 200)
+        .add("estado", "success")
+        .add("idSolicitud", id)
+        .add("estadoSolicitud", resultado.get_estado()).build();
+
+    }
+    catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+
     }
 
     System.out.println(data);

@@ -38,8 +38,6 @@ public class Usuario extends EntidadBase
     @OneToMany(mappedBy = "_cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SolicitudEstudio> _solicitudesEstudioCliente;
 
-    @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Muestra> _muestras;
 
   public Usuario(long _id) {
     this._id = _id;
@@ -122,11 +120,5 @@ public class Usuario extends EntidadBase
     this._solicitudesEstudioCliente = _solicitudesEstudioCliente;
   }
 
-  public List<Muestra> get_muestra() {
-    return _muestras;
-  }
 
-  public void set_muestra(List<Muestra> _muestras) {
-    this._muestras = _muestras;
-  }
 }

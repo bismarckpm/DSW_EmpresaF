@@ -1,9 +1,7 @@
 package ucab.dsw.servicio.usuario;
 
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;

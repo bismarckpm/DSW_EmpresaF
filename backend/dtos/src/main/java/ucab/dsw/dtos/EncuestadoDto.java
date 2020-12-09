@@ -1,6 +1,9 @@
 package ucab.dsw.dtos;
 
+import ucab.dsw.entidades.Telefono;
+
 import java.util.Date;
+import java.util.List;
 
 public class EncuestadoDto extends DtoBase{
 
@@ -27,6 +30,10 @@ public class EncuestadoDto extends DtoBase{
   private ParroquiaDto parroquia;
 
   private NivelEstudioDto nivelEstudio;
+
+  private NivelSocioeconomicoDto nivelSocioeconomico;
+
+  private List<Telefono> telefonos;
 
   public EncuestadoDto(long id) throws Exception {
     super(id);
@@ -129,5 +136,21 @@ public class EncuestadoDto extends DtoBase{
 
   public void setNivelEstudio(NivelEstudioDto nivelEstudio) {
     this.nivelEstudio = nivelEstudio;
+  }
+
+  public NivelSocioeconomicoDto getNivelSocioeconomico() {
+    return nivelSocioeconomico;
+  }
+
+  public void setNivelSocioeconomico(NivelSocioeconomicoDto nivelSocioeconomico) {
+    this.nivelSocioeconomico = nivelSocioeconomico;
+  }
+
+  public List<Telefono> getTelefonos() {
+    return telefonos;
+  }
+
+  public void setTelefonos(List<Telefono> telefonos) {
+    this.telefonos = telefonos;
   }
 }

@@ -4,9 +4,12 @@
 
     <persistence-unit name="ormprueba">
       <jta-data-source>java:/jboss/datasources/Proyecto</jta-data-source>
+
         <class>ucab.dsw.entidades.Usuario</class>
         <class>ucab.dsw.entidades.Cliente</class>
         <class>ucab.dsw.entidades.Encuestado</class>
+        <class>ucab.dsw.entidades.PreguntaEncuesta</class>
+        <class>ucab.dsw.entidades.Telefono</class>
 
         <class>ucab.dsw.entidades.Pais</class>
         <class>ucab.dsw.entidades.Municipio</class>
@@ -22,6 +25,11 @@
         <class>ucab.dsw.entidades.Estudio</class>
         <class>ucab.dsw.entidades.Encuesta</class>
         <class>ucab.dsw.entidades.Muestra</class>
+
+        <class>ucab.dsw.entidades.Pregunta</class>
+        <class>ucab.dsw.entidades.Opcion</class>
+        <class>ucab.dsw.entidades.PreguntaOpcion</class>
+        <class>ucab.dsw.entidades.PreguntaEncuesta</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

@@ -10,13 +10,12 @@ import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path( "/subcategoria" )
 @Produces( MediaType.APPLICATION_JSON )
@@ -69,5 +68,48 @@ public class ServicioSubcategoria extends AplicacionBase {
     System.out.println(data);
     return  Response.ok().entity(data).build();
 
+  }
+
+  @GET
+  @Path("/getall")
+  public Response getSubcategories() {
+
+    List<Subcategoria> subcategorias;
+    JsonObject data;
+
+    try {
+
+      DaoSubcategoria dao = new DaoSubcategoria();
+      subcategorias = dao.findAll(Subcategoria.class);
+
+      JsonArrayBuilder subcategoriasArray = Json.createArrayBuilder();
+
+      for(Subcategoria subcategory: subcategorias){
+        JsonObject categories = Json.createObjectBuilder()
+          .add("id", subcategory.get_id())
+          .add("nombreSubcategoria", subcategory.get_nombreSubcategoria())
+          .add("categoriaId", subcategory.get_categoria().get_id())
+          .build();
+
+        subcategoriasArray.add(categories);
+      }
+      data = Json.createObjectBuilder()
+        .add("estado", 200)
+        .add("estado", "success")
+        .add("subcategorias", subcategoriasArray).build();
+
+    } catch (Exception ex) {
+
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
+    System.out.println(data);
+    return Response.ok().entity(data).build();
   }
 }

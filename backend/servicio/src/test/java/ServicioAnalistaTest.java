@@ -13,4 +13,14 @@ public class ServicioAnalistaTest {
     Response resultado = servicioAnalista.getSolicitudesPendientes(88);
     Assert.assertEquals(resultado.getStatus(), 200);
   }
+
+  @Test
+  public void activarEstudioByAnalistaTest(){
+
+    ServicioAnalista servicio = new ServicioAnalista();
+
+    Response resultado = servicio.activarEstudio(41);
+    Assert.assertEquals(resultado.getStatus(), 200);
+
+  }
 }

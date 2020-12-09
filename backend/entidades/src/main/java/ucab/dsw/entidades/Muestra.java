@@ -13,8 +13,8 @@ public class Muestra {
   private long _id;
 
   @ManyToOne
-  @JoinColumn(name = "fk_usuario")
-  private Usuario _encuestado;
+  @JoinColumn(name = "fk_encuestado")
+  private Encuestado _encuestado;
 
   @ManyToOne
   @JoinColumn(name = "fk_solicitud_estudio")
@@ -35,15 +35,15 @@ public class Muestra {
     this._id = _id;
   }
 
-  public Usuario get_encuestado() {
+  public Encuestado get_encuestado() {
     return _encuestado;
   }
 
-  public void set_encuestado(Usuario _encuestado) {
+  public void set_encuestado(Encuestado _encuestado) {
     this._encuestado = _encuestado;
   }
 
-  public SolicitudEstudio get_solicitudEstudio() { 
+  public SolicitudEstudio get_solicitudEstudio() {
     return _solicitudEstudio;
   }
 

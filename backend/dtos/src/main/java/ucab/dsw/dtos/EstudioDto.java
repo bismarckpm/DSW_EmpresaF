@@ -12,7 +12,9 @@ public class EstudioDto extends  DtoBase{
 
   private Date fechaFin;
 
-  private EncuestadoDto encuesta;
+  private EncuestaDto encuesta;
+
+  private SolicitudEstudioDto solicitudEstudio;
 
   public EstudioDto(long id) throws Exception {
     super(id);
@@ -53,11 +55,19 @@ public class EstudioDto extends  DtoBase{
     this.fechaFin = fechaFin;
   }
 
-  public EncuestadoDto getEncuesta() {
+  public EncuestaDto getEncuesta() {
     return encuesta;
   }
 
-  public void setEncuesta(EncuestadoDto encuesta) {
+  public void setEncuesta(EncuestaDto encuesta) {
     this.encuesta = encuesta;
+  }
+
+  public SolicitudEstudioDto getSolicitudEstudio() {
+    return solicitudEstudio;
+  }
+
+  public void setSolicitudEstudio(SolicitudEstudioDto solicitudEstudio) {
+    this.solicitudEstudio = solicitudEstudio;
   }
 }

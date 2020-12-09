@@ -3,6 +3,7 @@ import org.junit.Test;
 import ucab.dsw.dtos.MarcaDto;
 import ucab.dsw.dtos.SubcategoriaDto;
 import ucab.dsw.servicio.marca.ServicioMarca;
+import ucab.dsw.servicio.subcategoria.ServicioSubcategoria;
 
 import javax.ws.rs.core.Response;
 
@@ -13,10 +14,10 @@ public class ServicioMarcaTest {
     ServicioMarca servicio = new ServicioMarca();
     MarcaDto marcaDto = new MarcaDto();
 
-    marcaDto.setNombreMarca("Malta");
-    marcaDto.setTipoMarca("Botella");
+    marcaDto.setNombreMarca("Primor");
+    marcaDto.setTipoMarca("Solido");
     marcaDto.setCapacidad(500.0);
-    marcaDto.setUnidad("5");
+    marcaDto.setUnidad("100");
 
     SubcategoriaDto subcategoriaDto = new SubcategoriaDto(1);
     marcaDto.setSubcategoria(subcategoriaDto);
@@ -24,5 +25,15 @@ public class ServicioMarcaTest {
     Response resultado = servicio.addMarca(marcaDto);
 
     Assert.assertEquals(resultado.getStatus(), 200);
+  }
+
+  @Test
+  public void getAllMarcasTest(){
+    ServicioMarca servicioMarca = new ServicioMarca();
+
+    Response resultado = servicioMarca.getMarcas();
+
+    Assert.assertEquals(resultado.getStatus(), 200);
+
   }
 }

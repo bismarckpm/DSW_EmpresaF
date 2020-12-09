@@ -2,6 +2,7 @@ package ucab.dsw.entidades;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "encuestado")
@@ -50,6 +51,19 @@ public class Encuestado{
   @ManyToOne()
   @JoinColumn( name = "fk_nivel_estudio")
   private NivelEstudio _nivelEstudio;
+
+  @OneToOne(mappedBy = "_encuestado")
+  private Usuario _usuario;
+
+  @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Muestra> _muestras;
+
+  @ManyToOne()
+  @JoinColumn( name = "fk_nivel_socio")
+  private NivelSocioeconomico _nivelSocioeconomico;
+
+  @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Telefono> _telefonos;
 
 
   public Encuestado(long _id) {
@@ -161,5 +175,37 @@ public class Encuestado{
 
   public void set_nivelEstudio(NivelEstudio _nivelEstudio) {
     this._nivelEstudio = _nivelEstudio;
+  }
+
+  public List<Muestra> get_muestras() {
+    return _muestras;
+  }
+
+  public void set_muestras(List<Muestra> _muestras) {
+    this._muestras = _muestras;
+  }
+
+  public Usuario get_usuario() {
+    return _usuario;
+  }
+
+  public void set_usuario(Usuario _usuario) {
+    this._usuario = _usuario;
+  }
+
+  public NivelSocioeconomico get_nivelSocioeconomico() {
+    return _nivelSocioeconomico;
+  }
+
+  public void set_nivelSocioeconomico(NivelSocioeconomico _nivelSocioeconomico) {
+    this._nivelSocioeconomico = _nivelSocioeconomico;
+  }
+
+  public List<Telefono> get_telefonos() {
+    return _telefonos;
+  }
+
+  public void set_telefonos(List<Telefono> _telefonos) {
+    this._telefonos = _telefonos;
   }
 }

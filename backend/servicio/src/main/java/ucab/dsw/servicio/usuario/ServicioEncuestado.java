@@ -1,12 +1,10 @@
 package ucab.dsw.servicio.usuario;
 
+import ucab.dsw.accesodatos.DaoTelefono;
 import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
-import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.NivelEstudio;
-import ucab.dsw.entidades.Parroquia;
-import ucab.dsw.entidades.Usuario;
+import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -31,6 +29,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
   public Response addUser(UsuarioDto usuarioDto) {
     JsonObject data;
     String rol = "encuestado";
+
     try{
 
     Encuestado encuestado = new Encuestado();
@@ -42,6 +41,9 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
     encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
 
+    /*List<Telefono> telefonos = usuarioDto.getEncuestadoDto().getTelefonos();
+    encuestado.set_telefonos(telefonos);*/
+
       DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
 
       encuestado.set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
@@ -49,11 +51,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     encuestado.set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
 
 
+
       Parroquia parroquia = new Parroquia(usuarioDto.getEncuestadoDto().getParroquia().getId());
       encuestado.set_parroquia(parroquia);
 
       NivelEstudio nivelEstudio = new NivelEstudio(usuarioDto.getEncuestadoDto().getNivelEstudio().getId());
       encuestado.set_nivelEstudio(nivelEstudio);
+
+      NivelSocioeconomico nivelSocioeconomico = new NivelSocioeconomico(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId());
+      encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
 
     DaoUsuario daoUsuario = new DaoUsuario();
     Usuario usuario = new Usuario();
@@ -64,6 +70,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
     Usuario usuarioAgregado = daoUsuario.insert(usuario);
     usuarioDto.setId(usuarioAgregado.get_id());
+
+    List<Telefono> telefonos = usuarioDto.getEncuestadoDto().getTelefonos();
+    DaoTelefono daoTelefono = new DaoTelefono();
+
+    for(Telefono tlf: telefonos){
+      Encuestado encuestadoAgregado = new Encuestado(usuarioAgregado.get_encuestado().get_id());
+      tlf.set_encuestado(encuestadoAgregado);
+      daoTelefono.insert(tlf);
+    }
 
     DirectorioActivo ldap = new DirectorioActivo();
     ldap.addEntryToLdap(usuarioDto, rol);
