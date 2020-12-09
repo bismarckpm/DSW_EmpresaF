@@ -5,6 +5,7 @@ import { RespondentComponent } from 'src/app/pages/respondent/respondent.compone
 import { SurveyComponent } from 'src/app/pages/survey/survey.component';
 import { GlobalMenuPComponent } from './global-menuP.component';
 import { ClientComponent } from './client/client.component';
+import { StudyRquestComponent } from './study-request/study-request.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: "respondent", component: RespondentComponent},
     { path: "survery", component: SurveyComponent},
     { path: "client", component: ClientComponent},
+    { path: "studyrequest", component: StudyRquestComponent},
     ],
   }
 ];
