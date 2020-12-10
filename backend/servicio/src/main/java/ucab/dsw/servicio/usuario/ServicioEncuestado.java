@@ -158,9 +158,14 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
-/*  @GET
-  @Path("/getestudios/{encuestadoId}")
-  public Response getEstudiosRealizables(@PathParam("encuestadoId") long encuestadoId){
+  @GET
+  @Path("/getestudios/{usuarioEncuestadoId}")
+  public Response getEstudiosRealizables(@PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
 
-  }*/
+    DaoUsuario daoUsuario = new DaoUsuario();
+
+    Usuario usuario = daoUsuario.find(usuarioEncuestadoId, Usuario.class);
+    Encuestado encuestado = usuario.get_encuestado();
+    return null;
+  }
 }
