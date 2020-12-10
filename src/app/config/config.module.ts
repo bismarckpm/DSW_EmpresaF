@@ -19,12 +19,14 @@ import { AddPollComponent } from 'src/app/config/create/addPoll.component'
 import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component'
 import { AddStudyComponent } from 'src/app/config/create/addStudy.component'
 import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
-import { GlobalMenuComponent } from './global-menu.component'
+import { GlobalMenuComponent } from './global-menu.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PasswordProfileComponent } from './profile/password-profile.component'
 
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
     MenuPollComponent,MenuBrandComponent,MenuTypesComponent,MenuPresentationComponent,MenuCQuestionComponent,
-    MenuStudiesComponent,MenuUsersComponent,AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent, GlobalMenuComponent
+    MenuStudiesComponent,MenuUsersComponent,AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent, GlobalMenuComponent, ProfileComponent, PasswordProfileComponent
   ],
   imports: [
     ConfigRoutingModule,

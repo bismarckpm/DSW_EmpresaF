@@ -18,10 +18,12 @@ import { AddCategoryComponent } from 'src/app/config/create/addCategory.componen
 import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
 import { AddPollComponent } from 'src/app/config/create/addPoll.component';
 import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component'
+import { ProfileComponent } from './profile/profile.component';
+import { PasswordProfileComponent } from './profile/password-profile.component';
 
 const routes: Routes = [
-  { 
-    path: "", 
+  {
+    path: "",
     component:GlobalMenuComponent,
     children: [
     { path: "", component: QuestionsSetupComponent},
@@ -40,6 +42,8 @@ const routes: Routes = [
     { path: "addSubCategory", component: AddSubcategoryComponent},
     { path: "addPoll", component: AddPollComponent},
     { path: "addQuestion", component: AddQuestionComponent},
+    { path: "profile", component: ProfileComponent},
+    { path: "passwordProfile", component: PasswordProfileComponent}
     ],
   }
 ];
