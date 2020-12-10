@@ -1,6 +1,7 @@
 package ucab.dsw.entidades;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "nivel_socioeconomico")
@@ -13,6 +14,9 @@ public class NivelSocioeconomico {
 
   @Column(name = "tipo")
   private String _tipo;
+
+  /*@OneToMany(mappedBy = "_nivelSocioeconomico", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Encuestado> _encuestados;*/
 
   public NivelSocioeconomico(long _id) {
     this._id = _id;

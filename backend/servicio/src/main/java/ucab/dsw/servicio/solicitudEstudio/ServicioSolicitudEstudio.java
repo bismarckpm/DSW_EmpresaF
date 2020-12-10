@@ -1,9 +1,12 @@
 package ucab.dsw.servicio.solicitudEstudio;
 
+import ucab.dsw.accesodatos.DaoEncuestado;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
+import ucab.dsw.servicio.muestra.ServicioMuestra;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -65,6 +68,8 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
       }
 
+     inicializarMuestra(solicitudEstudio);
+
       data = Json.createObjectBuilder().add("solicitud", solicitudEstudioAgregada.get_id())
         .add("estado", "success")
         .add("code", 200)
@@ -99,6 +104,13 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
     }
 
+  }
+
+  private void inicializarMuestra(SolicitudEstudio solicitudEstudio){
+    DaoEncuestado dao = new DaoEncuestado();
+    List<Encuestado> usuariosEncuestados = dao.getUsersMuestra(solicitudEstudio);
+    ServicioMuestra servicioMuestra = new ServicioMuestra();
+    servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
   }
 
   @PUT
@@ -136,6 +148,9 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       return Response.ok().entity(data).build();
     }
   }
+
+
+
 
   /* @GET
   @Path("/getsolicitud/{id}")
