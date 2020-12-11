@@ -31,9 +31,9 @@ export class MenuCategoryComponent implements OnInit{
     this.adminService.getCategorias()
     .subscribe(
       res => {
-        if(res.estado == 'success'){
-          let auxRes:any;
-          auxRes = res;
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
           console.log('entro')
           this.element = [auxRes.categorias];
           this.dataSource = new MatTableDataSource(auxRes.categorias);
