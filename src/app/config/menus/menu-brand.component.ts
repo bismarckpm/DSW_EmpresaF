@@ -32,16 +32,24 @@ export class MenuBrandComponent implements OnInit{
   getMarcas(){
     
     this.element = [
-      {idMarca: 1, nombreMarca: 'Hydrogen', tipoMarca: 'liso', capacidad: 'H',unidad: 2,nombreSubcategoria:'subca1'},
-      {idMarca: 2, nombreMarca: 'Helium', tipoMarca: 'liso', capacidad: 'He',unidad: 2,nombreSubcategoria:'subca2'},
-      {idMarca: 3, nombreMarca: 'Lithium', tipoMarca: 'verde', capacidad: 'Li',unidad: 2,nombreSubcategoria:'subca2'},
-      {idMarca: 4, nombreMarca: 'Beryllium', tipoMarca: 'liso', capacidad: 'Be',unidad: 2,nombreSubcategoria:'subca3'},
-      {idMarca: 5, nombreMarca: 'Boron', tipoMarca: 'negro', capacidad: 'B',unidad: 2,nombreSubcategoria:'subca4'},
-      {idMarca: 6, nombreMarca: 'Carbon', tipoMarca: 'blanco', capacidad: 'C',unidad: 2,nombreSubcategoria:'subca5'},
-      {idMarca: 7, nombreMarca: 'Nitrogen', tipoMarca: 'azul', capacidad: 'N',unidad: 2,nombreSubcategoria:'subca6'},
-      {idMarca: 8, nombreMarca: 'Oxygen', tipoMarca: 'naranja', capacidad: 'O',unidad: 2,nombreSubcategoria:'subca6'},
-      {idMarca: 9, nombreMarca: 'Fluorine', tipoMarca: 'amarillo', capacidad: 'F',unidad: 2,nombreSubcategoria:'subca5'},
-      {idMarca: 10, nombreMarca: 'Neon', tipoMarca: 'naranja', capacidad: 'Ne',unidad: 2,nombreSubcategoria:'subca1'},
+      { idMarca: 1, 
+        nombreMarca: 'Hydrogen', 
+        tipoMarca: 'liso', 
+        capacidad: 'H',
+        unidad: 2},
+      { idMarca: 2, 
+        nombreMarca: 'Helium', 
+        tipoMarca: 'liso', 
+        capacidad: 'He',
+        unidad: 2},
+      {idMarca: 3, nombreMarca: 'Lithium', tipoMarca: 'verde', capacidad: 'Li',unidad: 2},
+      {idMarca: 4, nombreMarca: 'Beryllium', tipoMarca: 'liso', capacidad: 'Be',unidad: 2},
+      {idMarca: 5, nombreMarca: 'Boron', tipoMarca: 'negro', capacidad: 'B',unidad: 2},
+      {idMarca: 6, nombreMarca: 'Carbon', tipoMarca: 'blanco', capacidad: 'C',unidad: 2},
+      {idMarca: 7, nombreMarca: 'Nitrogen', tipoMarca: 'azul', capacidad: 'N',unidad: 2},
+      {idMarca: 8, nombreMarca: 'Oxygen', tipoMarca: 'naranja', capacidad: 'O',unidad: 2},
+      {idMarca: 9, nombreMarca: 'Fluorine', tipoMarca: 'amarillo', capacidad: 'F',unidad: 2},
+      {idMarca: 10, nombreMarca: 'Neon', tipoMarca: 'naranja', capacidad: 'Ne',unidad: 2},
     ];
     this.dataSource = new MatTableDataSource(this.element);
 

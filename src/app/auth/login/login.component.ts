@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SessionService } from 'src/app/core/services/session.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +19,17 @@ export class LoginComponent implements OnInit {
   token: string;
   constructor(private formBuilder: FormBuilder,
               private sessionService:SessionService,
-              private router: Router,) { }
+              private router: Router,
+              public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.ValidateForms();
+  }
+
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
   }
 
   ValidateForms(){
@@ -44,13 +52,27 @@ export class LoginComponent implements OnInit {
         this.bSignIn = false;
         let auxRes: any = res
         if(auxRes.estado == 'success'){
-          this.router.navigate(['config/menuconfig']);
+          if(auxRes.rol == 'admin'){
+            this.router.navigate(['config/menuconfig']);
+          }
+          else if(auxRes.rol == 'cliente'){
+            this.router.navigate(['pages/client']);
+          }
+          else if(auxRes.rol == 'analista'){
+            this.router.navigate(['analitics/menuanalitics']);
+          }
+          else if(auxRes.rol == 'encuestado'){
+            this.router.navigate(['pages/respondent']);
+          }
           return;
+        }
+        else if(auxRes.estado == 'error'){
+          this.openSnackBar(auxRes.error);
         }
         console.log(res);
       },
       err => {
-        console.log(err);
+        this.openSnackBar(err);
       }
     )
   } 
