@@ -51,6 +51,7 @@ export class MenuCategoryComponent implements OnInit{
   }
 
   updateCategoria(idCategoria){
+    this.router.navigate(['/config/updateCategory']);
     console.log(idCategoria)
   }
 

@@ -1,0 +1,54 @@
+<mat-toolbar class="container-fluid mat-toolbar">
+    <div class="row d-flex align-items-center">
+        <a mat-icon-button  routerLink="/config/menubrand" class="d-flex justify-content-start">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </a>    
+    </div>
+</mat-toolbar>
+<br>
+<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout fxLayoutAlign="center center ">
+        <mat-card-content fxLayout="column">
+            <mat-label>Nombre</mat-label>
+            <mat-form-field appearance="fill" >
+            <mat-label>{{info.nombreMarca}}</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+            <br>
+            <mat-label>Tipo</mat-label>
+            <mat-form-field appearance="fill" >
+                <mat-label>{{info.tipoMarca}}</mat-label>
+                    <input matInput type="text">
+                </mat-form-field>
+            <br>
+            <mat-label>Capacidad</mat-label>
+            <mat-form-field appearance="fill" >
+                <mat-label>{{info.capacidad}}</mat-label>
+                    <input matInput type="text">
+                </mat-form-field>
+            <br>
+            <mat-label>unidad</mat-label>
+            <mat-form-field appearance="fill" >
+                <mat-label>{{info.unidad}}</mat-label>
+                    <input matInput type="text">
+                </mat-form-field>
+            <br>
+            <mat-label>Subcategoría<a href=""></a></mat-label>
+            <mat-form-field appearance="fill">
+            <mat-label>{{info.nombreSubcategoria}}</mat-label>
+            <mat-select>
+                <mat-option value="option">Sub1</mat-option>
+                <mat-option value="option">Sub2</mat-option>
+                <mat-option value="option">Sub3</mat-option>
+                <mat-option value="option">Sub4</mat-option>
+            </mat-select>
+            </mat-form-field>
+            <br>
+            <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
+                <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center" (click)="updateBrand()">
+                    <span class="btn-send-text">Actualizar</span>
+                </button>
+            </div>
+        </mat-card-content>
+    </div>     
+</div>

@@ -1,6 +1,7 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-users',
@@ -12,12 +13,12 @@ export class MenuUsersComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idUsuario', 'nombreUsuario','rolUsuario','estadoUsuario','icons'];
-  constructor() { }
+  constructor(private router: Router) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getUsuarios();
+    this.getUsers();
     
   }
   ngAfterViewInit() {
@@ -27,7 +28,7 @@ export class MenuUsersComponent implements OnInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getUsuarios(){
+  getUsers(){
     
     this.element = [
       {idUsuario: 1, nombreUsuario: 'Carlos23',rolUsuario:'admin',estadoUsuario:'activo'},
@@ -45,15 +46,17 @@ export class MenuUsersComponent implements OnInit{
 
   }
 
-  deleteUsuario(idUsuario){
+  deleteUser(idUsuario){
     console.log(idUsuario)
   }
 
-  updateUsuario(idUsuario){
+  updateUser(idUsuario){
+  this.router.navigate(['/config/updateUser']);
     console.log(idUsuario)
   }
 
-  addUsuario(){
+  addUser(){
+    this.router.navigate(['/config/addUser']);
     console.log("Add Usuario");
   }
 }
