@@ -14,12 +14,12 @@ public class ServicioSubcategoriaTest {
     ServicioSubcategoria servicio = new ServicioSubcategoria();
     SubcategoriaDto subcategoriaDto = new SubcategoriaDto();
 
-    subcategoriaDto.set_nombreSubcategoria("Hombre");
+    subcategoriaDto.setNombreSubcategoria("Niño");
 
     CategoriaDto categoriaDto = new CategoriaDto(13);
     subcategoriaDto.setCategoria(categoriaDto);
 
-    Response resultado = servicio.addCategoria(subcategoriaDto);
+    Response resultado = servicio.addSubcategoria(subcategoriaDto);
 
     Assert.assertEquals(resultado.getStatus(), 200);
   }

@@ -1,5 +1,6 @@
 package ucab.dsw.servicio.subcategoria;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.CategoriaDto;
@@ -12,6 +13,7 @@ import ucab.dsw.servicio.AplicacionBase;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,15 +26,17 @@ public class ServicioSubcategoria extends AplicacionBase {
 
   @POST
   @Path("/add")
-  public Response addCategoria(SubcategoriaDto subcategoriaDto){
+  public Response addSubcategoria(SubcategoriaDto subcategoriaDto){
     JsonObject data;
 
     try {
 
       Subcategoria subcategoria = new Subcategoria();
-      subcategoria.set_nombreSubcategoria(subcategoriaDto.get_nombreSubcategoria());
+      subcategoria.set_nombreSubcategoria(subcategoriaDto.getNombreSubcategoria());
 
-      Categoria categoria = new Categoria(subcategoriaDto.getCategoria().getId());
+      DaoCategoria daoCategoria = new DaoCategoria();
+      Categoria categoria = daoCategoria.find(subcategoriaDto.getCategoria().getId(), Categoria.class);
+
       subcategoria.set_categoria(categoria);
 
       DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
@@ -46,7 +50,7 @@ public class ServicioSubcategoria extends AplicacionBase {
         .build();
 
     }
-    catch (javax.persistence.PersistenceException ex){
+    catch (PersistenceException | DatabaseException ex){
       String mensaje = "Esta subcategoría ya se encuentra añadida";
       data = Json.createObjectBuilder().add("mensaje", mensaje)
         .add("estado", "error")

@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name= "muestra")
+@NamedQueries({
+  @NamedQuery(name = "getEstudiosRealizablesByEncuestado", query = "select m._solicitudEstudio from Muestra m where m._encuestado =:encuestado")
+})
 public class Muestra {
 
   @Id

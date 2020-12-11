@@ -1,7 +1,6 @@
 package ucab.dsw.servicio.usuario;
 
-import ucab.dsw.accesodatos.DaoTelefono;
-import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.*;
@@ -50,15 +49,16 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     encuestado.set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
     encuestado.set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
 
-
-
-      Parroquia parroquia = new Parroquia(usuarioDto.getEncuestadoDto().getParroquia().getId());
+      DaoParroquia daoParroquia = new DaoParroquia();
+      Parroquia parroquia = daoParroquia.find(usuarioDto.getEncuestadoDto().getParroquia().getId(), Parroquia.class);
       encuestado.set_parroquia(parroquia);
 
-      NivelEstudio nivelEstudio = new NivelEstudio(usuarioDto.getEncuestadoDto().getNivelEstudio().getId());
+      DaoNivelEstudio dao = new DaoNivelEstudio();
+      NivelEstudio nivelEstudio = dao.find(usuarioDto.getEncuestadoDto().getNivelEstudio().getId(), NivelEstudio.class);
       encuestado.set_nivelEstudio(nivelEstudio);
 
-      NivelSocioeconomico nivelSocioeconomico = new NivelSocioeconomico(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId());
+      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
+      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
 
     DaoUsuario daoUsuario = new DaoUsuario();
@@ -89,8 +89,8 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       .build();
 
   }catch (javax.persistence.PersistenceException ex){
-      String mensaje = "Este usuario ya se encuentra registrado en el sistema";
-      data = Json.createObjectBuilder().add("mensaje", mensaje)
+      //String mensaje = "Este usuario ya se encuentra registrado en el sistema";
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
         .add("estado", "error")
         .add("code", 400)
         .build();
@@ -162,10 +162,49 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
   @Path("/getestudios/{usuarioEncuestadoId}")
   public Response getEstudiosRealizables(@PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
 
-    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+    List<SolicitudEstudio> solicitudes;
 
-    Usuario usuario = daoUsuario.find(usuarioEncuestadoId, Usuario.class);
-    Encuestado encuestado = usuario.get_encuestado();
-    return null;
+    try {
+      DaoUsuario daoUsuario = new DaoUsuario();
+
+      Usuario usuario = daoUsuario.find(usuarioEncuestadoId, Usuario.class);
+      Encuestado encuestado = usuario.get_encuestado();
+
+      DaoMuestra daoMuestra = new DaoMuestra();
+      solicitudes = daoMuestra.getEstudiosRealizablesByEncuestado(encuestado);
+      System.out.println(solicitudes);
+      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
+
+      for (SolicitudEstudio solicitud: solicitudes) {
+        if (solicitud.get_estado().equals("procesado") || solicitud.get_estado().equals("ejecutando")) {
+          JsonObject soli = Json.createObjectBuilder()
+            .add("estudioId", solicitud.get_estudio().get_id())
+            .add("encuestaId", solicitud.get_estudio().get_encuesta().get_id())
+            .build();
+
+          solicitudesArray.add(soli);
+        }
+      }
+
+      data = Json.createObjectBuilder()
+        .add("code", 200)
+        .add("estado", "success")
+        .add("solicitudes", solicitudesArray).build();
+    }
+    catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
+
+    System.out.println(data);
+    return Response.ok().entity(data).build();
   }
 }

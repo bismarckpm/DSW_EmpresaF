@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "nivel_socioeconomico")
-public class NivelSocioeconomico {
+public class NivelSocioeconomico extends EntidadBase {
 
   @Id
   @Column( name = "codigo_nivel_socio" )
@@ -15,8 +15,8 @@ public class NivelSocioeconomico {
   @Column(name = "tipo")
   private String _tipo;
 
-  /*@OneToMany(mappedBy = "_nivelSocioeconomico", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Encuestado> _encuestados;*/
+  @OneToMany(mappedBy = "_nivelSocioeconomico", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<Encuestado> _encuestados;
 
   public NivelSocioeconomico(long _id) {
     this._id = _id;
@@ -39,5 +39,13 @@ public class NivelSocioeconomico {
 
   public void setTipo(String _tipo) {
     this._tipo = _tipo;
+  }
+
+  public List<Encuestado> get_encuestados() {
+    return _encuestados;
+  }
+
+  public void set_encuestados(List<Encuestado> _encuestados) {
+    this._encuestados = _encuestados;
   }
 }

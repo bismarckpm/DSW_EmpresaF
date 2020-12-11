@@ -8,7 +8,6 @@ public class CategoriaDto extends DtoBase{
 
   private String nombreCategoria;
 
-
   private List<SubcategoriaDto> subcategorias;
 
   public CategoriaDto(long id) throws Exception {

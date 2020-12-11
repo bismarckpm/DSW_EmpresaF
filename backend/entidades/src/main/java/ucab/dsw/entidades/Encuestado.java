@@ -47,11 +47,11 @@ public class Encuestado extends EntidadBase{
   @Column(name = "ocupacion")
   private String _ocupacion;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_parroquia")
   private Parroquia _parroquia;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_nivel_estudio")
   private NivelEstudio _nivelEstudio;
 
@@ -61,7 +61,7 @@ public class Encuestado extends EntidadBase{
   @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Muestra> _muestras;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_nivel_socio")
   private NivelSocioeconomico _nivelSocioeconomico;
 

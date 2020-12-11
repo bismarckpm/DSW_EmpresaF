@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SubcategoriaDto extends DtoBase{
 
-  private String _nombreSubcategoria;
+  private String nombreSubcategoria;
 
   private CategoriaDto categoria;
 
@@ -18,12 +18,12 @@ public class SubcategoriaDto extends DtoBase{
   public SubcategoriaDto() {
   }
 
-  public String get_nombreSubcategoria() {
-    return _nombreSubcategoria;
+  public String getNombreSubcategoria() {
+    return nombreSubcategoria;
   }
 
-  public void set_nombreSubcategoria(String _nombreSubcategoria) {
-    this._nombreSubcategoria = _nombreSubcategoria;
+  public void setNombreSubcategoria(String nombreSubcategoria) {
+    this.nombreSubcategoria = nombreSubcategoria;
   }
 
   public CategoriaDto getCategoria() {

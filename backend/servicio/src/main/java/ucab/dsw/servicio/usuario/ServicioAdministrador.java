@@ -1,16 +1,16 @@
 package ucab.dsw.servicio.usuario;
 
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.dtos.SolicitudEstudioDto;
+import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.Usuario;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -20,10 +20,11 @@ import java.util.List;
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioAdministrador extends AplicacionBase implements IServicioEmpleado {
 
-  @Path("/getsolicitudespendientes/{id}")
-  public Response getSolicitudesPendientes(@PathParam("id") long id){
+  @GET
+  @Path("/getsolicitudespendientes/{usuarioAdministradorId}")
+  public Response getSolicitudesPendientes(@PathParam("usuarioAdministradorId") long id){
     List<SolicitudEstudio> solicitudesPendientes;
-    JsonObject data=null;
+    JsonObject data;
 
     try {
 
@@ -72,5 +73,42 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
 
     System.out.println(data);
     return Response.ok().entity(data).build();
+  }
+
+
+  @PUT
+  @Path("/asignarsolicitud/{idSolicitud}")
+  public Response asignarEstudioASolicitud(@PathParam("idSolicitud") long id, SolicitudEstudioDto solicitudEstudioDto){
+    JsonObject data;
+
+    try{
+      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
+
+      Estudio estudio = new Estudio(solicitudEstudioDto.getEstudio().getId());
+      solicitudEstudio.set_estudio(estudio);
+      solicitudEstudio.set_estado("procesado");
+
+      int random = (int) (Math.random()*(82-81+1)+81);
+      Usuario analista = new Usuario(random);
+      solicitudEstudio.set_analista(analista);
+      SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitudEstudio);
+
+      data = Json.createObjectBuilder().
+        add("id", resultado.get_id())
+        .add("estado", "success")
+        .add("code", 200).build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400).build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
   }
 }

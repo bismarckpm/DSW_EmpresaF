@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "categoria")
-public class Categoria {
+public class Categoria extends EntidadBase {
 
   @Id
   @Column( name = "codigo_categoria" )
@@ -42,11 +42,11 @@ public class Categoria {
     this._nombreCategoria = _nombreCategoria;
   }
 
-  public List<Subcategoria> get_subcategorias() {
+ /* public List<Subcategoria> get_subcategorias() {
     return _subcategorias;
   }
 
   public void set_subcategorias(List<Subcategoria> _subcategorias) {
     this._subcategorias = _subcategorias;
-  }
+  }*/
 }

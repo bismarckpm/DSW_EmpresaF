@@ -1,8 +1,6 @@
 package ucab.dsw.servicio.solicitudEstudio;
 
-import ucab.dsw.accesodatos.DaoEncuestado;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
@@ -34,16 +32,20 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       solicitudEstudio.set_edadfinal(solicitudEstudioDto.getEdadfinal());
       solicitudEstudio.set_genero(solicitudEstudioDto.getGenero());
 
-      Usuario usuarioCliente = new Usuario(solicitudEstudioDto.getCliente().getId());
-      solicitudEstudio.set_cliente(usuarioCliente);
+      DaoUsuario daoUsuario = new DaoUsuario();
+      Usuario cliente = daoUsuario.find(solicitudEstudioDto.getCliente().getId(), Usuario.class);
+      solicitudEstudio.set_cliente(cliente);
 
-      Parroquia parroquia = new Parroquia(solicitudEstudioDto.getParroquia().getId());
+      DaoParroquia daoParroquia = new DaoParroquia();
+      Parroquia parroquia = daoParroquia.find(solicitudEstudioDto.getParroquia().getId(), Parroquia.class);
       solicitudEstudio.set_parroquia(parroquia);
 
-      Marca marca = new Marca(solicitudEstudioDto.getMarca().getId());
+      DaoMarca daoMarca = new DaoMarca();
+      Marca marca = daoMarca.find(solicitudEstudioDto.getMarca().getId(), Marca.class);
       solicitudEstudio.set_marca(marca);
 
-      NivelSocioeconomico nivelSocioeconomico = new NivelSocioeconomico(solicitudEstudioDto.getNivelSocioeconomico().getId());
+      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
+      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(solicitudEstudioDto.getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       solicitudEstudio.set_nivelSocioeconomico(nivelSocioeconomico);
 
       SolicitudEstudio solicitudEstudioAgregada;
@@ -62,7 +64,9 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
       }else{
-        Usuario usuario = new Usuario(82);
+        DaoUsuario dao = new DaoUsuario();
+        Integer id = 82;
+        Usuario usuario = dao.find(id.longValue(), Usuario.class);
         solicitudEstudio.set_administrador(usuario);
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
@@ -112,43 +116,6 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     ServicioMuestra servicioMuestra = new ServicioMuestra();
     servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
   }
-
-  @PUT
-  @Path("/asignarsolicitud/{idSolicitud}")
-  public Response asignarEstudioASolicitud(@PathParam("idSolicitud") long id, SolicitudEstudioDto solicitudEstudioDto){
-    JsonObject data;
-
-    try{
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
-
-      Estudio estudio = new Estudio(solicitudEstudioDto.getEstudio().getId());
-      solicitudEstudio.set_estudio(estudio);
-      solicitudEstudio.set_estado("procesado");
-
-      int random = (int) (Math.random()*(82-81+1)+81);
-      Usuario analista = new Usuario(random);
-      solicitudEstudio.set_analista(analista);
-      SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitudEstudio);
-
-      data = Json.createObjectBuilder().
-        add("id", resultado.get_id())
-        .add("estado", "success")
-        .add("code", 200).build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
-
-    }catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400).build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
-    }
-  }
-
 
 
 

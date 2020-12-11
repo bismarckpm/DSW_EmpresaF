@@ -88,7 +88,7 @@ public class ServicioMarca extends AplicacionBase {
         marcasArray.add(ma);
       }
       data = Json.createObjectBuilder()
-        .add("estado", 200)
+        .add("code", 200)
         .add("estado", "success")
         .add("marcas", marcasArray).build();
 
