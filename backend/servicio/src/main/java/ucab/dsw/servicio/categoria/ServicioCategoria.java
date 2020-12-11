@@ -48,7 +48,8 @@ public class ServicioCategoria extends AplicacionBase {
           .add("code", 400)
           .build();
 
-        ex.printStackTrace();
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
     }
 
     System.out.println(data);

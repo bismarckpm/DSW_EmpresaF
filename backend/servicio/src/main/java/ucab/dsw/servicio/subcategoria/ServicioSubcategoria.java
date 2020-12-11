@@ -93,6 +93,7 @@ public class ServicioSubcategoria extends AplicacionBase {
           .add("id", subcategory.get_id())
           .add("nombreSubcategoria", subcategory.get_nombreSubcategoria())
           .add("categoriaId", subcategory.get_categoria().get_id())
+          .add("categoria", subcategory.get_categoria().get_nombreCategoria())
           .build();
 
         subcategoriasArray.add(categories);

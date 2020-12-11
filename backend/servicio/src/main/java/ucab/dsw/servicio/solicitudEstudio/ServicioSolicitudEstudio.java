@@ -7,6 +7,7 @@ import ucab.dsw.servicio.AplicacionBase;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -117,45 +118,51 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
   }
 
-
-
-  /* @GET
-  @Path("/getsolicitud/{id}")
-  public Response getSolicitudById(@PathParam("id") long id){
+  @GET
+  @Path("/getall")
+  public Response getSolicitudes() {
     JsonObject data;
-    try{
+
+    try {
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
+      List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
-      data = Json.createObjectBuilder().
-        add("id", solicitudEstudio.get_id()).
-        add("edadInicial", solicitudEstudio.get_edadfinal()).
-        add("edadFinal", solicitudEstudio.get_edadfinal()).
-        add("genero", solicitudEstudio.get_genero()).
-        add("estado", solicitudEstudio.get_estado()).
-        add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
-        add("marca", solicitudEstudio.get_marca().get_nombreMarca()).
-        add("tipoMarca", solicitudEstudio.get_marca().get_tipoMarca()).
-        add("capacidadMarca", solicitudEstudio.get_marca().get_capacidad()).
-        add("unidadMarca", solicitudEstudio.get_marca().get_unidad()).
-        add("unidadSubcategoria", solicitudEstudio.get_marca().get_subcategoria().get_nombreSubcategoria()).
-        add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
-        add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
+      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+      for (SolicitudEstudio solicitudEstudio : solicitudesEstudio) {
+        if(solicitudEstudio.get_edadfinal() == null) {
+          solicitudEstudio.set_edadfinal(0);
+        }
 
-    }
-    catch (Exception ex){
+        JsonObject sol = Json.createObjectBuilder().
+          add("id", solicitudEstudio.get_id()).
+          add("edadInicial", solicitudEstudio.get_edadInicial()).
+          add("edadFinal", solicitudEstudio.get_edadfinal()).
+          add("genero", solicitudEstudio.get_genero()).
+          add("estado", solicitudEstudio.get_estado()).
+          add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
+          add("marca", solicitudEstudio.get_marca().get_nombreMarca()).
+          add("tipoMarca", solicitudEstudio.get_marca().get_tipoMarca()).
+          add("capacidadMarca", solicitudEstudio.get_marca().get_capacidad()).
+          add("unidadMarca", solicitudEstudio.get_marca().get_unidad()).
+          add("unidadSubcategoria", solicitudEstudio.get_marca().get_subcategoria().get_nombreSubcategoria()).
+          add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
+          add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
+
+        solicitudesArray.add(sol);
+      }
       data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+        .add("code", 200)
+        .add("estado", "success")
+        .add("solicitudes", solicitudesArray).build();
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
     }
 
-  }*/
-
+    System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
 }
