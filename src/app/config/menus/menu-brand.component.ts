@@ -14,8 +14,10 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuBrandComponent implements OnInit{
   element:any;
   dataSource:any;
+
   displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','icons'];
   constructor(private router: Router, private adminService:AdminService) { }
+
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -61,6 +63,7 @@ export class MenuBrandComponent implements OnInit{
   }
 
   updateMarca(idMarca){
+    this.router.navigate(['/config/updateBrand']);
     console.log(idMarca)
   }
 
