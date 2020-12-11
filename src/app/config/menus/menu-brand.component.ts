@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-menu-brand',
@@ -14,7 +15,7 @@ export class MenuBrandComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','icons'];
-  constructor(private router: Router) { }
+  constructor(private router: Router, private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
