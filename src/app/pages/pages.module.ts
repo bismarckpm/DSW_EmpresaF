@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './../shared/shared.module';
 import { PagesRoutingModule } from './pages-routing.module';
-import { SurveyComponent } from './survey/survey.component';
 import { RespondentComponent } from 'src/app/pages/respondent/respondent.component';
 import { GlobalMenuPComponent } from './global-menuP.component';
 import { ClientComponent } from './client/client.component';
-
+import { QuestionsComponent } from './questions/questions.component';
+import { PollComponent } from './poll/poll.component';
+import { StudyComponent } from './study/study.component';
 
 @NgModule({
-  declarations: [SurveyComponent,RespondentComponent,GlobalMenuPComponent,ClientComponent],
+  declarations: [RespondentComponent,GlobalMenuPComponent,ClientComponent, QuestionsComponent, PollComponent, StudyComponent],
   imports: [
     PagesRoutingModule,
     CommonModule,

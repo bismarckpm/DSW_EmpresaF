@@ -1,6 +1,6 @@
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
     <div class="title-container">
-        <h1 class="sign-in-title text-center">Encuestas por responder</h1>
+        <h1 class="sign-in-title text-center">Mis estudios</h1>
     </div>
     <div>
         <mat-form-field >
@@ -11,35 +11,29 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="idEstudio">
+          <th mat-header-cell *matHeaderCellDef> ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.idEstudio}} </td>
+        </ng-container>
 
-        <!-- idEncuesta Column -->
-        <ng-container matColumnDef="idEncuesta">
-            <th mat-header-cell *matHeaderCellDef> ID</th>
-            <td mat-cell *matCellDef="let element"> {{element.idEncuesta}} </td>
-          </ng-container>
-        
-        <!-- nombreMarca Column -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="nombreMarca">
-          <th mat-header-cell *matHeaderCellDef> Marca </th>
+          <th mat-header-cell *matHeaderCellDef> Marca</th>
           <td mat-cell *matCellDef="let element"> {{element.nombreMarca}} </td>
         </ng-container>
-      
-        <!-- nombreSubcategoria Column -->
-        <ng-container matColumnDef="nombreSubcategoria">
-          <th mat-header-cell *matHeaderCellDef> Subcategoría </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombreSubcategoria}} </td>
-        </ng-container>
-      
-        <!-- fecIniEstudio Column -->
+
         <ng-container matColumnDef="fecIniEstudio">
-          <th mat-header-cell *matHeaderCellDef> Fecha Solicitado </th>
+          <th mat-header-cell *matHeaderCellDef> Fecha inicio</th>
           <td mat-cell *matCellDef="let element"> {{element.fecIniEstudio}} </td>
         </ng-container>
 
-        <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-user-check" style="cursor: pointer;" (click)="irEncuesta(element.idEncuesta)"></i></span></td>
+            <th mat-header-cell *matHeaderCellDef>Encuestas</th>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-tasks fa-lg" style="margin-left: 15px;cursor: pointer;color: #111792;" (click)="verEncuesta(element.idEstudio)"></i></span></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
