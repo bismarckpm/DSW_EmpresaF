@@ -11,24 +11,24 @@
         </div>
         <form [formGroup]="signInForm" (ngSubmit)="handleSignIn()" fxLayout="column" fxLayoutAlign="center center">
           <mat-form-field appearance="outline">
-            <mat-label>Username or Email <span class="trans">.</span></mat-label>
+            <mat-label>Usuario o Email <span class="trans">.</span></mat-label>
             <input matInput formControlName="Email" class="form-control" type="text">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
+            <mat-label>Clave</mat-label>
             <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="Password" class="form-control">
             <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
           </mat-form-field>
           <button class="width-login-btn" mat-raised-button [disabled]="bSignIn " fxLayoutAlign="center center">
-            <span *ngIf="!bSignIn" class="btn-login-text">LOGIN</span>
+            <span *ngIf="!bSignIn" class="btn-login-text">INICIAR SESION</span>
             <mat-spinner *ngIf="bSignIn" mode="indeterminate" [diameter]="30"></mat-spinner>
           </button>
         </form>
         <div class="links-container text-center" fxLayout="column" fxLayoutAlign="center center">
-          <a class="sl-link" routerLink="/auth/forgot">Forgot your password?</a>
-          <a class="sl-link" routerLink="/register">Register now</a>
+          <a class="sl-link" routerLink="/auth/forgot">Olvido su clave?</a>
+          <a class="sl-link" routerLink="/auth/register">Registrese</a>
           <a class="sl-link" routerLink="/config/menuconfig">Prueba menu</a>
         </div>
       </div>

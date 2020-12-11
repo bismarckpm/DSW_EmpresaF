@@ -1,58 +1,103 @@
-<mat-toolbar class="container-fluid mat-toolbar">
-    <div class="row d-flex align-items-center">
-        <a mat-icon-button  href="/" class="d-flex justify-content-start">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-        </a>
-        
-    </div>
-</mat-toolbar>
-<br>
-<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout fxLayoutAlign="center center ">
-        <mat-card-content fxLayout="column">
-            <mat-form-field appearance="fill" >
-            <mat-label>Mi ubicacion</mat-label>
-            <mat-select >
-                <mat-option *ngFor="let zone of zones, index as i" [value]="zone.value">{{zone.name}}</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-            <mat-label>Zona de instalacion</mat-label>
-            <mat-select>
-                <mat-option value="option">Terreno arenoso</mat-option>
-                <mat-option value="option">Techado</mat-option>
-                <mat-option value="option">Terraza</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-            <mat-label>Config Wifi</mat-label>
-            <mat-select>
-                <mat-option value="option">Hilery</mat-option>
-                <mat-option value="option">Victor</mat-option>
-                <mat-option value="option">Chema</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-            <mat-label>Metodos de ahorramiento</mat-label>
-            <mat-select>
-                <mat-option value="option">Automatico</mat-option>
-                <mat-option value="option">Manual</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill" >
-                <mat-label>Email</mat-label>
-                <input matInput type="email">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Contraseña</mat-label>
-                <input matInput type="password">
-              </mat-form-field>
-            <br>
-        </mat-card-content>
-    </div>    
-</div> 
+<div class="content menu-bg">
+    <mat-toolbar >
+        <div >
+            <a mat-icon-button  href="/">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </a>
+        </div>
+    </mat-toolbar>
+    <br>
+    <div fxFill fxLayout="column" fxLayoutAlign="center center" >
+        <div fxLayout fxLayoutAlign="center center ">
+            <mat-card fxLayout="column">
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="registro_usuario">
+                    <mat-radio-button [value]="true" >Encuestado</mat-radio-button>
+                    <mat-radio-button [value]="false">Cliente</mat-radio-button>
+                </mat-radio-group> 
+                <br>
+                <form [formGroup]="registerEncuestadoForm" (ngSubmit)="handleRegisterEncuestado()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_usuario==true;">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Numero de Identificacion</mat-label>
+                        <input matInput formControlName="numeroIdentificacion" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Primer nombre</mat-label>
+                        <input matInput formControlName="primerNombre" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Primer apellido</mat-label>
+                        <input matInput formControlName="primerApellido" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Direccion Complemento</mat-label>
+                        <input matInput formControlName="direccionComplemento" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Fecha de Nacimiento</mat-label>
+                        <input matInput formControlName="fechaNacimiento" type="date">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Genero</mat-label>
+                        <mat-select formControlName="genero">
+                            <mat-option *ngFor="let genero of generos, index as i" [value]="genero.descripcion">{{genero.descripcion}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Estado civil</mat-label>
+                        <mat-select formControlName="estadoCivil">
+                            <mat-option *ngFor="let estado of estadosCiviles, index as i" [value]="estado.descripcion">{{estado.descripcion}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Ocupacion</mat-label>
+                        <input matInput formControlName="ocupacion" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Parroquia</mat-label>
+                        <input matInput formControlName="parroquia" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nivel de estudio</mat-label>
+                        <input matInput formControlName="nivelEstudio" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nivel socioeconomico</mat-label>
+                        <input matInput formControlName="nivelSocioeconomico" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Telefono</mat-label>
+                        <input matInput formControlName="telefono" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre de Usuario</mat-label>
+                        <input matInput formControlName="nombreUsuario" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput formControlName="contrasena" type="password">
+                    </mat-form-field>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Enviar</button>
+                </form>
+                <!--Clientes-->
+                <form [formGroup]="registerClienteForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_usuario==false;">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre de Usuario</mat-label>
+                        <input matInput formControlName="nombreUsuario" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput formControlName="contrasena" type="password">
+                    </mat-form-field>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Enviar</button>
+                </form>
+
+            </mat-card>
+            
+        </div>    
+    </div> 
+    <br>
+</div>

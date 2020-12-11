@@ -32,8 +32,16 @@ export class MenuBrandComponent implements OnInit{
   getMarcas(){
     
     this.element = [
-      {idMarca: 1, nombreMarca: 'Hydrogen', tipoMarca: 'liso', capacidad: 'H',unidad: 2},
-      {idMarca: 2, nombreMarca: 'Helium', tipoMarca: 'liso', capacidad: 'He',unidad: 2},
+      { idMarca: 1, 
+        nombreMarca: 'Hydrogen', 
+        tipoMarca: 'liso', 
+        capacidad: 'H',
+        unidad: 2},
+      { idMarca: 2, 
+        nombreMarca: 'Helium', 
+        tipoMarca: 'liso', 
+        capacidad: 'He',
+        unidad: 2},
       {idMarca: 3, nombreMarca: 'Lithium', tipoMarca: 'verde', capacidad: 'Li',unidad: 2},
       {idMarca: 4, nombreMarca: 'Beryllium', tipoMarca: 'liso', capacidad: 'Be',unidad: 2},
       {idMarca: 5, nombreMarca: 'Boron', tipoMarca: 'negro', capacidad: 'B',unidad: 2},

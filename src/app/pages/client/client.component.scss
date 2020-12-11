@@ -16,20 +16,20 @@ table {
     background-size: 65%;
 }
 
-mat-card{
+/*mat-card{
     padding: 150px;
     border-radius: 0;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12) !important;
     height: 675px;
 }
-
+*/
 
 h1:first-letter  { 
     color:  $mercadoucab-blue; 
 } 
 
 
-.title-container{ margin-top: 20px; margin-bottom: 65px; }
+.title-container{ margin-top: 20px; margin-bottom: 35px; }
 
 
 mat-form-field{
@@ -38,7 +38,97 @@ mat-form-field{
 }
 
 .fa-plus{
-    padding-left: 270px;
+    padding-left: 20px;
     color: #94d82d;
     cursor: pointer;
+    position: fixed;
 }
+
+.systems-title{
+    color: black;
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: 30px;
+    text-align: center;
+    font-family: $mercadoucab-font;
+}
+
+.systems-card{
+    width: 300px;
+    height: 320px;
+    border-radius: 15px;
+    -webkit-box-shadow: 10px 10px 5px -7px rgba(159,159,159,0.27);
+    -moz-box-shadow: 10px 10px 5px -7px rgba(159,159,159,0.27);
+    box-shadow: 10px 10px 5px -7px rgba(159,159,159,0.27);
+    border: 1.5px solid #E7E5E5;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.card-title{
+    color: #000;;
+    font-size: 24px;
+    font-weight: 800 !important;
+    #logicColour{
+        color: #000;
+    }
+}
+
+.systems-card-btn{
+    display: none;
+}
+
+.systems-card-btn:hover{
+    text-decoration: underline;
+}
+
+.litle-card{
+    width: 300px;
+    height: 70px;
+    border-radius: 0;
+    border: 1px solid #dedede;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    box-shadow: 0px 2px 1px -1px transparent, 0px 1px 1px 0px transparent, 0px 1px 3px 0px transparent;
+}
+
+.litle-card:hover{
+    border: 1px solid $mercadoucab-primary;
+}
+
+.litle-title{
+    font-size: 16px;
+    font-weight: 800 !important;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.systems-card-btn-sm{
+    color: $mercadoucab-primary;
+    width: 75%;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 2px;
+    border-radius: 0;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12) !important;
+    margin-bottom: 20px;
+}
+
+.systems-card-btn-sm:hover{
+    color: #FFF;
+    background-color: $mercadoucab-primary;
+}
+
+.disable_ripple{
+    background: #02D4D6 !important;
+    }
+
+
