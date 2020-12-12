@@ -8,7 +8,7 @@
       <mat-form-field>
           <mat-label>Buscar</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-          <i class="fas fa-plus fa-lg" (click)="addSubcategoria()"></i>
+          <i class="fas fa-plus fa-lg" (click)="addSubcategory()"></i>
       </mat-form-field>
   </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
