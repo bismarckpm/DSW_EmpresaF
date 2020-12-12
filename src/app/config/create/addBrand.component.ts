@@ -51,11 +51,19 @@ export class AddBrandComponent implements OnInit{
   } 
 
   getSubCategoria(){
-    this.subCategorias = [
-      { idSubcategoria:1, name: 'pruebaCa'},
-      { idSubcategoria:2, name: 'Las Palmas Av Las Palmas' },
-      { idSubcategoria:3, name: 'La Florida Av Andres Bello'},
-    ]
+    this.adminService.getSubcategorias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        if(auxRes.estado == 'success'){
+          let auxRes:any;
+          auxRes = res;
+          this.subCategorias = auxRes.subCategorias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
-
 }
