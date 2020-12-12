@@ -76,7 +76,7 @@
                         <mat-label>Contraseña</mat-label>
                         <input matInput formControlName="contrasena" type="password">
                     </mat-form-field>
-                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Enviar</button>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;" [disabled]="!registerEncuestadoForm.valid">Registrar</button>
                 </form>
                 <!--Clientes-->
                 <form [formGroup]="registerClienteForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_usuario==false;">
@@ -92,7 +92,7 @@
                         <mat-label>Contraseña</mat-label>
                         <input matInput formControlName="contrasena" type="password">
                     </mat-form-field>
-                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Enviar</button>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
                 </form>
 
             </mat-card>

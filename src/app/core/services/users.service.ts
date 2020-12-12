@@ -24,27 +24,6 @@ export class UsersService extends ApiService{
                     contrasena:string
                     ){
 
-                      console.log( {"encuestadoDto":
-                      { 
-                        "numeroIdentificacion": numeroIdentificacion, 
-                        "primerNombre": primerNombre,
-                        "primerApellido":primerApellido,
-                        "direccionComplemento":direccionComplemento,
-                        "fechaNacimiento":fechaNacimiento,
-                        "genero":genero,
-                        "estadoCivil":estadoCivil,
-                        "ocupacion":ocupacion,
-                        "parroquia":parroquia,
-                        "nivelEstudio":nivelEstudio,
-                        "nivelSocioeconomico":nivelSocioeconomico,
-                        "telefonos": [{
-                          "_codigoArea":_codigoArea,
-                          "_numeroTelefono":_numeroTelefono
-                        }]
-                      },
-                        "nombreUsuario":nombreUsuario,
-                        "contrasena":contrasena
-                    })
                     return this.http.post(this.API_URL+'api/encuestado/add',
                     {"encuestadoDto":
                       { 
