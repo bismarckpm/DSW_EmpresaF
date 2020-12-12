@@ -22,4 +22,21 @@ export class AdminService extends ApiService {
   getSubcategorias(){
     return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
   }
+
+  getMarcas(){
+    return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
+  }
+
+  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:number,id:number){
+    return this.http.post(this.API_URL+'api/marca/add',
+                                                      {
+                                                        "nombreMarca": nombreMarca,
+                                                        "tipoMarca": tipoMarca,
+                                                        "capacidad": capacidad,
+                                                        "unidad": unidad,
+                                                        "subcategoria":{
+                                                            "id": id
+                                                        }
+                                                      },this.httpOptions)
+  }
 }
