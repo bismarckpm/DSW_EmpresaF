@@ -1,0 +1,19 @@
+<div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card" >
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/config/menucategory"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">A</span>gregar categoria</h1>
+            </div>
+        </div>
+        <form [formGroup]="createCategoriaForm" (ngSubmit)="handleCreateCategoria()" fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field >
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="Nombre" type="text">
+            </mat-form-field>  
+            <button mat-raised-button class="create-btn width-100" [disabled]="!createCategoriaForm.valid">Crear</button>
+        </form>
+    </mat-card>
+</div>   

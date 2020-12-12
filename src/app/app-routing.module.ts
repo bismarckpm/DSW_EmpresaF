@@ -8,14 +8,21 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'analitics',
+    loadChildren: () => import('./analitics/analitics.module').then(m => m.AnaliticsModule),
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: 'register',
+    path: 'pages',
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
   },
-  
+  {
+    path: 'config',
+    loadChildren: () => import('./config/config.module').then(m => m.ConfigModule),
+  },
   
 ];
 

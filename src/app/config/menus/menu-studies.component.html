@@ -1,0 +1,64 @@
+
+<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+  <div class="texto-entrada">
+    <h1 >ESTUDIOS</h1>
+  </div>
+  <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
+    <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuconfig"></a>
+      <mat-form-field>
+          <mat-label>Buscar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+          <i class="fas fa-plus fa-lg" (click)="addStudy()"></i>
+      </mat-form-field>
+  </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- idEstudio Column -->
+        <ng-container matColumnDef="idEstudio">
+          <th mat-header-cell *matHeaderCellDef> ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.idEstudio}} </td>
+        </ng-container>
+
+        <!-- estadoEstudio Column -->
+        <ng-container matColumnDef="estadoEstudio">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.estadoEstudio}} </td>
+        </ng-container>
+
+        <!-- nombreCliente Column -->
+        <ng-container matColumnDef="nombreCliente">
+            <th mat-header-cell *matHeaderCellDef> Cliente </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreCliente}} </td>
+          </ng-container>
+
+        <!-- nombreSubcategoria Column -->
+        <ng-container matColumnDef="nombreSubcategoria">
+            <th mat-header-cell *matHeaderCellDef> Subcategoria </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreSubcategoria}} </td>
+          </ng-container>
+
+        <!-- fecIniEstudio Column -->
+        <ng-container matColumnDef="fecIniEstudio">
+            <th mat-header-cell *matHeaderCellDef> Fecha de inicio </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecIniEstudio}} </td>
+          </ng-container>
+
+        <!-- fecFinEstudio Column -->
+        <ng-container matColumnDef="fecFinEstudio">
+            <th mat-header-cell *matHeaderCellDef> Fecha de finalización </th>
+            <td mat-cell *matCellDef="let element"> {{element.fecFinEstudio}} </td>
+          </ng-container>
+
+        <!-- Symbol Icon -->
+        <ng-container matColumnDef="icons">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteStudy(element.idEstudio)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateStudy(element.idEstudio)"></i></span></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" style="width: 80%;margin-left: auto;margin-right: auto;" showFirstLastButtons></mat-paginator>
+</div>

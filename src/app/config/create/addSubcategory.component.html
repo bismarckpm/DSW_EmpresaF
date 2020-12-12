@@ -1,0 +1,25 @@
+<div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card" >
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/config/menusubcategory"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">A</span>gregar subcategoria</h1>
+            </div>
+        </div>
+        <form [formGroup]="createSubCategoriaForm" (ngSubmit)="handleCreateSubCategoria()" fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="Nombre" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Categorias</mat-label>
+                <mat-select formControlName="selectCategoria">
+                    <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.nombreCategoria}}</mat-option>
+                </mat-select>
+            </mat-form-field>  
+            <button mat-raised-button class="create-btn width-100" [disabled]="!createSubCategoriaForm.valid">Crear</button>
+        </form>
+    </mat-card>
+</div>   

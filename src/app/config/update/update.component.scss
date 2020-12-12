@@ -1,0 +1,63 @@
+@import './../../../styles.scss';
+
+$mercadoucab-dark: #222327;
+$mercadoucab-light: whitesmoke;
+$mercadoucab-blue: #5454C9;
+
+table {
+    width: 80%;
+  }
+
+.menu-bg{
+    background-image: url(./../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+mat-form-field{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.menu-container{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.title-container{ margin-top: 21px; margin-bottom: 21px; }
+
+.btn-update-text{
+    font-size: 14px;
+    letter-spacing: 0.1rem;
+    font-weight: 800;
+}
+
+.width-update-btn{
+    margin-top: 10px;
+    width: 250px;
+    height: 45PX;
+    background-color: $mercadoucab-primary;
+    color: $mercadoucab-light;
+    text-align: -webkit-center;
+    color: whitesmoke;
+}
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+mat-form-field{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.fa-plus{
+    padding-left: 20px;
+    color: #94d82d;
+    cursor: pointer;
+    position: fixed;
+}

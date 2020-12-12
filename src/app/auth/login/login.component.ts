@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SessionService } from 'src/app/core/services/session.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +17,25 @@ export class LoginComponent implements OnInit {
   bCookies = true;
   user: any;
   token: string;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+              private sessionService:SessionService,
+              private router: Router,
+              public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.ValidateForms();
+  }
+
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
+
+  ValidateForms(){
     this.signInForm = this.formBuilder.group({
       Email: ['', Validators.required],
-      Password: ['', Validators.required],
+      Password: ['', Validators.required]
     });
   }
   checkingInputEmail(){
@@ -30,10 +46,34 @@ export class LoginComponent implements OnInit {
   }
   handleSignIn(){
     this.bSignIn = true;
-
-    let formData = new FormData();
-    formData.append('email', this.signInForm.get('Email').value);
-    formData.append('password', this.signInForm.get('Password').value);
-    
+    this.sessionService.validateUserCredentials(this.signInForm.get('Email').value,this.signInForm.get('Password').value)
+    .subscribe(
+      res => {
+        this.bSignIn = false;
+        let auxRes: any = res
+        if(auxRes.estado == 'success'){
+          if(auxRes.rol == 'admin'){
+            this.router.navigate(['config/menuconfig']);
+          }
+          else if(auxRes.rol == 'cliente'){
+            this.router.navigate(['pages/client']);
+          }
+          else if(auxRes.rol == 'analista'){
+            this.router.navigate(['analitics/menuanalitics']);
+          }
+          else if(auxRes.rol == 'encuestado'){
+            this.router.navigate(['pages/respondent']);
+          }
+          return;
+        }
+        else if(auxRes.estado == 'error'){
+          this.openSnackBar(auxRes.error);
+        }
+        console.log(res);
+      },
+      err => {
+        this.openSnackBar(err);
+      }
+    )
   } 
 }

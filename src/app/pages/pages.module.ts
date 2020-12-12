@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from '././register/register.component';
 import { SharedModule } from './../shared/shared.module';
 import { PagesRoutingModule } from './pages-routing.module';
-import { SurveyComponent } from './survey/survey.component';
+import { RespondentComponent } from 'src/app/pages/respondent/respondent.component';
+import { GlobalMenuPComponent } from './global-menuP.component';
+import { ClientComponent } from './client/client.component';
+import { QuestionsComponent } from './questions/questions.component';
+import { PollComponent } from './poll/poll.component';
+import { StudyComponent } from './study/study.component';
 
 @NgModule({
-  declarations: [RegisterComponent, SurveyComponent],
+  declarations: [RespondentComponent,GlobalMenuPComponent,ClientComponent, QuestionsComponent, PollComponent, StudyComponent],
   imports: [
     PagesRoutingModule,
     CommonModule,
