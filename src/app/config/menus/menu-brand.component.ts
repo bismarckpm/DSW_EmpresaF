@@ -15,7 +15,7 @@ export class MenuBrandComponent implements OnInit{
   element:any;
   dataSource:any;
 
-  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','icons'];
+  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','nombreSubcategoria','icons'];
   constructor(private router: Router, private adminService:AdminService) { }
 
   

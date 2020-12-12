@@ -19,7 +19,7 @@ export class MenuSubcategoryComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getSubcategories();
+    this.getSubcategorias();
     
   }
 

@@ -15,6 +15,11 @@ export class AddBrandComponent implements OnInit{
   admin: any;
   subCategorias:any;
   token: string;
+  nombreMarca : any;
+  tipoMarca : any;
+  capacidad : any;
+  unidad : any;
+  subcategoria : any;
   constructor(private formBuilder: FormBuilder,private adminService: AdminService) { }
 
   ngOnInit(): void {
@@ -29,14 +34,25 @@ export class AddBrandComponent implements OnInit{
   }
 
   handleCreateMarca(){
-    let formData = new FormData();
-    formData.append('Nombre', this.createMarcaForm.get('Nombre').value);
-    console.log(this.createMarcaForm.get('selectSubCategoria').value)
+    this.nombreMarca = this.createMarcaForm.get('Nombre').value;
+    this.tipoMarca = this.createMarcaForm.get('Tipo').value;
+    this.capacidad = this.createMarcaForm.get('Capacidad').value;
+    this.unidad = this.createMarcaForm.get('Unidad').value;
+    this.subcategoria = this.createMarcaForm.get('selectSubCategoria').value;
+    this.adminService.registerBrand(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,this.subcategoria)
+    .subscribe(
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
   } 
 
   getSubCategoria(){
     this.subCategorias = [
-      { idSubcategoria:1, name: 'Los Caobos Av La Salle'},
+      { idSubcategoria:1, name: 'pruebaCa'},
       { idSubcategoria:2, name: 'Las Palmas Av Las Palmas' },
       { idSubcategoria:3, name: 'La Florida Av Andres Bello'},
     ]

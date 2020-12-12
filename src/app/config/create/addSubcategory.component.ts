@@ -40,11 +40,11 @@ export class AddSubcategoryComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
-        if(res.estado == 'success'){
+        if(auxRes.estado == 'success'){
           auxRes = res;
           this.openSnackBar("Subcategoria creada con exito");
         }
-        else if(res.estado != 'success'){
+        else if(auxRes.estado != 'success'){
           this.openSnackBar(auxRes.mensaje);
         }
       }, 
@@ -58,7 +58,8 @@ export class AddSubcategoryComponent implements OnInit{
     this.adminService.getCategorias()
     .subscribe(
       res => {
-        if(res.estado == 'success'){
+        let auxRes:any;
+        if(auxRes.estado == 'success'){
           let auxRes:any;
           auxRes = res;
           this.categorias = auxRes.categorias;
