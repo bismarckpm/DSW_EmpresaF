@@ -51,6 +51,7 @@ export class MenuPollComponent implements OnInit{
   }
 
   updateEncuesta(idEncuesta){
+    this.router.navigate(['/config/updatePoll']);
     console.log(idEncuesta)
   }
 

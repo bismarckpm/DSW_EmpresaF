@@ -19,7 +19,7 @@ export class MenuSubcategoryComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getSubcategorias();
+    this.getSubcategories();
     
   }
 
@@ -27,6 +27,7 @@ export class MenuSubcategoryComponent implements OnInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
   getSubcategorias(){
     this.adminService.getSubcategorias()
     .subscribe(
@@ -61,15 +62,16 @@ export class MenuSubcategoryComponent implements OnInit{
 
   }
 
-  deleteSubcategoria(idSubcategoria){
+  deleteSubcategory(idSubcategoria){
     console.log(idSubcategoria)
   }
 
-  updateSubcategoria(idSubcategoria){
+  updateSubcategory(idSubcategoria){
+    this.router.navigate(['/config/updateSubcategory']);
     console.log(idSubcategoria)
   }
 
-  addSubcategoria(){
+  addSubcategory(){
     this.router.navigate(['/config/addSubCategory']);
   }
 }
