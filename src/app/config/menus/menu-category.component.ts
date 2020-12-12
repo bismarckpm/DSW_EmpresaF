@@ -31,8 +31,8 @@ export class MenuCategoryComponent implements OnInit{
     this.adminService.getCategorias()
     .subscribe(
       res => {
-        if(res.estado == 'success'){
-          let auxRes:any;
+        let auxRes:any;
+        if(auxRes.estado == 'success'){
           auxRes = res;
           console.log('entro')
           this.element = [auxRes.categorias];
