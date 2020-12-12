@@ -1,6 +1,6 @@
 import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { AdminService } from 'src/app/core/services/admin.service';
 @Component({
   selector: 'app-addbrand',
   templateUrl: './addbrand.component.html',
@@ -15,7 +15,7 @@ export class AddBrandComponent implements OnInit{
   admin: any;
   subCategorias:any;
   token: string;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.createMarcaForm = this.formBuilder.group({
@@ -41,4 +41,5 @@ export class AddBrandComponent implements OnInit{
       { idSubcategoria:3, name: 'La Florida Av Andres Bello'},
     ]
   }
+
 }

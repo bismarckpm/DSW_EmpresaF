@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-menu-subcategory',
@@ -13,7 +14,7 @@ export class MenuSubcategoryComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idSubcategoria', 'nombreSubcategoria','nombreCategoria','icons'];
-  constructor(private router: Router) { }
+  constructor(private router: Router,private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -21,15 +22,28 @@ export class MenuSubcategoryComponent implements OnInit{
     this.getSubcategories();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getSubcategories(){
-    
+
+  getSubcategorias(){
+    this.adminService.getSubcategorias()
+    .subscribe(
+      res => {
+        if(res.estado == 'success'){
+          let auxRes:any;
+          auxRes = res;
+          this.dataSource = new MatTableDataSource(auxRes.subcategorias);
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+
     this.element = [
       {idSubcategoria: 1,nombreSubcategoria: 'Medicamentos',nombreCategoria: 'Salud'},
       {idSubcategoria: 2,nombreSubcategoria: 'Frutas',nombreCategoria: 'Comidas'},
