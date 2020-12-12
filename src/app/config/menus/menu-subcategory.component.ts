@@ -33,8 +33,8 @@ export class MenuSubcategoryComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
+        auxRes = res;
         if(auxRes.estado == 'success'){
-          auxRes = res;
           this.dataSource = new MatTableDataSource(auxRes.subcategorias);
           this.dataSource.paginator = this.paginator;
         }

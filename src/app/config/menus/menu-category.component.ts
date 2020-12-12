@@ -32,8 +32,8 @@ export class MenuCategoryComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
+        auxRes = res;
         if(auxRes.estado == 'success'){
-          auxRes = res;
           console.log('entro')
           this.element = [auxRes.categorias];
           this.dataSource = new MatTableDataSource(auxRes.categorias);
