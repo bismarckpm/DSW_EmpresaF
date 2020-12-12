@@ -1,6 +1,8 @@
 import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-addbrand',
   templateUrl: './addbrand.component.html',
@@ -14,13 +16,12 @@ export class AddBrandComponent implements OnInit{
   createMarcaForm: FormGroup;
   admin: any;
   subCategorias:any;
-  token: string;
-  nombreMarca : any;
-  tipoMarca : any;
-  capacidad : any;
-  unidad : any;
-  subcategoria : any;
-  constructor(private formBuilder: FormBuilder,private adminService: AdminService) { }
+  nombreMarca:string
+  tipoMarca:string
+  capacidad:number
+  unidad:number;
+
+  constructor(private formBuilder: FormBuilder,private adminService: AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createMarcaForm = this.formBuilder.group({
@@ -32,20 +33,30 @@ export class AddBrandComponent implements OnInit{
     });
     this.getSubCategoria();
   }
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
 
   handleCreateMarca(){
-    this.nombreMarca = this.createMarcaForm.get('Nombre').value;
+    let idSubcategoria:number;
+    this.nombreMarca =  this.createMarcaForm.get('Nombre').value;
     this.tipoMarca = this.createMarcaForm.get('Tipo').value;
     this.capacidad = this.createMarcaForm.get('Capacidad').value;
     this.unidad = this.createMarcaForm.get('Unidad').value;
-    this.subcategoria = this.createMarcaForm.get('selectSubCategoria').value;
-    this.adminService.registerBrand(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,this.subcategoria)
+    idSubcategoria = this.createMarcaForm.get('selectSubCategoria').value;
+    this.adminService.createMarca(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,idSubcategoria)
     .subscribe(
       res => {
-        console.log(res)
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.openSnackBar("Marca creada con exito");
+        }
       },
       err => {
-        console.log(err)
+
       }
     )
   } 
@@ -55,10 +66,9 @@ export class AddBrandComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
+        auxRes = res;
         if(auxRes.estado == 'success'){
-          let auxRes:any;
-          auxRes = res;
-          this.subCategorias = auxRes.subCategorias;
+          this.subCategorias = auxRes.subcategorias;
         }
       },
       err => {
@@ -66,4 +76,5 @@ export class AddBrandComponent implements OnInit{
       }
     )
   }
+
 }
