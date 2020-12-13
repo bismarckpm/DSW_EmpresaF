@@ -1,5 +1,6 @@
 package ucab.dsw.accesodatos;
 
+import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
@@ -27,6 +28,20 @@ public class DaoMuestra extends Dao<Muestra>{
       solicitudes.setParameter("encuestado", encuestado).getResultList();
 
       List<SolicitudEstudio> resultado = solicitudes.getResultList();
+      return resultado;
+    }
+    catch (Exception ex){
+      return null;
+    }
+  }
+
+  public List<Encuestado> getEncuestadosMuestraBySolicitud(SolicitudEstudio solicitudEstudio){
+
+    try{
+      TypedQuery<Encuestado> encuestados = this._em.createNamedQuery("getEncuestadosMuestraBySolicitud", Encuestado.class);
+      encuestados.setParameter("solicitud", solicitudEstudio);
+
+      List<Encuestado> resultado = encuestados.getResultList();
       return resultado;
     }
     catch (Exception ex){

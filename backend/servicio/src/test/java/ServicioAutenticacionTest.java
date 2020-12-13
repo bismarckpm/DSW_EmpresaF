@@ -14,8 +14,8 @@ public class ServicioAutenticacionTest {
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "pruer" );
-    usuarioDto.setContrasena("12345");
+    usuarioDto.setNombreUsuario( "PMCRr79fiom@gmail.com" );
+    usuarioDto.setContrasena("cc%$*aa%-0");
 
     Response resultado = servicio.login(usuarioDto);
     Assert.assertEquals(resultado.getStatus(), 200);

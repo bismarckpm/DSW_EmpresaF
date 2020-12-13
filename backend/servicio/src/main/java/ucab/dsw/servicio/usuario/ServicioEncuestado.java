@@ -40,8 +40,6 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
     encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
 
-    /*List<Telefono> telefonos = usuarioDto.getEncuestadoDto().getTelefonos();
-    encuestado.set_telefonos(telefonos);*/
 
       DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -89,8 +87,8 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       .build();
 
   }catch (javax.persistence.PersistenceException ex){
-      //String mensaje = "Este usuario ya se encuentra registrado en el sistema";
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+      String mensaje = "Este usuario ya se encuentra registrado en el sistema";
+      data = Json.createObjectBuilder().add("mensaje", mensaje)
         .add("estado", "error")
         .add("code", 400)
         .build();
@@ -173,7 +171,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
       DaoMuestra daoMuestra = new DaoMuestra();
       solicitudes = daoMuestra.getEstudiosRealizablesByEncuestado(encuestado);
-      System.out.println(solicitudes);
+
       JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
 
       for (SolicitudEstudio solicitud: solicitudes) {
@@ -199,6 +197,51 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
         .add("estado", "error")
         .add("code", 400)
         .build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
+
+    System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @GET
+  @Path("/getmuestra/{solicitudId}")
+  public Response getMuestra(@PathParam("solicitudId") long solicitudId){
+
+    JsonObject data;
+
+    try {
+      DaoMuestra daoMuestra = new DaoMuestra();
+
+      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+
+      List<Encuestado> encuestadosMuestra = daoMuestra.getEncuestadosMuestraBySolicitud(solicitudEstudio);
+
+      JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
+
+      for (Encuestado encuestado : encuestadosMuestra) {
+        JsonObject encu = Json.createObjectBuilder()
+          .add("encuestadoId", encuestado.get_id())
+          .add("encuestadoNombre", encuestado.get_primerNombre())
+          .add("encuestadoApellido", encuestado.get_primerApellido())
+          .build();
+
+        encuestadosArray.add(encu);
+      }
+
+      data = Json.createObjectBuilder()
+        .add("code", 200)
+        .add("estado", "success")
+        .add("solicitudes", encuestadosArray).build();
+
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error").build();
 
       System.out.println(data);
       return Response.ok().entity(data).build();
