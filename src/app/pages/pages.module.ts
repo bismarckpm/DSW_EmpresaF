@@ -8,9 +8,10 @@ import { ClientComponent } from './client/client.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { PollComponent } from './poll/poll.component';
 import { StudyComponent } from './study/study.component';
+import { StudyRquestComponent } from 'src/app/pages/study-request/study-request.component';
 
 @NgModule({
-  declarations: [RespondentComponent,GlobalMenuPComponent,ClientComponent, QuestionsComponent, PollComponent, StudyComponent],
+  declarations: [RespondentComponent,GlobalMenuPComponent,ClientComponent, QuestionsComponent, PollComponent, StudyComponent,StudyRquestComponent],
   imports: [
     PagesRoutingModule,
     CommonModule,

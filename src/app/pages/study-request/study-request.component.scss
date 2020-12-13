@@ -1,8 +1,12 @@
-@import './../../../styles.scss';
+mat-card{
+    -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+}
 
-$mercadoucab-dark: #222327;
-$mercadoucab-light: whitesmoke;
-$mercadoucab-blue: #5454C9;
+mat-form-field{
+    width: 20rem;
+}
 
 .menu-bg{
     background-image: url(./../../../assets/images/loginBackground.png);
@@ -12,6 +16,39 @@ $mercadoucab-blue: #5454C9;
     background-size: 65%;
 }
 
-mat-form-field{
-    width: 20rem;
+.create-btn{
+    background: #56C0DD;
+    color: white;
+    font-size: large;
+}
+
+.add-option{
+    background: #94d82d;
+    font-size: large;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.delete-btn{
+    width: 30%;
+    background: #D60602 !important;
+    font-size: large;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+mat-card > div > div#add-title{
+    margin-right: auto ;
+    margin-left: auto ;
+    margin-top: auto;
+    margin-bottom: auto ;
+}
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
 }

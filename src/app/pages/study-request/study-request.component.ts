@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-study-request',
@@ -6,22 +7,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./study-request.component.scss']
 })
 export class StudyRquestComponent implements OnInit {
-  subcategorys: any;
-  constructor() { }
+  subCategorias: any;
+  createEstudioForm: FormGroup;
+  constructor(private formBuilder: FormBuilder) { }
 
 
   ngOnInit(): void {
+    this.createEstudioForm = this.formBuilder.group({
+      selectSubCategoria: ['',Validators.required],
+      nivelsocioeconomico: ['', Validators.required],
+      genero: ['', Validators.required],
+      rangosuperior: ['', Validators.required],
+      rangoinferior: ['', Validators.required]
+    });
     this.getInfo();
   }
 
   getInfo(){
 
-    this.subcategorys = 
+    this.subCategorias = 
     [
-      { name: 'Cuidado personal'},
-      { name: 'Shampo' },
-      { name: 'Detergene'}
+      { idSubcategoria: 1, name: 'Cuidado personal'},
+      { idSubcategoria: 2, name: 'Shampo' },
+      { idSubcategoria: 3, name: 'Detergene'}
     ]
   }
 
+  handleCreateEstudio(){
+
+  }
 }
