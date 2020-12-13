@@ -35,6 +35,8 @@ public class EncuestadoDto extends DtoBase{
 
   private List<Telefono> telefonos;
 
+  private List<MuestraDto> muestras;
+
   public EncuestadoDto(long id) throws Exception {
     super(id);
   }
@@ -152,5 +154,13 @@ public class EncuestadoDto extends DtoBase{
 
   public void setTelefonos(List<Telefono> telefonos) {
     this.telefonos = telefonos;
+  }
+
+  public List<MuestraDto> getMuestras() {
+    return muestras;
+  }
+
+  public void setMuestras(List<MuestraDto> muestras) {
+    this.muestras = muestras;
   }
 }

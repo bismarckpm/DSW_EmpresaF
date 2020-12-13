@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "marca")
-public class Marca {
+public class Marca extends EntidadBase {
 
   @Id
   @Column( name = "codigo_marca" )

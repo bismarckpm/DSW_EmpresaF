@@ -3,13 +3,16 @@ import org.junit.Test;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
+
 public class pruebaDirectorioActivo
 {
     @Test
     public void createUserLDAP()
     {
         UsuarioDto user = new UsuarioDto();
-        user.setNombreUsuario( "danJiel" );
+        user.setNombreUsuario( "danJieldddju" );
         user.setContrasena( "1234" );
         DirectorioActivo ldap = new DirectorioActivo();
         ldap.addEntryToLdap( user, "cliente" );
@@ -34,8 +37,7 @@ public class pruebaDirectorioActivo
     }
 
     @Test
-    public void changePassword()
-    {
+    public void changePassword() throws NamingException {
         UsuarioDto user = new UsuarioDto();
         user.setNombreUsuario( "bismarckpm2" );
         user.setContrasena( "MARIAPEPE123" );

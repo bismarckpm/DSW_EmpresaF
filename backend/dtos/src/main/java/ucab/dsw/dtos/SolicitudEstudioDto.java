@@ -1,5 +1,7 @@
 package ucab.dsw.dtos;
 
+import java.util.List;
+
 public class SolicitudEstudioDto extends DtoBase{
 
   private String estado;
@@ -23,6 +25,8 @@ public class SolicitudEstudioDto extends DtoBase{
   private UsuarioDto administrador;
 
   private NivelSocioeconomicoDto nivelSocioeconomico;
+
+  private List<MuestraDto> muestras;
 
   public SolicitudEstudioDto(long id) throws Exception {
     super(id);
@@ -117,5 +121,13 @@ public class SolicitudEstudioDto extends DtoBase{
 
   public void setNivelSocioeconomico(NivelSocioeconomicoDto nivelSocioeconomico) {
     this.nivelSocioeconomico = nivelSocioeconomico;
+  }
+
+  public List<MuestraDto> getMuestras() {
+    return muestras;
+  }
+
+  public void setMuestras(List<MuestraDto> muestras) {
+    this.muestras = muestras;
   }
 }

@@ -197,7 +197,7 @@ public class DirectorioActivo
     }
 
 
-    public void changePassword(UsuarioDto user)
+    public void changePassword(UsuarioDto user) throws NamingException
     {
         try
         {
@@ -210,7 +210,7 @@ public class DirectorioActivo
         }
         catch(Exception exception)
         {
-            exception.printStackTrace();
+            throw exception;
         }
         finally
         {

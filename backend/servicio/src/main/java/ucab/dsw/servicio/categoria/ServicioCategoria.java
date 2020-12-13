@@ -1,5 +1,6 @@
 package ucab.dsw.servicio.categoria;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.entidades.Categoria;
@@ -9,9 +10,11 @@ import ucab.dsw.servicio.AplicacionBase;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Path( "/categoria" )
@@ -31,30 +34,21 @@ public class ServicioCategoria extends AplicacionBase {
       DaoCategoria daoCategoria = new DaoCategoria();
       Categoria categoriaAgregada = daoCategoria.insert(categoria);
 
-      categoriaDto.setId(categoriaAgregada.get_id());
 
-      data = Json.createObjectBuilder().add("categoria", categoriaDto.getId())
+      data = Json.createObjectBuilder().add("categoria", categoriaAgregada.get_id())
         .add("estado", "success")
         .add("code", 200)
         .build();
 
     }
-    catch (javax.persistence.PersistenceException ex){
+    catch (PersistenceException | DatabaseException  ex){
         String mensaje = "Esta categoría ya se encuentra añadida";
         data = Json.createObjectBuilder().add("mensaje", mensaje)
           .add("estado", "error")
           .add("code", 400)
           .build();
 
-        System.out.println(data);
-        return  Response.ok().entity(data).build();
-    }
-    catch (PruebaExcepcion ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
-      System.out.println(ex.getClass());
+      System.out.println(data);
       return  Response.ok().entity(data).build();
     }
 

@@ -19,11 +19,11 @@ import java.util.List;
 public class ServicioAnalista extends AplicacionBase implements IServicioEmpleado{
 
 
-  @Path("/getsolicitudespendientes/{usuarioId}")
+  @Path("/getsolicitudespendientes/{usuarioAnalistaId}")
   @GET
-  public Response getSolicitudesPendientes(@PathParam("usuarioId") long id){
+  public Response getSolicitudesPendientes(@PathParam("usuarioAnalistaId") long id){
     List<SolicitudEstudio> solicitudesPendientes;
-    JsonObject data=null;
+    JsonObject data;
 
     try {
 

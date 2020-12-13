@@ -1,10 +1,11 @@
 package ucab.dsw.entidades;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "nivel_estudio")
-public class NivelEstudio {
+public class NivelEstudio extends EntidadBase{
 
   @Id
   @Column( name = "codigo_nive_estu" )
@@ -13,6 +14,10 @@ public class NivelEstudio {
 
   @Column(name = "nombre")
   private String _nombre;
+
+  @OneToMany( mappedBy = "_nivelEstudio", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+  private List<Encuestado> _encuestados;
+
 
   public NivelEstudio(long _id) {
     this._id = _id;
@@ -36,5 +41,13 @@ public class NivelEstudio {
 
   public void set_nombre(String _nombre) {
     this._nombre = _nombre;
+  }
+
+  public List<Encuestado> get_encuestados() {
+    return _encuestados;
+  }
+
+  public void set_encuestados(List<Encuestado> _encuestados) {
+    this._encuestados = _encuestados;
   }
 }

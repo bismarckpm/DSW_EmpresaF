@@ -5,6 +5,9 @@ import java.util.List;
 
 @Entity
 @Table( name = "usuario" )
+@NamedQueries({
+  @NamedQuery(name = "getUsuarioByNombreUsuario", query = "select u from Usuario u where u._nombreUsuario=:nombreUsuario")
+})
 public class Usuario extends EntidadBase
 {
     @Id

@@ -18,7 +18,7 @@ import java.util.List;
 @Path( "/cliente" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class ServicioCliente extends AplicacionBase implements IServicioUsuario {
+public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
   @POST
   @Path("/add")

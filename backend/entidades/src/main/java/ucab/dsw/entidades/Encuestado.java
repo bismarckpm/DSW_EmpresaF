@@ -6,7 +6,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "encuestado")
-public class Encuestado{
+@NamedQueries({
+  @NamedQuery(name = "getUsersMuestra", query = "select e from Encuestado e where e._parroquia=:parroquiaId and e._nivelSocioeconomico=:nivelId and e._genero=:genero")
+})
+public class Encuestado extends EntidadBase{
 
   @Id
   @Column( name = "codigo_encuestado" )
@@ -44,11 +47,11 @@ public class Encuestado{
   @Column(name = "ocupacion")
   private String _ocupacion;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_parroquia")
   private Parroquia _parroquia;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_nivel_estudio")
   private NivelEstudio _nivelEstudio;
 
@@ -58,7 +61,7 @@ public class Encuestado{
   @OneToMany(mappedBy = "_encuestado", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Muestra> _muestras;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn( name = "fk_nivel_socio")
   private NivelSocioeconomico _nivelSocioeconomico;
 

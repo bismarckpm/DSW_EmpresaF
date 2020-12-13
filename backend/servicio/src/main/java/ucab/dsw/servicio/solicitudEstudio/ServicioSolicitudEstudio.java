@@ -1,11 +1,13 @@
 package ucab.dsw.servicio.solicitudEstudio;
 
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
+import ucab.dsw.servicio.muestra.ServicioMuestra;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -31,16 +33,20 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       solicitudEstudio.set_edadfinal(solicitudEstudioDto.getEdadfinal());
       solicitudEstudio.set_genero(solicitudEstudioDto.getGenero());
 
-      Usuario usuarioCliente = new Usuario(solicitudEstudioDto.getCliente().getId());
-      solicitudEstudio.set_cliente(usuarioCliente);
+      DaoUsuario daoUsuario = new DaoUsuario();
+      Usuario cliente = daoUsuario.find(solicitudEstudioDto.getCliente().getId(), Usuario.class);
+      solicitudEstudio.set_cliente(cliente);
 
-      Parroquia parroquia = new Parroquia(solicitudEstudioDto.getParroquia().getId());
+      DaoParroquia daoParroquia = new DaoParroquia();
+      Parroquia parroquia = daoParroquia.find(solicitudEstudioDto.getParroquia().getId(), Parroquia.class);
       solicitudEstudio.set_parroquia(parroquia);
 
-      Marca marca = new Marca(solicitudEstudioDto.getMarca().getId());
+      DaoMarca daoMarca = new DaoMarca();
+      Marca marca = daoMarca.find(solicitudEstudioDto.getMarca().getId(), Marca.class);
       solicitudEstudio.set_marca(marca);
 
-      NivelSocioeconomico nivelSocioeconomico = new NivelSocioeconomico(solicitudEstudioDto.getNivelSocioeconomico().getId());
+      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
+      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(solicitudEstudioDto.getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       solicitudEstudio.set_nivelSocioeconomico(nivelSocioeconomico);
 
       SolicitudEstudio solicitudEstudioAgregada;
@@ -59,11 +65,15 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
       }else{
-        Usuario usuario = new Usuario(82);
+        DaoUsuario dao = new DaoUsuario();
+        Integer id = 84;
+        Usuario usuario = dao.find(id.longValue(), Usuario.class);
         solicitudEstudio.set_administrador(usuario);
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
 
       }
+
+     inicializarMuestra(solicitudEstudio);
 
       data = Json.createObjectBuilder().add("solicitud", solicitudEstudioAgregada.get_id())
         .add("estado", "success")
@@ -101,79 +111,58 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
   }
 
-  @PUT
-  @Path("/asignarsolicitud/{idSolicitud}")
-  public Response asignarEstudioASolicitud(@PathParam("idSolicitud") long id, SolicitudEstudioDto solicitudEstudioDto){
-    JsonObject data;
-
-    try{
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
-
-      Estudio estudio = new Estudio(solicitudEstudioDto.getEstudio().getId());
-      solicitudEstudio.set_estudio(estudio);
-      solicitudEstudio.set_estado("procesado");
-
-      int random = (int) (Math.random()*(82-81+1)+81);
-      Usuario analista = new Usuario(random);
-      solicitudEstudio.set_analista(analista);
-      SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitudEstudio);
-
-      data = Json.createObjectBuilder().
-        add("id", resultado.get_id())
-        .add("estado", "success")
-        .add("code", 200).build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
-
-    }catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400).build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
-    }
+  private void inicializarMuestra(SolicitudEstudio solicitudEstudio){
+    DaoEncuestado dao = new DaoEncuestado();
+    List<Encuestado> usuariosEncuestados = dao.getUsersMuestra(solicitudEstudio);
+    ServicioMuestra servicioMuestra = new ServicioMuestra();
+    servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
   }
 
-  /* @GET
-  @Path("/getsolicitud/{id}")
-  public Response getSolicitudById(@PathParam("id") long id){
+  @GET
+  @Path("/getall")
+  public Response getSolicitudes() {
     JsonObject data;
-    try{
+
+    try {
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
+      List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
-      data = Json.createObjectBuilder().
-        add("id", solicitudEstudio.get_id()).
-        add("edadInicial", solicitudEstudio.get_edadfinal()).
-        add("edadFinal", solicitudEstudio.get_edadfinal()).
-        add("genero", solicitudEstudio.get_genero()).
-        add("estado", solicitudEstudio.get_estado()).
-        add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
-        add("marca", solicitudEstudio.get_marca().get_nombreMarca()).
-        add("tipoMarca", solicitudEstudio.get_marca().get_tipoMarca()).
-        add("capacidadMarca", solicitudEstudio.get_marca().get_capacidad()).
-        add("unidadMarca", solicitudEstudio.get_marca().get_unidad()).
-        add("unidadSubcategoria", solicitudEstudio.get_marca().get_subcategoria().get_nombreSubcategoria()).
-        add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
-        add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
+      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+      for (SolicitudEstudio solicitudEstudio : solicitudesEstudio) {
+        if(solicitudEstudio.get_edadfinal() == null) {
+          solicitudEstudio.set_edadfinal(0);
+        }
 
-    }
-    catch (Exception ex){
+        JsonObject sol = Json.createObjectBuilder().
+          add("id", solicitudEstudio.get_id()).
+          add("edadInicial", solicitudEstudio.get_edadInicial()).
+          add("edadFinal", solicitudEstudio.get_edadfinal()).
+          add("genero", solicitudEstudio.get_genero()).
+          add("estado", solicitudEstudio.get_estado()).
+          add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
+          add("marca", solicitudEstudio.get_marca().get_nombreMarca()).
+          add("tipoMarca", solicitudEstudio.get_marca().get_tipoMarca()).
+          add("capacidadMarca", solicitudEstudio.get_marca().get_capacidad()).
+          add("unidadMarca", solicitudEstudio.get_marca().get_unidad()).
+          add("unidadSubcategoria", solicitudEstudio.get_marca().get_subcategoria().get_nombreSubcategoria()).
+          add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
+          add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
+
+        solicitudesArray.add(sol);
+      }
       data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+        .add("code", 200)
+        .add("estado", "success")
+        .add("solicitudes", solicitudesArray).build();
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
     }
 
-  }*/
-
+    System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
 }

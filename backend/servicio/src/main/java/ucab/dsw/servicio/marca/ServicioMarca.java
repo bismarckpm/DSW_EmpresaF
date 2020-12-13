@@ -1,5 +1,6 @@
 package ucab.dsw.servicio.marca;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.MarcaDto;
@@ -11,6 +12,7 @@ import ucab.dsw.servicio.AplicacionBase;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,21 +35,21 @@ public class ServicioMarca extends AplicacionBase {
       marca.set_capacidad(marcaDto.getCapacidad());
       marca.set_unidad(marcaDto.getUnidad());
 
-      Subcategoria subcategoria = new Subcategoria(marcaDto.getSubcategoria().getId());
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+      Subcategoria subcategoria = daoSubcategoria.find(marcaDto.getSubcategoria().getId(), Subcategoria.class);
       marca.set_subcategoria(subcategoria);
 
       DaoMarca daoMarca = new DaoMarca();
       Marca marcaAgregada = daoMarca.insert(marca);
 
-      marcaDto.setId(marcaAgregada.get_id());
 
-      data = Json.createObjectBuilder().add("marca", marcaDto.getId())
+      data = Json.createObjectBuilder().add("marca", marcaAgregada.get_id())
         .add("estado", "success")
         .add("code", 200)
         .build();
 
     }
-    catch (PruebaExcepcion ex){
+    catch (Exception ex){
       data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
         .add("estado", "error")
         .add("code", 400)
@@ -88,7 +90,7 @@ public class ServicioMarca extends AplicacionBase {
         marcasArray.add(ma);
       }
       data = Json.createObjectBuilder()
-        .add("estado", 200)
+        .add("code", 200)
         .add("estado", "success")
         .add("marcas", marcasArray).build();
 

@@ -17,9 +17,9 @@ public class ServicioUsuariosTest {
     UsuarioDto usuarioDto = new UsuarioDto();
     ClienteDto clienteDto = new ClienteDto();
 
-    clienteDto.setNombre("pruebarepetida2");
+    clienteDto.setNombre("pruebarepetida245");
     usuarioDto.setClienteDto(clienteDto);
-    usuarioDto.setNombreUsuario("pruebajjo");
+    usuarioDto.setNombreUsuario("pruebajjo245");
     usuarioDto.setContrasena("12345");
 
     Response resultado = servicio.addUser(usuarioDto);
@@ -64,7 +64,7 @@ public class ServicioUsuariosTest {
       encuestadoDto.setNivelSocioeconomico(nivelSocioeconomico);
 
       usuarioDto.setEncuestadoDto(encuestadoDto);
-      usuarioDto.setNombreUsuario("pruertelefono2");
+      usuarioDto.setNombreUsuario("cdyy0p");
       usuarioDto.setContrasena("12345");
 
       Response resultado = servicio.addUser(usuarioDto);
@@ -90,6 +90,24 @@ public class ServicioUsuariosTest {
 
     ServicioEncuestado servicio = new ServicioEncuestado();
     Response resultado = servicio.getUsers();
+
+    Assert.assertEquals(resultado.getStatus(), 200);
+  }
+
+  @Test
+  public void getEstudiosRealizablesByEncuestadoTest(){
+
+    ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
+    Response resultado = servicioEncuestado.getEstudiosRealizables(92);
+
+    Assert.assertEquals(resultado.getStatus(), 200);
+  }
+
+  @Test
+  public void getMuestra(){
+
+    ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
+    Response resultado = servicioEncuestado.getMuestra(78);
 
     Assert.assertEquals(resultado.getStatus(), 200);
   }

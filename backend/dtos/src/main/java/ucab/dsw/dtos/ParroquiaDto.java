@@ -3,7 +3,7 @@ package ucab.dsw.dtos;
 
 public class ParroquiaDto extends DtoBase{
 
-  private String nombreMunicipio;
+  private String nombreParroquia;
 
 
   private MunicipioDto municipio;
@@ -15,12 +15,12 @@ public class ParroquiaDto extends DtoBase{
   public ParroquiaDto() {
   }
 
-  public String getNombreMunicipio() {
-    return nombreMunicipio;
+  public String getNombreParroquia() {
+    return nombreParroquia;
   }
 
-  public void setNombreMunicipio(String nombreMunicipio) {
-    this.nombreMunicipio = nombreMunicipio;
+  public void setNombreParroquia(String nombreParroquia) {
+    this.nombreParroquia = nombreParroquia;
   }
 
   public MunicipioDto getMunicipio() {

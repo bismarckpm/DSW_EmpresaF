@@ -3,6 +3,7 @@ import org.junit.Test;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.servicio.solicitudEstudio.ServicioSolicitudEstudio;
+import ucab.dsw.servicio.usuario.ServicioAdministrador;
 
 import javax.ws.rs.core.Response;
 
@@ -34,19 +35,6 @@ public class ServicioSolicitudEstudioTest {
     Assert.assertEquals(resultado.getStatus(), 200);
   }
 
-  @Test
-  public void asignarEstudioASolicitud() throws Exception {
-    ServicioSolicitudEstudio servicioSolicitudEstudio = new ServicioSolicitudEstudio();
-
-    EstudioDto estudioDto = new EstudioDto(1);
-    SolicitudEstudioDto solicitudEstudioDto = new SolicitudEstudioDto();
-    solicitudEstudioDto.setEstudio(estudioDto);
-
-    Response resultado = servicioSolicitudEstudio.asignarEstudioASolicitud(54,solicitudEstudioDto);
-
-    Assert.assertEquals(resultado.getStatus(), 200);
-
-  }
 
   /*@Test
   public void getSolicitudByIdTest(){
