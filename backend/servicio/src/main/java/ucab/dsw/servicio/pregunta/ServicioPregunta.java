@@ -1,5 +1,7 @@
 package ucab.dsw.servicio.pregunta;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import ucab.dsw.accesodatos.DaoPregunta;
 import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.entidades.Pregunta;
@@ -12,6 +14,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import ucab.dsw.accesodatos.DaoOpcion;
+import ucab.dsw.accesodatos.DaoPreguntaOpcion;
+import ucab.dsw.dtos.OpcionDto;
+import ucab.dsw.entidades.Opcion;
+import ucab.dsw.entidades.PreguntaOpcion;
 
 /**
  * Clase para gestionar las preguntas
@@ -37,42 +44,67 @@ public class ServicioPregunta extends AplicacionBase {
         try {
 
             Pregunta pregunta = new Pregunta();
-            pregunta.setDescripcion(preguntaDto.getDescripcion());
-            pregunta.setMin(preguntaDto.getMin());
-            pregunta.setMax(preguntaDto.getMax());
-            pregunta.setTipoPregunta(preguntaDto.getTipoPregunta());
+            pregunta.set_descripcionPregunta(preguntaDto.getDescripcionPregunta());
+            pregunta.set_min(preguntaDto.getMin());
+            pregunta.set_max(preguntaDto.getMax());
+            pregunta.set_tipoPregunta(preguntaDto.getTipoPregunta());
 
             DaoPregunta daoPregunta = new DaoPregunta();
             Pregunta preguntaAgregada = daoPregunta.insert(pregunta);
 
-            preguntaDto.setId(preguntaAgregada.getId());
+            preguntaDto.setId(preguntaAgregada.get_id());
 
-            data = Json.createObjectBuilder().add("pregunta", preguntaDto.getId())
+            List<OpcionDto> opcionesDtos = preguntaDto.getOpciones();
+            List<Opcion> opciones = new ArrayList<>();
+
+            if (opcionesDtos != null) {
+                for (OpcionDto opcionDto : opcionesDtos) {
+                    DaoOpcion dao = new DaoOpcion();
+                    Opcion op = new Opcion();
+
+                    op.set_descripcion(opcionDto.getDescripcion());
+                    op = dao.insert(op);
+
+                    opciones.add(op);
+                    opcionDto.setId(op.get_id());
+                }
+
+                DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+                for (Opcion opcion : opciones) {
+                    PreguntaOpcion preguntaOpcion = new PreguntaOpcion();
+                    preguntaOpcion.set_opcion(opcion);
+                    preguntaOpcion.set_pregunta(preguntaAgregada);
+
+                    daoPreguntaOpcion.insert(preguntaOpcion);
+                }
+                
+                preguntaDto.setOpciones(opcionesDtos);
+            }
+
+
+            data = Json.createObjectBuilder()
+                    .add("data", preguntaDto.getId())
                     .add("estado", "success")
                     .add("code", 200)
                     .build();
 
         } catch (javax.persistence.PersistenceException ex) {
             String mensaje = "Esta pregunta ya se encuentra añadida";
-            data = Json.createObjectBuilder().add("mensaje", mensaje)
+            data = Json.createObjectBuilder()
+                    .add("mensaje", mensaje)
                     .add("estado", "error")
                     .add("code", 400)
                     .build();
-
-            System.out.println(data);
-            return Response.ok().entity(data).build();
+            return Response.status(400).entity(data).build();
         } catch (Exception ex) {
             data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
                     .add("estado", "error")
                     .add("code", 400)
                     .build();
-
-            System.out.println(data);
-            return Response.ok().entity(data).build();
+            return Response.status(400).entity(data).build();
         }
 
-        System.out.println(data);
-        return Response.ok().entity(data).build();
+        return Response.status(200).entity(data).build();
 
     }
 
@@ -99,20 +131,14 @@ public class ServicioPregunta extends AplicacionBase {
             JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
 
             for (Pregunta question : preguntas) {
-                JsonObject JsonQuestion = Json.createObjectBuilder()
-                        .add("id", question.getId())
-                        .add("descripcion", question.getDescripcion())
-                        .add("tipo", question.getTipoPregunta())
-                        .add("min", question.getMin())
-                        .add("max", question.getMax())
-                        .build();
-
+                JsonObject JsonQuestion = question.toJson();
                 preguntasArray.add(JsonQuestion);
             }
             data = Json.createObjectBuilder()
+                    .add("data", preguntasArray)
                     .add("code", 200)
                     .add("estado", "success")
-                    .add("preguntas", preguntasArray).build();
+                    .build();
 
         } catch (Exception ex) {
 
@@ -121,11 +147,8 @@ public class ServicioPregunta extends AplicacionBase {
                     .add("estado", "error")
                     .add("code", 400)
                     .build();
-
-            System.out.println(data);
             return Response.ok().entity(data).build();
         }
-        System.out.println(data);
         return Response.ok().entity(data).build();
     }
 
@@ -149,21 +172,13 @@ public class ServicioPregunta extends AplicacionBase {
             DaoPregunta dao = new DaoPregunta();
             pregunta = dao.find(_id, Pregunta.class);
 
-            JsonObject JsonPregunta = Json.createObjectBuilder()
-                    .add("id", pregunta.getId())
-                    .add("descripcion", pregunta.getDescripcion())
-                    .add("tipo", pregunta.getTipoPregunta())
-                    .add("min", pregunta.getMin())
-                    .add("max", pregunta.getMax())
+            JsonObject JsonPregunta = pregunta.toJson();
+
+            data = Json.createObjectBuilder()
+                    .add("data", JsonPregunta)
                     .add("estado", "success")
                     .add("code", 200)
                     .build();
-
-            data = Json.createObjectBuilder().add("data", JsonPregunta)
-                    .add("estado", "success")
-                    .add("code", 200)
-                    .build();
-
         } catch (Exception ex) {
 
             data = Json.createObjectBuilder()
@@ -171,11 +186,8 @@ public class ServicioPregunta extends AplicacionBase {
                     .add("estado", "error")
                     .add("code", 400)
                     .build();
-
-            System.out.println(data);
             return Response.ok().entity(data).build();
         }
-        System.out.println(data);
         return Response.ok().entity(data).build();
     }
 
@@ -189,50 +201,41 @@ public class ServicioPregunta extends AplicacionBase {
      * estado, code}
      *
      */
-    @PUT
-    @Path("/{id}")
-    public Response updatePregunta(@PathParam("id") long _id, PreguntaDto preguntaDto) {
-
-        Pregunta pregunta = null;
-        JsonObject data = null;
-
-        try {
-
-            DaoPregunta dao = new DaoPregunta();
-            pregunta = dao.find(_id, Pregunta.class);
-
-            pregunta.setDescripcion(preguntaDto.getDescripcion());
-            pregunta.setTipoPregunta(preguntaDto.getTipoPregunta());
-            pregunta.setMin(preguntaDto.getMin());
-            pregunta.setMax(preguntaDto.getMax());
-            pregunta = dao.update(pregunta);
-
-            JsonObject JsonPregunta = Json.createObjectBuilder()
-                    .add("id", pregunta.getId())
-                    .add("descripcion", pregunta.getDescripcion())
-                    .add("tipo", pregunta.getTipoPregunta())
-                    .add("min", pregunta.getMin())
-                    .add("max", pregunta.getMax())
-                    .build();
-
-            data = Json.createObjectBuilder().add("data", JsonPregunta)
-                    .add("estado", "success")
-                    .add("code", 200)
-                    .build();
-
-        } catch (Exception ex) {
-
-            data = Json.createObjectBuilder()
-                    .add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-
-            System.out.println(data);
-            return Response.ok().entity(data).build();
-        }
-        System.out.println(data);
-        return Response.ok().entity(data).build();
-    }
+//    @PUT
+//    @Path("/{id}")
+//    public Response updatePregunta(@PathParam("id") long _id, PreguntaDto preguntaDto) {
+//
+//        Pregunta pregunta = null;
+//        JsonObject data = null;
+//
+//        try {
+//
+//            DaoPregunta dao = new DaoPregunta();
+//            pregunta = dao.find(_id, Pregunta.class);
+//
+//            pregunta.set_descripcionPregunta(preguntaDto.getDescripcionPregunta());
+//            pregunta.set_tipoPregunta(preguntaDto.getTipoPregunta());
+//            pregunta.set_min(preguntaDto.getMin());
+//            pregunta.set_max(preguntaDto.getMax());
+//            pregunta = dao.update(pregunta);
+//
+//            JsonObject JsonPregunta = pregunta.toJson();
+//
+//            data = Json.createObjectBuilder().add("data", JsonPregunta)
+//                    .add("estado", "success")
+//                    .add("code", 200)
+//                    .build();
+//
+//        } catch (Exception ex) {
+//
+//            data = Json.createObjectBuilder()
+//                    .add("mensaje", ex.getMessage())
+//                    .add("estado", "error")
+//                    .add("code", 400)
+//                    .build();
+//            return Response.ok().entity(data).build();
+//        }
+//        return Response.ok().entity(data).build();
+//    }
 
 }
