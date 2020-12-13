@@ -6,7 +6,7 @@ import { ApiService } from './api.service';
 })
 
 export class AdminService extends ApiService {
-  /*Categoria*/
+
   createCategoria(nombreCategoria:string){
     return this.http.post(this.API_URL+'api/categoria/add',{"nombreCategoria":nombreCategoria},this.httpOptions)
   }
@@ -15,7 +15,6 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/categoria/getall',this.httpOptions);
   }
 
-  /*Subcategoria*/
   createSubCategoria(nombreSubcategoria,id){
     return this.http.post(this.API_URL+'api/subcategoria/add',{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":id}},this.httpOptions)
   }
@@ -24,29 +23,20 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
   }
 
-  /*Marca*/
   getMarcas(){
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
 
-  registerBrand(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,subcategoria:any){
-    console.log(
-    { 
-      "nombreMarca": nombreMarca, 
-      "tipoMarca": tipoMarca,
-      "capacidad":capacidad,
-      "unidad":unidad,
-      "subcategoria": {"id":subcategoria}
-  })
+  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:number,id:number){
     return this.http.post(this.API_URL+'api/marca/add',
-                      { 
-                        "nombreMarca": nombreMarca, 
-                        "tipoMarca": tipoMarca,
-                        "capacidad":capacidad,
-                        "unidad":unidad,
-                        "subcategoria":{
-                          "id":subcategoria}
-                        },
-                          this.httpOptions);
+                                                      {
+                                                        "nombreMarca": nombreMarca,
+                                                        "tipoMarca": tipoMarca,
+                                                        "capacidad": capacidad,
+                                                        "unidad": unidad,
+                                                        "subcategoria":{
+                                                            "id": id
+                                                        }
+                                                      },this.httpOptions)
   }
 }

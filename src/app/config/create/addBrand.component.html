@@ -28,10 +28,10 @@
             <mat-form-field appearance="outline">
                 <mat-label>Subcategorias</mat-label>
                 <mat-select formControlName="selectSubCategoria">
-                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.idSubcategoria">{{subCategoria.name}}</mat-option>
+                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.id">{{subCategoria.nombreSubcategoria}}</mat-option>
                 </mat-select>
             </mat-form-field>       
-            <button mat-raised-button class="create-btn width-100" >Crear</button>
+            <button mat-raised-button class="create-btn width-100" [disabled]="!createMarcaForm.valid">Crear</button>
         </form>
     </mat-card>
 </div>   
