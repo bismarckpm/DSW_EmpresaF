@@ -1,6 +1,5 @@
 package ucab.dsw.accesodatos;
 
-import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;

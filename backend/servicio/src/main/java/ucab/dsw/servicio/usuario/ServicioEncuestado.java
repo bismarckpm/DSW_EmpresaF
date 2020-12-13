@@ -120,9 +120,17 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       usuarios = dao.findAll(Usuario.class);
 
       JsonArrayBuilder usuariosArray = Json.createArrayBuilder();
+      JsonArrayBuilder telefonosArray = Json.createArrayBuilder();
 
       for(Usuario user: usuarios) {
         if(user.get_encuestado() != null) {
+          for(Telefono telefono:user.get_encuestado().get_telefonos()){
+            JsonObject phones = Json.createObjectBuilder()
+              .add("codigoArea", telefono.get_codigoArea())
+              .add("numeroTelefono", telefono.get_numeroTelefono()).build();
+
+            telefonosArray.add(phones);
+          }
           JsonObject users = Json.createObjectBuilder()
             .add("id", user.get_id())
             .add("nombreUsuario", user.get_nombreUsuario())
@@ -130,6 +138,9 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
             .add("primer apellido", user.get_encuestado().get_primerApellido())
             .add("numero de identificacion", user.get_encuestado().get_numeroIdentificacion())
             .add("estado", user.get_estado())
+            .add("ocupacion", user.get_encuestado().get_ocupacion())
+            .add("estadoCivil", user.get_encuestado().get_estadoCivil())
+            .add("telefonos", telefonosArray)
             .build();
 
           usuariosArray.add(users);
@@ -155,6 +166,54 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     System.out.println(data);
     return Response.ok().entity(data).build();
   }
+
+ /* @PUT
+  @Path("/update/{usuarioEncuestadoid}")
+  public UsuarioDto updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
+    UsuarioDto resultado = new UsuarioDto();
+
+    try {
+      DaoUsuario daoUsuario = new DaoUsuario();
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      Encuestado encuestado = new Encuestado();
+      encuestado.set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
+      encuestado.set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
+      encuestado.set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
+      encuestado.set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
+      encuestado.set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
+      encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
+      encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
+
+
+      DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
+
+      encuestado.set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
+      encuestado.set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
+      encuestado.set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
+
+      DaoParroquia daoParroquia = new DaoParroquia();
+      Parroquia parroquia = daoParroquia.find(usuarioDto.getEncuestadoDto().getParroquia().getId(), Parroquia.class);
+      encuestado.set_parroquia(parroquia);
+
+      DaoNivelEstudio dao = new DaoNivelEstudio();
+      NivelEstudio nivelEstudio = dao.find(usuarioDto.getEncuestadoDto().getNivelEstudio().getId(), NivelEstudio.class);
+      encuestado.set_nivelEstudio(nivelEstudio);
+
+      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
+      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
+      encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
+
+
+      Usuario resul = dao.update(usuario);
+      resultado.setId(resul.get_id());
+
+
+    } catch (Exception ex) {
+      String problema = ex.getMessage();
+    }
+    return resultado;
+  }*/
 
   @GET
   @Path("/getestudios/{usuarioEncuestadoId}")
