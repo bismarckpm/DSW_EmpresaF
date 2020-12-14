@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from 'src/app/shared/guards/admin.guard';
+import { UsersGuard } from 'src/app/shared/guards/users.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'pages',
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
+    canActivate: [UsersGuard]
+  },
+  {
+    path: 'pages-respondent',
+    loadChildren: () => import('./pages-respondent/pages-respondent.module').then(m => m.PagesRespondentModule),
   },
   {
     path: 'config',

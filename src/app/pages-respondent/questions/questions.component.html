@@ -13,7 +13,9 @@
                             </mat-radio-group>
                         </div>
                         <div *ngIf="pregunta.tipo=='Seleccion multiple'">
-                            <mat-checkbox  [(ngModel)]="item.isChecked" >{{item.descripcion}}</mat-checkbox>
+                            <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[item.idOpcion]">
+                                <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
+                            </mat-radio-group>
                         </div>
                         <div *ngIf="pregunta.tipo=='Completacion'">
                             <mat-form-field >

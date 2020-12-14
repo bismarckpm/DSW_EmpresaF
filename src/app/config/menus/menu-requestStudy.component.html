@@ -1,0 +1,36 @@
+<div class="width-100 content text-center slide-in-fwd-center" fxLayout="column" fxLayoutAlign=" center" >
+    <div class="title-container">
+      <h1 class="sign-in-title text-center">Estudios solicitados</h1>
+    </div>
+    <div
+    class="content"
+    fxLayout="row wrap" 
+    fxLayoutAlign="center none">
+        <ng-container *ngFor="let study of studies">
+            <mat-card class="participants-card" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="column">
+                    <mat-card-header>
+                        <mat-card-title class="participants-card-title">
+                            {{study.id}}
+                        </mat-card-title>
+                        <mat-card-subtitle class="participants-card-subtitle"><strong>Edad Inicial:</strong>{{study.edadInicial}}</mat-card-subtitle>
+                        <mat-card-subtitle class="participants-card-subtitle"><strong>Marca:</strong> {{study.tipoMarca}}</mat-card-subtitle>
+                        <mat-card-subtitle class="participants-card-subtitle"><strong>Capacidad:</strong> {{study.capacidadMarca}}</mat-card-subtitle>
+                        <mat-card-subtitle class="participants-card-subtitle"><strong>Genero:</strong> {{study.genero}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        
+                    </mat-card-content>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-chip-list >
+                            <mat-chip class="chip-arrived"><strong>Estatus:{{study.estado}} </strong></mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </div>
+               
+            </mat-card>
+        </ng-container>
+    </div>
+  </div>
+  
+  

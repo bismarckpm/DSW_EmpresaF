@@ -1,0 +1,47 @@
+<div  fxFill fxLayout="column" fxLayoutAlign="center center " class="menu-bg">
+    <mat-card class="example-card" >
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/pages/client"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">S</span>olicitar estudio</h1>
+            </div>
+        </div>
+        <form [formGroup]="requestStudyForm" (ngSubmit)="handleRequestStudy()" fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field >
+                <mat-label>Edad inicial</mat-label>
+                <input matInput formControlName="edadInicial" type="number">
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>Edad  Final</mat-label>
+                <input matInput formControlName="edadFinal" type="number">
+            </mat-form-field> 
+            <mat-form-field appearance="outline">
+                <mat-label>Genero</mat-label>
+                <mat-select formControlName="selectGenero">
+                    <mat-option *ngFor="let genero of generos" [value]="genero.id">{{genero.descripcion}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Parroquia</mat-label>
+                <mat-select formControlName="selectParroquia">
+                    <mat-option *ngFor="let parroquia of parroquias" [value]="parroquia.id">{{parroquia.nombreParroquia}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Marca</mat-label>
+                <mat-select formControlName="selectMarca">
+                    <mat-option *ngFor="let marca of marcas" [value]="marca.id">{{marca.nombreMarca}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Nivel socioeconomico</mat-label>
+                <mat-select formControlName="selecNivelS">
+                    <mat-option *ngFor="let nivel of nivelS" [value]="nivel.id">{{nivel.descripcionS}}</mat-option>
+                </mat-select>
+            </mat-form-field>    
+            <button mat-raised-button class="create-btn width-100" [disabled]="!requestStudyForm.valid">Enviar solicitud</button>
+        </form>
+    </mat-card>
+</div>   

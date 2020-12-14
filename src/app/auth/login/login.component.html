@@ -21,15 +21,14 @@
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
           </mat-form-field>
-          <button class="width-login-btn" mat-raised-button [disabled]="bSignIn " fxLayoutAlign="center center">
-            <span *ngIf="!bSignIn" class="btn-login-text">INICIAR SESION</span>
+          <button class="width-login-btn" mat-raised-button [disabled]="bSignIn || !signInForm.valid" fxLayoutAlign="center center">
+            <span *ngIf="!bSignIn" class="btn-login-text" >INICIAR SESION</span>
             <mat-spinner *ngIf="bSignIn" mode="indeterminate" [diameter]="30"></mat-spinner>
           </button>
         </form>
         <div class="links-container text-center" fxLayout="column" fxLayoutAlign="center center">
           <a class="sl-link" routerLink="/auth/forgot">Olvido su clave?</a>
           <a class="sl-link" routerLink="/auth/register">Registrese</a>
-          <a class="sl-link" routerLink="/config/menuconfig">Prueba menu</a>
         </div>
       </div>
       <div class="image-container" fxLayoutAlign="center center" fxHide="true" fxShow.gt-sm>

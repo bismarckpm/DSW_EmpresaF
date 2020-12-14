@@ -14,8 +14,7 @@ export class QuestionsComponent implements OnInit {
   respuestaForm: FormGroup;
   radioSelected:any;
   checked:any;
-  selectedItemsList:any = [];
-  checkedIDs:any = [];
+  checkedIDs:any;
   arraytest:any;
   constructor(private userService:UsersService,public _snackBar: MatSnackBar,private formBuilder: FormBuilder) { }
 
@@ -29,32 +28,11 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
     this.respuestaForm = this.formBuilder.group({
       Respuesta: ['', Validators.required],
-     
     });
     this.getPreguntas();
     this.radioSelected = {
     }
-    this.fetchSelectedItems();
-    this.fetchCheckedIDs()
-  }
 
-  changeSelection() {
-    this.fetchSelectedItems()
-  }
-
-  fetchSelectedItems() {
-    this.selectedItemsList = this.preguntas.filter((value, index) => {
-      return value.isChecked
-    });
-  }
-
-  fetchCheckedIDs() {
-    this.checkedIDs = []
-    this.preguntas.forEach((value, index) => {
-      if (value.isChecked) {
-        this.checkedIDs.push(value.id);
-      }
-    });
   }
 
   getPreguntas(){
@@ -72,7 +50,7 @@ export class QuestionsComponent implements OnInit {
       { idPregunta:3,
         descripcionPregunta:'Como se entero acerca del negocio',
         tipo:'Completacion',
-        opciones: [{idOpcion:6,descripcion:''}]
+        opciones: [{idOpcion:6,descripcion:null}]
       },
       { idPregunta:4,
         descripcionPregunta:'El cielo es azul?',
@@ -90,14 +68,14 @@ export class QuestionsComponent implements OnInit {
         opciones: [{idOpcion:12,descripcion:'El pasto'},{idOpcion:13,descripcion:'Las hojas'}]
       },
     ]
-
+ 
   }
 
   handleRespuesta(){
     console.log(this.radioSelected);
-  }
-
-  checkData(){
-    console.log(this.radioSelected);
+    this.checkedIDs =  { 
+      opciones: this.radioSelected
+    }
+    console.log(this.checkedIDs)
   }
 }

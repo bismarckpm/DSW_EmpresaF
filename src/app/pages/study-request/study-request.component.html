@@ -1,50 +1,46 @@
-<mat-toolbar class="container-fluid mat-toolbar">
-    <div class="row d-flex align-items-center">
-        <a mat-icon-button routerLink="/pages/client" class="d-flex justify-content-start">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-        </a>
-        
-    </div>
-</mat-toolbar>
-<br>
-<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout fxLayoutAlign="center center ">
-        <mat-card-content fxLayout="column">
-            <mat-form-field appearance="fill" >
-            <mat-label>Subtegoría</mat-label>
-            <mat-select >
-                <mat-option *ngFor="let subcategory of subcategorys, index as i" [value]="subcategory.value">{{subcategory.name}}</mat-option>
-            </mat-select>
+<div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card">
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/pages/client"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">S</span>olicitar estudio</h1>
+            </div>
+        </div>
+        <form [formGroup]="createEstudioForm" (ngSubmit)="handleCreateEstudio()" fxLayout="column" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline">
+                <mat-label>Subcategoria</mat-label>
+                <mat-select formControlName="selectSubCategoria">
+                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.idSubcategoria">{{subCategoria.name}}</mat-option>
+                </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline">
+                <mat-label>Nivel Socioeconomico</mat-label>
+                <mat-select formControlName="nivelsocioeconomico">
+                    <mat-option>Alto</mat-option>
+                    <mat-option>Medio</mat-option>
+                    <mat-option>Bajo</mat-option>
+                </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline">
+                <mat-label>Genero</mat-label>
+                <mat-select formControlName="genero">
+                    <mat-option>Masculino</mat-option>
+                    <mat-option>Femenino</mat-option>
+                    <mat-option>Ambos</mat-option>
+                </mat-select>
             </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-            <mat-label>Nivel socioeconomico de la muestra</mat-label>
-            <mat-select>
-                <mat-option value="option">Clase alta</mat-option>
-                <mat-option value="option">Clase media</mat-option>
-                <mat-option value="option">Clase baja</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-            <mat-label>Genero de la muestra</mat-label>
-            <mat-select>
-                <mat-option value="option">Hombre</mat-option>
-                <mat-option value="option">Mujer</mat-option>
-                <mat-option value="option">Ambos</mat-option>
-            </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-label>Rango de edad</mat-label>
-            <mat-form-field appearance="fill" >
-              <mat-label>Rango superior</mat-label>
-                <input matInput type="number">
-              </mat-form-field>
-            <mat-form-field appearance="fill" >
-              <mat-label>Rango inferior</mat-label>
-                <input matInput type="number">
-              </mat-form-field>
-            <br>
-        </mat-card-content>
-    </div>    
-</div> 
+                <mat-label>Rango de edad</mat-label>
+            <mat-form-field appearance="outline">
+                <mat-label>Rango superior</mat-label>
+                <input matInput formControlName="rangosuperior" type="number">
+            </mat-form-field> 
+            <mat-form-field appearance="outline">
+                <mat-label>Rango inferior</mat-label>
+                <input matInput formControlName="rangoinferior" type="number">
+            </mat-form-field>      
+            <button mat-raised-button class="create-btn width-100" >Crear</button>
+        </form>
+    </mat-card>
+</div>   

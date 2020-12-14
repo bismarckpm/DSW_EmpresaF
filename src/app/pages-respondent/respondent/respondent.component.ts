@@ -47,7 +47,7 @@ import { Router } from '@angular/router';
     }
   
     verEncuesta(idEncuesta){
-      this.router.navigate(['pages/poll', idEncuesta]);
+      this.router.navigate(['pages-respondent/poll', idEncuesta]);
       console.log(idEncuesta)
     }
   
