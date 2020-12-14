@@ -161,6 +161,7 @@ export class RegisterComponent implements OnInit {
           this.openSnackBar("Registro exitoso");
         }
         else if(auxRes.estado != 'success'){
+          console.log(auxRes)
           this.openSnackBar("Registro fallido");
         }
       },

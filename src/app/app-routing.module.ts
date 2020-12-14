@@ -23,6 +23,10 @@ const routes: Routes = [
     canActivate: [UsersGuard]
   },
   {
+    path: 'pages-respondent',
+    loadChildren: () => import('./pages-respondent/pages-respondent.module').then(m => m.PagesRespondentModule),
+  },
+  {
     path: 'config',
     loadChildren: () => import('./config/config.module').then(m => m.ConfigModule),
     canActivate: [AdminGuard]

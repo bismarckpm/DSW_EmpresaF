@@ -14,14 +14,10 @@ const routes: Routes = [
     path: "",
     component:GlobalMenuPComponent,
     children: [
-    { path: "respondent", component: RespondentComponent},
-    { path: "questions", component: QuestionsComponent},
     { path: "client", component: ClientComponent},
-    { path: "study", component: StudyComponent},
     { path: "request-study", component: RequestStudyComponent}  
     ],
   },
-  { path: 'poll/:id', component: PollComponent },
 ];
 
 @NgModule({
