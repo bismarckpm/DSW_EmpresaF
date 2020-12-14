@@ -52,10 +52,12 @@
                         <mat-label>Ocupacion</mat-label>
                         <input matInput formControlName="ocupacion" type="text">
                     </mat-form-field>
-                    <mat-form-field appearance="outline" >
+                    <mat-form-field appearance="outline">
                         <mat-label>Parroquia</mat-label>
-                        <input matInput formControlName="parroquia" type="number">
-                    </mat-form-field>
+                        <mat-select formControlName="Selectparroquia">
+                        <mat-option *ngFor="let parroquia of Parroquias" [value]="parroquia.idParroquia">{{parroquia.nombreParroquia}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>  
                     <mat-form-field appearance="outline" >
                         <mat-label>Nivel de estudio</mat-label>
                         <input matInput formControlName="nivelEstudio" type="number">

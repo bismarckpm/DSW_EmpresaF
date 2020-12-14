@@ -60,4 +60,9 @@ export class UsersService extends ApiService{
                           },
                           this.httpOptions)
   }
+
+
+  getParroquias(){
+    return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
+  }
 }

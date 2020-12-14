@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
   genero:any;
   estadoCivil:any;
   ocupacion:any;
-  parroquia:any;
+  Parroquias:any;
   nivelEstudio:any;
   nivelSocioeconomico:any;
   telefono:any;
@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
       genero: ['',Validators.required],
       estadoCivil: ['',Validators.required],
       ocupacion: ['',Validators.required],
-      parroquia: ['',Validators.required],
+      Selectparroquia: ['',Validators.required],
       nivelEstudio: ['',Validators.required],
       nivelSocioeconomico: ['',Validators.required],
       telefono: ['',Validators.required],
@@ -57,23 +57,15 @@ export class RegisterComponent implements OnInit {
       nombreUsuario: ['',Validators.required],
       contrasena: ['',Validators.required],
     })
-    this.getUbication();
     this.getGenero();
     this.getEstadoCivil();
+    this.getParroquia();
   }
 
   openSnackBar(message: string){
     this._snackBar.open(message, 'X', {
       duration: 3000,
     });
-  }
-
-  getUbication(){
-    this.zones = [
-      { name: 'Los Caobos Av La Salle'},
-      { name: 'Las Palmas Av Las Palmas' },
-      { name: 'La Florida Av Andres Bello'},
-    ]
   }
 
   getGenero(){
@@ -91,7 +83,24 @@ export class RegisterComponent implements OnInit {
     ]
   }
 
+  getParroquia(){
+    this.userService.getParroquias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.Parroquias = auxRes.parroquias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
   handleRegisterEncuestado(){
+    let idParroquia
     this.numeroIdentificacion = this.registerEncuestadoForm.get('numeroIdentificacion').value;
     this.primerNombre = this.registerEncuestadoForm.get('primerNombre').value
     this.primerApellido = this.registerEncuestadoForm.get('primerApellido').value;
@@ -100,7 +109,7 @@ export class RegisterComponent implements OnInit {
     this.genero = this.registerEncuestadoForm.get('genero').value
     this.estadoCivil =   this.registerEncuestadoForm.get('estadoCivil').value
     this.ocupacion = this.registerEncuestadoForm.get('ocupacion').value
-    this.parroquia = this.registerEncuestadoForm.get('parroquia').value
+    idParroquia = this.registerEncuestadoForm.get('Selectparroquia').value
     this.nivelEstudio = this.registerEncuestadoForm.get('nivelEstudio').value
     this.nivelSocioeconomico = this.registerEncuestadoForm.get('nivelSocioeconomico').value
     this.telefono = this.registerEncuestadoForm.get('telefono').value
@@ -117,7 +126,7 @@ export class RegisterComponent implements OnInit {
                                   this.genero,
                                   this.estadoCivil,
                                   this.ocupacion,
-                                  this.parroquia,
+                                  idParroquia,
                                   this.nivelEstudio,
                                   this.nivelSocioeconomico,
                                   codigo,
