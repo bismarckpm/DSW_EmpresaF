@@ -77,5 +77,9 @@ export class UsersService extends ApiService{
                           "nivelSocioeconomico": nivelSocioeconomico
                           },
                           this.httpOptions)
+    }
+    
+  getParroquias(){
+    return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
 }

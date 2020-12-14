@@ -5,7 +5,7 @@ import { RespondentComponent } from 'src/app/pages/respondent/respondent.compone
 import { QuestionsComponent } from 'src/app/pages/questions/questions.component';
 import { GlobalMenuPComponent } from './global-menuP.component';
 import { ClientComponent } from './client/client.component';
-import { PollComponent } from 'src/app/pages/poll/poll.component'
+import { PollComponent } from 'src/app/pages/poll/poll.component';
 import { StudyComponent } from 'src/app/pages/study/study.component';
 import { RequestStudyComponent } from "src/app/pages/request-study/request-study.component";
 
