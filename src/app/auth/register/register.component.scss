@@ -1,4 +1,3 @@
-@import './../../../styles.scss';
 
 $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
@@ -13,5 +12,15 @@ $mercadoucab-blue: #5454C9;
 }
 
 mat-form-field{
-    width: 20rem;
+    width: 25rem;
 }
+
+mat-card{
+    -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }

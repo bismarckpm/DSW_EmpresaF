@@ -32,30 +32,31 @@ export class MenuCQuestionComponent implements OnInit{
   getMarcas(){
     
     this.element = [
-      {idPregunta: 1, descripcionPregunta: 'Hydrogen', tipo: 'liso',},
-      {idPregunta: 2, descripcionPregunta: 'Helium', tipo: 'liso', },
-      {idPregunta: 3, descripcionPregunta: 'Lithium', tipo: 'verde', },
-      {idPregunta: 4, descripcionPregunta: 'Beryllium', tipo: 'liso', },
-      {idPregunta: 5, descripcionPregunta: 'Boron', tipo: 'negro', },
-      {idPregunta: 6, descripcionPregunta: 'Carbon', tipo: 'blanco',},
-      {idPregunta: 7, descripcionPregunta: 'Nitrogen', tipo: 'azul', },
-      {idPregunta: 8, descripcionPregunta: 'Oxygen', tipo: 'naranja', },
-      {idPregunta: 9, descripcionPregunta: 'Fluorine', tipo: 'amarillo', },
-      {idPregunta: 10, descripcionPregunta: 'Neon', tipo: 'naranja', },
+      {idPregunta: 1, descripcionPregunta: 'Hydrogen', tipo: 'liso'},
+      {idPregunta: 2, descripcionPregunta: 'Helium', tipo: 'liso' },
+      {idPregunta: 3, descripcionPregunta: 'Lithium', tipo: 'verde' },
+      {idPregunta: 4, descripcionPregunta: 'Beryllium', tipo: 'liso' },
+      {idPregunta: 5, descripcionPregunta: 'Boron', tipo: 'negro' },
+      {idPregunta: 6, descripcionPregunta: 'Carbon', tipo: 'blanco'},
+      {idPregunta: 7, descripcionPregunta: 'Nitrogen', tipo: 'azul' },
+      {idPregunta: 8, descripcionPregunta: 'Oxygen', tipo: 'naranja' },
+      {idPregunta: 9, descripcionPregunta: 'Fluorine', tipo: 'amarillo' },
+      {idPregunta: 10, descripcionPregunta: 'Neon', tipo: 'naranja' },
     ];
     this.dataSource = new MatTableDataSource(this.element);
 
   }
 
-  deletePregunta(idPregunta){
+  deleteQuestion(idPregunta){
     console.log(idPregunta)
   }
 
-  updatePregunta(idPregunta){
+  updateQuestion(idPregunta){
+    this.router.navigate(['/config/updateQuestion']);
     console.log(idPregunta)
   }
 
-  addPregunta(){
+  addQuestion(){
     this.router.navigate(['/config/addQuestion']);
   }
 

@@ -9,8 +9,8 @@ export class GlobalMenuMethodsService {
   constructor(private router: Router) { }
 
   signOut(){
-    if(localStorage.getItem('adminLogged')){
-      localStorage.removeItem('adminLogged');
+    if(localStorage.getItem('administrador')){
+      localStorage.removeItem('administrador');
       this.router.navigate([''], { replaceUrl: true });
     }
     else if(localStorage.getItem('analistLogged')){

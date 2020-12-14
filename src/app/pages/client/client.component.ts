@@ -12,7 +12,8 @@ import {MatPaginator} from '@angular/material/paginator';
 export class ClientComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idEstudio', 'estatusEstudio', 'nombreMarca', 'fechaIniEstudio','icons'];
+  panelOpenState = false;
+  displayedColumns: string[] = ['idEstudio', 'estatusEstudio', 'edad', 'fechaIniEstudio','genero','icons'];
   constructor() { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,16 +32,16 @@ export class ClientComponent implements OnInit{
   getEstudios(){
     
     this.element = [
-      {idEstudio: 1, estatusEstudio: 'Hydrogen', nombreMarca: 'liso', fechaIniEstudio: 'H'},
-      {idEstudio: 2, estatusEstudio: 'Helium', nombreMarca: 'liso', fechaIniEstudio: 'He'},
-      {idEstudio: 3, estatusEstudio: 'Lithium', nombreMarca: 'verde', fechaIniEstudio: 'Li'},
-      {idEstudio: 4, estatusEstudio: 'Beryllium', nombreMarca: 'liso', fechaIniEstudio: 'Be'},
-      {idEstudio: 5, estatusEstudio: 'Boron', nombreMarca: 'negro', fechaIniEstudio: 'B'},
-      {idEstudio: 6, estatusEstudio: 'Carbon', nombreMarca: 'blanco', fechaIniEstudio: 'C'},
-      {idEstudio: 7, estatusEstudio: 'Nitrogen', nombreMarca: 'azul', fechaIniEstudio: 'N'},
-      {idEstudio: 8, estatusEstudio: 'Oxygen', nombreMarca: 'naranja', fechaIniEstudio: 'O'},
-      {idEstudio: 9, estatusEstudio: 'Fluorine', nombreMarca: 'amarillo', fechaIniEstudio: 'F'},
-      {idEstudio: 10, estatusEstudio: 'Neon', nombreMarca: 'naranja', fechaIniEstudio: 'Ne'},
+      {idEstudio: 1, estatusEstudio: 'Hydrogen', edad: 'liso', fechaIniEstudio: 'H',genero:'Masculino'},
+      {idEstudio: 2, estatusEstudio: 'Helium', edad: 'liso', fechaIniEstudio: 'He',genero:'Masculino'},
+      {idEstudio: 3, estatusEstudio: 'Lithium', edad: 'verde', fechaIniEstudio: 'Li',genero:'Masculino'},
+      {idEstudio: 4, estatusEstudio: 'Beryllium', edad: 'liso', fechaIniEstudio: 'Be',genero:'Masculino'},
+      {idEstudio: 5, estatusEstudio: 'Boron', edad: 'negro', fechaIniEstudio: 'B',genero:'Masculino'},
+      {idEstudio: 6, estatusEstudio: 'Carbon', edad: 'blanco', fechaIniEstudio: 'C',genero:'Masculino'},
+      {idEstudio: 7, estatusEstudio: 'Nitrogen', edad: 'azul', fechaIniEstudio: 'N',genero:'Masculino'},
+      {idEstudio: 8, estatusEstudio: 'Oxygen', edad: 'naranja', fechaIniEstudio: 'O',genero:'Masculino'},
+      {idEstudio: 9, estatusEstudio: 'Fluorine', edad: 'amarillo', fechaIniEstudio: 'F',genero:'Masculino'},
+      {idEstudio: 10, estatusEstudio: 'Neon', edad: 'naranja', fechaIniEstudio: 'Ne',genero:'Masculino'},
     ];
     this.dataSource = new MatTableDataSource(this.element);
 
@@ -50,7 +51,7 @@ export class ClientComponent implements OnInit{
     console.log(idEstudio)
   }
 
-  addEstudio(){
+  solicitarEstudio(){
     console.log("Add estudio");
   }
 }

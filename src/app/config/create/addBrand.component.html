@@ -1,5 +1,5 @@
 <div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
-    <mat-card class="example-card" >
+    <mat-card class="example-card">
         <div fxLayout="row">
             <div fxLayoutAlign="start center">
                 <a class="fas fa-arrow-left fa-lg" routerLink="/config/menubrand"></a>
@@ -23,15 +23,15 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Unidad</mat-label>
-                <input matInput formControlName="Unidad" type="number">
+                <input matInput formControlName="Unidad" type="text">
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Subcategorias</mat-label>
                 <mat-select formControlName="selectSubCategoria">
-                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.idSubcategoria">{{subCategoria.name}}</mat-option>
+                    <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.id">{{subCategoria.nombreSubcategoria}}</mat-option>
                 </mat-select>
             </mat-form-field>       
-            <button mat-raised-button class="create-btn width-100" >Crear</button>
+            <button mat-raised-button class="create-btn width-100" [disabled]="!createMarcaForm.valid">Crear</button>
         </form>
     </mat-card>
 </div>   

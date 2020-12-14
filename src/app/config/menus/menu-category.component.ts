@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-menu-category',
@@ -12,8 +13,8 @@ import { Router } from '@angular/router';
 export class MenuCategoryComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idCategoria', 'nombreCategoria','icons'];
-  constructor(private router: Router) { }
+  displayedColumns: string[] = ['id', 'nombreCategoria','icons'];
+  constructor(private router: Router, private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -21,28 +22,28 @@ export class MenuCategoryComponent implements OnInit{
     this.getCategorias();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   getCategorias(){
-    
-    this.element = [
-      {idCategoria: 1, nombreCategoria: 'Salud'},
-      {idCategoria: 2, nombreCategoria: 'Comidas'},
-      {idCategoria: 3, nombreCategoria: 'Aseo'},
-      {idCategoria: 4, nombreCategoria: 'Oficina'},
-      {idCategoria: 5, nombreCategoria: 'Escolar'},
-      {idCategoria: 6, nombreCategoria: 'Cocina'},
-      {idCategoria: 7, nombreCategoria: 'Muebles'},
-      {idCategoria: 8, nombreCategoria: 'Computadoras'},
-      {idCategoria: 9, nombreCategoria: 'Higiene'},
-      {idCategoria: 10, nombreCategoria: 'Mascotas'},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
+    this.adminService.getCategorias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          console.log('entro')
+          this.element = [auxRes.categorias];
+          this.dataSource = new MatTableDataSource(auxRes.categorias);
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
 
   }
 
@@ -51,6 +52,7 @@ export class MenuCategoryComponent implements OnInit{
   }
 
   updateCategoria(idCategoria){
+    this.router.navigate(['/config/updateCategory']);
     console.log(idCategoria)
   }
 

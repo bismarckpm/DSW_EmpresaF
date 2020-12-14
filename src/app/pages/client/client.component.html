@@ -1,5 +1,28 @@
+<mat-accordion >
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false" class="disable_ripple">
+    <mat-expansion-panel-header >
+    </mat-expansion-panel-header>
+        <div fxLayout="row wrap" fxLayoutAlign="center" >
+          <mat-card  class="systems-card" fxLayout="column" fxLayoutAlign="center center">
+            <div class="login-container">
+              <div class="cursor-pointer" >
+                <span  class="card-title">Solicitar estudio</span>
+              </div>
+              <div class="my-4 "fxLayoutAlign="center center">
+                  <img class="cursor-pointer" (click)="solicitarEstudio()" height="125" src="../../../assets/images/solicitud.png"  alt="">
+              </div>
+            </div>
+            <div class="width-100" fxLayoutAlign="center center">
+              <button  class="systems-card-btn-sm" id="show-sm" (click)="solicitarEstudio()" mat-raised-button>SOLICITAR</button>
+            </div>
+          </mat-card>
+        </div>
+  
+    </mat-expansion-panel>
+</mat-accordion>
 
-<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+<div fxFill class=" content" fxLayout="column" fxLayoutAlign="center center" style="padding-top: 20px;">
     <div class="title-container">
       <h1 class="sign-in-title text-center">Estudios solicitados</h1>
     </div>
@@ -7,38 +30,36 @@
         <mat-form-field>
             <mat-label>Buscar</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-            <i class="fas fa-plus fa-lg" (click)="addEstudio()" ></i>
+            <!--<i class="fas fa-plus fa-lg" (click)="addEstudio()" ></i>-->
         </mat-form-field>
     </div>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-          <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
         
-          <!-- idEstudio Column -->
           <ng-container matColumnDef="idEstudio">
             <th mat-header-cell *matHeaderCellDef> ID</th>
             <td mat-cell *matCellDef="let element"> {{element.idEstudio}} </td>
           </ng-container>
-        
-          <!-- estatusEstudio Column -->
+
           <ng-container matColumnDef="estatusEstudio">
             <th mat-header-cell *matHeaderCellDef> Estatus </th>
             <td mat-cell *matCellDef="let element"> {{element.estatusEstudio}} </td>
           </ng-container>
-        
-          <!-- nombreMarca Column -->
-          <ng-container matColumnDef="nombreMarca">
-            <th mat-header-cell *matHeaderCellDef> Marca </th>
-            <td mat-cell *matCellDef="let element"> {{element.nombreMarca}} </td>
+
+          <ng-container matColumnDef="edad">
+            <th mat-header-cell *matHeaderCellDef> Edad </th>
+            <td mat-cell *matCellDef="let element"> {{element.edad}} </td>
           </ng-container>
-        
-          <!-- fechaIniEstudio Column -->
+
           <ng-container matColumnDef="fechaIniEstudio">
             <th mat-header-cell *matHeaderCellDef> Fecha solicitado </th>
             <td mat-cell *matCellDef="let element"> {{element.fechaIniEstudio}} </td>
           </ng-container>
-  
-          <!-- Symbol Icon -->
+
+          <ng-container matColumnDef="genero">
+            <th mat-header-cell *matHeaderCellDef> Genero</th>
+            <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
+          </ng-container>
+
           <ng-container matColumnDef="icons">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let element"> <span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateEstudio(element.idEstudio)"></i></span></td>
@@ -49,4 +70,3 @@
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" style="width: 80%;margin-left: auto;margin-right: auto;" showFirstLastButtons></mat-paginator>
   </div>
-  

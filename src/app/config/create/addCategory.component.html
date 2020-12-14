@@ -13,7 +13,7 @@
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="Nombre" type="text">
             </mat-form-field>  
-            <button mat-raised-button class="create-btn width-100" >Crear</button>
+            <button mat-raised-button class="create-btn width-100" [disabled]="!createCategoriaForm.valid">Crear</button>
         </form>
     </mat-card>
 </div>   

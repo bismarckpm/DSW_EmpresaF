@@ -18,7 +18,7 @@
         <!-- idMarca Column -->
         <ng-container matColumnDef="idMarca">
           <th mat-header-cell *matHeaderCellDef> ID</th>
-          <td mat-cell *matCellDef="let element"> {{element.idMarca}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
 
         <!-- nombreMarca Column -->
@@ -45,10 +45,16 @@
         <td mat-cell *matCellDef="let element"> {{element.unidad}} </td>
         </ng-container>
 
+        <!-- unidad Column -->
+        <ng-container matColumnDef="subcategoriaId">
+          <th mat-header-cell *matHeaderCellDef> Subcategoria </th>
+          <td mat-cell *matCellDef="let element"> {{element.subcategoriaId}} </td>
+        </ng-container>
+          
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteMarca(element.idMarca)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateMarca(element.idMarca)"></i></span></td>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteMarca(element.id)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateMarca(element.id)"></i></span></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -1,6 +1,7 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-studies',
@@ -12,12 +13,12 @@ export class MenuStudiesComponent implements OnInit{
   element:any;
   dataSource:any;
   displayedColumns: string[] = ['idEstudio','estadoEstudio','nombreCliente','nombreSubcategoria','fecIniEstudio','fecFinEstudio','icons'];
-  constructor() { }
+  constructor(private router: Router) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getEstudios();
+    this.getStudies();
     
   }
   ngAfterViewInit() {
@@ -27,7 +28,7 @@ export class MenuStudiesComponent implements OnInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getEstudios(){
+  getStudies(){
     
     this.element = [
       {idEstudio: 1,estadoEstudio:'activo', nombreCliente: 'Carlos23',nombreSubcategoria:'Medicamentos',fecIniEstudio:'01/01/2020',fecFinEstudio:'Sin fecha fin'},
@@ -45,15 +46,17 @@ export class MenuStudiesComponent implements OnInit{
 
   }
 
-  deleteEstudio(idEstudio){
+  deleteStudy(idEstudio){
     console.log(idEstudio)
   }
 
-  updateEstudio(idEstudio){
+  updateStudy(idEstudio){
+    this.router.navigate(['/config/updateStudies']);
     console.log(idEstudio)
   }
 
-  addEstudio(){
+  addStudy(){
+    this.router.navigate(['/config/addStudy']);
     console.log("Add Estudio");
   }
 }

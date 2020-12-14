@@ -15,11 +15,14 @@ $mercadoucab-blue: #5454C9;
   display:  block;
   width: 20rem;
   height: .1rem;
-  background-color: $mercadoucab-primary;
   padding-left: 30px;
   padding-right: 30px;
   margin-top: 1rem;
   margin-bottom: 2rem;
+}
+
+h1::first-letter{
+    color: #5454C9;;
 }
 
 table {
