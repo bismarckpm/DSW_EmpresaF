@@ -74,6 +74,39 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
   }
 
+  @PUT
+  @Path("/update/{usuarioClienteId}")
+  public Response updateUser(@PathParam("usuarioClienteId") long id, UsuarioDto usuarioDto){
+
+    JsonObject data;
+    DaoUsuario daoUsuario = new DaoUsuario();
+
+    try{
+
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      usuario.get_cliente().setNombre(usuarioDto.getClienteDto().getNombre());
+
+      Usuario resul = daoUsuario.update(usuario);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
   @GET
   @Path("/getall")
   public Response getUsers() {

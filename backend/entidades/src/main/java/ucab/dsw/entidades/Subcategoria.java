@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "subcategoria")
-public class Subcategoria {
+public class Subcategoria extends EntidadBase{
 
   @Id
   @Column( name = "codigo_subcategoria" )

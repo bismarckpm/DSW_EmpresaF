@@ -4,6 +4,7 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.entidades.Categoria;
+import ucab.dsw.entidades.Usuario;
 import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
@@ -34,7 +35,6 @@ public class ServicioCategoria extends AplicacionBase {
       DaoCategoria daoCategoria = new DaoCategoria();
       Categoria categoriaAgregada = daoCategoria.insert(categoria);
 
-
       data = Json.createObjectBuilder().add("categoria", categoriaAgregada.get_id())
         .add("estado", "success")
         .add("code", 200)
@@ -51,10 +51,61 @@ public class ServicioCategoria extends AplicacionBase {
       System.out.println(data);
       return  Response.ok().entity(data).build();
     }
+    catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
 
     System.out.println(data);
     return  Response.ok().entity(data).build();
 
+  }
+
+  @PUT
+  @Path("/update/{categoriaId}")
+  public Response updateCategoria(@PathParam("categoriaId") long id, CategoriaDto categoriaDto){
+
+    JsonObject data;
+    DaoCategoria daoCategoria = new DaoCategoria();
+
+    try{
+      Categoria categoria = daoCategoria.find(id, Categoria.class);
+
+      categoria.set_nombreCategoria(categoriaDto.getNombreCategoria());
+
+      Categoria resul = daoCategoria.update(categoria);
+
+      data = Json.createObjectBuilder().add("categoria", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }catch (PersistenceException | DatabaseException  ex){
+      String mensaje = "Esta categoría ya se encuentra añadida";
+      data = Json.createObjectBuilder().add("mensaje", mensaje)
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
   }
 
   @GET

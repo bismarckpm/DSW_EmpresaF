@@ -74,6 +74,52 @@ public class ServicioSubcategoria extends AplicacionBase {
 
   }
 
+  @PUT
+  @Path("/update/{subcategoriaId}")
+  public Response updateSubcategoria(@PathParam("subcategoriaId") long id, SubcategoriaDto subcategoriaDto){
+
+    JsonObject data;
+    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+
+    try{
+      Subcategoria subcategoria = daoSubcategoria.find(id, Subcategoria.class);
+
+      subcategoria.set_nombreSubcategoria(subcategoriaDto.getNombreSubcategoria());
+
+      DaoCategoria daoCategoria = new DaoCategoria();
+      Categoria categoria = daoCategoria.find(subcategoriaDto.getCategoria().getId(), Categoria.class);
+      subcategoria.set_categoria(categoria);
+
+      Subcategoria resul = daoSubcategoria.update(subcategoria);
+
+      data = Json.createObjectBuilder().add("subcategoria", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }catch (PersistenceException | DatabaseException  ex){
+      String mensaje = "Esta subcategoría ya se encuentra añadida";
+      data = Json.createObjectBuilder().add("mensaje", mensaje)
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
   @GET
   @Path("/getall")
   public Response getSubcategories() {

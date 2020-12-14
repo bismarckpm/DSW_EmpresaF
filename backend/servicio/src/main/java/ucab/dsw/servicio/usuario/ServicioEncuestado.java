@@ -167,53 +167,69 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
- /* @PUT
+  @PUT
   @Path("/update/{usuarioEncuestadoid}")
-  public UsuarioDto updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
-    UsuarioDto resultado = new UsuarioDto();
+  public Response updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
+
+    JsonObject data;
+    DaoUsuario daoUsuario = new DaoUsuario();
 
     try {
-      DaoUsuario daoUsuario = new DaoUsuario();
+
       Usuario usuario = daoUsuario.find(id, Usuario.class);
 
-      Encuestado encuestado = new Encuestado();
-      encuestado.set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
-      encuestado.set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
-      encuestado.set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
-      encuestado.set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
-      encuestado.set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
-      encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
-      encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
+      usuarioDto.setNombreUsuario(usuario.get_nombreUsuario());
+
+      usuario.get_encuestado().set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
+      usuario.get_encuestado().set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
+      usuario.get_encuestado().set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
+      usuario.get_encuestado().set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
+      usuario.get_encuestado().set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
+      usuario.get_encuestado().set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
+      usuario.get_encuestado().set_genero(usuarioDto.getEncuestadoDto().getGenero());
 
 
       DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
 
-      encuestado.set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
-      encuestado.set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
-      encuestado.set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
+      usuario.get_encuestado().set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
+      usuario.get_encuestado().set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
+      usuario.get_encuestado().set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
 
       DaoParroquia daoParroquia = new DaoParroquia();
       Parroquia parroquia = daoParroquia.find(usuarioDto.getEncuestadoDto().getParroquia().getId(), Parroquia.class);
-      encuestado.set_parroquia(parroquia);
+      usuario.get_encuestado().set_parroquia(parroquia);
 
       DaoNivelEstudio dao = new DaoNivelEstudio();
       NivelEstudio nivelEstudio = dao.find(usuarioDto.getEncuestadoDto().getNivelEstudio().getId(), NivelEstudio.class);
-      encuestado.set_nivelEstudio(nivelEstudio);
+      usuario.get_encuestado().set_nivelEstudio(nivelEstudio);
 
       DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
       NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
-      encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
+      usuario.get_encuestado().set_nivelSocioeconomico(nivelSocioeconomico);
+
+      Usuario resul = daoUsuario.update(usuario);
+
+      DirectorioActivo directorioActivo = new DirectorioActivo();
+      directorioActivo.changePassword(usuarioDto);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
 
 
-      Usuario resul = dao.update(usuario);
-      resultado.setId(resul.get_id());
-
-
-    } catch (Exception ex) {
-      String problema = ex.getMessage();
+    }catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
     }
-    return resultado;
-  }*/
+
+    System.out.println(data);
+    return  Response.ok().entity(data).build();
+  }
 
   @GET
   @Path("/getestudios/{usuarioEncuestadoId}")

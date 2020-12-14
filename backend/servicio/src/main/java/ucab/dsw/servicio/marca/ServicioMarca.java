@@ -1,9 +1,13 @@
 package ucab.dsw.servicio.marca;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
+import ucab.dsw.accesodatos.Dao;
+import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.MarcaDto;
+import ucab.dsw.dtos.SubcategoriaDto;
+import ucab.dsw.entidades.Categoria;
 import ucab.dsw.entidades.Marca;
 import ucab.dsw.entidades.Subcategoria;
 import ucab.dsw.excepciones.PruebaExcepcion;
@@ -61,6 +65,47 @@ public class ServicioMarca extends AplicacionBase {
     System.out.println(data);
     return  Response.ok().entity(data).build();
 
+  }
+
+
+  @PUT
+  @Path("/update/{marcaId}")
+  public Response updateMarca(@PathParam("marcaId") long id, MarcaDto marcaDto){
+
+    JsonObject data;
+    DaoMarca daoMarca = new DaoMarca();
+
+    try{
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      marca.set_nombreMarca(marcaDto.getNombreMarca());
+      marca.set_tipoMarca(marcaDto.getTipoMarca());
+      marca.set_capacidad(marcaDto.getCapacidad());
+      marca.set_unidad(marcaDto.getUnidad());
+
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+      Subcategoria subcategoria = daoSubcategoria.find(marcaDto.getSubcategoria().getId(), Subcategoria.class);
+      marca.set_subcategoria(subcategoria);
+
+      Marca resul = daoMarca.update(marca);
+
+      data = Json.createObjectBuilder().add("marca", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
   }
 
   @GET
