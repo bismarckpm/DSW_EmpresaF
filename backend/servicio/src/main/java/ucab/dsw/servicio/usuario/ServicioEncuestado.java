@@ -325,4 +325,9 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     System.out.println(data);
     return Response.ok().entity(data).build();
   }
+
+
+  public Response disableUser(UsuarioDto usuarioDto) {
+    return null;
+  }
 }
