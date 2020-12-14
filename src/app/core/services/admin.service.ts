@@ -39,4 +39,8 @@ export class AdminService extends ApiService {
                                                         }
                                                       },this.httpOptions)
   }
+
+  getRequestedStudies(){
+    return this.http.get(this.API_URL+'api/solicitud/getall',this.httpOptions);
+  }
 }

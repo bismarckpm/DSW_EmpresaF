@@ -13,12 +13,10 @@ export class GlobalMenuMethodsService {
       localStorage.removeItem('administrador');
       this.router.navigate([''], { replaceUrl: true });
     }
-    else if(localStorage.getItem('analistLogged')){
-      localStorage.removeItem('analistLogged');
+    else if(localStorage.getItem('clientLogged')){
+      localStorage.removeItem('clientLogged');
       this.router.navigate([''], { replaceUrl: true });
     }
-    //Quitar despues
-    this.router.navigate([''], { replaceUrl: true });
   }
 
 }

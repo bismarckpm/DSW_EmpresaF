@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['config/menuconfig']);
           }
           else if(auxRes.rol == 'cliente'){
+            localStorage.setItem('clientLogged', JSON.stringify(auxRes))
             this.router.navigate(['pages/client']);
           }
           else if(auxRes.rol == 'analista'){

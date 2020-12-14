@@ -7,6 +7,7 @@ import { GlobalMenuPComponent } from './global-menuP.component';
 import { ClientComponent } from './client/client.component';
 import { PollComponent } from 'src/app/pages/poll/poll.component'
 import { StudyComponent } from 'src/app/pages/study/study.component';
+import { RequestStudyComponent } from "src/app/pages/request-study/request-study.component";
 
 const routes: Routes = [
   { 
@@ -16,7 +17,8 @@ const routes: Routes = [
     { path: "respondent", component: RespondentComponent},
     { path: "questions", component: QuestionsComponent},
     { path: "client", component: ClientComponent},
-    { path: "study", component: PollComponent} 
+    { path: "study", component: StudyComponent},
+    { path: "request-study", component: RequestStudyComponent}  
     ],
   },
   { path: 'poll/:id', component: PollComponent },
