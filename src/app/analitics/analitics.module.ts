@@ -6,9 +6,12 @@ import { MenuAnaliticsComponent } from './../analitics/menus/menu-analitics.comp
 import { GlobalMenuAComponent } from './global-menuA.component';
 import { SampleComponent } from './../analitics/sample/sample.component';
 import { UpdateSampleComponent } from './../analitics/update-sample/update-sample.component';
+import { InterviewSurveyComponent } from './interview-survey/interview-survey.component';
+import { FeedbackComponent } from './menus/feedback/feedback.component';
+import { DescriptionCardComponent } from './interview-survey/description-card.component';
 
 @NgModule({
-    declarations: [MenuAnaliticsComponent,GlobalMenuAComponent,SampleComponent,UpdateSampleComponent
+    declarations: [MenuAnaliticsComponent,GlobalMenuAComponent,SampleComponent,UpdateSampleComponent, InterviewSurveyComponent, FeedbackComponent, DescriptionCardComponent
     ],
     imports: [
       AnaliticsRoutingModule,
