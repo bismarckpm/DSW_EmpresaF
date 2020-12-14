@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,7 @@ export class RegisterComponent implements OnInit {
   telefono:any;
   nombreUsuario:any;
   contrasena:any;
-  constructor(private formBuilder: FormBuilder, private userService:UsersService) { }
+  constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
 
   ngOnInit(): void {
@@ -59,6 +60,12 @@ export class RegisterComponent implements OnInit {
     this.getUbication();
     this.getGenero();
     this.getEstadoCivil();
+  }
+
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
   }
 
   getUbication(){
@@ -119,7 +126,13 @@ export class RegisterComponent implements OnInit {
                                   this.contrasena)
     .subscribe(
       res => {
-        console.log(res)
+        let auxRes:any = res;
+        if(auxRes.estado == 'success'){
+          this.openSnackBar("Registro exitoso");
+        }
+        else if(auxRes.estado != 'success'){
+          this.openSnackBar("Registro fallido");
+        }
       },
       err => {
         console.log(err)
@@ -134,7 +147,13 @@ export class RegisterComponent implements OnInit {
     this.userService.registerCliente(this.nombre,this.nombreUsuario,this.contrasena)
     .subscribe(
       res => {
-        console.log(res)
+        let auxRes:any = res;
+        if(auxRes.estado == 'success'){
+          this.openSnackBar("Registro exitoso");
+        }
+        else if(auxRes.estado != 'success'){
+          this.openSnackBar("Registro fallido");
+        }
       },
       err => {
         console.log(err)

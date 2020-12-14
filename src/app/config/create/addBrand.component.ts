@@ -1,6 +1,8 @@
 import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-addbrand',
   templateUrl: './addbrand.component.html',
@@ -14,8 +16,12 @@ export class AddBrandComponent implements OnInit{
   createMarcaForm: FormGroup;
   admin: any;
   subCategorias:any;
-  token: string;
-  constructor(private formBuilder: FormBuilder,private adminService: AdminService) { }
+  nombreMarca:string
+  tipoMarca:string
+  capacidad:number
+  unidad:number;
+
+  constructor(private formBuilder: FormBuilder,private adminService: AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createMarcaForm = this.formBuilder.group({
@@ -27,19 +33,48 @@ export class AddBrandComponent implements OnInit{
     });
     this.getSubCategoria();
   }
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
 
   handleCreateMarca(){
-    let formData = new FormData();
-    formData.append('Nombre', this.createMarcaForm.get('Nombre').value);
-    console.log(this.createMarcaForm.get('selectSubCategoria').value)
+    let idSubcategoria:number;
+    this.nombreMarca =  this.createMarcaForm.get('Nombre').value;
+    this.tipoMarca = this.createMarcaForm.get('Tipo').value;
+    this.capacidad = this.createMarcaForm.get('Capacidad').value;
+    this.unidad = this.createMarcaForm.get('Unidad').value;
+    idSubcategoria = this.createMarcaForm.get('selectSubCategoria').value;
+    this.adminService.createMarca(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,idSubcategoria)
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.openSnackBar("Marca creada con exito");
+        }
+      },
+      err => {
+
+      }
+    )
   } 
 
   getSubCategoria(){
-    this.subCategorias = [
-      { idSubcategoria:1, name: 'Los Caobos Av La Salle'},
-      { idSubcategoria:2, name: 'Las Palmas Av Las Palmas' },
-      { idSubcategoria:3, name: 'La Florida Av Andres Bello'},
-    ]
+    this.adminService.getSubcategorias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.subCategorias = auxRes.subcategorias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
 }

@@ -52,7 +52,8 @@ export class LoginComponent implements OnInit {
         this.bSignIn = false;
         let auxRes: any = res
         if(auxRes.estado == 'success'){
-          if(auxRes.rol == 'admin'){
+          if(auxRes.rol == 'administrador'){
+            localStorage.setItem('administrador', JSON.stringify(auxRes.rol))
             this.router.navigate(['config/menuconfig']);
           }
           else if(auxRes.rol == 'cliente'){

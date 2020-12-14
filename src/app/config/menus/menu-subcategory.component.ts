@@ -19,7 +19,7 @@ export class MenuSubcategoryComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getSubcategories();
+    this.getSubcategorias();
     
   }
 
@@ -32,9 +32,9 @@ export class MenuSubcategoryComponent implements OnInit{
     this.adminService.getSubcategorias()
     .subscribe(
       res => {
-        if(res.estado == 'success'){
-          let auxRes:any;
-          auxRes = res;
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
           this.dataSource = new MatTableDataSource(auxRes.subcategorias);
           this.dataSource.paginator = this.paginator;
         }
