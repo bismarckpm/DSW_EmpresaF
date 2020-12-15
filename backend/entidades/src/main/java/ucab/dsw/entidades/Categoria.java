@@ -51,6 +51,7 @@ public class Categoria extends EntidadBase {
 
   public void set_estado(String _estado) {
     this._estado = _estado;
+
   }
 
   /* public List<Subcategoria> get_subcategorias() {
