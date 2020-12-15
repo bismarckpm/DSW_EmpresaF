@@ -1,3 +1,5 @@
+import { PasswordProfileComponent } from './profile/password-profile.component';
+import { ProfileComponent } from './profile/profile.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -27,8 +29,8 @@ import { UpdateUserComponent } from 'src/app/config/update/updateUser.component'
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
 
 const routes: Routes = [
-  { 
-    path: "", 
+  {
+    path: "",
     component:GlobalMenuComponent,
     children: [
     { path: "question", component: QuestionsSetupComponent},
@@ -54,6 +56,8 @@ const routes: Routes = [
     { path: "updateSubcategory", component: UpdateSubcategoryComponent},
     { path: "updateUser", component: UpdateUserComponent},
     { path: "menuRequeststudies", component: RequestStudyComponent},
+    { path: "profile", component: ProfileComponent},
+    { path: "passwordProfile", component: PasswordProfileComponent}
     ],
   },
 ];
