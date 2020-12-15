@@ -24,6 +24,8 @@ import { UpdateQuestionComponent } from 'src/app/config/update/updateQuestion.co
 import { UpdateStudiesComponent } from 'src/app/config/update/updateStudies.component';
 import { UpdateSubcategoryComponent } from 'src/app/config/update/updateSubcategory.component';
 import { UpdateUserComponent } from 'src/app/config/update/updateUser.component';
+import { UpdateClientComponent } from 'src/app/config/update/updateClient.component';
+import { UpdateRespondentComponent } from 'src/app/config/update/updateRespondent.component';
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
 
 const routes: Routes = [
@@ -53,7 +55,9 @@ const routes: Routes = [
     { path: "updateStudies", component: UpdateStudiesComponent},
     { path: "updateSubcategory", component: UpdateSubcategoryComponent},
     { path: "updateUser", component: UpdateUserComponent},
+    { path: "updateClient", component: UpdateClientComponent},
     { path: "menuRequeststudies", component: RequestStudyComponent},
+    { path: "updateRespondent", component: UpdateRespondentComponent},
     ],
   },
 ];

@@ -9,7 +9,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  zones: any;
   generos:any;
   estadosCiviles:any;
   registerEncuestadoForm: FormGroup;
