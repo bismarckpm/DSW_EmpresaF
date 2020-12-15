@@ -1,6 +1,6 @@
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
     <div class="title-container">
-        <h1 class="sign-in-title text-center">Estudios asignados</h1>
+        <h1 class="sign-in-title text-center">Solicitudes de estudio</h1>
     </div>
     <div>
         <mat-form-field >
@@ -13,33 +13,54 @@
               The actual rendered columns are set as a property on the row definition" -->
       
         <!-- idEstudio Column -->
-        <ng-container matColumnDef="idEstudio">
+        <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> ID</th>
-          <td mat-cell *matCellDef="let element"> {{element.idEstudio}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
       
         <!-- nombreCliente Column -->
-        <ng-container matColumnDef="nombreCliente">
-          <th mat-header-cell *matHeaderCellDef> Cliente </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombreCliente}} </td>
+        <ng-container matColumnDef="edadInicial">
+          <th mat-header-cell *matHeaderCellDef> Edad inicial </th>
+          <td mat-cell *matCellDef="let element"> {{element.edadInicial}} </td>
         </ng-container>
       
         <!-- nombreSubcategoria Column -->
-        <ng-container matColumnDef="nombreSubcategoria">
-          <th mat-header-cell *matHeaderCellDef> Subcategoría </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombreSubcategoria}} </td>
+        <ng-container matColumnDef="edadFinal">
+          <th mat-header-cell *matHeaderCellDef> Edad final </th>
+          <td mat-cell *matCellDef="let element"> {{element.edadFinal}} </td>
         </ng-container>
       
         <!-- fecIniEstudio Column -->
-        <ng-container matColumnDef="fecIniEstudio">
-          <th mat-header-cell *matHeaderCellDef> Fecha Solicitado </th>
-          <td mat-cell *matCellDef="let element"> {{element.fecIniEstudio}} </td>
+        <ng-container matColumnDef="genero">
+          <th mat-header-cell *matHeaderCellDef> Genero </th>
+          <td mat-cell *matCellDef="let element"> {{element.genero}} </td>
         </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="marca">
+          <th mat-header-cell *matHeaderCellDef> Marca </th>
+          <td mat-cell *matCellDef="let element"> {{element.marca}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoMarca">
+          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+          <td mat-cell *matCellDef="let element"> {{element.tipoMarca}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="unidadMarca">
+          <th mat-header-cell *matHeaderCellDef> Unidad </th>
+          <td mat-cell *matCellDef="let element"> {{element.unidadMarca}} </td>
+        </ng-container>
+
 
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="far fa-chart-bar" style="cursor: pointer;" (click)="generateResults(element.idEstudio)"></i></span><span><i class="far fa-address-card" style="margin-left: 15px;cursor: pointer;" (click)="getMuestra(element.idEstudio)"></i></span></td>
+            <td mat-cell *matCellDef="let element"><span><i class="fas fa-check-circle" style="color: #94d82d;;cursor: pointer;" (click)="activarSolicitud(element.id)"></i></span> <span><i class="far fa-chart-bar" style="margin-left: 12px;cursor: pointer;" (click)="generateResults(element.idEstudio)"></i></span><span><i class="far fa-address-card" style="margin-left: 12px;cursor: pointer;" (click)="getMuestra(element.idEstudio)"></i></span></td>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
