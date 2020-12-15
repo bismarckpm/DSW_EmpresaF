@@ -1,21 +1,17 @@
 @import './../../../styles.scss';
 
+$mercadoucab-dark: #222327;
+$mercadoucab-light: whitesmoke;
+$mercadoucab-blue: #5454C9;
+
 mat-card{
   -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
   -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
   box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
 }
 
-$mercadoucab-dark: #222327;
-$mercadoucab-light: whitesmoke;
-$mercadoucab-blue: #5454C9;
-
-.menu-bg{
-  background-image: url(./../../../assets/images/loginBackground.png);
-  background-position-x: right;
-  background-position-y: top;
-  background-repeat: no-repeat;
-  background-size: 65%;
+table {
+    width: 50%;
 }
 
 .space{
@@ -32,19 +28,21 @@ $mercadoucab-blue: #5454C9;
   display:  block;
   width: 13rem;
   height: .1rem;
-  background-color: $mercadoucab-primary;
+  background-color: blue;
   padding-left: 30px;
   padding-right: 30px;
   margin-top: 1rem;
   margin-bottom: 2rem;
 }
 
-mat-card > div > div#add-title{
-  margin-right: auto ;
-  margin-left: auto ;
-  margin-top: auto;
-  margin-bottom: auto ;
+.menu-bg{
+    background-image: url(./../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
+    background-repeat: no-repeat;
+    background-size: 65%;
 }
+
 
 mat-card-content{
   margin-top: 2rem;
@@ -59,22 +57,15 @@ mat-form-field {
 mat-label{
   width: 25rem;
 }
-
-i{
-
-  margin: 1rem 0.5rem;
+.menu-container{
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
-.fa-arrow-left{
-  cursor: pointer;
-  text-decoration: none;
-  color: black;
-  margin-bottom: 0rem;
-}
-
-.btn{
-  background:$mercadoucab-primary;
-  color: #ffffff;
+button{
+  margin-top: 1rem;
+  background-color:$mercadoucab-primary;
+  color: white;
 }
 
 

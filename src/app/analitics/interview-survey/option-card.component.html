@@ -1,0 +1,30 @@
+<div class="menu-bg content" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <div class="texto-entrada">
+      <h1 ></h1>
+    </div>
+
+    <mat-label style="width: fit-content;">Seleccione una opcion de las que se proporcionan a continuacion:</mat-label>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 space">
+
+      <!-- idPRegunta-Encuesta Column -->
+
+      <ng-container matColumnDef="idOp">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;" > Seleccion </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          <input id="valor" value="element.idOp" type="radio" (click)="guardar(element.idOp)"/>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="desOp">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Descripcion </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.desOp}} </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <button mat-raised-button class="btn" style="width: 10rem;" style="align-self: center;" >Enviar</button>
+
+</div>
