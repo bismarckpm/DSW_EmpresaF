@@ -119,6 +119,13 @@ public class Pregunta extends EntidadBase {
         }
         set_preguntasOpciones(preguntasOpciones);
     }
+    
+    public List<Encuesta> getEncuestas() {
+        return get_preguntasEncuestas()
+                .stream()
+                .map(preguntaEncuesta -> preguntaEncuesta.get_encuesta())
+                .collect(Collectors.toList());
+    }
 
     public JsonObject toJson() {
         JsonObject preguntaJson = JsonObject.EMPTY_JSON_OBJECT;
