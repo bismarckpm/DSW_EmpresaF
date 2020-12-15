@@ -22,6 +22,9 @@ public class Encuesta extends EntidadBase{
     private Subcategoria _subcategoria;
 
     @OneToMany(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Estudio> _estudios;
+    
+    @OneToMany(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<PreguntaEncuesta> _preguntasEncuestas;
 
     public Encuesta(long _id) {
@@ -31,6 +34,7 @@ public class Encuesta extends EntidadBase{
     public Encuesta() {
     }
 
+    @Override
     public long get_id() {
         return _id;
     }
@@ -39,6 +43,14 @@ public class Encuesta extends EntidadBase{
         this._id = _id;
     }
 
+    public List<Estudio> get_estudios() {
+        return _estudios;
+    }
+
+    public void set_estudios(List<Estudio> _estudios) {
+        this._estudios = _estudios;
+    }
+    
     public Subcategoria get_subcategoria() {
         return _subcategoria;
     }
@@ -54,6 +66,13 @@ public class Encuesta extends EntidadBase{
     public void set_preguntasEncuestas(List<PreguntaEncuesta> _preguntasEncuestas) {
         this._preguntasEncuestas = _preguntasEncuestas;
     }
+    
+    public void add_pregunta(Pregunta _pregunta){
+        PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
+        preguntaEncuesta.set_encuesta(this);
+        preguntaEncuesta.set_pregunta(_pregunta);
+        this._preguntasEncuestas.add(preguntaEncuesta);
+    }
 
     public List<Pregunta> getPreguntas() {
         return get_preguntasEncuestas()
@@ -65,15 +84,17 @@ public class Encuesta extends EntidadBase{
     public JsonObject toJson() {
         JsonObject encuestaJson = JsonObject.EMPTY_JSON_OBJECT;
         try {
-            List<JsonObject> preguntasList = getPreguntas()
-                    .stream()
-                    .map(pregunta -> pregunta.toJson())
-                    .collect(Collectors.toList());
-            JsonArrayBuilder preguntasJson = Json.createArrayBuilder(preguntasList);
+            
+            List<Pregunta> preguntasList = getPreguntas();
+            JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
+            
+            for (Pregunta pregunta : preguntasList) {
+                preguntasJson.add(pregunta.toJson());
+            }
 
             encuestaJson = Json.createObjectBuilder()
                     .add("idEncuesta", get_id())
-                    .add("subcategoria", get_subcategoria().get_nombreSubcategoria().toString())
+                    .add("subcategoria", get_subcategoria().get_nombreSubcategoria())
                     .add("preguntas", preguntasJson)
                     .build();
         } catch (Exception e) {
