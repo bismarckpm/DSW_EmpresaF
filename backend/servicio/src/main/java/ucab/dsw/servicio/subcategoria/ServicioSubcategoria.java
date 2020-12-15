@@ -2,10 +2,12 @@ package ucab.dsw.servicio.subcategoria;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoCategoria;
+import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.dtos.SubcategoriaDto;
 import ucab.dsw.entidades.Categoria;
+import ucab.dsw.entidades.Marca;
 import ucab.dsw.entidades.Subcategoria;
 import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
@@ -33,6 +35,7 @@ public class ServicioSubcategoria extends AplicacionBase {
 
       Subcategoria subcategoria = new Subcategoria();
       subcategoria.set_nombreSubcategoria(subcategoriaDto.getNombreSubcategoria());
+      subcategoria.set_estado("activo");
 
       DaoCategoria daoCategoria = new DaoCategoria();
       Categoria categoria = daoCategoria.find(subcategoriaDto.getCategoria().getId(), Categoria.class);
@@ -138,6 +141,7 @@ public class ServicioSubcategoria extends AplicacionBase {
         JsonObject categories = Json.createObjectBuilder()
           .add("id", subcategory.get_id())
           .add("nombreSubcategoria", subcategory.get_nombreSubcategoria())
+          .add("estado", subcategory.get_estado())
           .add("categoriaId", subcategory.get_categoria().get_id())
           .add("categoria", subcategory.get_categoria().get_nombreCategoria())
           .build();
@@ -161,6 +165,94 @@ public class ServicioSubcategoria extends AplicacionBase {
       return Response.ok().entity(data).build();
     }
     System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/disable/{subcategoriaId}")
+  public Response disableSubcategoria(@PathParam("subcategoriaId") long id) {
+
+    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+
+      Subcategoria subcategoria = daoSubcategoria.find(id, Subcategoria.class);
+
+      List<Marca> marcas = daoMarca.findAll(Marca.class);
+
+      subcategoria.set_estado("inactivo");
+
+      for (Marca marca:marcas){
+        if(marca.get_subcategoria().get_id() == id){
+          marca.set_estado("inactivo");
+          daoMarca.update(marca);
+        }
+      }
+
+      Subcategoria resul = daoSubcategoria.update(subcategoria);
+
+      data = Json.createObjectBuilder().add("subcategoria", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/enable/{subcategoriaId}")
+  public Response enableSubcategoria(@PathParam("subcategoriaId") long id) {
+
+    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+
+      Subcategoria subcategoria = daoSubcategoria.find(id, Subcategoria.class);
+
+      List<Marca> marcas = daoMarca.findAll(Marca.class);
+
+      subcategoria.set_estado("activo");
+
+      for (Marca marca:marcas){
+        if(marca.get_subcategoria().get_id() == id){
+          marca.set_estado("activo");
+          daoMarca.update(marca);
+        }
+      }
+
+      Subcategoria resul = daoSubcategoria.update(subcategoria);
+
+      data = Json.createObjectBuilder().add("subcategoria", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
     return Response.ok().entity(data).build();
   }
 }

@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "estudio")
-public class Estudio {
+public class Estudio extends EntidadBase{
 
   @Id
   @Column( name = "codigo_estudio" )

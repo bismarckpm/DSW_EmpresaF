@@ -70,7 +70,6 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         Usuario usuario = dao.find(id.longValue(), Usuario.class);
         solicitudEstudio.set_administrador(usuario);
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
-
       }
 
      inicializarMuestra(solicitudEstudio);

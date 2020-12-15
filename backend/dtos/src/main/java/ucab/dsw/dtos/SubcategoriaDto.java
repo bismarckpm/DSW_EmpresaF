@@ -9,6 +9,8 @@ public class SubcategoriaDto extends DtoBase{
 
   private CategoriaDto categoria;
 
+  private String estado;
+
   private List<MarcaDto> marcas;
 
   public SubcategoriaDto(long id) throws Exception {
@@ -40,5 +42,13 @@ public class SubcategoriaDto extends DtoBase{
 
   public void setMarcas(List<MarcaDto> marcas) {
     this.marcas = marcas;
+  }
+
+  public String getEstado() {
+    return estado;
+  }
+
+  public void setEstado(String estado) {
+    this.estado = estado;
   }
 }

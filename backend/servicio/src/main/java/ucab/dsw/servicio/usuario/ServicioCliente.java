@@ -34,11 +34,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
       Cliente cliente = new Cliente();
       cliente.setNombre(usuarioDto.getClienteDto().getNombre());
+      cliente.set_estado("activo");
 
       DaoUsuario daoUsuario = new DaoUsuario();
       Usuario usuario = new Usuario();
       usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
-      usuario.set_estado("Activo");
+      usuario.set_estado("activo");
       usuario.set_rol(rol);
       usuario.set_cliente(cliente);
 
@@ -94,6 +95,11 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
       Usuario resul = daoUsuario.update(usuario);
 
+      if(usuarioDto.getContrasena()!=null){
+        DirectorioActivo directorioActivo = new DirectorioActivo();
+        directorioActivo.changePassword(usuarioDto);
+      }
+
       data = Json.createObjectBuilder().add("usuario", resul.get_id())
         .add("estado", "success")
         .add("code", 200)
@@ -131,7 +137,7 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
             .add("id", user.get_id())
             .add("nombreUsuario", user.get_nombreUsuario())
             .add("nombre", user.get_cliente().getNombre())
-            .add("estado", user.get_estado())
+            .add("estado", user.get_cliente().get_estado())
             .build();
 
           usuariosArray.add(users);
@@ -158,6 +164,37 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  @GET
+  @Path("getuser/{usuarioClienteId}")
+  public Response getUserById(@PathParam("usuarioClienteId") long id){
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+        data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", usuario.get_id())
+        .add("nombreUsuario", usuario.get_nombreUsuario())
+        .add("nombre", usuario.get_cliente().getNombre())
+        .build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+      return Response.ok().entity(data).build();
+
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
   @PUT
   @Path("/disable/{usuarioClienteId}")
   public Response disableUser(@PathParam("usuarioClienteId") long id) {
@@ -173,6 +210,44 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
       cliente.set_estado("inactivo");
       usuario.set_estado("inactivo");
+
+      Usuario resul = daoUsuario.update(usuario);
+      daoCliente.update(cliente);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/enable/{usuarioClienteId}")
+  public Response enableUser(@PathParam("usuarioClienteId") long id) {
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      DaoCliente daoCliente = new DaoCliente();
+      Cliente cliente = daoCliente.find(usuario.get_cliente().get_id(), Cliente.class);
+
+      cliente.set_estado("activo");
+      usuario.set_estado("activo");
 
       Usuario resul = daoUsuario.update(usuario);
       daoCliente.update(cliente);

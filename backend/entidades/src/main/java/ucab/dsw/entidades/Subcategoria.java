@@ -15,6 +15,9 @@ public class Subcategoria extends EntidadBase{
   @Column(name = "nombre_subcategoria")
   private String _nombreSubcategoria;
 
+  @Column(name = "estado")
+  private String _estado;
+
   @ManyToOne
   @JoinColumn(name = "fk_categoria")
   private Categoria _categoria;
@@ -47,6 +50,14 @@ public class Subcategoria extends EntidadBase{
 
   public void set_nombreSubcategoria(String _nombreSubcategoria) {
     this._nombreSubcategoria = _nombreSubcategoria;
+  }
+
+  public String get_estado() {
+    return _estado;
+  }
+
+  public void set_estado(String _estado) {
+    this._estado = _estado;
   }
 
   public Categoria get_categoria() {
