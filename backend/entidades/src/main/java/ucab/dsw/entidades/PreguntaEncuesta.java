@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pregunta_encuesta")
-public class PreguntaEncuesta {
+public class PreguntaEncuesta extends EntidadBase{
 
     @Id
     @Column(name = "codigo_preg_encu")
@@ -30,6 +30,7 @@ public class PreguntaEncuesta {
     public PreguntaEncuesta() {
     }
 
+    @Override
     public long get_id() {
         return _id;
     }
@@ -58,7 +59,7 @@ public class PreguntaEncuesta {
         return _respuestas;
     }
     
-    public void set_respuestas(List<Respuesta> respuestas) {
+    public void set_respuestas(List<Respuesta> _respuestas) {
         this._respuestas = _respuestas;
     }
 }

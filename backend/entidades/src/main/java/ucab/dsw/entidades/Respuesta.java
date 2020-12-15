@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "respuesta")
-public class Respuesta{
+public class Respuesta extends EntidadBase{
 
   @Id
   @Column( name = "codigo_respuesta" )
@@ -32,6 +32,10 @@ public class Respuesta{
   @ManyToOne
   @JoinColumn(name = "fk_opcion")
   private Opcion _opcion;
+  
+  public Respuesta(){
+      
+  }
 
   public Respuesta(long _id) {
     this._id = _id;

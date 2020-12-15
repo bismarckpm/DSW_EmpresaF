@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "estudio")
-public class Estudio {
+public class Estudio extends EntidadBase{
 
   @Id
   @Column( name = "codigo_estudio" )
@@ -36,6 +36,7 @@ public class Estudio {
     this._id = _id;
   }
 
+  @Override
   public long get_id() {
     return _id;
   }
