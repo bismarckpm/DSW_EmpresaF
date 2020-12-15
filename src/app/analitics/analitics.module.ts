@@ -7,14 +7,13 @@ import { GlobalMenuAComponent } from './global-menuA.component';
 import { SampleComponent } from './../analitics/sample/sample.component';
 import { UpdateSampleComponent } from './../analitics/update-sample/update-sample.component';
 import { InterviewSurveyComponent } from './interview-survey/interview-survey.component';
-import { FeedbackComponent } from './menus/feedback/feedback.component';
 import { DescriptionCardComponent } from './interview-survey/description-card.component';
 import { OptionCardComponent } from './interview-survey/option-card.component';
 import { RangeCardComponent } from './interview-survey/range-card.component';
 
 @NgModule({
     declarations: [MenuAnaliticsComponent,GlobalMenuAComponent,SampleComponent,UpdateSampleComponent,
-       InterviewSurveyComponent, FeedbackComponent, DescriptionCardComponent, OptionCardComponent, RangeCardComponent
+       InterviewSurveyComponent,  DescriptionCardComponent, OptionCardComponent, RangeCardComponent
     ],
     imports: [
       AnaliticsRoutingModule,
