@@ -1,6 +1,7 @@
 package ucab.dsw.dtos;
 
 import java.util.Date;
+import java.util.List;
 
 public class RespuestaDto extends  DtoBase{
 
@@ -14,7 +15,7 @@ public class RespuestaDto extends  DtoBase{
 
   private PreguntaEncuestaDto preguntaEncuesta;
 
-  private OpcionDto opcion;
+  private List<OpcionDto> opciones;
 
   public RespuestaDto(long id) throws Exception {
     super(id);
@@ -63,11 +64,11 @@ public class RespuestaDto extends  DtoBase{
     this.preguntaEncuesta = preguntaEncuesta;
   }
 
-  public OpcionDto getOpcion() {
-    return opcion;
+  public List<OpcionDto> getOpciones() {
+    return opciones;
   }
 
-  public void setOpcion(OpcionDto opcion) {
-    this.opcion = opcion;
+  public void setOpciones(List<OpcionDto> opciones) {
+    this.opciones = opciones;
   }
 }

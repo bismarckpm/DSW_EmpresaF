@@ -22,6 +22,9 @@ public class Opcion extends EntidadBase {
     @OneToMany(mappedBy = "_opcion", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<PreguntaOpcion> _preguntasOpciones;
 
+    @OneToMany(mappedBy = "_opcion", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<RespuestaOpcion> _respuestasOpciones;
+
     public Opcion(long _id) {
         this._id = _id;
     }
@@ -29,6 +32,7 @@ public class Opcion extends EntidadBase {
     public Opcion() {
     }
 
+    @Override
     public long get_id() {
         return _id;
     }
@@ -75,13 +79,28 @@ public class Opcion extends EntidadBase {
         set_preguntasOpciones(preguntasOpciones);
     }
 
+    public List<RespuestaOpcion> get_respuestasOpciones() {
+        return _respuestasOpciones;
+    }
+
+    public void set_respuestasOpciones(List<RespuestaOpcion> _respuestasOpciones) {
+        this._respuestasOpciones = _respuestasOpciones;
+    }
+    
+    public List<Respuesta> get_respuestas() {
+        return get_respuestasOpciones()
+                .stream()
+                .map(respuestaOpcion -> respuestaOpcion.get_respuesta())
+                .collect(Collectors.toList());
+    }
+
     public JsonObject toJson() {
         JsonObject preguntaJson = null;
         try {
             preguntaJson = Json.createObjectBuilder()
                     .add("idOpcion", get_id())
                     .add("descripcion", get_descripcion())
-//                    .add("preguntas", Json.createArrayBuilder(getPreguntas()))
+                    //                    .add("preguntas", Json.createArrayBuilder(getPreguntas()))
                     .build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
