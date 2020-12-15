@@ -1,11 +1,8 @@
 package ucab.dsw.servicio.estudio;
 
 import ucab.dsw.accesodatos.DaoEstudio;
-import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.dtos.EstudioDto;
-import ucab.dsw.dtos.MarcaDto;
 import ucab.dsw.entidades.*;
-import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -14,6 +11,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 @Path( "/estudio" )
@@ -29,7 +27,11 @@ public class ServicioEstudio extends AplicacionBase {
     try {
 
       Estudio estudio = new Estudio();
+      estudio.set_nombreEstudio(estudioDto.getNombreEstudio());
       estudio.set_estado("procesado");
+
+      Date fecha = new Date();
+      estudio.set_fechaInicio(fecha);
 
       Encuesta encuesta = new Encuesta(estudioDto.getEncuesta().getId());
       estudio.set_encuesta(encuesta);
@@ -42,6 +44,15 @@ public class ServicioEstudio extends AplicacionBase {
         .add("code", 200)
         .build();
 
+    }catch (javax.persistence.PersistenceException ex){
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .add("mensaje", "Ya existe un estudio con este nombre, intenta de nuevo")
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
     }
     catch (Exception ex){
       data = Json.createObjectBuilder()
@@ -73,6 +84,7 @@ public class ServicioEstudio extends AplicacionBase {
       for(Estudio estudio: estudios) {
           JsonObject estu = Json.createObjectBuilder()
             .add("id", estudio.get_id())
+            .add("nombreEstudio", estudio.get_nombreEstudio())
             .add("estado", estudio.get_estado())
             .add("encuestaId", estudio.get_encuesta().get_id())
             .build();

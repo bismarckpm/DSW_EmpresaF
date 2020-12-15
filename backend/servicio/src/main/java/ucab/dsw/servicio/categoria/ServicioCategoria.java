@@ -109,6 +109,37 @@ public class ServicioCategoria extends AplicacionBase {
   }
 
   @GET
+  @Path("/getcategoria/{categoriaId}")
+  public Response getCategoriaById(@PathParam("categoriaId") long id){
+
+    DaoCategoria daoCategoria = new DaoCategoria();
+    JsonObject data;
+
+    try{
+      Categoria categoria = daoCategoria.find(id, Categoria.class);
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", categoria.get_id())
+        .add("nombreCategoria", categoria.get_nombreCategoria())
+        .add("estadoCategoria", categoria.get_estado())
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @GET
   @Path("/getall")
   public Response getCategories() {
 

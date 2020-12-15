@@ -102,6 +102,42 @@ public class ServicioMarca extends AplicacionBase {
   }
 
   @GET
+  @Path("/getmarca/{marcaId}")
+  public Response getMarcaById(@PathParam("marcaId") long id){
+
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", marca.get_id())
+        .add("nombreMarca", marca.get_nombreMarca())
+        .add("estadoMarca", marca.get_estado())
+        .add("tipoMarca", marca.get_tipoMarca())
+        .add("capacidad", marca.get_capacidad())
+        .add("unidad", marca.get_unidad())
+        .add("subcategoriaId", marca.get_subcategoria().get_id())
+        .add("subcategoriaNombre", marca.get_subcategoria().get_nombreSubcategoria())
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @GET
   @Path("/getall")
   public Response getMarcas() {
 

@@ -1,6 +1,7 @@
 package ucab.dsw.servicio.subcategoria;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
+import ucab.dsw.accesodatos.Dao;
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
@@ -19,6 +20,7 @@ import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 @Path( "/subcategoria" )
@@ -75,6 +77,39 @@ public class ServicioSubcategoria extends AplicacionBase {
     System.out.println(data);
     return  Response.ok().entity(data).build();
 
+  }
+
+  @GET
+  @Path("/getsubcategoria/{subcategoriaId}")
+  public Response getSubcategoriaById(@PathParam("subcategoriaId") long id){
+
+    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+    JsonObject data;
+
+    try{
+      Subcategoria subcategoria = daoSubcategoria.find(id, Subcategoria.class);
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", subcategoria.get_id())
+        .add("nombreSubcategoria", subcategoria.get_nombreSubcategoria())
+        .add("estadoSubcategoria", subcategoria.get_estado())
+        .add("categoriaId", subcategoria.get_categoria().get_id())
+        .add("categoriaNombre", subcategoria.get_categoria().get_nombreCategoria())
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+    }
+
+    return Response.ok().entity(data).build();
   }
 
   @PUT
