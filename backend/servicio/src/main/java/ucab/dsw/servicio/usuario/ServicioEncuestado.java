@@ -240,13 +240,9 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       usuario.get_encuestado().set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
       usuario.get_encuestado().set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
       usuario.get_encuestado().set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
-      usuario.get_encuestado().set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
       usuario.get_encuestado().set_genero(usuarioDto.getEncuestadoDto().getGenero());
 
 
-      DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
-
-      usuario.get_encuestado().set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
       usuario.get_encuestado().set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
       usuario.get_encuestado().set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
 
@@ -254,13 +250,6 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       Parroquia parroquia = daoParroquia.find(usuarioDto.getEncuestadoDto().getParroquia().getId(), Parroquia.class);
       usuario.get_encuestado().set_parroquia(parroquia);
 
-      DaoNivelEstudio dao = new DaoNivelEstudio();
-      NivelEstudio nivelEstudio = dao.find(usuarioDto.getEncuestadoDto().getNivelEstudio().getId(), NivelEstudio.class);
-      usuario.get_encuestado().set_nivelEstudio(nivelEstudio);
-
-      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
-      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
-      usuario.get_encuestado().set_nivelSocioeconomico(nivelSocioeconomico);
 
       Usuario resul = daoUsuario.update(usuario);
 
