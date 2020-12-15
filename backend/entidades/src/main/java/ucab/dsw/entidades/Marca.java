@@ -24,6 +24,9 @@ public class Marca extends EntidadBase {
   @Column(name = "unidad")
   private String _unidad;
 
+  @Column(name = "estado")
+  private String _estado;
+
   @ManyToOne
   @JoinColumn(name = "fk_subcategoria")
   private Subcategoria _subcategoria;
@@ -93,5 +96,13 @@ public class Marca extends EntidadBase {
 
   public void set_solicitudesEstudio(List<SolicitudEstudio> _solicitudesEstudio) {
     this._solicitudesEstudio = _solicitudesEstudio;
+  }
+
+  public String get_estado() {
+    return _estado;
+  }
+
+  public void set_estado(String _estado) {
+    this._estado = _estado;
   }
 }

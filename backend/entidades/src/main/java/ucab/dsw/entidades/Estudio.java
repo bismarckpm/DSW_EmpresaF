@@ -12,6 +12,9 @@ public class Estudio extends EntidadBase{
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   private long _id;
 
+  @Column(name = "nombre_estudio")
+  private String _nombreEstudio;
+
   @Column(name = "estado")
   private String _estado;
 
@@ -43,6 +46,14 @@ public class Estudio extends EntidadBase{
 
   public void set_id(long _id) {
     this._id = _id;
+  }
+
+  public String get_nombreEstudio() {
+    return _nombreEstudio;
+  }
+
+  public void set_nombreEstudio(String _nombreEstudio) {
+    this._nombreEstudio = _nombreEstudio;
   }
 
   public String get_estado() {

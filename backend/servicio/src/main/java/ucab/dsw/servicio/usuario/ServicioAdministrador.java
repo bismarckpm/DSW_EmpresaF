@@ -1,5 +1,6 @@
 package ucab.dsw.servicio.usuario;
 
+import ucab.dsw.accesodatos.DaoEstudio;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.Estudio;
@@ -85,7 +86,8 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
       SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
 
-      Estudio estudio = new Estudio(solicitudEstudioDto.getEstudio().getId());
+      DaoEstudio daoEstudio = new DaoEstudio();
+      Estudio estudio = daoEstudio.find(solicitudEstudioDto.getEstudio().getId(), Estudio.class);
       solicitudEstudio.set_estudio(estudio);
       solicitudEstudio.set_estado("procesado");
 

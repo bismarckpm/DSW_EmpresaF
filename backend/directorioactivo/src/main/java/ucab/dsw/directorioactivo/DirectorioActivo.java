@@ -174,17 +174,18 @@ public class DirectorioActivo
     /*
     Method that updates the user in the ldap
      */
-    public void updateEntry(UsuarioDto user)
+    public void updateEntry(UsuarioDto user, String usuarioLdap)
     {
         try
         {
-            connectLDAP( _user, _password );
-            Attributes atbs = new BasicAttributes();
-            Attribute atb = new BasicAttribute("mail","java2db@mai.com");
-            atbs.put(atb);
+          connectLDAP( _user, _password );
+          Attributes atbs = new BasicAttributes();
+          Attribute atb = new BasicAttribute("cn",user.getNombreUsuario());
+          atbs.put(atb);
 
-            _ldapContext.modifyAttributes( String.format(_userDirectory + "," + _directory, user.getNombreUsuario())
-                    , DirContext.REPLACE_ATTRIBUTE,atbs );
+          _ldapContext.modifyAttributes( String.format(_userDirectory + "," + _directory, usuarioLdap)
+            , DirContext.REPLACE_ATTRIBUTE, atbs );
+
         }
         catch(Exception exception)
         {

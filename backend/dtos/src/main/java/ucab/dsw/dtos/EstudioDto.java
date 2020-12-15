@@ -6,6 +6,8 @@ public class EstudioDto extends  DtoBase{
 
   private String estado;
 
+  private String nombreEstudio;
+
   private String resultado;
 
   private Date fechaInicio;
@@ -29,6 +31,14 @@ public class EstudioDto extends  DtoBase{
 
   public void setEstado(String estado) {
     this.estado = estado;
+  }
+
+  public String getNombreEstudio() {
+    return nombreEstudio;
+  }
+
+  public void setNombreEstudio(String nombreEstudio) {
+    this.nombreEstudio = nombreEstudio;
   }
 
   public String getResultado() {

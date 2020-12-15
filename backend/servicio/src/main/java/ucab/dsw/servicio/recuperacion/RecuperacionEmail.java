@@ -40,6 +40,6 @@ public class RecuperacionEmail {
     message.setText(content);
     Transport.send(message);
 
-    System.out.println("﹐ensaje enviado!");
+    System.out.println("mensaje enviado!");
   }
 }

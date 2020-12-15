@@ -6,7 +6,9 @@ import java.util.List;
 @Entity
 @Table( name = "usuario" )
 @NamedQueries({
-  @NamedQuery(name = "getUsuarioByNombreUsuario", query = "select u from Usuario u where u._nombreUsuario=:nombreUsuario")
+  @NamedQuery(name = "getUsuarioByNombreUsuario", query = "select u from Usuario u where u._nombreUsuario=:nombreUsuario"),
+  @NamedQuery(name = "getUsuariosAdmin", query = "select u from Usuario u where u._rol='administrador'"),
+  @NamedQuery(name = "getUsuariosAnalista", query = "select u from Usuario u where u._rol='analista'")
 })
 public class Usuario extends EntidadBase
 {

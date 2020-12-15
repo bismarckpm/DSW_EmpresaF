@@ -39,6 +39,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     encuestado.set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
     encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
     encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
+    encuestado.set_estado("activo");
 
 
       DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
@@ -62,7 +63,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     DaoUsuario daoUsuario = new DaoUsuario();
     Usuario usuario = new Usuario();
     usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
-    usuario.set_estado("Activo");
+    usuario.set_estado("activo");
     usuario.set_rol(rol);
     usuario.set_encuestado(encuestado);
 
@@ -140,6 +141,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
             .add("estado", user.get_estado())
             .add("ocupacion", user.get_encuestado().get_ocupacion())
             .add("estadoCivil", user.get_encuestado().get_estadoCivil())
+            .add("estado", user.get_encuestado().get_estado())
             .add("telefonos", telefonosArray)
             .build();
 
@@ -167,53 +169,114 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
- /* @PUT
+  @GET
+  @Path("getuser/{usuarioEncuestadoId}")
+  public Response getUserById(@PathParam("usuarioEncuestadoId") long id){
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario user = daoUsuario.find(id, Usuario.class);
+      System.out.println(user.get_id());
+
+      JsonArrayBuilder telefonosArray = Json.createArrayBuilder();
+
+      for(Telefono telefono: user.get_encuestado().get_telefonos()){
+        JsonObject phones = Json.createObjectBuilder()
+          .add("telefonoId", telefono.get_id())
+          .add("codigoArea", telefono.get_codigoArea())
+          .add("numeroTelefono", telefono.get_numeroTelefono()).build();
+
+        telefonosArray.add(phones);
+      }
+
+      data = Json.createObjectBuilder()
+        .add("id", user.get_id())
+        .add("nombreUsuario", user.get_nombreUsuario())
+        .add("primer nombre", user.get_encuestado().get_primerNombre())
+        .add("primer apellido", user.get_encuestado().get_primerApellido())
+        .add("numero de identificacion", user.get_encuestado().get_numeroIdentificacion())
+        .add("estado", user.get_estado())
+        .add("genero", user.get_encuestado().get_genero())
+        .add("parroquiaId", user.get_encuestado().get_parroquia().get_id())
+        .add("parroquia", user.get_encuestado().get_parroquia().get_nombreParroquia())
+        .add("ocupacion", user.get_encuestado().get_ocupacion())
+        .add("estadoCivil", user.get_encuestado().get_estadoCivil())
+        .add("telefonos", telefonosArray)
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+
+  }
+
+  @PUT
   @Path("/update/{usuarioEncuestadoid}")
-  public UsuarioDto updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
-    UsuarioDto resultado = new UsuarioDto();
+  public Response updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
+
+    JsonObject data;
+    DaoUsuario daoUsuario = new DaoUsuario();
 
     try {
-      DaoUsuario daoUsuario = new DaoUsuario();
+
       Usuario usuario = daoUsuario.find(id, Usuario.class);
 
-      Encuestado encuestado = new Encuestado();
-      encuestado.set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
-      encuestado.set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
-      encuestado.set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
-      encuestado.set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
-      encuestado.set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
-      encuestado.set_direccionComplemento(usuarioDto.getEncuestadoDto().getDireccionComplemento());
-      encuestado.set_genero(usuarioDto.getEncuestadoDto().getGenero());
+      usuarioDto.setNombreUsuario(usuario.get_nombreUsuario());
+
+      usuario.get_encuestado().set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
+      usuario.get_encuestado().set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
+      usuario.get_encuestado().set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
+      usuario.get_encuestado().set_primerApellido(usuarioDto.getEncuestadoDto().getPrimerApellido());
+      usuario.get_encuestado().set_segundoApellido(usuarioDto.getEncuestadoDto().getSegundoApellido());
+      usuario.get_encuestado().set_genero(usuarioDto.getEncuestadoDto().getGenero());
 
 
-      DateFormat fecha = new SimpleDateFormat("dd-MM-yyyy");
-
-      encuestado.set_fechaNacimiento(fecha.parse(usuarioDto.getEncuestadoDto().getFechaNacimiento()));
-      encuestado.set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
-      encuestado.set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
+      usuario.get_encuestado().set_estadoCivil(usuarioDto.getEncuestadoDto().getEstadoCivil());
+      usuario.get_encuestado().set_ocupacion(usuarioDto.getEncuestadoDto().getOcupacion());
 
       DaoParroquia daoParroquia = new DaoParroquia();
       Parroquia parroquia = daoParroquia.find(usuarioDto.getEncuestadoDto().getParroquia().getId(), Parroquia.class);
-      encuestado.set_parroquia(parroquia);
-
-      DaoNivelEstudio dao = new DaoNivelEstudio();
-      NivelEstudio nivelEstudio = dao.find(usuarioDto.getEncuestadoDto().getNivelEstudio().getId(), NivelEstudio.class);
-      encuestado.set_nivelEstudio(nivelEstudio);
-
-      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
-      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
-      encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
+      usuario.get_encuestado().set_parroquia(parroquia);
 
 
-      Usuario resul = dao.update(usuario);
-      resultado.setId(resul.get_id());
+      Usuario resul = daoUsuario.update(usuario);
+
+      if(usuarioDto.getContrasena()!=null){
+        DirectorioActivo directorioActivo = new DirectorioActivo();
+        directorioActivo.changePassword(usuarioDto);
+      }
 
 
-    } catch (Exception ex) {
-      String problema = ex.getMessage();
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
     }
-    return resultado;
-  }*/
+
+    System.out.println(data);
+    return  Response.ok().entity(data).build();
+  }
 
   @GET
   @Path("/getestudios/{usuarioEncuestadoId}")
@@ -307,6 +370,82 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     }
 
     System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/disable/{usuarioEncuestadoId}")
+  public Response disableUser(@PathParam("usuarioEncuestadoId") long id) {
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      DaoEncuestado daoEncuestado = new DaoEncuestado();
+      Encuestado encuestado = daoEncuestado.find(usuario.get_encuestado().get_id(), Encuestado.class);
+
+      encuestado.set_estado("inactivo");
+      usuario.set_estado("inactivo");
+
+      Usuario resul = daoUsuario.update(usuario);
+      daoEncuestado.update(encuestado);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/enable/{usuarioEncuestadoId}")
+  public Response enableUser(@PathParam("usuarioEncuestadoId") long id) {
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      DaoEncuestado daoEncuestado = new DaoEncuestado();
+      Encuestado encuestado = daoEncuestado.find(usuario.get_encuestado().get_id(), Encuestado.class);
+
+      encuestado.set_estado("activo");
+      usuario.set_estado("activo");
+
+      Usuario resul = daoUsuario.update(usuario);
+      daoEncuestado.update(encuestado);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
     return Response.ok().entity(data).build();
   }
 }

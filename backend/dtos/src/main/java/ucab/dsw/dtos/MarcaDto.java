@@ -13,6 +13,8 @@ public class MarcaDto extends DtoBase{
 
   private SubcategoriaDto subcategoria;
 
+  private String marca;
+
   public MarcaDto(long id) throws Exception {
     super(id);
   }
@@ -58,5 +60,13 @@ public class MarcaDto extends DtoBase{
 
   public void setSubcategoria(SubcategoriaDto subcategoria) {
     this.subcategoria = subcategoria;
+  }
+
+  public String getMarca() {
+    return marca;
+  }
+
+  public void setMarca(String marca) {
+    this.marca = marca;
   }
 }

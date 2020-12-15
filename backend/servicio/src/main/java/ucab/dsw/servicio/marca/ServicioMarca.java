@@ -1,18 +1,15 @@
 package ucab.dsw.servicio.marca;
 
-import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.MarcaDto;
 import ucab.dsw.entidades.Marca;
 import ucab.dsw.entidades.Subcategoria;
-import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,6 +31,7 @@ public class ServicioMarca extends AplicacionBase {
       marca.set_tipoMarca(marcaDto.getTipoMarca());
       marca.set_capacidad(marcaDto.getCapacidad());
       marca.set_unidad(marcaDto.getUnidad());
+      marca.set_estado("activo");
 
       DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
       Subcategoria subcategoria = daoSubcategoria.find(marcaDto.getSubcategoria().getId(), Subcategoria.class);
@@ -63,6 +61,82 @@ public class ServicioMarca extends AplicacionBase {
 
   }
 
+  @PUT
+  @Path("/update/{marcaId}")
+  public Response updateMarca(@PathParam("marcaId") long id, MarcaDto marcaDto){
+
+    JsonObject data;
+    DaoMarca daoMarca = new DaoMarca();
+
+    try{
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      marca.set_nombreMarca(marcaDto.getNombreMarca());
+      marca.set_tipoMarca(marcaDto.getTipoMarca());
+      marca.set_capacidad(marcaDto.getCapacidad());
+      marca.set_unidad(marcaDto.getUnidad());
+
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+      Subcategoria subcategoria = daoSubcategoria.find(marcaDto.getSubcategoria().getId(), Subcategoria.class);
+      marca.set_subcategoria(subcategoria);
+
+      Marca resul = daoMarca.update(marca);
+
+      data = Json.createObjectBuilder().add("marca", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @GET
+  @Path("/getmarca/{marcaId}")
+  public Response getMarcaById(@PathParam("marcaId") long id){
+
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", marca.get_id())
+        .add("nombreMarca", marca.get_nombreMarca())
+        .add("estadoMarca", marca.get_estado())
+        .add("tipoMarca", marca.get_tipoMarca())
+        .add("capacidad", marca.get_capacidad())
+        .add("unidad", marca.get_unidad())
+        .add("subcategoriaId", marca.get_subcategoria().get_id())
+        .add("subcategoriaNombre", marca.get_subcategoria().get_nombreSubcategoria())
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
   @GET
   @Path("/getall")
   public Response getMarcas() {
@@ -84,6 +158,7 @@ public class ServicioMarca extends AplicacionBase {
           .add("tipoMarca", marca.get_tipoMarca())
           .add("capacidad", marca.get_capacidad())
           .add("unidad", marca.get_unidad())
+          .add("estado", marca.get_estado())
           .add("subcategoriaId", marca.get_subcategoria().get_id())
           .build();
 
@@ -106,6 +181,72 @@ public class ServicioMarca extends AplicacionBase {
       return Response.ok().entity(data).build();
     }
     System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/disable/{marcaId}")
+  public Response disableMarca(@PathParam("marcaId") long id) {
+
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      marca.set_estado("inactivo");
+      Marca resul = daoMarca.update(marca);
+
+      data = Json.createObjectBuilder().add("marca", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/enable/{marcaId}")
+  public Response enableMarca(@PathParam("marcaId") long id) {
+
+    DaoMarca daoMarca = new DaoMarca();
+    JsonObject data;
+
+    try{
+
+      Marca marca = daoMarca.find(id, Marca.class);
+
+      marca.set_estado("activo");
+      Marca resul = daoMarca.update(marca);
+
+      data = Json.createObjectBuilder().add("marca", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
     return Response.ok().entity(data).build();
   }
 }

@@ -27,6 +27,8 @@ public class EncuestadoDto extends DtoBase{
 
   private String ocupacion;
 
+  private String estado;
+
   private ParroquiaDto parroquia;
 
   private NivelEstudioDto nivelEstudio;
@@ -122,6 +124,14 @@ public class EncuestadoDto extends DtoBase{
 
   public void setOcupacion(String ocupacion) {
     this.ocupacion = ocupacion;
+  }
+
+  public String getEstado() {
+    return estado;
+  }
+
+  public void setEstado(String estado) {
+    this.estado = estado;
   }
 
   public ParroquiaDto getParroquia() {

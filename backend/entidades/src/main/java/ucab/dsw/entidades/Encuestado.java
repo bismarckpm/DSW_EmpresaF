@@ -47,6 +47,10 @@ public class Encuestado extends EntidadBase{
   @Column(name = "ocupacion")
   private String _ocupacion;
 
+  @Column(name = "estado")
+  private String _estado;
+
+
   @ManyToOne
   @JoinColumn( name = "fk_parroquia")
   private Parroquia _parroquia;
@@ -162,6 +166,14 @@ public class Encuestado extends EntidadBase{
 
   public void set_ocupacion(String _ocupacion) {
     this._ocupacion = _ocupacion;
+  }
+
+  public String get_estado() {
+    return _estado;
+  }
+
+  public void set_estado(String _estado) {
+    this._estado = _estado;
   }
 
   public Parroquia get_parroquia() {

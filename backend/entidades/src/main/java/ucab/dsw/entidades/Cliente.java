@@ -5,15 +5,19 @@ import java.util.List;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente
+public class Cliente extends EntidadBase
 {
-  @Column(name = "nombre")
-  private String _nombre;
 
   @Id
   @Column( name = "codigo_cliente" )
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   private long _id;
+
+  @Column(name = "nombre")
+  private String _nombre;
+
+  @Column(name = "estado")
+  private String _estado;
 
   public Cliente(long _id) {
     this._id = _id;
@@ -22,7 +26,6 @@ public class Cliente
   public Cliente() {
 
   }
-
 
   public long get_id() {
     return _id;
@@ -48,4 +51,11 @@ public class Cliente
     this._nombre = _nombre;
   }
 
+  public String get_estado() {
+    return _estado;
+  }
+
+  public void set_estado(String _estado) {
+    this._estado = _estado;
+  }
 }

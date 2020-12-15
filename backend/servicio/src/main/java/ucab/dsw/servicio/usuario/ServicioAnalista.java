@@ -115,12 +115,67 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
     }
     catch (Exception ex){
-      ex.printStackTrace();
-      return null;
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error").build();
 
+      return Response.ok().entity(data).build();
     }
 
     System.out.println(data);
     return Response.ok().entity(data).build();
   }
+
+  @Path("/obtenerestudios/{analistaId}")
+  @GET
+  public Response obtenerEstudiosByAnalista(@PathParam("analistaId") long id){
+
+    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+    JsonObject data;
+    try {
+      List<SolicitudEstudio> solicitudEstudios = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
+
+      JsonArrayBuilder estudiosArray = Json.createArrayBuilder();
+
+      for (SolicitudEstudio solicitudes : solicitudEstudios) {
+       if(solicitudes.get_estudio() != null){
+          if(solicitudes.get_analista().get_id() == id) {
+            JsonObject estudio = Json.createObjectBuilder()
+              .add("id", solicitudes.get_estudio().get_estado())
+              .add("nombreEstudio", solicitudes.get_estudio().get_nombreEstudio())
+              .add("encuestaId", solicitudes.get_estudio().get_encuesta().get_id()).build();
+
+            estudiosArray.add(estudio);
+          }
+        }
+      }
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("estudios",estudiosArray)
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (NullPointerException ex){
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("mensaje","No hay estudios")
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400).build();
+
+      return Response.ok().entity(data).build();
+    }
+
+  }
+
 }
