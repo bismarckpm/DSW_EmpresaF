@@ -21,7 +21,7 @@
   
     </mat-expansion-panel>
 </mat-accordion>
-<div class="width-100 content text-center slide-in-fwd-center" fxLayout="column" fxLayoutAlign=" center" style="background: #EAF3F3;">
+<div class="width-100 content text-center slide-in-fwd-center" fxLayout="column" fxLayoutAlign=" center" >
   <div class="title-container">
     <h1 class="sign-in-title text-center">Estudios solicitados</h1>
   </div>
@@ -36,8 +36,9 @@
                       <mat-card-title class="participants-card-title">
                           {{item.idEstudio}}
                       </mat-card-title>
-                      <mat-card-subtitle class="participants-card-subtitle">Fecha inicio: {{item.fechaIniEstudio}} </mat-card-subtitle>
-                      <mat-card-subtitle class="participants-card-subtitle"><strong>Edad:</strong>{{item.edad}}</mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Edad inicial:</strong> {{item.edadInicial}} </mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Edad final:</strong>{{item.edadFinal}}</mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Marca:</strong>{{item.marca}}</mat-card-subtitle>
                       <mat-card-subtitle class="participants-card-subtitle"><strong>Status:</strong> {{item.estatusEstudio}}</mat-card-subtitle>
                       <mat-card-subtitle class="participants-card-subtitle"><strong>Genero:</strong> {{item.genero}}</mat-card-subtitle>
                   </mat-card-header>
@@ -46,7 +47,7 @@
                   </mat-card-content>
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                       <mat-chip-list >
-                          <mat-chip class="chip-arrived"><strong>Estatus:{{item.estatusEstudio}} </strong></mat-chip>
+                          <mat-chip class="chip-arrived"><strong>Estatus:{{item.estado}} </strong></mat-chip>
                       </mat-chip-list>
                   </div>
               </div>

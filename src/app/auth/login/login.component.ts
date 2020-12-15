@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
         let auxRes: any = res
         if(auxRes.estado == 'success'){
           if(auxRes.rol == 'administrador'){
-            localStorage.setItem('administrador', JSON.stringify(auxRes.rol))
+            localStorage.setItem('administrador', JSON.stringify(auxRes))
             this.router.navigate(['config/menuconfig']);
           }
           else if(auxRes.rol == 'cliente'){
@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['pages/client']);
           }
           else if(auxRes.rol == 'analista'){
+            localStorage.setItem('analistaLogged', JSON.stringify(auxRes))
             this.router.navigate(['analitics/menuanalitics']);
           }
           else if(auxRes.rol == 'encuestado'){

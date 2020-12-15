@@ -40,7 +40,15 @@ export class AdminService extends ApiService {
                                                       },this.httpOptions)
   }
 
-  getRequestedStudies(){
-    return this.http.get(this.API_URL+'api/solicitud/getall',this.httpOptions);
+  getRequestedStudies(idAdmin:number){
+    return this.http.get(this.API_URL+'api/administrador/getsolicitudespendientes/'+idAdmin,this.httpOptions);
+  }
+
+  getStudies(){
+    return this.http.get(this.API_URL+'api/estudio/getall',this.httpOptions);
+  }
+
+  assignStudy(idSolicitud:number,idEstudio:number){
+    return this.http.put(this.API_URL+'api/administrador/asignarsolicitud/'+idSolicitud,{"estudio": idEstudio,},this.httpOptions);
   }
 }

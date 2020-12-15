@@ -18,7 +18,10 @@ export class RequestStudyComponent implements OnInit{
     }
   
     getEstudios(){
-      this.adminService.getRequestedStudies()
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      admin = admin.id;
+      this.adminService.getRequestedStudies(admin)
       .subscribe(
           res => {
             let auxRes:any;
@@ -28,14 +31,14 @@ export class RequestStudyComponent implements OnInit{
             }
           },
           err => {
-
+            console.log(err)
           }
       )
   
     }
   
-    updateEstudio(idEstudio){
-      console.log(idEstudio)
+    asignarEstudio(idEstudio){
+      this.router.navigate(['/config/assign/'+idEstudio]);
     }
   
     solicitarEstudio(){

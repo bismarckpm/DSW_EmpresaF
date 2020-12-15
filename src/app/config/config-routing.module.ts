@@ -25,6 +25,7 @@ import { UpdateStudiesComponent } from 'src/app/config/update/updateStudies.comp
 import { UpdateSubcategoryComponent } from 'src/app/config/update/updateSubcategory.component';
 import { UpdateUserComponent } from 'src/app/config/update/updateUser.component';
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
+import { AssignStudyComponent } from 'src/app/config/menus/assign-study/assign-study.component';
 
 const routes: Routes = [
   { 
@@ -56,6 +57,7 @@ const routes: Routes = [
     { path: "menuRequeststudies", component: RequestStudyComponent},
     ],
   },
+  { path: 'assign/:id', component: AssignStudyComponent },
 ];
 
 @NgModule({

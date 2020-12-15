@@ -82,4 +82,9 @@ export class UsersService extends ApiService{
   getParroquias(){
     return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
+
+  getSpecificStudies(idSolicitud:number){
+    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
+  }
+
 }

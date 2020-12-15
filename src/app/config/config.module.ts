@@ -27,13 +27,14 @@ import { UpdateStudiesComponent } from 'src/app/config/update/updateStudies.comp
 import { UpdateSubcategoryComponent } from 'src/app/config/update/updateSubcategory.component';
 import { UpdateUserComponent } from 'src/app/config/update/updateUser.component';
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
+import { AssignStudyComponent } from './menus/assign-study/assign-study.component';
 
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
     MenuPollComponent,MenuBrandComponent,MenuCQuestionComponent,MenuStudiesComponent,MenuUsersComponent,
     AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent, 
     GlobalMenuComponent,AddUserComponent,UpdateBrandComponent,UpdateCategoryComponent,UpdatePollComponent,UpdateQuestionComponent,
-    UpdateStudiesComponent,UpdateSubcategoryComponent,UpdateUserComponent,RequestStudyComponent
+    UpdateStudiesComponent,UpdateSubcategoryComponent,UpdateUserComponent,RequestStudyComponent, AssignStudyComponent
   ],
   imports: [
     ConfigRoutingModule,

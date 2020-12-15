@@ -1,6 +1,8 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { AnalystService } from 'src/app/core/services/analyst.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-analitics',
@@ -11,8 +13,8 @@ import {MatPaginator} from '@angular/material/paginator';
 export class MenuAnaliticsComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idEstudio','nombreCliente','nombreSubcategoria','fecIniEstudio','icons'];
-  constructor() { }
+  displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','marca','tipoMarca','unidadMarca','icons'];
+  constructor(private analisService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -20,29 +22,57 @@ export class MenuAnaliticsComponent implements OnInit{
     this.getEstudios();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getEstudios(){
-    
-    this.element = [
-      {idEstudio: 1, nombreCliente: 'Carlos23',nombreSubcategoria:'Medicamentos',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 2, nombreCliente: 'LOPZ1998',nombreSubcategoria:'Frutas',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 3, nombreCliente: 'PaoVar',nombreSubcategoria:'Verduras',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 4, nombreCliente: 'Ofic14',nombreSubcategoria:'Pisos',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 5, nombreCliente: 'Escolar75',nombreSubcategoria:'Papeleria',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 6, nombreCliente: 'Comr',nombreSubcategoria:'Cuadernos',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 7, nombreCliente: 'Mueb4',nombreSubcategoria:'Vajillas',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 8, nombreCliente: 'Computadoras185',nombreSubcategoria:'Cubiertos',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 9, nombreCliente: 'Hi99',nombreSubcategoria:'Sofas',fecIniEstudio:'01/01/2020'},
-      {idEstudio: 10, nombreCliente: 'Masna74',nombreSubcategoria:'Perifericos',fecIniEstudio:'01/01/2020'},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
 
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
+
+  getEstudios(){
+    let analistStorage = localStorage.getItem('analistaLogged');
+    let analista = JSON.parse(analistStorage);
+    analista = analista.id; 
+    this.analisService.getSolicitudes(analista)
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+            this.element = auxRes.solicitudes;
+            this.dataSource = new MatTableDataSource(auxRes.solicitudes);
+            this.dataSource.paginator = this.paginator;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+
+  }
+
+  activarSolicitud(idSolicitud:number){
+    this.analisService.activarSolicitud(idSolicitud)
+    .subscribe(
+      res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Solicitud activada");
+          }
+          else{
+            this.openSnackBar("Ocurrio un problema");
+          }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   generateResults(idEstudio){
