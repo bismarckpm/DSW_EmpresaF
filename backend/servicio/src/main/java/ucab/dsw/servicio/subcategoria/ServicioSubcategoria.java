@@ -88,7 +88,8 @@ public class ServicioSubcategoria extends AplicacionBase {
 
     try{
       Subcategoria subcategoria = daoSubcategoria.find(id, Subcategoria.class);
-
+      DaoCategoria daoCategoria = new DaoCategoria();
+      Categoria categoria = daoCategoria.find(subcategoria.get_categoria().get_id(), Categoria.class);
       data = Json.createObjectBuilder()
         .add("estado", "success")
         .add("code", 200)
@@ -96,7 +97,7 @@ public class ServicioSubcategoria extends AplicacionBase {
         .add("nombreSubcategoria", subcategoria.get_nombreSubcategoria())
         .add("estadoSubcategoria", subcategoria.get_estado())
         .add("categoriaId", subcategoria.get_categoria().get_id())
-        .add("categoriaNombre", subcategoria.get_categoria().get_nombreCategoria())
+        .add("categoriaNombre", categoria.get_nombreCategoria())
         .build();
 
       return Response.ok().entity(data).build();
@@ -173,12 +174,14 @@ public class ServicioSubcategoria extends AplicacionBase {
       JsonArrayBuilder subcategoriasArray = Json.createArrayBuilder();
 
       for(Subcategoria subcategory: subcategorias){
+        DaoCategoria daoCategoria = new DaoCategoria();
+        Categoria categoria = daoCategoria.find(subcategory.get_categoria().get_id(), Categoria.class);
         JsonObject categories = Json.createObjectBuilder()
           .add("id", subcategory.get_id())
           .add("nombreSubcategoria", subcategory.get_nombreSubcategoria())
           .add("estado", subcategory.get_estado())
           .add("categoriaId", subcategory.get_categoria().get_id())
-          .add("categoria", subcategory.get_categoria().get_nombreCategoria())
+          .add("categoria", categoria.get_nombreCategoria())
           .build();
 
         subcategoriasArray.add(categories);
