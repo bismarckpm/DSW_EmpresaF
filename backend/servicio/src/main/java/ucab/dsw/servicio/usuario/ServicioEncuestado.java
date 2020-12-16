@@ -299,23 +299,26 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       DaoMuestra daoMuestra = new DaoMuestra();
       solicitudes = daoMuestra.getEstudiosRealizablesByEncuestado(encuestado);
 
-      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
+      JsonArrayBuilder estudioArray = Json.createArrayBuilder();
 
       for (SolicitudEstudio solicitud: solicitudes) {
         if (solicitud.get_estado().equals("procesado") || solicitud.get_estado().equals("ejecutando")) {
+          DaoEstudio daoEstudio = new DaoEstudio();
+          Estudio estudio = daoEstudio.find(solicitud.get_estudio().get_id(), Estudio.class);
           JsonObject soli = Json.createObjectBuilder()
-            .add("estudioId", solicitud.get_estudio().get_id())
+            .add("estudioId", estudio.get_id())
+            .add("nombreEstudio", estudio.get_nombreEstudio())
             .add("encuestaId", solicitud.get_estudio().get_encuesta().get_id())
             .build();
 
-          solicitudesArray.add(soli);
+          estudioArray.add(soli);
         }
       }
 
       data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("solicitudes", solicitudesArray).build();
+        .add("estudios", estudioArray).build();
     }
     catch (Exception ex){
 
