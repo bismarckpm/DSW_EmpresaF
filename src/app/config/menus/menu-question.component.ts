@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-menu-question',
@@ -12,39 +13,38 @@ import { Router } from '@angular/router';
 export class MenuCQuestionComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idPregunta', 'descripcionPregunta', 'tipo','icons'];
-  
-  constructor(private router: Router) { }
+  displayedColumns: string[] = ['id', 'descripcion', 'tipo','opcion','icons'];
+  opcion:any;
+  constructor(private router: Router,private adminService: AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getMarcas();
+    this.getQuestions();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getMarcas(){
-    
-    this.element = [
-      {idPregunta: 1, descripcionPregunta: 'Hydrogen', tipo: 'liso'},
-      {idPregunta: 2, descripcionPregunta: 'Helium', tipo: 'liso' },
-      {idPregunta: 3, descripcionPregunta: 'Lithium', tipo: 'verde' },
-      {idPregunta: 4, descripcionPregunta: 'Beryllium', tipo: 'liso' },
-      {idPregunta: 5, descripcionPregunta: 'Boron', tipo: 'negro' },
-      {idPregunta: 6, descripcionPregunta: 'Carbon', tipo: 'blanco'},
-      {idPregunta: 7, descripcionPregunta: 'Nitrogen', tipo: 'azul' },
-      {idPregunta: 8, descripcionPregunta: 'Oxygen', tipo: 'naranja' },
-      {idPregunta: 9, descripcionPregunta: 'Fluorine', tipo: 'amarillo' },
-      {idPregunta: 10, descripcionPregunta: 'Neon', tipo: 'naranja' },
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
 
+  getQuestions(){
+    this.adminService.getQuestions()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.element = auxRes.data;
+          this.dataSource = new MatTableDataSource(auxRes.data);
+          this.dataSource.paginator = this.paginator;
+        }
+      }, 
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   deleteQuestion(idPregunta){

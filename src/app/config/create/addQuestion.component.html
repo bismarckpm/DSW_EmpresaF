@@ -24,7 +24,7 @@
                     <!--<h4>Invoice Row #{{ i + 1 }}</h4>-->
                     <mat-form-field appearance="outline" >
                         <mat-label>Opcion</mat-label>
-                        <input matInput formControlName="Opcion" type="text">
+                        <input matInput formControlName="descripcion" type="text">
                     </mat-form-field>
                     <br>
                     <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <br>
-            <button mat-raised-button class="create-btn width-100" >Crear</button>
+            <button mat-raised-button class="create-btn width-100" (click)="createQuestion()">Crear</button>
         </form>
     </mat-card>
     <!--Muestra el form en formato json en tiempo real segun la data-->

@@ -51,4 +51,18 @@ export class AdminService extends ApiService {
   assignStudy(idSolicitud:number,idEstudio:number){
     return this.http.put(this.API_URL+'api/administrador/asignarsolicitud/'+idSolicitud,{"estudio": idEstudio,},this.httpOptions);
   }
+
+  createQuestion(descripcionPregunta:string,tipoPregunta:string,min:number,max:number,opciones:any){
+    return this.http.post(this.API_URL+'api/preguntas/add',
+    {"descripcionPregunta":descripcionPregunta,
+    "tipoPregunta": tipoPregunta,
+    "min":min,
+    "max":max,
+    "opciones":opciones
+    },this.httpOptions)
+  }
+
+  getQuestions(){
+    return this.http.get(this.API_URL+'api/preguntas',this.httpOptions);
+  }
 }
