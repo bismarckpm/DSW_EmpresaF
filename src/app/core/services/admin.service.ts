@@ -177,4 +177,27 @@ export class AdminService extends ApiService {
                             this.httpOptions)
     }
 
+    getEncuesta(){
+      return this.http.get(this.API_URL+'api/encuestas',this.httpOptions);
+    }
+
+    createEncuesta(idSubcategoria:number){
+      return this.http.post(this.API_URL+'api/encuestas',
+      { "subcategoria":
+        {
+        "id":idSubcategoria
+        }
+      },
+      this.httpOptions)
+    }
+
+    createStudy(nombreEstudio:string,idEncuesta:number){
+      return this.http.post(this.API_URL+'api/estudio/add',
+      { "nombreEstudio":nombreEstudio,
+        "encuesta":{
+          "id":idEncuesta
+        }
+      },
+      this.httpOptions)
+    }
 }
