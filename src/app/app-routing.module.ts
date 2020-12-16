@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from 'src/app/shared/guards/admin.guard';
 import { UsersGuard } from 'src/app/shared/guards/users.guard';
+import { AnalystGuard } from 'src/app/shared/guards/analyst.guard';
+import { RespondentGuard} from 'src/app/shared/guards/respondent.guard';
 
 const routes: Routes = [
   {
@@ -12,6 +14,7 @@ const routes: Routes = [
   {
     path: 'analitics',
     loadChildren: () => import('./analitics/analitics.module').then(m => m.AnaliticsModule),
+    canActivate: [AnalystGuard]
   },
   {
     path: 'auth',
@@ -25,6 +28,7 @@ const routes: Routes = [
   {
     path: 'pages-respondent',
     loadChildren: () => import('./pages-respondent/pages-respondent.module').then(m => m.PagesRespondentModule),
+    canActivate: [RespondentGuard]
   },
   {
     path: 'config',
