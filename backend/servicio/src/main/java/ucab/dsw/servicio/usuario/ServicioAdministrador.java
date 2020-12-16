@@ -264,7 +264,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
         if (solicitudes.get_administrador() != null && solicitudes.get_administrador().get_id() == id && solicitudes.get_estado().equals("solicitado")) {
           JsonObject solicitudesEstudios = Json.createObjectBuilder().
             add("id", solicitudes.get_id()).
-            add("edadInicial", solicitudes.get_edadfinal()).
+            add("edadInicial", solicitudes.get_edadInicial()).
             add("edadFinal", solicitudes.get_edadfinal()).
             add("genero", solicitudes.get_genero()).
             add("estado", solicitudes.get_estado()).
