@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from './../../core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-updateClient',
@@ -13,9 +14,11 @@ export class UpdateClientComponent implements OnInit {
     updateClienteForm: FormGroup;
     nombre:any;
     contrasena:any;
+    sub: any;
+    id: number;
     idCliente:any=3;
     oldnombre:any
-    constructor(private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
+    constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
 
   ngOnInit(): void {
@@ -50,23 +53,25 @@ export class UpdateClientComponent implements OnInit {
     if (!this.contrasena){
         this.contrasena = null;
     }
-    this.adminService.updateCliente(this.nombre,this.contrasena,3)
-    .subscribe(
-      res => {
-        let auxRes:any = res;
-        if(auxRes.estado == 'success'){
-          this.openSnackBar("Actualización exitosa");
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.adminService.updateCliente(this.nombre,this.contrasena,this.id)
+      .subscribe(
+        res => {
+          let auxRes:any = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Actualización exitosa");
+            this.router.navigate(['/config/menuusers']);
+          }
+          else if(auxRes.estado != 'success'){
+            console.log(auxRes)
+            this.openSnackBar("Actualización fallida");
+          }
+        },
+        err => {
+          console.log(err)
         }
-        else if(auxRes.estado != 'success'){
-          console.log(auxRes)
-          this.openSnackBar("Actualización fallida");
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
-    console.log(this.nombre)
-    console.log(this.contrasena)
+      )
+    });  
   }
 }

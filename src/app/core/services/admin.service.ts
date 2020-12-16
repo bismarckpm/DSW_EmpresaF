@@ -40,8 +40,16 @@ export class AdminService extends ApiService {
                                                       },this.httpOptions)
   }
 
-  getRequestedStudies(){
-    return this.http.get(this.API_URL+'api/solicitud/getall',this.httpOptions);
+  getRequestedStudies(idAdmin:number){
+    return this.http.get(this.API_URL+'api/administrador/getsolicitudespendientes/'+idAdmin,this.httpOptions);
+  }
+
+  getStudies(){
+    return this.http.get(this.API_URL+'api/estudio/getall',this.httpOptions);
+  }
+
+  assignStudy(idSolicitud:number,idEstudio:number){
+    return this.http.put(this.API_URL+'api/administrador/asignarsolicitud/'+idSolicitud,{"estudio": idEstudio,},this.httpOptions);
   }
 
   getCliente(id:number){
@@ -123,8 +131,35 @@ export class AdminService extends ApiService {
           this.httpOptions);
     }
     
+    activeClient(id:number){
+      return this.http.put(this.API_URL+'api/cliente/enable/'+id,this.httpOptions);
+    }
+
+    inactiveClient(id:number){
+      return this.http.put(this.API_URL+'api/cliente/disable/'+id,this.httpOptions);
+    }
+
+    activeRespondent(id:number){
+      return this.http.put(this.API_URL+'api/encuestado/enable/'+id,this.httpOptions);
+    }
+
+    inactiveRespondent(id:number){
+      return this.http.put(this.API_URL+'api/encuestado/disable/'+id,this.httpOptions);
+    }
 
     getParroquias(){
       return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
+    }
+
+    registerCliente(nombre:string,nombreUsuario:string,contrasena:string){
+      return this.http.post(this.API_URL+'api/cliente/add',
+                            {"clienteDto":
+                              {
+                                "nombre": nombre
+                              },
+                              "nombreUsuario":nombreUsuario,
+                              "contrasena":contrasena
+                            },
+                            this.httpOptions)
     }
 }

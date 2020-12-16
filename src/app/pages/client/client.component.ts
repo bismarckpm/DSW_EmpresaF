@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/core/services/users.service';
 
 @Component({
   selector: 'app-client',
@@ -15,7 +16,7 @@ export class ClientComponent implements OnInit{
   dataSource:any;
   panelOpenState = false;
   displayedColumns: string[] = ['idEstudio', 'estatusEstudio', 'edad', 'fechaIniEstudio','genero','icons'];
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService:UsersService) { }
 
   ngOnInit(): void {
     this.getEstudios();
@@ -23,21 +24,22 @@ export class ClientComponent implements OnInit{
   }
 
   getEstudios(){
-    
-    this.elements = [
-      {idEstudio: 1, estatusEstudio: 'Activo', edad: 'liso', fechaIniEstudio: 'H',genero:'Masculino'},
-      {idEstudio: 2, estatusEstudio: 'Activo', edad: 'liso', fechaIniEstudio: 'He',genero:'Masculino'},
-      {idEstudio: 3, estatusEstudio: 'Lithium', edad: 'verde', fechaIniEstudio: 'Li',genero:'Masculino'},
-      {idEstudio: 4, estatusEstudio: 'Inactivo', edad: 'liso', fechaIniEstudio: 'Be',genero:'Masculino'},
-      {idEstudio: 5, estatusEstudio: 'Inactivo', edad: 'negro', fechaIniEstudio: 'B',genero:'Masculino'},
-      {idEstudio: 6, estatusEstudio: 'Activo', edad: 'blanco', fechaIniEstudio: 'C',genero:'Masculino'},
-      {idEstudio: 7, estatusEstudio: 'Activo', edad: 'azul', fechaIniEstudio: 'N',genero:'Masculino'},
-      {idEstudio: 8, estatusEstudio: 'Oxygen', edad: 'naranja', fechaIniEstudio: 'O',genero:'Masculino'},
-      {idEstudio: 9, estatusEstudio: 'Activo', edad: 'amarillo', fechaIniEstudio: 'F',genero:'Masculino'},
-      {idEstudio: 10, estatusEstudio: 'Inactivo', edad: 'naranja', fechaIniEstudio: 'Ne',genero:'Masculino'},
-    ];
-  
-
+    let userStorage = localStorage.getItem('clientLogged');
+    let user = JSON.parse(userStorage);
+    user = user.id;  
+    this.userService.getSpecificStudies(user)
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.elements = auxRes.solicitudes
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   updateEstudio(idEstudio){

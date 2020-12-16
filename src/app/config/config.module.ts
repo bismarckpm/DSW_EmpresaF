@@ -29,13 +29,17 @@ import { UpdateUserComponent } from 'src/app/config/update/updateUser.component'
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
 import { UpdateClientComponent } from 'src/app/config/update/updateClient.component';
 import { UpdateRespondentComponent } from 'src/app/config/update/updateRespondent.component';
-
+import { AssignStudyComponent } from './menus/assign-study/assign-study.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PasswordProfileComponent } from './profile/password-profile.component';
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
     MenuPollComponent,MenuBrandComponent,MenuCQuestionComponent,MenuStudiesComponent,MenuUsersComponent,
-    AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent, 
+    AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent,
     GlobalMenuComponent,AddUserComponent,UpdateBrandComponent,UpdateCategoryComponent,UpdatePollComponent,UpdateQuestionComponent,
     UpdateStudiesComponent,UpdateSubcategoryComponent,UpdateUserComponent,RequestStudyComponent,UpdateClientComponent,UpdateRespondentComponent
+    , AssignStudyComponent, ProfileComponent, PasswordProfileComponent
+
   ],
   imports: [
     ConfigRoutingModule,

@@ -2,6 +2,9 @@
     <div class="title-container">
       <h1 class="sign-in-title text-center">Estudios solicitados</h1>
     </div>
+    <div fxLayout="row" style="width: 60%;position: fixed;padding-top: 5vh;"  fxLayoutAlign="space-between center">
+        <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuconfig"></a>
+    </div>
     <div
     class="content"
     fxLayout="row wrap" 
@@ -25,9 +28,15 @@
                         <mat-chip-list >
                             <mat-chip class="chip-arrived"><strong>Estatus:{{study.estado}} </strong></mat-chip>
                         </mat-chip-list>
+                       
+                    </div>
+                    
+                </div>
+                <div>
+                    <div style="margin-right: 10px;cursor: pointer;" (click)="asignarEstudio(study.id)">
+                        <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
-               
             </mat-card>
         </ng-container>
     </div>

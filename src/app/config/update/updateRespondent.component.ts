@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from './../../core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-updateRespondent',
@@ -21,7 +22,6 @@ export class UpdateRespondentComponent implements OnInit {
     parroquiaId:any;
     cod:any;
     tel:any;
-    idEncuestado:number=136;
     oldnumiden: any;
     oldnombre:any;
     oldapellido:any;
@@ -34,7 +34,9 @@ export class UpdateRespondentComponent implements OnInit {
     generos:any;
     estadosCiviles:any;
     val:number;
-    constructor(private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
+    sub: any;
+    id: number;
+    constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
 
     ngOnInit(): void {
@@ -47,7 +49,7 @@ export class UpdateRespondentComponent implements OnInit {
         ocupacion:[''],
         Selectparroquia: [''],
         })
-      this.getRespondant(this.idEncuestado);
+      this.getRespondant();
       this.getGenero();
       this.getEstadoCivil();
       this.getParroquia();
@@ -74,26 +76,29 @@ export class UpdateRespondentComponent implements OnInit {
         ]
       }
   
-    getRespondant(id){
-      this.adminService.getEncuestado(id).
-      subscribe(
-        res =>{
-          let auxRes:any = res;
-          this.oldnumiden = auxRes.numero_de_identificacion;
-          this.oldnombre = auxRes.primer_nombre;
-          this.oldapellido = auxRes.primer_apellido;
-          this.oldgenero = auxRes.genero;
-          this.oldestadocivil = auxRes.estadoCivil;
-          this.oldocupacion = auxRes.ocupacion;
-          this.oldparroquia = auxRes.parroquia;
-          this.oldparroquiaId = auxRes.parroquiaId;
-          this.tel = auxRes.telefonos[0].numeroTelefono;
-          this.cod = auxRes.telefonos[0].codigoArea;
-        },
-        err =>{
-          console.log(err)
-        }
-      )
+    getRespondant(){
+      this.sub = this.route.params.subscribe(params => {
+        this.id = +params['id'];
+        this.adminService.getEncuestado(this.id).
+        subscribe(
+          res =>{
+            let auxRes:any = res;
+            this.oldnumiden = auxRes.numero_de_identificacion;
+            this.oldnombre = auxRes.primer_nombre;
+            this.oldapellido = auxRes.primer_apellido;
+            this.oldgenero = auxRes.genero;
+            this.oldestadocivil = auxRes.estadoCivil;
+            this.oldocupacion = auxRes.ocupacion;
+            this.oldparroquia = auxRes.parroquia;
+            this.oldparroquiaId = auxRes.parroquiaId;
+            this.tel = auxRes.telefonos[0].numeroTelefono;
+            this.cod = auxRes.telefonos[0].codigoArea;
+          },
+          err =>{
+            console.log(err)
+          }
+        )
+        });
     }
 
     getParroquia(){
@@ -150,22 +155,26 @@ export class UpdateRespondentComponent implements OnInit {
           this.val++;
       }
       if(this.val!=7){
-          this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.idEncuestado)
-          .subscribe(
-            res => {
-              let auxRes:any = res;
-              if(auxRes.estado == 'success'){
-                this.openSnackBar("Actualización exitosa");
+          this.sub = this.route.params.subscribe(params => {
+          this.id = +params['id'];
+            this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.id)
+            .subscribe(
+              res => {
+                let auxRes:any = res;
+                if(auxRes.estado == 'success'){
+                  this.openSnackBar("Actualización exitosa");
+                  this.router.navigate(['/config/menuusers']);
+                }
+                else if(auxRes.estado != 'success'){
+                  console.log(auxRes)
+                  this.openSnackBar("Actualización fallida");
+                }
+              },
+              err => {
+                console.log(err)
               }
-              else if(auxRes.estado != 'success'){
-                console.log(auxRes)
-                this.openSnackBar("Actualización fallida");
-              }
-            },
-            err => {
-              console.log(err)
-            }
-          )
+            )
+            });
           /*console.log(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.usuario,codigo,numero,this.idEncuestado)*/
       }else{
         this.openSnackBar("Debe ingresar al menos un campo para realizar la modificación");

@@ -12,26 +12,53 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 
 export class MenuUsersComponent implements OnInit{
-  element:any;
+  element=new Array();
   elements:any
   dataSource:any;
   users: any;
-  displayedColumns: string[] = ['idUsuario', 'nombreUsuario','rolUsuario','estadoUsuario','icons'];
+  displayedColumns: string[] = ['idUsuario', 'nombre','nombreUsuario','rolUsuario','estadoUsuario','icons'];
   constructor(private router: Router, private adminService:AdminService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getUsers();
-    
+      this.getInfo();
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getUsers(){
+
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
+
+  getInfo(){
     this.getRespondents();
     this.getClients();
+  }
+
+  getClients(){
+    this.adminService.getClientes().
+    subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;        
+        if(auxRes.estado == 'success'){
+          for (let user of auxRes.usuarios){
+            this.element.push({idUsuario:user.id,nombre:user.nombre,nombreUsuario:user.nombreUsuario,rolUsuario:'cliente',estadoUsuario:user.estado});
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
+      },
+      err=>{
+        console.log(err)
+      }
+    )
   }
 
   getRespondents(){
@@ -42,11 +69,11 @@ export class MenuUsersComponent implements OnInit{
         auxRes = res;
         if(auxRes.estado == 'success'){
           for (let user of auxRes.usuarios){
-            this.element.set({idUsuario:user.id,nombreUsuario:user.nombreUsuario,rolUsuario:'encuestado',estadoUsuario:user.estado});
-            console.log(user.id,user.nombreUsuario,'encuestado',user.estado);
+            this.element.push({idUsuario:user.id,nombre:user.primer_nombre,nombreUsuario:user.nombreUsuario,rolUsuario:'encuestado',estadoUsuario:user.estado});
           }
-          console.log(this.element)
         }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
       },
       err=>{
         console.log(err)
@@ -55,21 +82,81 @@ export class MenuUsersComponent implements OnInit{
     )
   }
 
-  getClients(){
-    
-  }
-
-  deleteUser(idUsuario){
-    console.log(idUsuario)
+  deleteUser(rolUsuario,estadoUsuario,idUsuario){
+    if (rolUsuario=='cliente'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveClient(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeClient(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    }else if(rolUsuario=='encuestado'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveRespondent(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeRespondent(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    }
   }
 
   updateUser(idUsuario,rolUsuario){
     if (rolUsuario=='cliente'){
-      this.router.navigate(['/config/updateClient'],idUsuario);
+      this.router.navigate(['/config/updateClient/'+idUsuario]);
     } else if(rolUsuario=='encuestado'){
-      this.router.navigate(['/config/updateRespondent'],idUsuario);
+      this.router.navigate(['/config/updateRespondent/'+idUsuario]);
     }else {
-      this.router.navigate(['/config/updateUser'],idUsuario);
+      this.router.navigate(['/config/updateUser/'+idUsuario]);
     }
   }
 

@@ -49,18 +49,6 @@ export class UsersService extends ApiService{
                           this.httpOptions);
   }
 
-  registerCliente(nombre:string,nombreUsuario:string,contrasena:string){
-    return this.http.post(this.API_URL+'api/cliente/add',
-                          {"clienteDto":
-                            {
-                              "nombre": nombre
-                            },
-                            "nombreUsuario":nombreUsuario,
-                            "contrasena":contrasena
-                          },
-                          this.httpOptions)
-  }
-
   getMarcas(){
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
@@ -82,4 +70,9 @@ export class UsersService extends ApiService{
   getParroquias(){
     return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
+
+  getSpecificStudies(idSolicitud:number){
+    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
+  }
+
 }
