@@ -111,7 +111,7 @@ export class AdminService extends ApiService {
   }
 
   createQuestion(descripcionPregunta:string,tipoPregunta:string,min:number,max:number,opciones:any){
-    return this.http.post(this.API_URL+'api/preguntas/add',
+    return this.http.post(this.API_URL+'api/preguntas',
     {"descripcionPregunta":descripcionPregunta,
     "tipoPregunta": tipoPregunta,
     "min":min,
