@@ -10,6 +10,7 @@ import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.autenticacion.Autenticacion;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
+import ucab.dsw.excepciones.EstadoExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -32,17 +33,21 @@ public class ServicioAutenticacion extends AplicacionBase {
     JsonObject data;
 
     try {
-      Autenticacion autenticacion = new Autenticacion();
-      resultado = autenticacion.generateToken(usuarioDto);
 
       DaoUsuario dao = new DaoUsuario();
       List<Usuario> usuario = dao.findAll(Usuario.class);
 
       for(Usuario users:usuario){
         if(users.get_nombreUsuario().equals(usuarioDto.getNombreUsuario())){
-           usuarioId = users.get_id();
+          usuarioId = users.get_id();
+          if(users.get_estado().equals("inactivo")){
+            throw  new EstadoExcepcion("Este usuario se encuentra inactivo");
+          }
         }
       }
+
+      Autenticacion autenticacion = new Autenticacion();
+      resultado = autenticacion.generateToken(usuarioDto);
 
       DirectorioActivo directorioActivo = new DirectorioActivo();
 
@@ -53,8 +58,18 @@ public class ServicioAutenticacion extends AplicacionBase {
         .add("estado", "success")
         .add("code", 200)
         .build();
-    }
-    catch (NullPointerException ex){
+
+    }catch (EstadoExcepcion ex){
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+
+    } catch (NullPointerException ex){
       String mensaje = "Usuario y/o clave incorrecta";
 
       data = Json.createObjectBuilder()

@@ -16,8 +16,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ucab.dsw.accesodatos.DaoEncuesta;
+import ucab.dsw.accesodatos.DaoPregunta;
+import ucab.dsw.accesodatos.DaoPreguntaEncuesta;
+import ucab.dsw.accesodatos.DaoPreguntaOpcion;
 import ucab.dsw.dtos.EncuestaDto;
 import ucab.dsw.entidades.Encuesta;
+import ucab.dsw.entidades.Pregunta;
+import ucab.dsw.entidades.PreguntaEncuesta;
 import ucab.dsw.entidades.Subcategoria;
 
 /**
@@ -34,7 +39,7 @@ public class ServicioEncuesta {
      * metodo POST
      *
      * SubCaterogia debe estar previamente creada
-     * 
+     *
      * @param encuestaDto DTO de la encuesta
      * @return JSON success: {pregunta, estado, code}; error: {mensaje, estado,
      * code}
@@ -47,7 +52,7 @@ public class ServicioEncuesta {
 
             Encuesta encuesta = new Encuesta();
             Subcategoria subcategoria = new Subcategoria(encuestaDto.getSubcategoria().getId());
-            
+
             encuesta.set_subcategoria(subcategoria);
 
             DaoEncuesta dao = new DaoEncuesta();
@@ -80,7 +85,7 @@ public class ServicioEncuesta {
         return Response.status(200).entity(data).build();
 
     }
-    
+
     /**
      * Metodo para Obtener todas las encuestas Accedido. mediante /encuestas/
      * con el metodo GET
@@ -102,14 +107,40 @@ public class ServicioEncuesta {
             encuestas = dao.findAll(Encuesta.class);
 
 
-            JsonArrayBuilder encuestasJson = Json.createArrayBuilder();
-            
+            JsonArrayBuilder encuestasArray = Json.createArrayBuilder();
+            JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
+
             for (Encuesta encuesta : encuestas) {
-                encuestasJson.add(encuesta.toJson());
+              DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+              List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
+
+              for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
+                if(encuesta.get_id() == preguntaEncuesta.get_encuesta().get_id()){
+
+                  JsonObject JsonQuestions = Json.createObjectBuilder()
+                    .add("preguntaId", preguntaEncuesta.get_pregunta().get_id())
+                    .add("descripcionPregunta", preguntaEncuesta.get_pregunta().get_descripcionPregunta())
+                    .add("tipoPregunta", preguntaEncuesta.get_pregunta().get_tipoPregunta())
+                    .add("max", preguntaEncuesta.get_pregunta().get_max())
+                    .add("min", preguntaEncuesta.get_pregunta().get_min())
+                    .build();
+
+                  preguntasArray.add(JsonQuestions);
+                }
+              }
+
+              JsonObject JsonEncuesta = Json.createObjectBuilder()
+                .add("encuestaId", encuesta.get_id())
+                .add("subcategoriaId", encuesta.get_subcategoria().get_id())
+                .add("subcategoria", encuesta.get_subcategoria().get_nombreSubcategoria())
+                .add("preguntas", preguntasArray)
+                .build();
+
+              encuestasArray.add(JsonEncuesta);
             }
-           
+
             data = Json.createObjectBuilder()
-                    .add("data", encuestasJson)
+                    .add("encuestas", encuestasArray)
                     .add("code", 200)
                     .add("estado", "success")
                     .build();
@@ -125,14 +156,14 @@ public class ServicioEncuesta {
         }
         return Response.ok().entity(data).build();
     }
-    
-    
+
+
     /**
      * Metodo para Obtener una encuesta en especifica Accedido mediante /encuestas/{id}
      * con el metodo GET
      *
      * @param _id id de la encuesta
-     * 
+     *
      * @return JSON success: {data, code, estado}; error: {mensaje, estado,
      * code}
      *
@@ -148,9 +179,9 @@ public class ServicioEncuesta {
 
             DaoEncuesta dao = new DaoEncuesta();
             encuesta = dao.find(_id, Encuesta.class);
-            
+
             JsonObject encuestaJson = encuesta.toJson();
-           
+
             data = Json.createObjectBuilder()
                     .add("data", encuestaJson)
                     .add("code", 200)
