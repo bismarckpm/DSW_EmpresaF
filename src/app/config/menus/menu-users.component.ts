@@ -2,6 +2,8 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from './../../core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-users',
@@ -10,49 +12,152 @@ import { Router } from '@angular/router';
 })
 
 export class MenuUsersComponent implements OnInit{
-  element:any;
+  element=new Array();
+  elements:any
   dataSource:any;
-  displayedColumns: string[] = ['idUsuario', 'nombreUsuario','rolUsuario','estadoUsuario','icons'];
-  constructor(private router: Router) { }
+  users: any;
+  displayedColumns: string[] = ['idUsuario', 'nombre','nombreUsuario','rolUsuario','estadoUsuario','icons'];
+  constructor(private router: Router, private adminService:AdminService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.getUsers();
-    
+      this.getInfo();
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getUsers(){
-    
-    this.element = [
-      {idUsuario: 1, nombreUsuario: 'Carlos23',rolUsuario:'admin',estadoUsuario:'activo'},
-      {idUsuario: 2, nombreUsuario: 'LOPZ1998',rolUsuario:'cliente',estadoUsuario:'activo'},
-      {idUsuario: 3, nombreUsuario: 'PaoVar',rolUsuario:'encuestado',estadoUsuario:'activo'},
-      {idUsuario: 4, nombreUsuario: 'Ofic14',rolUsuario:'analista',estadoUsuario:'activo'},
-      {idUsuario: 5, nombreUsuario: 'Escolar75',rolUsuario:'encuestado',estadoUsuario:'activo'},
-      {idUsuario: 6, nombreUsuario: 'Comr',rolUsuario:'admin',estadoUsuario:'inactivo'},
-      {idUsuario: 7, nombreUsuario: 'Mueb4',rolUsuario:'cliente',estadoUsuario:'activo'},
-      {idUsuario: 8, nombreUsuario: 'Computadoras185',rolUsuario:'encuestado',estadoUsuario:'activo'},
-      {idUsuario: 9, nombreUsuario: 'Hi99',rolUsuario:'encuestado',estadoUsuario:'activo'},
-      {idUsuario: 10, nombreUsuario: 'Masna74',rolUsuario:'encuestado',estadoUsuario:'inactivo'},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
 
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
   }
 
-  deleteUser(idUsuario){
-    console.log(idUsuario)
+  getInfo(){
+    this.getRespondents();
+    this.getClients();
   }
 
-  updateUser(idUsuario){
-  this.router.navigate(['/config/updateUser']);
-    console.log(idUsuario)
+  getClients(){
+    this.adminService.getClientes().
+    subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;        
+        if(auxRes.estado == 'success'){
+          for (let user of auxRes.usuarios){
+            this.element.push({idUsuario:user.id,nombre:user.nombre,nombreUsuario:user.nombreUsuario,rolUsuario:'cliente',estadoUsuario:user.estado});
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
+      },
+      err=>{
+        console.log(err)
+      }
+    )
+  }
+
+  getRespondents(){
+    this.adminService.getEncuestados().
+    subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          for (let user of auxRes.usuarios){
+            this.element.push({idUsuario:user.id,nombre:user.primer_nombre,nombreUsuario:user.nombreUsuario,rolUsuario:'encuestado',estadoUsuario:user.estado});
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
+      },
+      err=>{
+        console.log(err)
+
+      }
+    )
+  }
+
+  deleteUser(rolUsuario,estadoUsuario,idUsuario){
+    if (rolUsuario=='cliente'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveClient(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeClient(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    }else if(rolUsuario=='encuestado'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveRespondent(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeRespondent(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    }
+  }
+
+  updateUser(idUsuario,rolUsuario){
+    if (rolUsuario=='cliente'){
+      this.router.navigate(['/config/updateClient/'+idUsuario]);
+    } else if(rolUsuario=='encuestado'){
+      this.router.navigate(['/config/updateRespondent/'+idUsuario]);
+    }else {
+      this.router.navigate(['/config/updateUser/'+idUsuario]);
+    }
   }
 
   addUser(){
