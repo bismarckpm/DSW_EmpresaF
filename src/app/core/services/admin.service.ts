@@ -10,24 +10,60 @@ export class AdminService extends ApiService {
   createCategoria(nombreCategoria:string){
     return this.http.post(this.API_URL+'api/categoria/add',{"nombreCategoria":nombreCategoria},this.httpOptions)
   }
+
+  updateCategoria(nombreCategoria:string,id:number){
+    return this.http.put(this.API_URL+'api/categoria/update/'+id,{"nombreCategoria":nombreCategoria},this.httpOptions)
+  }
  
+  getCategoria(id:number){
+    return this.http.get(this.API_URL+'api/categoria/getcategoria/'+id,this.httpOptions)
+  }
+
   getCategorias(){
     return this.http.get(this.API_URL+'api/categoria/getall',this.httpOptions);
+  }
+
+  activeCategory(id:number){
+    return this.http.put(this.API_URL+'api/categoria/enable/'+id,this.httpOptions);
+  }
+
+  inactiveCategory(id:number){
+    return this.http.put(this.API_URL+'api/categoria/disable/'+id,this.httpOptions);
   }
 
   createSubCategoria(nombreSubcategoria,id){
     return this.http.post(this.API_URL+'api/subcategoria/add',{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":id}},this.httpOptions)
   }
 
+  updateSubcategoria(nombreSubcategoria:string,idSubcategoria:number,id:number){
+    return this.http.put(this.API_URL+'api/subcategoria/update/'+id,{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":idSubcategoria}},this.httpOptions)
+  }
+ 
+  getSubcategoria(id:number){
+    return this.http.get(this.API_URL+'api/subcategoria/getsubcategoria/'+id,this.httpOptions)
+  }
+
   getSubcategorias(){
     return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
+  }
+
+  activeSubcategory(id:number){
+    return this.http.put(this.API_URL+'api/subcategoria/enable/'+id,this.httpOptions);
+  }
+
+  inactiveSubcategory(id:number){
+    return this.http.put(this.API_URL+'api/subcategoria/disable/'+id,this.httpOptions);
   }
 
   getMarcas(){
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
 
-  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:number,id:number){
+  getMarca(id:number){
+    return this.http.get(this.API_URL+'api/marca/getmarca/'+id,this.httpOptions)
+  }
+
+  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,id:number){
     return this.http.post(this.API_URL+'api/marca/add',
                                                       {
                                                         "nombreMarca": nombreMarca,
@@ -39,6 +75,28 @@ export class AdminService extends ApiService {
                                                         }
                                                       },this.httpOptions)
   }
+
+  updateMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,idsub:number,id:number){
+    return this.http.put(this.API_URL+'api/marca/update/'+id,
+                                                      {
+                                                        "nombreMarca": nombreMarca,
+                                                        "tipoMarca": tipoMarca,
+                                                        "capacidad": capacidad,
+                                                        "unidad": unidad,
+                                                        "subcategoria":{
+                                                            "id": idsub
+                                                        }
+                                                      },this.httpOptions)
+  }
+
+  activeBrand(id:number){
+    return this.http.put(this.API_URL+'api/marca/enable/'+id,this.httpOptions);
+  }
+
+  inactiveBrand(id:number){
+    return this.http.put(this.API_URL+'api/marca/disable/'+id,this.httpOptions);
+  }
+
 
   getRequestedStudies(idAdmin:number){
     return this.http.get(this.API_URL+'api/administrador/getsolicitudespendientes/'+idAdmin,this.httpOptions);
@@ -177,4 +235,8 @@ export class AdminService extends ApiService {
                             this.httpOptions)
     }
 
+
+
+
+  
 }

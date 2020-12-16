@@ -1,20 +1,18 @@
-<div class="content menu-bg">
-    <mat-toolbar >
-        <div >
-            <a mat-icon-button  routerLink="/config/menuusers">
-                <mat-icon>keyboard_arrow_left</mat-icon>
-            </a>
+<div class="content menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card" >
+        <div fxLayout="row">
+            <div fxLayoutAlign="start center">
+                <a class="fas fa-arrow-left fa-lg" routerLink="/config/menuusers"></a>
+            </div>
+            <div fxLayoutAlign="center center " id="add-title" >
+                <h1 class=" text-center"><span style="color: #5454C9;">A</span>gregar Usuario</h1>
+            </div>
         </div>
-    </mat-toolbar>
-    <br>
-    <div fxFill fxLayout="column" fxLayoutAlign="center center" >
-        <div fxLayout fxLayoutAlign="center center ">
             <mat-card fxLayout="column">
                 <mat-radio-group aria-label="Select an option" [(ngModel)]="registro_cliente">
-                    <mat-radio-button [value]="true" >Cliente</mat-radio-button>
+                    <mat-radio-button [value]="true" style="padding: 5%;" >Cliente</mat-radio-button>
                     <mat-radio-button [value]="false">Administrador o analista</mat-radio-button>
                 </mat-radio-group> 
-                <br>
                 <form [formGroup]="registerClienteForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_cliente==true;">
                     <mat-form-field appearance="outline" >
                         <mat-label>Nombre</mat-label>
@@ -49,6 +47,5 @@
                     <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
                 </form>
             </mat-card>
-        </div>    
-    </div> 
+    </mat-card>
 </div>

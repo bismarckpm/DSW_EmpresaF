@@ -16,8 +16,7 @@ export class UpdateClientComponent implements OnInit {
     contrasena:any;
     sub: any;
     id: number;
-    idCliente:any=3;
-    oldnombre:any
+    oldnombre:any;
     constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
 
@@ -26,7 +25,7 @@ export class UpdateClientComponent implements OnInit {
         nombre:['', Validators.required],
         contrasena:null,
       })
-    this.getClient(this.idCliente);
+    this.getClient();
   }
   openSnackBar(message: string){
     this._snackBar.open(message, 'X', {
@@ -34,17 +33,20 @@ export class UpdateClientComponent implements OnInit {
     });
   }
 
-  getClient(id){
-    this.adminService.getCliente(id).
-    subscribe(
-      res =>{
-        let auxRes:any = res;
-        this.oldnombre = auxRes.nombre;
-      },
-      err =>{
-        console.log(err)
-      }
-    )
+  getClient(){
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.adminService.getCliente(this.id).
+      subscribe(
+        res =>{
+          let auxRes:any = res;
+          this.oldnombre = auxRes.nombre;
+        },
+        err =>{
+          console.log(err)
+        }
+      )
+    });
   }
 
   handleUpdateCliente(){
