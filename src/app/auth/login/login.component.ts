@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['analitics/menuanalitics']);
           }
           else if(auxRes.rol == 'encuestado'){
+            localStorage.setItem('encuestadoLogged', JSON.stringify(auxRes))
             this.router.navigate(['pages-respondent/respondent']);
           }
           return;
