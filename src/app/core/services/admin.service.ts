@@ -139,7 +139,6 @@ export class AdminService extends ApiService {
 
   getEncuestados(){
     return this.http.get(this.API_URL+'api/encuestado/getall',this.httpOptions);
-
   }
 
   updateCliente(nombre:string,contrasena:string,id:number){
@@ -166,22 +165,6 @@ export class AdminService extends ApiService {
     /*contrasena:string*/
     id:number
     ){
-      console.log({"encuestadoDto":
-      { 
-        "numeroIdentificacion": numeroIdentificacion, 
-        "primerNombre": primerNombre,
-        "primerApellido":primerApellido,
-        "genero":genero,
-        "estadoCivil":estadoCivil,
-        "ocupacion":ocupacion,
-        "parroquia":parroquiaId,
-        "telefonos": [{
-          "_codigoArea":_codigoArea,
-          "_numeroTelefono":_numeroTelefono
-        }]
-      },
-        "contrasena":null 
-    })
 
     return this.http.put(this.API_URL+'api/encuestado/update/'+id,
     {"encuestadoDto":
@@ -258,4 +241,13 @@ export class AdminService extends ApiService {
       },
       this.httpOptions)
     }
+
+    getAdministradores(){
+      return this.http.get(this.API_URL+'api/administrador/getall',this.httpOptions);
+    }
+
+    getAnalistas(){
+      return this.http.get(this.API_URL+'api/analista/getall',this.httpOptions);
+    }
+  
 }
