@@ -160,6 +160,7 @@ public class ServicioMarca extends AplicacionBase {
           .add("unidad", marca.get_unidad())
           .add("estado", marca.get_estado())
           .add("subcategoriaId", marca.get_subcategoria().get_id())
+          .add("subcategoriaNombre", marca.get_subcategoria().get_nombreSubcategoria())
           .build();
 
         marcasArray.add(ma);

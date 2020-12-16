@@ -91,7 +91,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
       solicitudEstudio.set_estudio(estudio);
       solicitudEstudio.set_estado("procesado");
 
-      int random = (int) (Math.random()*(82-81+1)+81);
+      int random = 2;
       Usuario analista = new Usuario(random);
       solicitudEstudio.set_analista(analista);
       SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitudEstudio);

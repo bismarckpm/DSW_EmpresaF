@@ -125,12 +125,17 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
       for(Usuario user: usuarios) {
         if(user.get_encuestado() != null) {
-          for(Telefono telefono:user.get_encuestado().get_telefonos()){
-            JsonObject phones = Json.createObjectBuilder()
-              .add("codigoArea", telefono.get_codigoArea())
-              .add("numeroTelefono", telefono.get_numeroTelefono()).build();
+          DaoTelefono daoTelefono = new DaoTelefono();
+          List<Telefono> telefonos = daoTelefono.findAll(Telefono.class);
+          for(Telefono telefono:telefonos){
+            if(telefono.get_encuestado().get_id() == user.get_encuestado().get_id()){
+              JsonObject phones = Json.createObjectBuilder()
+                .add("codigoArea", telefono.get_codigoArea())
+                .add("numeroTelefono", telefono.get_numeroTelefono()).build();
 
-            telefonosArray.add(phones);
+              telefonosArray.add(phones);
+            }
+
           }
           JsonObject users = Json.createObjectBuilder()
             .add("id", user.get_id())
@@ -141,7 +146,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
             .add("estado", user.get_estado())
             .add("ocupacion", user.get_encuestado().get_ocupacion())
             .add("estadoCivil", user.get_encuestado().get_estadoCivil())
-            .add("estado", user.get_encuestado().get_estado())
+            .add("estado", user.get_estado())
             .add("telefonos", telefonosArray)
             .build();
 
