@@ -9,6 +9,7 @@ import { InterviewSurveyComponent } from './interview-survey/interview-survey.co
 import { DescriptionCardComponent } from './interview-survey/description-card.component';
 import { OptionCardComponent } from './interview-survey/option-card.component';
 import { RangeCardComponent } from './interview-survey/range-card.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
         { path: "card-desc", component: DescriptionCardComponent},
         { path: "card-range", component: RangeCardComponent},
         { path: "card-op", component: OptionCardComponent},
+        { path: "analysis", component: AnalysisComponent}
       ]
     }
   ];

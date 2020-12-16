@@ -1,0 +1,41 @@
+
+$mercadoucab-dark: #222327;
+$mercadoucab-light: whitesmoke;
+$mercadoucab-blue: #5454C9;
+table {
+    width: 80%;
+  }
+
+  .texto-entrada h1 {
+    margin: 0;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .texto-entrada h1::after {
+    content: '';
+    display:  block;
+    width: 13rem;
+    height: .1rem;
+    background-color: #5454C9;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+mat-card{
+  -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  width: 350px;
+  border-top: #5454C9 solid 3px;
+}
+
+.create-btn{
+  font-size: large;
+  width: 10%;
+}
+
+p{
+  color: red;
+}
