@@ -9,12 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  zones: any;
   generos:any;
   estadosCiviles:any;
   registerEncuestadoForm: FormGroup;
-  registerClienteForm:FormGroup;
-  registro_usuario:boolean = true;
 
   //Campos del form
   nombre:any;
@@ -52,11 +49,6 @@ export class RegisterComponent implements OnInit {
       nombreUsuario: ['',Validators.required],
       contrasena: ['',Validators.required],
     });
-    this.registerClienteForm = this.formBuilder.group({
-      nombre:['', Validators.required],
-      nombreUsuario: ['',Validators.required],
-      contrasena: ['',Validators.required],
-    })
     this.getGenero();
     this.getEstadoCivil();
     this.getParroquia();
@@ -140,28 +132,6 @@ export class RegisterComponent implements OnInit {
           this.openSnackBar("Registro exitoso");
         }
         else if(auxRes.estado != 'success'){
-          this.openSnackBar("Registro fallido");
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
-  }
-
-  handleRegisterCliente(){
-    this.nombre = this.registerClienteForm.get('nombre').value;
-    this.nombreUsuario = this.registerClienteForm.get('nombreUsuario').value
-    this.contrasena = this.registerClienteForm.get('contrasena').value
-    this.userService.registerCliente(this.nombre,this.nombreUsuario,this.contrasena)
-    .subscribe(
-      res => {
-        let auxRes:any = res;
-        if(auxRes.estado == 'success'){
-          this.openSnackBar("Registro exitoso");
-        }
-        else if(auxRes.estado != 'success'){
-          console.log(auxRes)
           this.openSnackBar("Registro fallido");
         }
       },

@@ -1,0 +1,54 @@
+<div class="content menu-bg">
+    <mat-toolbar >
+        <div >
+            <a mat-icon-button  routerLink="/config/menuusers">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </a>
+        </div>
+    </mat-toolbar>
+    <br>
+    <div fxFill fxLayout="column" fxLayoutAlign="center center" >
+        <div fxLayout fxLayoutAlign="center center ">
+            <mat-card fxLayout="column">
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="registro_cliente">
+                    <mat-radio-button [value]="true" >Cliente</mat-radio-button>
+                    <mat-radio-button [value]="false">Administrador o analista</mat-radio-button>
+                </mat-radio-group> 
+                <br>
+                <form [formGroup]="registerClienteForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_cliente==true;">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre de Usuario</mat-label>
+                        <input matInput formControlName="nombreUsuario" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput formControlName="contrasena" type="password">
+                    </mat-form-field>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
+                </form>
+                <!--Administrador y analista-->
+                <form [formGroup]="registerUserForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_cliente==false;">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Nombre de Usuario</mat-label>
+                        <input matInput formControlName="nombreUsuario" type="text">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput formControlName="contrasena" type="password">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Rol</mat-label>
+                        <mat-select formControlName="rol">
+                            <mat-option *ngFor="let rol of roles, index as i" [value]="rol.nombre">{{rol.nombre}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
+                </form>
+            </mat-card>
+        </div>    
+    </div> 
+</div>
