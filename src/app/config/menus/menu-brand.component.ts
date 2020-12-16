@@ -3,6 +3,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-brand',
@@ -14,8 +15,8 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuBrandComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','subcategoriaId','icons'];
-  constructor(private router: Router, private adminService:AdminService) { }
+  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','subcategoriaId','estado','icons'];
+  constructor(private router: Router, private adminService:AdminService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -28,6 +29,13 @@ export class MenuBrandComponent implements OnInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
+
   getMarcas(){
     this.adminService.getMarcas()
     .subscribe(
@@ -47,16 +55,45 @@ export class MenuBrandComponent implements OnInit{
     )
   }
 
-  deleteMarca(idMarca){
-    console.log(idMarca)
+  deleteMarca(idMarca,estadoMarca){
+    if (estadoMarca=='activo'){
+      this.adminService.inactiveBrand(idMarca).
+      subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Usuario inactivado");
+            window.location.reload();
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }else{
+      this.adminService.activeBrand(idMarca).
+      subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Usuario activado");
+            window.location.reload();
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
   }
 
   updateMarca(idMarca){
-    console.log(idMarca)
+    this.router.navigate(['/config/updateBrand/'+idMarca]);
   }
 
   addMarca(){
     this.router.navigate(['/config/addBrand']);
-    console.log("Add marca");
   }
 }
