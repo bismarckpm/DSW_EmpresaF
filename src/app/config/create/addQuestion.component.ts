@@ -70,6 +70,7 @@ export class AddQuestionComponent implements OnInit{
     this.min = 0;
     this.max = 0;
     this.opciones = this.createPreguntaForm.get('itemRows').value;
+    
     this.adminService.createQuestion(this.descripcionPregunta,this.tipoPregunta,this.min,this.max,this.opciones)
     .subscribe(
       res => {

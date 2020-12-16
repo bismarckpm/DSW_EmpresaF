@@ -1,5 +1,7 @@
 import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AdminService } from 'src/app/core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-addpoll',
@@ -15,7 +17,8 @@ export class AddPollComponent implements OnInit{
   admin: any;
   subCategorias:any;
   token: string;
-  constructor(private formBuilder: FormBuilder) { }
+  Idsubcategoria:number;
+  constructor(private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createEncuestaForm = this.formBuilder.group({
@@ -24,18 +27,46 @@ export class AddPollComponent implements OnInit{
     this.getSubCategoria();
   }
 
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
+  }
+
   handleCreateMarca(){
-    let formData = new FormData();
-    formData.append('selectSubCategoria', this.createEncuestaForm.get('selectSubCategoria').value);
-    console.log(this.createEncuestaForm.get('selectSubCategoria').value)
+    this.Idsubcategoria = this.createEncuestaForm.get('selectSubCategoria').value
+    this.adminService.createEncuesta(this.Idsubcategoria)
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.openSnackBar("Encuesta creada con exito");
+        }
+        else if(auxRes.estado != 'success'){
+          this.openSnackBar("Ocurrio un problema");
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   } 
 
   getSubCategoria(){
-    this.subCategorias = [
-      { idSubcategoria:1, name: 'Los Caobos Av La Salle'},
-      { idSubcategoria:2, name: 'Las Palmas Av Las Palmas' },
-      { idSubcategoria:3, name: 'La Florida Av Andres Bello'},
-    ]
+    this.adminService.getSubcategorias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.subCategorias = auxRes.subcategorias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
   
 }

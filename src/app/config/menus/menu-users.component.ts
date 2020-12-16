@@ -39,6 +39,8 @@ export class MenuUsersComponent implements OnInit{
   getInfo(){
     this.getRespondents();
     this.getClients();
+    this.getAdminis();
+    this.getAnalitics();
   }
 
   getClients(){
@@ -70,6 +72,48 @@ export class MenuUsersComponent implements OnInit{
         if(auxRes.estado == 'success'){
           for (let user of auxRes.usuarios){
             this.element.push({idUsuario:user.id,nombre:user.primer_nombre,nombreUsuario:user.nombreUsuario,rolUsuario:'encuestado',estadoUsuario:user.estado});
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
+      },
+      err=>{
+        console.log(err)
+
+      }
+    )
+  }
+
+  getAdminis(){
+    this.adminService.getAdministradores().
+    subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          for (let user of auxRes.usuarios){
+            this.element.push({idUsuario:user.id,nombre:'Sin nombre en el sistema',nombreUsuario:user.nombreUsuario,rolUsuario:'administrador',estadoUsuario:user.estado});
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.element);
+        this.dataSource.paginator = this.paginator;
+      },
+      err=>{
+        console.log(err)
+
+      }
+    )
+  }
+
+  getAnalitics(){
+    this.adminService.getAnalistas().
+    subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          for (let user of auxRes.usuarios){
+            this.element.push({idUsuario:user.id,nombre:'Sin nombre en el sistema',nombreUsuario:user.nombreUsuario,rolUsuario:'analista',estadoUsuario:user.estado});
           }
         }
         this.dataSource = new MatTableDataSource(this.element);

@@ -2,6 +2,7 @@ import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addbrand',
@@ -19,9 +20,9 @@ export class AddBrandComponent implements OnInit{
   nombreMarca:string
   tipoMarca:string
   capacidad:number
-  unidad:number;
+  unidad:string;
 
-  constructor(private formBuilder: FormBuilder,private adminService: AdminService,public _snackBar: MatSnackBar) { }
+  constructor(private router: Router, private formBuilder: FormBuilder,private adminService: AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createMarcaForm = this.formBuilder.group({
@@ -53,6 +54,7 @@ export class AddBrandComponent implements OnInit{
         auxRes = res;
         if(auxRes.estado == 'success'){
           this.openSnackBar("Marca creada con exito");
+          this.router.navigate(['/config/menubrand']);
         }
       },
       err => {
