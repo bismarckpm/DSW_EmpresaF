@@ -1,8 +1,10 @@
 package ucab.dsw.servicio.marca;
 
+import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoMarca;
 import ucab.dsw.accesodatos.DaoSubcategoria;
 import ucab.dsw.dtos.MarcaDto;
+import ucab.dsw.entidades.Categoria;
 import ucab.dsw.entidades.Marca;
 import ucab.dsw.entidades.Subcategoria;
 import ucab.dsw.servicio.AplicacionBase;
@@ -110,6 +112,8 @@ public class ServicioMarca extends AplicacionBase {
 
     try{
       Marca marca = daoMarca.find(id, Marca.class);
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+      Subcategoria subcategoria = daoSubcategoria.find(marca.get_subcategoria().get_id(), Subcategoria.class);
 
       data = Json.createObjectBuilder()
         .add("estado", "success")
@@ -121,7 +125,7 @@ public class ServicioMarca extends AplicacionBase {
         .add("capacidad", marca.get_capacidad())
         .add("unidad", marca.get_unidad())
         .add("subcategoriaId", marca.get_subcategoria().get_id())
-        .add("subcategoriaNombre", marca.get_subcategoria().get_nombreSubcategoria())
+        .add("subcategoriaNombre", subcategoria.get_nombreSubcategoria())
         .build();
 
       return Response.ok().entity(data).build();
@@ -152,6 +156,9 @@ public class ServicioMarca extends AplicacionBase {
       JsonArrayBuilder marcasArray = Json.createArrayBuilder();
 
       for(Marca marca: marcas){
+        DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+        Subcategoria subcategoria = daoSubcategoria.find(marca.get_subcategoria().get_id(), Subcategoria.class);
+
         JsonObject ma = Json.createObjectBuilder()
           .add("id", marca.get_id())
           .add("nombreMarca", marca.get_nombreMarca())
@@ -160,6 +167,7 @@ public class ServicioMarca extends AplicacionBase {
           .add("unidad", marca.get_unidad())
           .add("estado", marca.get_estado())
           .add("subcategoriaId", marca.get_subcategoria().get_id())
+          .add("subcategoriaNombre", subcategoria.get_nombreSubcategoria())
           .build();
 
         marcasArray.add(ma);

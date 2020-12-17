@@ -1,5 +1,7 @@
 package ucab.dsw.servicio.estudio;
 
+import ucab.dsw.accesodatos.Dao;
+import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoEstudio;
 import ucab.dsw.dtos.EstudioDto;
 import ucab.dsw.entidades.*;
@@ -67,6 +69,36 @@ public class ServicioEstudio extends AplicacionBase {
     System.out.println(data);
     return  Response.ok().entity(data).build();
 
+  }
+
+  @GET
+  @Path("/getestudio/{estudioId}")
+  public Response getEstudioById(@PathParam("estudioId") long id){
+
+    DaoEstudio daoEstudio = new DaoEstudio();
+    JsonObject data;
+
+    try{
+      Estudio estudio = daoEstudio.find(id, Estudio.class);
+
+      data = Json.createObjectBuilder()
+        .add("id", estudio.get_id())
+        .add("nombreEstudio", estudio.get_nombreEstudio())
+        .add("estado", estudio.get_estado())
+        .add("encuestaId", estudio.get_encuesta().get_id())
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+    }
+
+    return Response.ok().entity(data).build();
   }
 
   @GET

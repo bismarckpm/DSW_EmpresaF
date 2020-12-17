@@ -58,6 +58,7 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       if( !solicitudesExistentes.isEmpty()){
 
         for(SolicitudEstudio soli:solicitudesExistentes){
+          DaoUsuario dao = new DaoUsuario();
           solicitudEstudio.set_analista(soli.get_analista());
           break;
         }
@@ -66,7 +67,7 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
       }else{
         DaoUsuario dao = new DaoUsuario();
-        Integer id = 84;
+        Integer id = 4;
         Usuario usuario = dao.find(id.longValue(), Usuario.class);
         solicitudEstudio.set_administrador(usuario);
         solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);

@@ -125,12 +125,17 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
       for(Usuario user: usuarios) {
         if(user.get_encuestado() != null) {
-          for(Telefono telefono:user.get_encuestado().get_telefonos()){
-            JsonObject phones = Json.createObjectBuilder()
-              .add("codigoArea", telefono.get_codigoArea())
-              .add("numeroTelefono", telefono.get_numeroTelefono()).build();
+          DaoTelefono daoTelefono = new DaoTelefono();
+          List<Telefono> telefonos = daoTelefono.findAll(Telefono.class);
+          for(Telefono telefono:telefonos){
+            if(telefono.get_encuestado().get_id() == user.get_encuestado().get_id()){
+              JsonObject phones = Json.createObjectBuilder()
+                .add("codigoArea", telefono.get_codigoArea())
+                .add("numeroTelefono", telefono.get_numeroTelefono()).build();
 
-            telefonosArray.add(phones);
+              telefonosArray.add(phones);
+            }
+
           }
           JsonObject users = Json.createObjectBuilder()
             .add("id", user.get_id())
@@ -141,7 +146,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
             .add("estado", user.get_estado())
             .add("ocupacion", user.get_encuestado().get_ocupacion())
             .add("estadoCivil", user.get_encuestado().get_estadoCivil())
-            .add("estado", user.get_encuestado().get_estado())
+            .add("estado", user.get_estado())
             .add("telefonos", telefonosArray)
             .build();
 
@@ -282,46 +287,53 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
   @Path("/getestudios/{usuarioEncuestadoId}")
   public Response getEstudiosRealizables(@PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
 
-    JsonObject data;
-    List<SolicitudEstudio> solicitudes;
+    JsonObject data = null;
 
     try {
       DaoUsuario daoUsuario = new DaoUsuario();
 
       Usuario usuario = daoUsuario.find(usuarioEncuestadoId, Usuario.class);
+
       Encuestado encuestado = usuario.get_encuestado();
 
       DaoMuestra daoMuestra = new DaoMuestra();
-      solicitudes = daoMuestra.getEstudiosRealizablesByEncuestado(encuestado);
+      List<SolicitudEstudio> solicitudes = daoMuestra.getEstudiosRealizablesByEncuestado(encuestado);
 
-      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
+      JsonArrayBuilder estudioRealizableArray = Json.createArrayBuilder();
 
-      for (SolicitudEstudio solicitud: solicitudes) {
+
+     for (SolicitudEstudio solicitud: solicitudes) {
         if (solicitud.get_estado().equals("procesado") || solicitud.get_estado().equals("ejecutando")) {
-          JsonObject soli = Json.createObjectBuilder()
-            .add("estudioId", solicitud.get_estudio().get_id())
-            .add("encuestaId", solicitud.get_estudio().get_encuesta().get_id())
-            .build();
+          DaoEstudio daoEstudio = new DaoEstudio();
+          List<Estudio> estudios = daoEstudio.findAll(Estudio.class);
 
-          solicitudesArray.add(soli);
+          for(Estudio estudio:estudios){
+            if(solicitud.get_estudio().get_id() == estudio.get_id()){
+              DaoEncuesta daoEncuesta = new DaoEncuesta();
+              Encuesta encuesta = daoEncuesta.find(estudio.get_encuesta().get_id(), Encuesta.class);
+              JsonObject estu = Json.createObjectBuilder()
+                .add("estudioId", estudio.get_id() )
+                .add("nombreEstudio", estudio.get_nombreEstudio())
+                .add("encuestaId", encuesta.get_id())
+                .build();
+
+              estudioRealizableArray.add(estu);
+            }
+          }
         }
       }
 
       data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("solicitudes", solicitudesArray).build();
+        .add("estudios", estudioRealizableArray).build();
     }
     catch (Exception ex){
 
       data = Json.createObjectBuilder()
-        .add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
+        .add("code", 200)
+        .add("estado", "success")
         .build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
     }
 
     System.out.println(data);

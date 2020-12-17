@@ -77,7 +77,7 @@ public class ServicioPregunta extends AplicacionBase {
 
                     daoPreguntaOpcion.insert(preguntaOpcion);
                 }
-                
+
                 preguntaDto.setOpciones(opcionesDtos);
             }
 
@@ -129,11 +129,40 @@ public class ServicioPregunta extends AplicacionBase {
             preguntas = dao.findAll(Pregunta.class);
 
             JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
+            JsonArrayBuilder opcionesArray = Json.createArrayBuilder();
 
-            for (Pregunta question : preguntas) {
+           /* for (Pregunta question : preguntas) {
                 JsonObject JsonQuestion = question.toJson();
                 preguntasArray.add(JsonQuestion);
+            }*/
+
+            for (Pregunta question : preguntas) {
+                DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+                List<PreguntaOpcion> preguntaOpciones = daoPreguntaOpcion.findAll(PreguntaOpcion.class);
+
+                for(PreguntaOpcion preguntaOpcion:preguntaOpciones){
+                  if(question.get_id() == preguntaOpcion.get_pregunta().get_id()){
+
+                    JsonObject JsonOptions = Json.createObjectBuilder()
+                      .add("opcionId", preguntaOpcion.get_opcion().get_id())
+                      .add("opcion", preguntaOpcion.get_opcion().get_descripcion()).build();
+
+                    opcionesArray.add(JsonOptions);
+                  }
+                }
+
+              JsonObject JsonQuestion = Json.createObjectBuilder()
+                .add("preguntaId", question.get_id())
+                .add("descripcionPregunta", question.get_descripcionPregunta())
+                .add("tipo", question.get_tipoPregunta())
+                .add("min", question.get_min())
+                .add("max", question.get_max())
+                .add("opciones", opcionesArray)
+                .build();
+
+                preguntasArray.add(JsonQuestion);
             }
+
             data = Json.createObjectBuilder()
                     .add("data", preguntasArray)
                     .add("code", 200)

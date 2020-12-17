@@ -137,7 +137,7 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
             .add("id", user.get_id())
             .add("nombreUsuario", user.get_nombreUsuario())
             .add("nombre", user.get_cliente().getNombre())
-            .add("estado", user.get_cliente().get_estado())
+            .add("estado", user.get_estado())
             .build();
 
           usuariosArray.add(users);

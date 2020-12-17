@@ -1,8 +1,13 @@
 package ucab.dsw.servicio.usuario;
 
+import ucab.dsw.accesodatos.DaoCliente;
 import ucab.dsw.accesodatos.DaoEstudio;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.SolicitudEstudioDto;
+import ucab.dsw.dtos.UsuarioDto;
+import ucab.dsw.entidades.Cliente;
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
@@ -21,6 +26,227 @@ import java.util.List;
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioAdministrador extends AplicacionBase implements IServicioEmpleado {
 
+  @POST
+  @Path("/add")
+  public Response addUser(UsuarioDto usuarioDto) {
+    JsonObject data;
+    String rol = "administrador";
+    try {
+
+      DaoUsuario daoUsuario = new DaoUsuario();
+      Usuario usuario = new Usuario();
+      usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
+      usuario.set_estado("activo");
+      usuario.set_rol(rol);
+
+      Usuario usuarioAgregado = daoUsuario.insert(usuario);
+
+      DirectorioActivo ldap = new DirectorioActivo();
+      ldap.addEntryToLdap(usuarioDto, rol);
+
+      data = Json.createObjectBuilder().add("usuario", usuarioAgregado.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }
+    catch (javax.persistence.PersistenceException ex){
+      String mensaje = "El usuario ya se encuentra registrado en el sistema";
+      data = Json.createObjectBuilder().add("mensaje", mensaje)
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+    catch ( Exception ex ){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+
+    System.out.println(data);
+    return  Response.ok().entity(data).build();
+
+  }
+
+  @GET
+  @Path("/getall")
+  public Response getUsers() {
+    List<Usuario> usuarios ;
+    JsonObject data;
+    try {
+
+      DaoUsuario dao = new DaoUsuario();
+      usuarios = dao.findAll(Usuario.class);
+
+      JsonArrayBuilder usuariosArray = Json.createArrayBuilder();
+
+      for(Usuario user: usuarios) {
+        if(user.get_rol().equals("administrador")) {
+          JsonObject users = Json.createObjectBuilder()
+            .add("id", user.get_id())
+            .add("nombreUsuario", user.get_nombreUsuario())
+            .add("estado", user.get_estado())
+            .build();
+
+          usuariosArray.add(users);
+        }
+      }
+      data = Json.createObjectBuilder()
+        .add("code", 200)
+        .add("estado", "success")
+        .add("usuarios", usuariosArray).build();
+
+
+    } catch (Exception ex) {
+
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
+    System.out.println(data);
+    return Response.ok().entity(data).build();
+  }
+
+  @GET
+  @Path("getuser/{usuarioAdministradorId}")
+  public Response getUserById(@PathParam("usuarioAdministradorId") long id){
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("id", usuario.get_id())
+        .add("nombreUsuario", usuario.get_nombreUsuario())
+        .add("estadoUsuario", usuario.get_estado())
+        .build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder()
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+      return Response.ok().entity(data).build();
+
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/update/{usuarioAdministradorId}")
+  public Response changePassword(@PathParam("usuarioAdministradorId") long id, UsuarioDto usuarioDto){
+
+    JsonObject data;
+
+    try{
+
+      if(usuarioDto.getContrasena () !=null){
+        DirectorioActivo directorioActivo = new DirectorioActivo();
+        directorioActivo.changePassword(usuarioDto);
+      }
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/disable/{usuarioAdministradorId}")
+  public Response disableUser(@PathParam("usuarioAdministradorId") long id) {
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+      usuario.set_estado("inactivo");
+
+      Usuario resul = daoUsuario.update(usuario);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
+  @PUT
+  @Path("/enable/{usuarioAdministradorId}")
+  public Response enableUser(@PathParam("usuarioAdministradorId") long id) {
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    JsonObject data;
+
+    try{
+
+      Usuario usuario = daoUsuario.find(id, Usuario.class);
+      usuario.set_estado("activo");
+
+      Usuario resul = daoUsuario.update(usuario);
+
+      data = Json.createObjectBuilder().add("usuario", resul.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+
+    }catch (Exception ex){
+
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+
+    return Response.ok().entity(data).build();
+  }
+
   @GET
   @Path("/getsolicitudespendientes/{usuarioAdministradorId}")
   public Response getSolicitudesPendientes(@PathParam("usuarioAdministradorId") long id){
@@ -38,7 +264,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
         if (solicitudes.get_administrador() != null && solicitudes.get_administrador().get_id() == id && solicitudes.get_estado().equals("solicitado")) {
           JsonObject solicitudesEstudios = Json.createObjectBuilder().
             add("id", solicitudes.get_id()).
-            add("edadInicial", solicitudes.get_edadfinal()).
+            add("edadInicial", solicitudes.get_edadInicial()).
             add("edadFinal", solicitudes.get_edadfinal()).
             add("genero", solicitudes.get_genero()).
             add("estado", solicitudes.get_estado()).
@@ -91,7 +317,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
       solicitudEstudio.set_estudio(estudio);
       solicitudEstudio.set_estado("procesado");
 
-      int random = (int) (Math.random()*(82-81+1)+81);
+      int random = 2;
       Usuario analista = new Usuario(random);
       solicitudEstudio.set_analista(analista);
       SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitudEstudio);
