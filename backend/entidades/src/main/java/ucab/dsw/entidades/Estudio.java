@@ -2,6 +2,7 @@ package ucab.dsw.entidades;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "estudio")
@@ -30,6 +31,9 @@ public class Estudio extends EntidadBase{
   @ManyToOne
   @JoinColumn( name = "fk_encuesta")
   private Encuesta _encuesta;
+
+  @OneToMany(mappedBy = "_estudio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<SolicitudEstudio> _solicitudesEstudio;
 
 
   public Estudio() {
@@ -96,4 +100,11 @@ public class Estudio extends EntidadBase{
     this._encuesta = _encuesta;
   }
 
+  public List<SolicitudEstudio> get_solicitudesEstudio() {
+    return _solicitudesEstudio;
+  }
+
+  public void set_solicitudesEstudio(List<SolicitudEstudio> _solicitudesEstudio) {
+    this._solicitudesEstudio = _solicitudesEstudio;
+  }
 }

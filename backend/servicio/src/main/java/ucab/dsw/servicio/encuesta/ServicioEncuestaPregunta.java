@@ -43,43 +43,55 @@ public class ServicioEncuestaPregunta {
     @POST
     @Path("/{id}/preguntas")
     public Response addPreguntasToEncuesta(@PathParam("id") long _idEncuesta, List<PreguntaDto> preguntasDto) {
-        JsonObject data;
-        try {
+      JsonObject data;
+      try {
+        DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
 
-            DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+        DaoEncuesta daoEncuesta = new DaoEncuesta();
+        Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
 
-            for (PreguntaDto preguntaDto : preguntasDto) {
-                Pregunta pregunta = new Pregunta();
-                pregunta.set_id(preguntaDto.getId());
-                encuesta.add_pregunta(pregunta);
-            }
+        List<Long> preguntasEncuestas = new ArrayList<>();
 
-            encuesta = daoEncuesta.update(encuesta);
+        for (PreguntaDto preguntaDto : preguntasDto) {
+          Pregunta pregunta = new Pregunta();
+          pregunta.set_id(preguntaDto.getId());
 
-            data = Json.createObjectBuilder()
-                    .add("data", encuesta.get_id())
-                    .add("estado", "success")
-                    .add("code", 200)
-                    .build();
+          PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
 
-        } catch (javax.persistence.PersistenceException ex) {
-            String mensaje = "Estas opciones ya se encuentran añadidas";
-            data = Json.createObjectBuilder()
-                    .add("mensaje", mensaje)
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
-        } catch (Exception ex) {
-            data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
+          preguntaEncuesta.set_encuesta(encuesta);
+          preguntaEncuesta.set_pregunta(pregunta);
+
+          preguntaEncuesta = daoPreguntaEncuesta.insert(preguntaEncuesta);
+
+          preguntasEncuestas.add(preguntaEncuesta.get_id());
+
         }
 
-        return Response.status(200).entity(data).build();
+        JsonArrayBuilder preguntasEncuestasJson = Json.createArrayBuilder(preguntasEncuestas);
+
+        data = Json.createObjectBuilder()
+          .add("data", preguntasEncuestasJson)
+          .add("estado", "success")
+          .add("code", 200)
+          .build();
+
+      } catch (javax.persistence.PersistenceException ex) {
+        String mensaje = "Estas opciones ya se encuentran añadidas";
+        data = Json.createObjectBuilder()
+          .add("mensaje", mensaje)
+          .add("estado", "error")
+          .add("code", 400)
+          .build();
+        return Response.status(400).entity(data).build();
+      } catch (Exception ex) {
+        data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+          .add("estado", "error")
+          .add("code", 400)
+          .build();
+        return Response.status(400).entity(data).build();
+      }
+
+      return Response.status(200).entity(data).build();
 
     }
 
