@@ -49,26 +49,30 @@ export class UpdateCategoryComponent implements OnInit {
 
   handleUpdateCategoria(){
     this.nombre = this.updateCategoriaForm.get('nombre').value;
-    this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      this.adminService.updateCategoria(this.nombre,this.id)
-      .subscribe(
-        res => {
-          let auxRes:any = res;
-          if(auxRes.estado == 'success'){
-            this.openSnackBar("Actualización exitosa");
-            this.router.navigate(['/config/menucategory']);
+    if (this.nombre){
+      this.sub = this.route.params.subscribe(params => {
+        this.id = +params['id'];
+        this.adminService.updateCategoria(this.nombre,this.id)
+        .subscribe(
+          res => {
+            let auxRes:any = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Actualización exitosa");
+              this.router.navigate(['/config/menucategory']);
+            }
+            else if(auxRes.estado != 'success'){
+              console.log(auxRes)
+              this.openSnackBar("Actualización fallida");
+            }
+          },
+          err => {
+            console.log(err)
           }
-          else if(auxRes.estado != 'success'){
-            console.log(auxRes)
-            this.openSnackBar("Actualización fallida");
-          }
-        },
-        err => {
-          console.log(err)
-        }
-      )
-    });  
+        )
+      });  
+    }else{
+      this.openSnackBar("Debe ingresar al menos un campo para realizar la modificación");
+    }
   }
 
 }

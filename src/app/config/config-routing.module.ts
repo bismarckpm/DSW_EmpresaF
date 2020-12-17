@@ -61,7 +61,7 @@ const routes: Routes = [
     { path: "updateQuestion", component: UpdateQuestionComponent},
     { path: "updateStudies", component: UpdateStudiesComponent},
     { path: "updateSubcategory/:id", component: UpdateSubcategoryComponent},
-    { path: "updateUser", component: UpdateUserComponent},
+    { path: "updateUser/:id/:rol", component: UpdateUserComponent},
     { path: "updateClient/:id", component: UpdateClientComponent},
     { path: "menuRequeststudies", component: RequestStudyComponent},
     { path: "updateRespondent/:id", component: UpdateRespondentComponent},
