@@ -5,19 +5,17 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard implements CanActivate {
-  adminLogged:any;
+export class AnalystGuard implements CanActivate {
   constructor(private router:Router,){
-
   }
-
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(localStorage.getItem('administrador')){
+      
+      if(localStorage.getItem('analistaLogged')){
         return true;
       }
-      else if(!localStorage.getItem('administrador')){
+      else if(!localStorage.getItem('analistaLogged')){
         return false;
       } 
   }

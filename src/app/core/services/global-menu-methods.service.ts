@@ -21,6 +21,10 @@ export class GlobalMenuMethodsService {
       localStorage.removeItem('analistaLogged');
       this.router.navigate([''], { replaceUrl: true });
     }
+    else if(localStorage.getItem('encuestadoLogged')){
+      localStorage.removeItem('encuestadoLogged');
+      this.router.navigate([''], { replaceUrl: true });
+    }
   }
 
 }

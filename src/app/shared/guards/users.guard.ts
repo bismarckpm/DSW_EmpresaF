@@ -16,7 +16,6 @@ export class UsersGuard implements CanActivate {
         return true;
       }
       else if(!localStorage.getItem('clientLogged')){
-        this.router.navigate(['']);
         return false;
       } 
   }

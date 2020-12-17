@@ -1,0 +1,58 @@
+<div fxFill fxLayout="column" fxLayoutAlign="center center"  style="padding-left: 30px;padding-top: 1000px;">
+
+  <mat-card style="width: 50rem; margin-top: 30rem;" >
+    <div class="texto-entrada" fxLayoutAlign="center center">
+      <h1>Resultado Estudio</h1>
+    </div>
+  <div *ngFor="let pregunta of preguntas,index as i" style="line-height: 2;">
+      <div fxLayoutAlign="center center">
+          <mat-card >
+              <div>
+                  <h2>• {{pregunta.descripcionPregunta}}</h2>
+                  <h4>Tipo de pregunta: {{pregunta.tipo}}</h4>
+                  <h4>Resultado mas comun entre la muestra:</h4>
+              </div>
+              <div *ngFor="let item of pregunta.opciones,index as j">
+                  <div *ngIf="pregunta.tipo=='Seleccion simple' || pregunta.tipo=='Verdadero o falso'">
+                          <p>-{{item.descripcion}}</p>
+                  </div>
+                  <div *ngIf="pregunta.tipo=='Seleccion multiple'">
+                          <p>-{{item.descripcion}}</p>
+                  </div>
+                  <div *ngIf="pregunta.tipo=='Completacion'">
+                      <p> N/A </p>
+                  </div>
+                  <div *ngIf="pregunta.tipo=='rango'">
+                    <p>-{{item.descripcion}}</p>
+                </div>
+              </div>
+          </mat-card>
+      </div>
+  <br>
+  </div>
+
+  <div fxLayoutAlign="center center" fxLayout="column">
+    <div class="texto-entrada">
+      <h1>Conclusion</h1>
+    </div>
+    <mat-card style="width: 30rem;">
+      <form [formGroup]="respuestaForm" (ngSubmit)="saveData()" >
+      <mat-label>Realice su conclusion acerca del estudio analizado.</mat-label>
+      <mat-form-field >
+        <textarea formControlName="Respuesta" class="form-control" name="" id="" fxLayoutAlign="center end" style="width: 29rem; height:10rem; " placeholder="Escriba su conclusion aqui."></textarea>
+        <div *ngIf="respuestaForm.get('Respuesta').errors && respuestaForm.get('Respuesta').dirty" >
+          <p *ngIf="respuestaForm.get('Respuesta').hasError('required')" style="color: red; font-size: small;">Debe llenar el campo.</p>
+        </div>
+      </mat-form-field>
+      <div fxLayoutAlign="center center" style="margin-top: 1rem; ">
+        <button mat-raised-button class="create-btn " type="submit" style="text-align: center; width: 5rem;" color="primary" >Enviar</button>
+      </div>
+    </form>
+    </mat-card>
+  </div>
+
+  <br>
+</mat-card>
+
+
+</div>
