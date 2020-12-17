@@ -38,6 +38,24 @@ public class ServicioEncuestaPreguntaTest {
 
         Assert.assertEquals(200, resultado.getStatus());
     }
+    
+    @Test
+    public void t1_addPreguntaToEncuesta() throws Exception {
+        ServicioEncuestaPregunta servicioEncuestaPregunta;
+        servicioEncuestaPregunta = new ServicioEncuestaPregunta();
+
+        EncuestaDto encuestaDto = new EncuestaDto();
+        encuestaDto.setId(2);
+
+        PreguntaDto preguntaUno = new PreguntaDto(1);
+
+        Response resultado = servicioEncuestaPregunta
+                .addPreguntaToEncuesta(encuestaDto.getId(), preguntaUno);
+
+        System.out.println(resultado.getEntity().toString());
+
+        Assert.assertEquals(200, resultado.getStatus());
+    }
 
     @Test
     public void t2_getPreguntas() throws Exception {
