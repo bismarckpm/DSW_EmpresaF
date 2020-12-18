@@ -32,13 +32,14 @@ import { UpdateRespondentComponent } from 'src/app/config/update/updateResponden
 import { AssignStudyComponent } from './menus/assign-study/assign-study.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
+import { AddPollQuestionComponent } from 'src/app/config/update/AddPollQuestion.component';
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
     MenuPollComponent,MenuBrandComponent,MenuCQuestionComponent,MenuStudiesComponent,MenuUsersComponent,
     AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent,
     GlobalMenuComponent,AddUserComponent,UpdateBrandComponent,UpdateCategoryComponent,UpdatePollComponent,UpdateQuestionComponent,
     UpdateStudiesComponent,UpdateSubcategoryComponent,UpdateUserComponent,RequestStudyComponent,UpdateClientComponent,UpdateRespondentComponent
-    , AssignStudyComponent, ProfileComponent, PasswordProfileComponent
+    , AssignStudyComponent, ProfileComponent, PasswordProfileComponent,AddPollQuestionComponent
 
   ],
   imports: [

@@ -41,7 +41,6 @@ export class MenuCategoryComponent implements OnInit{
         let auxRes:any;
         auxRes = res;
         if(auxRes.estado == 'success'){
-          console.log('entro')
           this.element = [auxRes.categorias];
           this.dataSource = new MatTableDataSource(auxRes.categorias);
           this.dataSource.paginator = this.paginator;

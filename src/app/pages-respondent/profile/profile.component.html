@@ -1,0 +1,38 @@
+<div class="menu-bg content" fxFill fxLayout="column" fxLayoutAlign="center center ">
+  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="gappx">
+    <div fxLayoutAlign="start center">
+      <a class="fas fa-arrow-left fa-lg" routerLink="/pages-respondent/respondent"></a>
+   </div>
+    <div class="texto-entrada">
+      <H2>PERFIL DE USUARIO</H2>
+    </div>
+  </div>
+
+<mat-card  fxLayoutAlign="center center " fxLayout="column">
+
+    <mat-card-content  >
+      <div>
+        <a  fxLayout="row" fxLayoutAlign="end start" class="fas fas fa-user-edit fa-lg" routerLink="/pages-respondent/password"> </a>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="gappx" >
+          <img src="assets/images/profile.png" class="rounded-circle img-thumbnail" alt="profile" fxLayoutAlign="center center ">
+      </div>
+
+
+
+      <div class="space" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="gappx">
+        <mat-card-title fxLayout="COLUMN">{{nombre}}</mat-card-title>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center " fxLayoutGap="gappx">
+        <mat-card-subtitle  >Rol: Encuestado</mat-card-subtitle>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="center " fxLayoutGap="gappx">
+        <mat-card-subtitle  >Contraseña: ************</mat-card-subtitle>
+      </div>
+    </mat-card-content>
+
+</mat-card>
+
+</div>

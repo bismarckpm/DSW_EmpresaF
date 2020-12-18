@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { GlobalMenuPComponent } from './global-menuP.component';
 import { ClientComponent } from './client/client.component';
 import { RequestStudyComponent } from "src/app/pages/request-study/request-study.component";
+import { ProfileComponent } from './profile/profile.component';
+import { PasswordProfileComponent } from './profile/password-profile.component';
 
 const routes: Routes = [
   { 
@@ -11,7 +13,9 @@ const routes: Routes = [
     component:GlobalMenuPComponent,
     children: [
     { path: "client", component: ClientComponent},
-    { path: "request-study", component: RequestStudyComponent}  
+    { path: "request-study", component: RequestStudyComponent},
+    { path: "profile", component: ProfileComponent},
+    { path: "password", component: PasswordProfileComponent} 
     ],
   },
 ];

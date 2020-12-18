@@ -52,7 +52,7 @@ export class MenuPollComponent implements OnInit{
   }
 
   updateEncuesta(idEncuesta){
-    this.router.navigate(['/config/updatePoll']);
+    this.router.navigate(['/config/updatePoll/'+idEncuesta]);
     console.log(idEncuesta)
   }
 

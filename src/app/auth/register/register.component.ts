@@ -29,6 +29,8 @@ export class RegisterComponent implements OnInit {
   telefono:any;
   nombreUsuario:any;
   contrasena:any;
+  nivelS:any;
+  nivelE:any;
   constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
 
@@ -52,6 +54,8 @@ export class RegisterComponent implements OnInit {
     this.getGenero();
     this.getEstadoCivil();
     this.getParroquia();
+    this.getNivelSocioeconomico();
+    this.getNivelEstudio();
   }
 
   openSnackBar(message: string){
@@ -90,6 +94,26 @@ export class RegisterComponent implements OnInit {
       }
     )
   }
+
+  getNivelEstudio(){
+    this.nivelE = [
+      {id:1,descripcionS:'Sin estudios'},
+      {id:2,descripcionS:'Preparatoria'},
+      {id:3,descripcionS:'Bachillerato'},
+      {id:4,descripcionS:'Universitario'},
+      {id:5,descripcionS:'Maestria'},
+    ]
+
+  }
+
+  getNivelSocioeconomico(){
+    this.nivelS = [
+      {id:1,descripcionS:'baja'},
+      {id:2,descripcionS:'media'},
+      {id:3,descripcionS:'alta'},
+    ]
+  }
+
 
   handleRegisterEncuestado(){
     let idParroquia

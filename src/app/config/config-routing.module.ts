@@ -17,6 +17,7 @@ import { AddBrandComponent } from 'src/app/config/create/addBrand.component';
 import { AddCategoryComponent } from 'src/app/config/create/addCategory.component';
 import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
 import { AddPollComponent } from 'src/app/config/create/addPoll.component';
+import { AddPollQuestionComponent } from 'src/app/config/update/AddPollQuestion.component';
 import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component';
 import { AddUserComponent } from 'src/app/config/create/addUser.component';
 import { UpdateBrandComponent } from 'src/app/config/update/updateBrand.component';
@@ -57,14 +58,15 @@ const routes: Routes = [
     { path: "updateCategory", component: UpdateCategoryComponent},
     { path: "updateBrand/:id", component: UpdateBrandComponent},
     { path: "updateCategory/:id", component: UpdateCategoryComponent},
-    { path: "updatePoll", component: UpdatePollComponent},
+    { path: "updatePoll/:id", component: UpdatePollComponent},
     { path: "updateQuestion", component: UpdateQuestionComponent},
     { path: "updateStudies", component: UpdateStudiesComponent},
     { path: "updateSubcategory/:id", component: UpdateSubcategoryComponent},
-    { path: "updateUser", component: UpdateUserComponent},
+    { path: "updateUser/:id/:rol", component: UpdateUserComponent},
     { path: "updateClient/:id", component: UpdateClientComponent},
     { path: "menuRequeststudies", component: RequestStudyComponent},
     { path: "updateRespondent/:id", component: UpdateRespondentComponent},
+    { path: "pollquestion/:id", component: AddPollQuestionComponent},
     { path: "profile", component: ProfileComponent},
     { path: "passwordProfile", component: PasswordProfileComponent},
     ],

@@ -191,6 +191,70 @@ export class MenuUsersComponent implements OnInit{
           }
         )
       }
+    }else if(rolUsuario=='administrador'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveAdministrador(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeAdministrador(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+    }else if (rolUsuario=='analista'){
+      if (estadoUsuario=='activo'){
+        this.adminService.inactiveAnalista(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario inactivado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else{
+        this.adminService.activeAnalista(idUsuario).
+        subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Usuario activado");
+              window.location.reload();
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
     }
   }
 
@@ -200,7 +264,7 @@ export class MenuUsersComponent implements OnInit{
     } else if(rolUsuario=='encuestado'){
       this.router.navigate(['/config/updateRespondent/'+idUsuario]);
     }else {
-      this.router.navigate(['/config/updateUser/'+idUsuario]);
+      this.router.navigate(['/config/updateUser/'+idUsuario+'/'+rolUsuario]);
     }
   }
 

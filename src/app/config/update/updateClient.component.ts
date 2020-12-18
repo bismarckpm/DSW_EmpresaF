@@ -55,25 +55,29 @@ export class UpdateClientComponent implements OnInit {
     if (!this.contrasena){
         this.contrasena = null;
     }
-    this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      this.adminService.updateCliente(this.nombre,this.contrasena,this.id)
-      .subscribe(
-        res => {
-          let auxRes:any = res;
-          if(auxRes.estado == 'success'){
-            this.openSnackBar("Actualización exitosa");
-            this.router.navigate(['/config/menuusers']);
+    if(this.nombre){
+      this.sub = this.route.params.subscribe(params => {
+        this.id = +params['id'];
+        this.adminService.updateCliente(this.nombre,this.contrasena,this.id)
+        .subscribe(
+          res => {
+            let auxRes:any = res;
+            if(auxRes.estado == 'success'){
+              this.openSnackBar("Actualización exitosa");
+              this.router.navigate(['/config/menuusers']);
+            }
+            else if(auxRes.estado != 'success'){
+              console.log(auxRes)
+              this.openSnackBar("Actualización fallida");
+            }
+          },
+          err => {
+            console.log(err)
           }
-          else if(auxRes.estado != 'success'){
-            console.log(auxRes)
-            this.openSnackBar("Actualización fallida");
-          }
-        },
-        err => {
-          console.log(err)
-        }
-      )
-    });  
+        )
+      });  
+    }else{
+      this.openSnackBar("Debe ingresar al menos un campo para realizar la modificación");
+    }
   }
 }

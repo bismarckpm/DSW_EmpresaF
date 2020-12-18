@@ -58,7 +58,7 @@ export class AddBrandComponent implements OnInit{
         }
       },
       err => {
-
+        console.log(err)
       }
     )
   } 

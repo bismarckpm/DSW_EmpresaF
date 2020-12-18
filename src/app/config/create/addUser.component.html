@@ -20,23 +20,23 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Nombre de Usuario</mat-label>
-                        <input matInput formControlName="nombreUsuario" type="text">
+                        <input matInput formControlName="nombreCliente" type="text">
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Contraseña</mat-label>
-                        <input matInput formControlName="contrasena" type="password">
+                        <input matInput formControlName="contrasenaC" type="password">
                     </mat-form-field>
                     <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
                 </form>
                 <!--Administrador y analista-->
-                <form [formGroup]="registerUserForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_cliente==false;">
+                <form [formGroup]="registerUserForm" (ngSubmit)="handleRegisterUsuario()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_cliente==false;">
                     <mat-form-field appearance="outline" >
                         <mat-label>Nombre de Usuario</mat-label>
                         <input matInput formControlName="nombreUsuario" type="text">
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>Contraseña</mat-label>
-                        <input matInput formControlName="contrasena" type="password">
+                        <input matInput formControlName="contrasenaU" type="password">
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Rol</mat-label>
