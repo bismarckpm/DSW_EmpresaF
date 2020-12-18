@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ucab.dsw.accesodatos.DaoEncuesta;
 import ucab.dsw.accesodatos.DaoEncuestado;
+import ucab.dsw.accesodatos.DaoOpcion;
 import ucab.dsw.accesodatos.DaoPregunta;
 import ucab.dsw.accesodatos.DaoPreguntaEncuesta;
 import ucab.dsw.accesodatos.DaoRespuesta;
@@ -64,23 +65,69 @@ public class ServicioEncuestaRespuesta {
             DaoRespuesta daoRespuestas = new DaoRespuesta();
 
             DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
-
             DaoPregunta daoPregunta = new DaoPregunta();
-            Pregunta pregunta = daoPregunta.find(_idPregunta, Pregunta.class);
+
+            Encuesta encuesta = null;
+            Pregunta pregunta = null;
+
+            try {
+                encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            } catch (Exception e) {
+                throw new Exception("La encuesta no existe");
+            }
+
+            try {
+                pregunta = daoPregunta.find(_idPregunta, Pregunta.class);
+            } catch (Exception e) {
+                throw new Exception("La pregunta no existe");
+            }
+
+            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+            List<PreguntaEncuesta> preguntasEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
 
             PreguntaEncuesta preguntaEncuesta = null;
+            boolean hasPregunta = false;
 
-            for (PreguntaEncuesta _preguntasEncuesta : encuesta.get_preguntasEncuestas()) {
-                if (_preguntasEncuesta.get_pregunta().get_id() == _idPregunta) {
-                    preguntaEncuesta = _preguntasEncuesta;
+            for (PreguntaEncuesta pre_enc : preguntasEncuestas) {
+                if (encuesta.get_id() == pre_enc.get_encuesta().get_id() && pregunta.get_id() == pre_enc.get_pregunta().get_id()) {
+                    preguntaEncuesta = pre_enc;
+                    hasPregunta = true;
+                    break;
                 }
             }
 
+            if (!hasPregunta) {
+                throw new Exception("La pregunta no esta asociada a la encuesta");
+            }
+
             DaoEncuestado daoEncuestado = new DaoEncuestado();
-            Encuestado encuestado = daoEncuestado.find(respuestaDto.getEncuestado().getId(), Encuestado.class);
+            Encuestado encuestado = null;
+
+            try {
+                encuestado = daoEncuestado.find(respuestaDto.getEncuestado().getId(), Encuestado.class);
+            } catch (Exception e) {
+                throw new Exception("El encuestado no existe");
+            }
 
             Date fecha = new Date();
+
+//            validar opciones
+            List<OpcionDto> opcionesDto = respuestaDto.getOpciones();
+            List<Opcion> opciones = new ArrayList<>();
+            DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
+            DaoOpcion daoOpcion = new DaoOpcion();
+
+            for (OpcionDto opcionDto : opcionesDto) {
+                Opcion opcion = null;
+
+                try {
+                    opcion = daoOpcion.find(opcionDto.getId(), Opcion.class);
+                } catch (Exception e) {
+                    throw new Exception("Id de opción: " + opcionDto.getId() + " no existe");
+                }
+
+                opciones.add(opcion);
+            }
 
             respuesta.set_fecha(fecha);
             respuesta.set_descripcion(respuestaDto.getDescripcion());
@@ -90,12 +137,10 @@ public class ServicioEncuestaRespuesta {
 
             respuesta = daoRespuestas.insert(respuesta);
 
-            List<OpcionDto> opciones = respuestaDto.getOpciones();
-            DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
+            for (Opcion opcion : opciones) {
 
-            for (OpcionDto opcionDto : opciones) {
                 RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
-                respuestaOpcion.set_opcion(new Opcion(opcionDto.getId()));
+                respuestaOpcion.set_opcion(opcion);
                 respuestaOpcion.set_respuesta(respuesta);
 
                 daoRespuestaOpcion.insert(respuestaOpcion);
