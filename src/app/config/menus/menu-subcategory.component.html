@@ -1,4 +1,3 @@
-
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
   <div class="texto-entrada">
     <h1 >SUBCATEGORIAS</h1>
@@ -30,13 +29,18 @@
         <!-- nombreCategoria Column -->
         <ng-container matColumnDef="nombreCategoria">
           <th mat-header-cell *matHeaderCellDef> Categoria </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombreCategoria}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.categoria}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estadoSubategoria">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
         </ng-container>
 
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-backspace" style="color: red;cursor: pointer;" (click)="deleteSubcategoria(element.id)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateSubcategoria(element.id)"></i></span></td>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-sync-alt" style="cursor: pointer;" (click)="deleteSubcategory(element.id,element.estado)"></i></span><span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateSubcategory(element.id)"></i></span></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

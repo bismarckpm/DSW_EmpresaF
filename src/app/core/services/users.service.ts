@@ -49,15 +49,45 @@ export class UsersService extends ApiService{
                           this.httpOptions);
   }
 
-  registerCliente(nombre:string,nombreUsuario:string,contrasena:string){
-    return this.http.post(this.API_URL+'api/cliente/add',
-                          {"clienteDto":
-                            {
-                              "nombre": nombre
-                            },
-                            "nombreUsuario":nombreUsuario,
-                            "contrasena":contrasena
+  getMarcas(){
+    return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
+  }
+
+  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,marca:number,nivelSocioeconomico:number){
+    return this.http.post(this.API_URL+'api/solicitud/add',
+                          {
+                          "edadInicial": edadInicial,
+                          "edadfinal": edadfinal,
+                          "genero": genero,
+                          "cliente": cliente,
+                          "parroquia": parroquia,
+                          "marca": marca,
+                          "nivelSocioeconomico": nivelSocioeconomico
                           },
                           this.httpOptions)
+    }
+    
+  getParroquias(){
+    return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
+  }
+
+  getSpecificStudies(idSolicitud:number){
+    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
+  }
+
+  getEstudioEncuestado(idEncuestado:number){
+    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions);
+  }
+
+  getPreguntaEncuesta(idEncuesta:number){
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions);
+  }
+
+  respuestaEncuesta(respuesta:any,idEncuesta:number,idPregunta:number){
+    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas/'+idPregunta+'/respuesta',respuesta,this.httpOptions)
+  }
+
+  getIdEncuestado(idEncuestado:number){
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
   }
 }

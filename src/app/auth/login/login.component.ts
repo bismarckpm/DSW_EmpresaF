@@ -52,17 +52,21 @@ export class LoginComponent implements OnInit {
         this.bSignIn = false;
         let auxRes: any = res
         if(auxRes.estado == 'success'){
-          if(auxRes.rol == 'admin'){
+          if(auxRes.rol == 'administrador'){
+            localStorage.setItem('administrador', JSON.stringify(auxRes))
             this.router.navigate(['config/menuconfig']);
           }
           else if(auxRes.rol == 'cliente'){
+            localStorage.setItem('clientLogged', JSON.stringify(auxRes))
             this.router.navigate(['pages/client']);
           }
           else if(auxRes.rol == 'analista'){
+            localStorage.setItem('analistaLogged', JSON.stringify(auxRes))
             this.router.navigate(['analitics/menuanalitics']);
           }
           else if(auxRes.rol == 'encuestado'){
-            this.router.navigate(['pages/respondent']);
+            localStorage.setItem('encuestadoLogged', JSON.stringify(auxRes))
+            this.router.navigate(['pages-respondent/respondent']);
           }
           return;
         }

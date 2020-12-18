@@ -1,0 +1,22 @@
+<div class="fab-container">
+    <div class="fab fab-icon-holder">
+        <i class="fas fa-ellipsis-v"></i>
+    </div>
+    <ul class="fab-options">
+        <li>    
+            <span class="fab-label">Perfil Usuario</span>
+            <div class="fab-icon-holder" routerLink="/pages-respondent/profile">
+                <i class="fas fa-user"></i>
+            </div>
+        </li>
+        <li>
+            <span class="fab-label">Cerrar sesion</span>
+            <div class="fab-icon-holder" (click)="signOut()">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+        </li>
+    </ul>
+</div>
+<div style="width: 100%;" >
+    <router-outlet></router-outlet>
+</div>

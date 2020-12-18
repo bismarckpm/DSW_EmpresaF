@@ -8,6 +8,9 @@ table {
     width: 80%;
   }
 
+  mat-card{
+      width: 300px;
+  }
 .menu-bg{
     background-image: url(./../../../assets/images/loginBackground.png);
     background-position-x: right;
@@ -50,10 +53,6 @@ mat-form-field{
     color: black;
 }
 
-mat-form-field{
-    margin-right: auto;
-    margin-left: auto;
-}
 
 .fa-plus{
     padding-left: 20px;

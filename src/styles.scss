@@ -82,4 +82,10 @@ ngx-bottom-nav-button:not(.active) { --ngx-bottom-nav-button-color: whitesmoke; 
 
 .rotate-180{ transform: rotate(180deg); }
 
-
+td  > .mat-form-field{
+    background-color: white;
+    width: 30%;
+ }
+ .mat-form-field-type-mat-select .mat-form-field-label, .mat-select-value {
+    color: black;
+  }

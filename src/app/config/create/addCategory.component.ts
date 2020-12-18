@@ -2,6 +2,7 @@ import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addcategory',
@@ -16,7 +17,7 @@ export class AddCategoryComponent implements OnInit{
   createCategoriaForm: FormGroup;
   nombreCategoria: string;
   token: string;
-  constructor(private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
+  constructor(private router: Router,private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createCategoriaForm = this.formBuilder.group({
@@ -41,6 +42,7 @@ export class AddCategoryComponent implements OnInit{
         let auxRes:any = res;
         if(auxRes.estado == 'success'){
           this.openSnackBar("Categoria creada con exito");
+          this.router.navigate(['/config/menucategory']);
         }
         else if(auxRes.estado != 'success'){
           this.openSnackBar("Creacion fallida");

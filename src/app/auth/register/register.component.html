@@ -9,13 +9,9 @@
     <br>
     <div fxFill fxLayout="column" fxLayoutAlign="center center" >
         <div fxLayout fxLayoutAlign="center center ">
-            <mat-card fxLayout="column">
-                <mat-radio-group aria-label="Select an option" [(ngModel)]="registro_usuario">
-                    <mat-radio-button [value]="true" >Encuestado</mat-radio-button>
-                    <mat-radio-button [value]="false">Cliente</mat-radio-button>
-                </mat-radio-group> 
+            <mat-card fxLayout="column"> 
                 <br>
-                <form [formGroup]="registerEncuestadoForm" (ngSubmit)="handleRegisterEncuestado()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_usuario==true;">
+                <form [formGroup]="registerEncuestadoForm" (ngSubmit)="handleRegisterEncuestado()" fxLayout="column" fxLayoutAlign="center center">
                     <mat-form-field appearance="outline" >
                         <mat-label>Numero de Identificacion</mat-label>
                         <input matInput formControlName="numeroIdentificacion" type="text">
@@ -52,17 +48,23 @@
                         <mat-label>Ocupacion</mat-label>
                         <input matInput formControlName="ocupacion" type="text">
                     </mat-form-field>
-                    <mat-form-field appearance="outline" >
+                    <mat-form-field appearance="outline">
                         <mat-label>Parroquia</mat-label>
-                        <input matInput formControlName="parroquia" type="number">
-                    </mat-form-field>
+                        <mat-select formControlName="Selectparroquia">
+                        <mat-option *ngFor="let parroquia of Parroquias" [value]="parroquia.idParroquia">{{parroquia.nombreParroquia}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>  
                     <mat-form-field appearance="outline" >
                         <mat-label>Nivel de estudio</mat-label>
-                        <input matInput formControlName="nivelEstudio" type="number">
+                        <mat-select formControlName="nivelEstudio">
+                        <mat-option *ngFor="let nivele of nivelE" [value]="nivele.id">{{nivele.descripcionS}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Nivel socioeconomico</mat-label>
-                        <input matInput formControlName="nivelSocioeconomico" type="number">
+                        <mat-select formControlName="nivelSocioeconomico">
+                        <mat-option *ngFor="let nivel of nivelS" [value]="nivel.id">{{nivel.descripcionS}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Telefono</mat-label>
@@ -78,25 +80,7 @@
                     </mat-form-field>
                     <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;" [disabled]="!registerEncuestadoForm.valid">Registrar</button>
                 </form>
-                <!--Clientes-->
-                <form [formGroup]="registerClienteForm" (ngSubmit)="handleRegisterCliente()" fxLayout="column" fxLayoutAlign="center center" *ngIf="registro_usuario==false;">
-                    <mat-form-field appearance="outline" >
-                        <mat-label>Nombre</mat-label>
-                        <input matInput formControlName="nombre" type="text">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" >
-                        <mat-label>Nombre de Usuario</mat-label>
-                        <input matInput formControlName="nombreUsuario" type="text">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Contraseña</mat-label>
-                        <input matInput formControlName="contrasena" type="password">
-                    </mat-form-field>
-                    <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Registrar</button>
-                </form>
-
-            </mat-card>
-            
+            </mat-card>        
         </div>    
     </div> 
     <br>

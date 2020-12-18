@@ -3,6 +3,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/core/services/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-brand',
@@ -14,10 +15,8 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuBrandComponent implements OnInit{
   element:any;
   dataSource:any;
-
-  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','nombreSubcategoria','icons'];
-  constructor(private router: Router, private adminService:AdminService) { }
-
+  displayedColumns: string[] = ['idMarca', 'nombreMarca', 'tipoMarca', 'capacidad','unidad','subcategoriaId','estado','icons'];
+  constructor(private router: Router, private adminService:AdminService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -25,50 +24,75 @@ export class MenuBrandComponent implements OnInit{
     this.getMarcas();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  getMarcas(){
-    
-    this.element = [
-      { idMarca: 1, 
-        nombreMarca: 'Hydrogen', 
-        tipoMarca: 'liso', 
-        capacidad: 'H',
-        unidad: 2},
-      { idMarca: 2, 
-        nombreMarca: 'Helium', 
-        tipoMarca: 'liso', 
-        capacidad: 'He',
-        unidad: 2},
-      {idMarca: 3, nombreMarca: 'Lithium', tipoMarca: 'verde', capacidad: 'Li',unidad: 2},
-      {idMarca: 4, nombreMarca: 'Beryllium', tipoMarca: 'liso', capacidad: 'Be',unidad: 2},
-      {idMarca: 5, nombreMarca: 'Boron', tipoMarca: 'negro', capacidad: 'B',unidad: 2},
-      {idMarca: 6, nombreMarca: 'Carbon', tipoMarca: 'blanco', capacidad: 'C',unidad: 2},
-      {idMarca: 7, nombreMarca: 'Nitrogen', tipoMarca: 'azul', capacidad: 'N',unidad: 2},
-      {idMarca: 8, nombreMarca: 'Oxygen', tipoMarca: 'naranja', capacidad: 'O',unidad: 2},
-      {idMarca: 9, nombreMarca: 'Fluorine', tipoMarca: 'amarillo', capacidad: 'F',unidad: 2},
-      {idMarca: 10, nombreMarca: 'Neon', tipoMarca: 'naranja', capacidad: 'Ne',unidad: 2},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
 
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+    });
   }
 
-  deleteMarca(idMarca){
-    console.log(idMarca)
+  getMarcas(){
+    this.adminService.getMarcas()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.element = auxRes.marcas;
+          this.dataSource = new MatTableDataSource(auxRes.marcas);
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  deleteMarca(idMarca,estadoMarca){
+    if (estadoMarca=='activo'){
+      this.adminService.inactiveBrand(idMarca).
+      subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Usuario inactivado");
+            window.location.reload();
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }else{
+      this.adminService.activeBrand(idMarca).
+      subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            this.openSnackBar("Usuario activado");
+            window.location.reload();
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
   }
 
   updateMarca(idMarca){
-    this.router.navigate(['/config/updateBrand']);
-    console.log(idMarca)
+    this.router.navigate(['/config/updateBrand/'+idMarca]);
   }
 
   addMarca(){
     this.router.navigate(['/config/addBrand']);
-    console.log("Add marca");
   }
 }

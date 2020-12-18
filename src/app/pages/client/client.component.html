@@ -21,8 +21,46 @@
   
     </mat-expansion-panel>
 </mat-accordion>
+<div class="width-100 content text-center slide-in-fwd-center" fxLayout="column" fxLayoutAlign=" center" style="background: #EAF3F3;">
+  <div class="title-container">
+    <h1 class="sign-in-title text-center">Estudios solicitados</h1>
+  </div>
+  <div
+  class="content"
+  fxLayout="row wrap" 
+  fxLayoutAlign="center none">
+      <ng-container *ngFor="let item of elements">
+          <mat-card class="participants-card" fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="column">
+                  <mat-card-header>
+                      <mat-card-title class="participants-card-title">
+                          {{item.idEstudio}}
+                      </mat-card-title>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Edad inicial:</strong> {{item.edadInicial}} </mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Edad final:</strong>{{item.edadFinal}}</mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Marca:</strong>{{item.marca}}</mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Status:</strong> {{item.estatusEstudio}}</mat-card-subtitle>
+                      <mat-card-subtitle class="participants-card-subtitle"><strong>Genero:</strong> {{item.genero}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content>
+                      
+                  </mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <mat-chip-list >
+                          <mat-chip class="chip-arrived"><strong>Estatus:{{item.estado}} </strong></mat-chip>
+                      </mat-chip-list>
+                  </div>
+              </div>
+             
+          </mat-card>
+      </ng-container>
+  </div>
+</div>
 
-<div fxFill class=" content" fxLayout="column" fxLayoutAlign="center center" style="padding-top: 20px;">
+
+
+
+<!--<div fxFill class=" content" fxLayout="column" fxLayoutAlign="center center" style="padding-top: 20px;">
     <div class="title-container">
       <h1 class="sign-in-title text-center">Estudios solicitados</h1>
     </div>
@@ -30,7 +68,6 @@
         <mat-form-field>
             <mat-label>Buscar</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-            <!--<i class="fas fa-plus fa-lg" (click)="addEstudio()" ></i>-->
         </mat-form-field>
     </div>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -69,4 +106,4 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" style="width: 80%;margin-left: auto;margin-right: auto;" showFirstLastButtons></mat-paginator>
-  </div>
+  </div>-->

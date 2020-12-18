@@ -1,0 +1,27 @@
+$mercadoucab-dark: #222327;
+$mercadoucab-light: whitesmoke;
+$mercadoucab-blue: #5454C9;
+table {
+    width: 80%;
+  }
+
+mat-card{
+  -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  width: 350px;
+  border-top: #5454C9 solid 3px;
+}
+
+.create-btn{
+  font-size: large;
+  width: 10%;
+}
+
+.menu-bg{
+  background-image: url(./../../../assets/images/loginBackground.png);
+  background-position-x: right;
+  background-position-y: top;
+  background-repeat: no-repeat;
+  background-size: 65%;
+}

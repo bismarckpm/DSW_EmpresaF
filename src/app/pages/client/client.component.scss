@@ -1,12 +1,13 @@
-@import './../../../styles.scss';
+@import '../../../styles.scss';
 
 $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
+$mercadoucab-font: 'Nunito Sans', sans-serif;
 
-table {
+/*table {
     width: 80%;
-}
+}*/
 
 .menu-bg{
     background-image: url(./../../../assets/images/loginBackground.png);
@@ -16,13 +17,10 @@ table {
     background-size: 65%;
 }
 
-/*mat-card{
-    padding: 150px;
+mat-card{
     border-radius: 0;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12) !important;
-    height: 675px;
 }
-*/
 
 h1:first-letter  { 
     color:  $mercadoucab-blue; 
@@ -130,5 +128,80 @@ mat-form-field{
 .disable_ripple{
     background: #02D4D6 !important;
     }
+
+
+// New code
+.participants-card{
+    width: 275px;
+    margin-bottom: 10px !important;
+    margin: 10px;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+:host ::ng-deep .mat-card-header-text {
+    margin: 0 0px;
+}
+
+.participants-card-title{
+    font-size: 12px;
+}
+
+.participants-card-subtitle{
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+mat-card-content{
+    margin-bottom: 5px;
+}
+
+.validate-btn{
+    color: green;
+    border: 1px solid green;
+    font-weight: 700;
+    width: fit-content;
+}
+
+:host ::ng-deep .mat-form-field-wrapper{
+    padding-bottom: 0px;
+}
+
+table { border-collapse: collapse; width: 100%; font-family: $mercadoucab-font; font-size: 13px; border: 1px solid black; }
+
+th, td { text-align: left; padding: 8px; font-weight: 600; border-bottom: 1px solid black; }
+
+th { border: 1px solid $mercadoucab-blue; background-color: $mercadoucab-blue; color: white; }
+
+.tr-total { background-color:rgb(255, 177, 113); }
+.tr-total:hover {background-color: #FDA256; cursor: pointer;}
+.tr-arrived { background-color:rgb(177, 255, 113); }
+.tr-arrived:hover {background-color: rgb(147, 230, 80);; cursor: pointer;}
+.tr-remaining { background-color:rgb(255, 113, 113); }
+.tr-remaining:hover {background-color: rgb(235, 90, 90); cursor: pointer;}
+
+
+.display-contents{ display: contents; }
+
+.try-again-btn{ background-color: $mercadoucab-blue; color: $mercadoucab-light; }
+
+.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: none;
+}
+
+.chip-arrived{ color: green; background-color: transparent; }
+
+.bg-orange{
+    background-color: $mercadoucab-blue;
+}
+
+.bg-green{
+    background-color: #7FDB91;
+}
+
+.bg-red{
+    background-color: #FF7D8C;
+}
+
 
 

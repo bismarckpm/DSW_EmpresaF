@@ -1,0 +1,63 @@
+<div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
+    <mat-card class="example-card" >
+        <div class="texto-entrada">
+            <h1 >Actualizar Encuestado</h1>
+        </div>
+        <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
+            <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuusers"></a>
+        </div> 
+    <form [formGroup]="updateRespondtForm" (ngSubmit)="handleUpdateEncuestado()" fxLayout="column" fxLayoutAlign="center center" >
+        <mat-label>Numero de Identificacion</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldnumiden}}</mat-label>
+            <input matInput formControlName="numeroIdentificacion" type="text">
+        </mat-form-field>
+        <mat-label>Primer nombre</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldnombre}}</mat-label>
+            <input matInput formControlName="primerNombre" type="text">
+        </mat-form-field>
+        <mat-label>Primer apellido</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldapellido}}</mat-label>
+            <input matInput formControlName="primerApellido" type="text">
+        </mat-form-field>
+        <mat-label>Genero</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldgenero}}</mat-label>
+            <mat-select formControlName="genero">
+                <mat-option *ngFor="let genero of generos, index as i" [value]="genero.descripcion">{{genero.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-label>Estado civil</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldestadocivil}}</mat-label>
+            <mat-select formControlName="estadoCivil">
+                <mat-option *ngFor="let estado of estadosCiviles, index as i" [value]="estado.descripcion">{{estado.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-label>Ocupacion</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldocupacion}}</mat-label>
+            <input matInput formControlName="ocupacion" type="text">
+        </mat-form-field>
+        <mat-label>Parroquia</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-label>{{oldparroquia}}</mat-label>
+            <mat-select formControlName="Selectparroquia">
+            <mat-option *ngFor="let parroquia of Parroquias" [value]="parroquia.idParroquia">{{parroquia.nombreParroquia}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!--<mat-label>Telefono</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldtel}}</mat-label>
+            <input matInput formControlName="telefono" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput formControlName="contrasena" type="text">
+        </mat-form-field>-->
+        <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Actualizar</button>
+    </form>
+    </mat-card>
+</div>

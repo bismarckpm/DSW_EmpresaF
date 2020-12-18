@@ -2,6 +2,7 @@ import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addsubcategory',
@@ -17,7 +18,7 @@ export class AddSubcategoryComponent implements OnInit{
   categorias:any;
   nombreSubcategoria:string;
   idCategoria:string;
-  constructor(private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
+  constructor(private router: Router, private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createSubCategoriaForm = this.formBuilder.group({
@@ -40,9 +41,10 @@ export class AddSubcategoryComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
+        auxRes = res;
         if(auxRes.estado == 'success'){
-          auxRes = res;
           this.openSnackBar("Subcategoria creada con exito");
+          this.router.navigate(['/config/menusubcategory']);
         }
         else if(auxRes.estado != 'success'){
           this.openSnackBar(auxRes.mensaje);
@@ -59,9 +61,8 @@ export class AddSubcategoryComponent implements OnInit{
     .subscribe(
       res => {
         let auxRes:any;
+        auxRes = res;
         if(auxRes.estado == 'success'){
-          let auxRes:any;
-          auxRes = res;
           this.categorias = auxRes.categorias;
         }
       },

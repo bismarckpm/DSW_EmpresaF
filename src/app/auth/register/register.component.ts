@@ -9,12 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  zones: any;
   generos:any;
   estadosCiviles:any;
   registerEncuestadoForm: FormGroup;
-  registerClienteForm:FormGroup;
-  registro_usuario:boolean = true;
 
   //Campos del form
   nombre:any;
@@ -26,12 +23,14 @@ export class RegisterComponent implements OnInit {
   genero:any;
   estadoCivil:any;
   ocupacion:any;
-  parroquia:any;
+  Parroquias:any;
   nivelEstudio:any;
   nivelSocioeconomico:any;
   telefono:any;
   nombreUsuario:any;
   contrasena:any;
+  nivelS:any;
+  nivelE:any;
   constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
 
@@ -45,35 +44,24 @@ export class RegisterComponent implements OnInit {
       genero: ['',Validators.required],
       estadoCivil: ['',Validators.required],
       ocupacion: ['',Validators.required],
-      parroquia: ['',Validators.required],
+      Selectparroquia: ['',Validators.required],
       nivelEstudio: ['',Validators.required],
       nivelSocioeconomico: ['',Validators.required],
       telefono: ['',Validators.required],
       nombreUsuario: ['',Validators.required],
       contrasena: ['',Validators.required],
     });
-    this.registerClienteForm = this.formBuilder.group({
-      nombre:['', Validators.required],
-      nombreUsuario: ['',Validators.required],
-      contrasena: ['',Validators.required],
-    })
-    this.getUbication();
     this.getGenero();
     this.getEstadoCivil();
+    this.getParroquia();
+    this.getNivelSocioeconomico();
+    this.getNivelEstudio();
   }
 
   openSnackBar(message: string){
     this._snackBar.open(message, 'X', {
       duration: 3000,
     });
-  }
-
-  getUbication(){
-    this.zones = [
-      { name: 'Los Caobos Av La Salle'},
-      { name: 'Las Palmas Av Las Palmas' },
-      { name: 'La Florida Av Andres Bello'},
-    ]
   }
 
   getGenero(){
@@ -91,7 +79,44 @@ export class RegisterComponent implements OnInit {
     ]
   }
 
+  getParroquia(){
+    this.userService.getParroquias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.Parroquias = auxRes.parroquias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  getNivelEstudio(){
+    this.nivelE = [
+      {id:1,descripcionS:'Sin estudios'},
+      {id:2,descripcionS:'Preparatoria'},
+      {id:3,descripcionS:'Bachillerato'},
+      {id:4,descripcionS:'Universitario'},
+      {id:5,descripcionS:'Maestria'},
+    ]
+
+  }
+
+  getNivelSocioeconomico(){
+    this.nivelS = [
+      {id:1,descripcionS:'baja'},
+      {id:2,descripcionS:'media'},
+      {id:3,descripcionS:'alta'},
+    ]
+  }
+
+
   handleRegisterEncuestado(){
+    let idParroquia
     this.numeroIdentificacion = this.registerEncuestadoForm.get('numeroIdentificacion').value;
     this.primerNombre = this.registerEncuestadoForm.get('primerNombre').value
     this.primerApellido = this.registerEncuestadoForm.get('primerApellido').value;
@@ -100,7 +125,7 @@ export class RegisterComponent implements OnInit {
     this.genero = this.registerEncuestadoForm.get('genero').value
     this.estadoCivil =   this.registerEncuestadoForm.get('estadoCivil').value
     this.ocupacion = this.registerEncuestadoForm.get('ocupacion').value
-    this.parroquia = this.registerEncuestadoForm.get('parroquia').value
+    idParroquia = this.registerEncuestadoForm.get('Selectparroquia').value
     this.nivelEstudio = this.registerEncuestadoForm.get('nivelEstudio').value
     this.nivelSocioeconomico = this.registerEncuestadoForm.get('nivelSocioeconomico').value
     this.telefono = this.registerEncuestadoForm.get('telefono').value
@@ -117,34 +142,13 @@ export class RegisterComponent implements OnInit {
                                   this.genero,
                                   this.estadoCivil,
                                   this.ocupacion,
-                                  this.parroquia,
+                                  idParroquia,
                                   this.nivelEstudio,
                                   this.nivelSocioeconomico,
                                   codigo,
                                   numero,
                                   this.nombreUsuario,
                                   this.contrasena)
-    .subscribe(
-      res => {
-        let auxRes:any = res;
-        if(auxRes.estado == 'success'){
-          this.openSnackBar("Registro exitoso");
-        }
-        else if(auxRes.estado != 'success'){
-          this.openSnackBar("Registro fallido");
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
-  }
-
-  handleRegisterCliente(){
-    this.nombre = this.registerClienteForm.get('nombre').value;
-    this.nombreUsuario = this.registerClienteForm.get('nombreUsuario').value
-    this.contrasena = this.registerClienteForm.get('contrasena').value
-    this.userService.registerCliente(this.nombre,this.nombreUsuario,this.contrasena)
     .subscribe(
       res => {
         let auxRes:any = res;

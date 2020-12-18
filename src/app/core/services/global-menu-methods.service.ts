@@ -9,16 +9,22 @@ export class GlobalMenuMethodsService {
   constructor(private router: Router) { }
 
   signOut(){
-    if(localStorage.getItem('adminLogged')){
-      localStorage.removeItem('adminLogged');
+    if(localStorage.getItem('administrador')){
+      localStorage.removeItem('administrador');
       this.router.navigate([''], { replaceUrl: true });
     }
-    else if(localStorage.getItem('analistLogged')){
-      localStorage.removeItem('analistLogged');
+    else if(localStorage.getItem('clientLogged')){
+      localStorage.removeItem('clientLogged');
       this.router.navigate([''], { replaceUrl: true });
     }
-    //Quitar despues
-    this.router.navigate([''], { replaceUrl: true });
+    else if(localStorage.getItem('analistaLogged')){
+      localStorage.removeItem('analistaLogged');
+      this.router.navigate([''], { replaceUrl: true });
+    }
+    else if(localStorage.getItem('encuestadoLogged')){
+      localStorage.removeItem('encuestadoLogged');
+      this.router.navigate([''], { replaceUrl: true });
+    }
   }
 
 }

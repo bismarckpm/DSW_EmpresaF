@@ -1,25 +1,23 @@
-<mat-toolbar class="container-fluid mat-toolbar">
-    <div class="row d-flex align-items-center">
-        <a mat-icon-button  routerLink="/config/menucategory" class="d-flex justify-content-start">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-        </a>    
-    </div>
-</mat-toolbar>
-<br>
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout fxLayoutAlign="center center ">
-        <mat-card-content fxLayout="column">
-            <mat-label>Nombre</mat-label>
-            <mat-form-field appearance="fill" >
-            <mat-label>{{info.nombreCategoria}}</mat-label>
-                <input matInput type="text">
-            </mat-form-field>
-            <br>
-            <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center" (click)="updateCategory()">
-                    <span class="btn-send-text">Actualizar</span>
-                </button>
-            </div>
-        </mat-card-content>
-    </div>     
+    <mat-card class="example-card" >
+    <div class="texto-entrada">
+        <h1 >Actualizar categoría</h1>
+    </div>
+    <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
+        <a class="fas fa-arrow-left fa-2x" routerLink="/config/menucategory"></a>
+    </div> 
+    <form [formGroup]="updateCategoriaForm" (ngSubmit)="handleUpdateCategoria()" fxLayout="column" fxLayoutAlign="center center" >
+        <mat-label>Nombre</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldnombre}}</mat-label>
+            <input matInput formControlName="nombre" type="text">
+        </mat-form-field>
+        <!--<mat-label>Contraseña</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput formControlName="contrasena" type="text">
+        </mat-form-field>-->
+        <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Actualizar</button>
+    </form>
+    </mat-card>
 </div>

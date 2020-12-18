@@ -1,3 +1,5 @@
+import { PasswordProfileComponent } from './profile/password-profile.component';
+import { ProfileComponent } from './profile/profile.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -15,6 +17,7 @@ import { AddBrandComponent } from 'src/app/config/create/addBrand.component';
 import { AddCategoryComponent } from 'src/app/config/create/addCategory.component';
 import { AddSubcategoryComponent } from 'src/app/config/create/addSubcategory.component';
 import { AddPollComponent } from 'src/app/config/create/addPoll.component';
+import { AddPollQuestionComponent } from 'src/app/config/update/AddPollQuestion.component';
 import { AddQuestionComponent } from 'src/app/config/create/addQuestion.component';
 import { AddUserComponent } from 'src/app/config/create/addUser.component';
 import { UpdateBrandComponent } from 'src/app/config/update/updateBrand.component';
@@ -24,10 +27,15 @@ import { UpdateQuestionComponent } from 'src/app/config/update/updateQuestion.co
 import { UpdateStudiesComponent } from 'src/app/config/update/updateStudies.component';
 import { UpdateSubcategoryComponent } from 'src/app/config/update/updateSubcategory.component';
 import { UpdateUserComponent } from 'src/app/config/update/updateUser.component';
+import { UpdateClientComponent } from 'src/app/config/update/updateClient.component';
+import { UpdateRespondentComponent } from 'src/app/config/update/updateRespondent.component';
+import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
+import { AssignStudyComponent } from 'src/app/config/menus/assign-study/assign-study.component';
+import { AddStudyComponent } from 'src/app/config/create/addStudy.component';
 
 const routes: Routes = [
-  { 
-    path: "", 
+  {
+    path: "",
     component:GlobalMenuComponent,
     children: [
     { path: "question", component: QuestionsSetupComponent},
@@ -45,15 +53,25 @@ const routes: Routes = [
     { path: "addPoll", component: AddPollComponent},
     { path: "addQuestion", component: AddQuestionComponent},
     { path: "addUser", component: AddUserComponent},
+    { path: "addStudy", component: AddStudyComponent},
     { path: "updateBrand", component: UpdateBrandComponent},
     { path: "updateCategory", component: UpdateCategoryComponent},
-    { path: "updatePoll", component: UpdatePollComponent},
+    { path: "updateBrand/:id", component: UpdateBrandComponent},
+    { path: "updateCategory/:id", component: UpdateCategoryComponent},
+    { path: "updatePoll/:id", component: UpdatePollComponent},
     { path: "updateQuestion", component: UpdateQuestionComponent},
     { path: "updateStudies", component: UpdateStudiesComponent},
-    { path: "updateSubcategory", component: UpdateSubcategoryComponent},
-    { path: "updateUser", component: UpdateUserComponent},
+    { path: "updateSubcategory/:id", component: UpdateSubcategoryComponent},
+    { path: "updateUser/:id/:rol", component: UpdateUserComponent},
+    { path: "updateClient/:id", component: UpdateClientComponent},
+    { path: "menuRequeststudies", component: RequestStudyComponent},
+    { path: "updateRespondent/:id", component: UpdateRespondentComponent},
+    { path: "pollquestion/:id", component: AddPollQuestionComponent},
+    { path: "profile", component: ProfileComponent},
+    { path: "passwordProfile", component: PasswordProfileComponent},
     ],
-  }
+  },
+  { path: 'assign/:id', component: AssignStudyComponent },
 ];
 
 @NgModule({

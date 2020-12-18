@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-menu-poll',
@@ -12,8 +13,8 @@ import { Router } from '@angular/router';
 export class MenuPollComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idEncuesta', 'nombreSubcategoria','icons'];
-  constructor(private router: Router) { }
+  displayedColumns: string[] = ['encuestaId', 'subcategoria','icons'];
+  constructor(private router: Router,private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -21,28 +22,28 @@ export class MenuPollComponent implements OnInit{
     this.getEncuestas();
     
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+ 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   getEncuestas(){
-    
-    this.element = [
-      {idEncuesta: 1, nombreSubcategoria: 'Salud'},
-      {idEncuesta: 2, nombreSubcategoria: 'Comidas'},
-      {idEncuesta: 3, nombreSubcategoria: 'Aseo'},
-      {idEncuesta: 4, nombreSubcategoria: 'Oficina'},
-      {idEncuesta: 5, nombreSubcategoria: 'Escolar'},
-      {idEncuesta: 6, nombreSubcategoria: 'Cocina'},
-      {idEncuesta: 7, nombreSubcategoria: 'Muebles'},
-      {idEncuesta: 8, nombreSubcategoria: 'Computadoras'},
-      {idEncuesta: 9, nombreSubcategoria: 'Higiene'},
-      {idEncuesta: 10, nombreSubcategoria: 'Mascotas'},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
+    this.adminService.getEncuesta()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        console.log('entro')
+        if(auxRes.estado == 'success'){
+          this.element = auxRes.encuestas
+          this.dataSource = new MatTableDataSource(auxRes.encuestas);
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
 
   }
 
@@ -51,7 +52,7 @@ export class MenuPollComponent implements OnInit{
   }
 
   updateEncuesta(idEncuesta){
-    this.router.navigate(['/config/updatePoll']);
+    this.router.navigate(['/config/updatePoll/'+idEncuesta]);
     console.log(idEncuesta)
   }
 
