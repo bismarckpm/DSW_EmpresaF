@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUser(){  
-    let userStorage = localStorage.getItem('administrador');
+    let userStorage = localStorage.getItem('clientLogged');
     this.iduser = JSON.parse(userStorage);
     this.iduser = this.iduser.id;
     this.adminService.getAdministrador(this.iduser).

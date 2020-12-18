@@ -10,6 +10,8 @@ import { DescriptionCardComponent } from './interview-survey/description-card.co
 import { OptionCardComponent } from './interview-survey/option-card.component';
 import { RangeCardComponent } from './interview-survey/range-card.component';
 import { AnalysisComponent } from './analysis/analysis.component';
+import { PasswordProfileComponent } from './profile/password-profile.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -24,7 +26,9 @@ const routes: Routes = [
         { path: "card-desc", component: DescriptionCardComponent},
         { path: "card-range", component: RangeCardComponent},
         { path: "card-op", component: OptionCardComponent},
-        { path: "analysis", component: AnalysisComponent}
+        { path: "analysis", component: AnalysisComponent},
+        { path: "password", component: PasswordProfileComponent},
+        { path: "profile", component: ProfileComponent}
       ]
     }
   ];

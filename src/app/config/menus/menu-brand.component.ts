@@ -43,7 +43,6 @@ export class MenuBrandComponent implements OnInit{
         let auxRes:any;
         auxRes = res;
         if(auxRes.estado == 'success'){
-          console.log(auxRes)
           this.element = auxRes.marcas;
           this.dataSource = new MatTableDataSource(auxRes.marcas);
           this.dataSource.paginator = this.paginator;

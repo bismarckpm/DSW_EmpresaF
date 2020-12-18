@@ -33,7 +33,7 @@ export class PasswordProfileComponent implements OnInit {
   }
 
   getUser(){  
-    let userStorage = localStorage.getItem('administrador');
+    let userStorage = localStorage.getItem('encuestadoLogged');
     this.iduser = JSON.parse(userStorage);
     this.iduser = this.iduser.id;
     this.adminService.getAdministrador(this.iduser).
@@ -58,7 +58,7 @@ export class PasswordProfileComponent implements OnInit {
             let auxRes:any = res;
             if(auxRes.estado == 'success'){
               this.openSnackBar("Actualización exitosa");
-              this.router.navigate(['/config/profile']);
+              this.router.navigate(['/pages-respondent/profile']);
             }
             else if(auxRes.estado != 'success'){
               console.log(auxRes)
