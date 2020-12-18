@@ -197,11 +197,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
       }
 
       data = Json.createObjectBuilder()
-        .add("id", user.get_id())
+        .add("idUsuario", user.get_id())
+        .add("idEncuestado", user.get_encuestado().get_id())
         .add("nombreUsuario", user.get_nombreUsuario())
-        .add("primer nombre", user.get_encuestado().get_primerNombre())
-        .add("primer apellido", user.get_encuestado().get_primerApellido())
-        .add("numero de identificacion", user.get_encuestado().get_numeroIdentificacion())
+        .add("primer_nombre", user.get_encuestado().get_primerNombre())
+        .add("primer_apellido", user.get_encuestado().get_primerApellido())
+        .add("numero_de_identificacion", user.get_encuestado().get_numeroIdentificacion())
         .add("estado", user.get_estado())
         .add("genero", user.get_encuestado().get_genero())
         .add("parroquiaId", user.get_encuestado().get_parroquia().get_id())
@@ -303,12 +304,9 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
 
      for (SolicitudEstudio solicitud: solicitudes) {
-       System.out.println("ID DE SOLICITUD"+solicitud.get_id());
-       System.out.println("ESTADO DE ESTUDIO"+solicitud.get_estado());
         if (solicitud.get_estado().equals("procesado") || solicitud.get_estado().equals("ejecutando")) {
           DaoEstudio daoEstudio = new DaoEstudio();
           List<Estudio> estudios = daoEstudio.findAll(Estudio.class);
-          System.out.println("ID DE ESTUDIO"+ solicitud.get_estudio().get_id());
 
           for(Estudio estudio:estudios){
 
