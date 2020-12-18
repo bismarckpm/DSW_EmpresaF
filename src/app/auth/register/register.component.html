@@ -56,11 +56,15 @@
                     </mat-form-field>  
                     <mat-form-field appearance="outline" >
                         <mat-label>Nivel de estudio</mat-label>
-                        <input matInput formControlName="nivelEstudio" type="number">
+                        <mat-select formControlName="nivelEstudio">
+                        <mat-option *ngFor="let nivele of nivelE" [value]="nivele.id">{{nivele.descripcionS}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Nivel socioeconomico</mat-label>
-                        <input matInput formControlName="nivelSocioeconomico" type="number">
+                        <mat-select formControlName="nivelSocioeconomico">
+                        <mat-option *ngFor="let nivel of nivelS" [value]="nivel.id">{{nivel.descripcionS}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" >
                         <mat-label>Telefono</mat-label>

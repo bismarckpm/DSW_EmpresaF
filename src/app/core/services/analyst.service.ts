@@ -13,4 +13,8 @@ export class AnalystService extends ApiService{
   activarSolicitud(idSolicitud:number){
     return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions)
   }
+
+  getMyStudies(idAnalista:number){
+    return this.http.get(this.API_URL+'api/analista/obtenerestudios/'+idAnalista,this.httpOptions);
+  }
 }

@@ -1,0 +1,97 @@
+@import './../../../styles.scss';
+
+$mercadoucab-dark: #222327;
+$mercadoucab-light: whitesmoke;
+$mercadoucab-blue: #5454C9;
+
+
+.texto-entrada h1 {
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+.texto-entrada h1::after {
+  content: '';
+  display:  block;
+  width: 20rem;
+  height: .1rem;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+h1::first-letter{
+    color: #5454C9;;
+}
+
+table {
+    width: 80%;
+  }
+.menu-bg{
+    background-image: url(./../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+mat-card{
+    padding: 150px;
+    border-radius: 0;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12) !important;
+    height: 675px;
+}
+
+.menu-container{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.title-container{ margin-top: 21px; margin-bottom: 21px; }
+
+.width-send-btn{
+    margin-top: 10px;
+    width: 250px;
+    height: 45PX;
+    background-color: $mercadoucab-primary;
+    color: $mercadoucab-light;
+    text-align: -webkit-center;
+    color: whitesmoke;
+}
+
+.btn-send-text{
+    font-size: 14px;
+    letter-spacing: 0.1rem;
+    font-weight: 800;
+}
+
+.links-container{
+    padding-top: 40px;
+    padding-bottom: 10px;
+
+}
+
+.sl-link{
+    font-size: 14px;
+    text-decoration: none;
+    color: $mercadoucab-secondary;
+}
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+mat-form-field{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.fa-plus{
+    padding-left: 20px;
+    color: #94d82d;
+    cursor: pointer;
+    position: fixed;
+}

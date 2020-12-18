@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup} from '@angular/forms';
 import { AdminService } from './../../core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -72,6 +72,8 @@ export class UpdateSubcategoryComponent implements OnInit {
     )
   }
 
+
+
   handleUpdateSubategoria(){
     this.val=0;
     this.nombre = this.updateSubcategoriaForm.get('nombre').value;
@@ -107,6 +109,6 @@ export class UpdateSubcategoryComponent implements OnInit {
       }); 
     }else{
       this.openSnackBar("Debe ingresar al menos un campo para realizar la modificación");
-    }   
+    }  
   }
 }

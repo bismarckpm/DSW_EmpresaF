@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RequestStudyComponent implements OnInit {
   requestStudyForm: FormGroup;
   parroquias:any;
+  Parroquias:any;
   marcas:any;
   nivelS:any;
   generos:any;
@@ -33,7 +34,7 @@ export class RequestStudyComponent implements OnInit {
       selectGenero: ['',Validators.required],
     });
     this.getMarcas();
-    this.getParroquias();
+    this.getParroquia();
     this.getNivelSocioeconomico();
     this.getGeneros();
   }
@@ -60,15 +61,27 @@ export class RequestStudyComponent implements OnInit {
     )
   }
 
-  getParroquias(){
-    this.parroquias = [
-      {id:1,nombreParroquia:'Recreo'}
-    ]
+  getParroquia(){
+    this.userService.getParroquias()
+    .subscribe(
+      res => {
+        let auxRes:any;
+        auxRes = res;
+        if(auxRes.estado == 'success'){
+          this.Parroquias = auxRes.parroquias;
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
   getNivelSocioeconomico(){
     this.nivelS = [
-      {id:1,descripcionS:'media'}
+      {id:1,descripcionS:'baja'},
+      {id:2,descripcionS:'media'},
+      {id:3,descripcionS:'alta'},
     ]
   }
 

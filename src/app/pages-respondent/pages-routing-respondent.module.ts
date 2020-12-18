@@ -6,6 +6,8 @@ import { QuestionsComponent } from '../pages-respondent/questions/questions.comp
 import { GlobalMenuPComponent } from './global-menuP.component';
 import { PollComponent } from '../pages-respondent/poll/poll.component';
 import { StudyComponent } from '../pages-respondent/study/study.component';
+import { PasswordProfileComponent } from '../pages-respondent/profile/password-profile.component';
+import { ProfileComponent } from '../pages-respondent/profile/profile.component';
 
 const routes: Routes = [
   { 
@@ -13,11 +15,13 @@ const routes: Routes = [
     component:GlobalMenuPComponent,
     children: [
     { path: "respondent", component: RespondentComponent},
-    { path: "questions", component: QuestionsComponent},
+    { path: "questions/:id", component: QuestionsComponent},
     { path: "study", component: StudyComponent},
+    { path: 'poll/:id', component: PollComponent },
+    { path: "password", component: PasswordProfileComponent},
+    { path: "profile", component: ProfileComponent},
     ],
   },
-  { path: 'poll/:id', component: PollComponent },
 ];
 
 @NgModule({

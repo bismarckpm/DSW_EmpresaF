@@ -77,7 +77,7 @@ export class UpdateRespondentComponent implements OnInit {
       }
   
     getRespondant(){
-      this.sub = this.route.params.subscribe(params => {
+        this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
         this.adminService.getEncuestado(this.id).
         subscribe(

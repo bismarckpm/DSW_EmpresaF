@@ -124,6 +124,15 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/preguntas',this.httpOptions);
   }
 
+  getQuestionP(id:number){/*Preguntas que esten en una encuesta*/
+    return this.http.get(this.API_URL+'api/encuestas/'+id+'/preguntas',this.httpOptions);
+  }
+
+  addQuestiontoPoll(idEncuesta:number,idPregunta:number){/*http://localhost:8081/servicio-1.0-SNAPSHOT/api/encuestas/2/pregunta  json {"id":2}*/
+    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/pregunta',{"id":idPregunta},this.httpOptions);
+
+  }
+
   getCliente(id:number){
     return this.http.get(this.API_URL+'api/cliente/getuser/'+id,this.httpOptions);
   }
@@ -246,8 +255,59 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/administrador/getall',this.httpOptions);
     }
 
+    getAdministrador(id:number){
+      return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+    }
+
+    activeAdministrador(id:number){
+      return this.http.put(this.API_URL+'api/administrador/enable/'+id,this.httpOptions);
+    }
+
+    inactiveAdministrador(id:number){
+      return this.http.put(this.API_URL+'api/administrador/disable/'+id,this.httpOptions);
+    }
+
+    registerAdministrador(nombreUsuario:string,contrasena:string){
+      return this.http.post(this.API_URL+'api/administrador/add',
+                            {"nombreUsuario":nombreUsuario,
+                             "contrasena":contrasena},
+                             this.httpOptions);
+    }
+
+    updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+      return this.http.put(this.API_URL+'api/administrador/update/'+id,
+                            {"nombreUsuario":nombreUsuario,
+                             "contrasena":contrasena},
+                             this.httpOptions);
+    }
+
     getAnalistas(){
       return this.http.get(this.API_URL+'api/analista/getall',this.httpOptions);
     }
+
+    getAnalista(id:number){
+      return this.http.get(this.API_URL+'api/analista/getuser/'+id,this.httpOptions);
+    }
+
+    activeAnalista(id:number){
+      return this.http.put(this.API_URL+'api/analista/enable/'+id,this.httpOptions);
+    }
+
+    inactiveAnalista(id:number){
+      return this.http.put(this.API_URL+'api/analista/disable/'+id,this.httpOptions);
+    }
   
+    registerAnalista(nombreUsuario:string,contrasena:string){
+      return this.http.post(this.API_URL+'api/analista/add',
+                            {"nombreUsuario":nombreUsuario,
+                             "contrasena":contrasena},
+                             this.httpOptions);
+    }
+
+    updateAnalista(nombreUsuario:string,contrasena:string,id:number){
+      return this.http.put(this.API_URL+'api/analista/update/'+id,
+                            {"nombreUsuario":nombreUsuario,
+                             "contrasena":contrasena},
+                             this.httpOptions);
+    }
 }

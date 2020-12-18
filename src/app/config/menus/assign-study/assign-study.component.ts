@@ -55,7 +55,7 @@ export class AssignStudyComponent implements OnInit {
   }
 
   assignStudy(idEstudio:number){
-    this.sub = this.route.params.subscribe(params => {
+      this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
       this.adminService.assignStudy(this.id,idEstudio)
       .subscribe(
