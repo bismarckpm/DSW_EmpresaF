@@ -55,7 +55,13 @@ public class ServicioEncuestaPregunta {
             DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
 
             DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            Encuesta encuesta = null;
+
+            try {
+                encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            } catch (Exception e) {
+                throw new Exception("La encuesta con id: " + _idEncuesta + " no existe.");
+            }
 
             List<Long> preguntasEncuestas = new ArrayList<>();
 
@@ -120,17 +126,30 @@ public class ServicioEncuestaPregunta {
         try {
 
             DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            Encuesta encuesta = null;
 
-            Pregunta pregunta = new Pregunta(preguntaDto.getId());
-
-            encuesta.add_pregunta(pregunta);
-
+            try {
+                encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            } catch (Exception e) {
+                throw new Exception("La encuesta con id: " + _idEncuesta + " no existe.");
+            }
+            
+            
+            Pregunta pregunta = null;
+            DaoPregunta daoPregunta = new DaoPregunta();
+            long _idPregunta = preguntaDto.getId();
+            
+            try {
+                pregunta = daoPregunta.find(_idPregunta, Pregunta.class);
+            } catch (Exception e) {
+                throw new Exception("La pregunta con id: " + _idPregunta + " no existe.");
+            }
+            
+            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
             PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
             preguntaEncuesta.set_encuesta(encuesta);
             preguntaEncuesta.set_pregunta(pregunta);
-
-            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+            
             preguntaEncuesta = daoPreguntaEncuesta.insert(preguntaEncuesta);
 
             data = Json.createObjectBuilder()
