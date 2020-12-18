@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,7 @@ export class RegisterComponent implements OnInit {
   contrasena:any;
   nivelS:any;
   nivelE:any;
-  constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar,public datepipe: DatePipe) { }
 
 
   ngOnInit(): void {
@@ -122,6 +123,8 @@ export class RegisterComponent implements OnInit {
     this.primerApellido = this.registerEncuestadoForm.get('primerApellido').value;
     this.direccionComplemento = this.registerEncuestadoForm.get('direccionComplemento').value
     this.fechaNacimiento = this.registerEncuestadoForm.get('fechaNacimiento').value
+    this.fechaNacimiento = this.datepipe.transform(this.fechaNacimiento, 'dd-MM-yyyy');
+    console.log(this.fechaNacimiento)
     this.genero = this.registerEncuestadoForm.get('genero').value
     this.estadoCivil =   this.registerEncuestadoForm.get('estadoCivil').value
     this.ocupacion = this.registerEncuestadoForm.get('ocupacion').value
