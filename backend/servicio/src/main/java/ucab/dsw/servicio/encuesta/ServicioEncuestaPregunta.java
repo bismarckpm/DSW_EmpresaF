@@ -1,7 +1,10 @@
 package ucab.dsw.servicio.encuesta;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -14,7 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ucab.dsw.accesodatos.DaoEncuesta;
+import ucab.dsw.accesodatos.DaoOpcion;
+import ucab.dsw.accesodatos.DaoPregunta;
 import ucab.dsw.accesodatos.DaoPreguntaEncuesta;
+import ucab.dsw.accesodatos.DaoPreguntaOpcion;
 import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.dtos.PreguntaEncuestaDto;
 import ucab.dsw.entidades.PreguntaEncuesta;
@@ -178,6 +184,81 @@ public class ServicioEncuestaPregunta {
             JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
 
             for (Pregunta pregunta : preguntas) {
+                preguntasJson.add(pregunta.toJson());
+            }
+
+            data = Json.createObjectBuilder()
+                    .add("data", preguntasJson)
+                    .add("estado", "success")
+                    .add("code", 200)
+                    .build();
+
+        } catch (javax.persistence.PersistenceException ex) {
+            String mensaje = "Estas opciones ya se encuentran añadidas";
+            data = Json.createObjectBuilder()
+                    .add("mensaje", mensaje)
+                    .add("estado", "error")
+                    .add("code", 400)
+                    .build();
+            return Response.status(400).entity(data).build();
+        } catch (Exception ex) {
+            data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+                    .add("estado", "error")
+                    .add("code", 400)
+                    .build();
+            return Response.status(400).entity(data).build();
+        }
+
+        return Response.status(200).entity(data).build();
+
+    }
+
+    /**
+     * Metodo para Obtener todas las preguntas que no tiene una encuesta
+     * Accedido mediante /encuestas/{id}/preguntas-agregables con el metodo GET
+     *
+     * @param _idEncuesta id de la encuesta
+     *
+     * @return JSON success: {data, code, estado}; error: {mensaje, estado,
+     * code}
+     *
+     */
+    @GET
+    @Path("/{id}/preguntas-agregables")
+    public Response getPreguntasAgregables(@PathParam("id") long _idEncuesta) {
+        JsonObject data;
+        try {
+
+            DaoEncuesta daoEncuesta = new DaoEncuesta();
+            Encuesta encuesta = null;
+
+            try {
+                encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+            } catch (Exception e) {
+                throw new Exception("La encuesta con id: " + _idEncuesta + " no existe.");
+            }
+
+            DaoPregunta daoPregunta = new DaoPregunta();
+            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+
+            List<Pregunta> preguntasList = daoPregunta.findAll(Pregunta.class);
+            List<PreguntaEncuesta> preguntasEncuestasList = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
+
+            for (Iterator<Pregunta> iterator = preguntasList.iterator(); iterator.hasNext();) {
+                Pregunta pregunta = iterator.next();
+                for (PreguntaEncuesta preguntaEncuesta : preguntasEncuestasList) {
+                    boolean isPregunta = pregunta.get_id() == preguntaEncuesta.get_pregunta().get_id();
+                    boolean isEncuesta = encuesta.get_id() == preguntaEncuesta.get_encuesta().get_id();
+
+                    if (isPregunta && isEncuesta) {
+                        iterator.remove();
+                    }
+                }
+            }
+
+            JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
+
+            for (Pregunta pregunta : preguntasList) {
                 preguntasJson.add(pregunta.toJson());
             }
 
