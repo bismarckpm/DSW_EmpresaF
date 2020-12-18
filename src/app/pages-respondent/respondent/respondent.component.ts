@@ -2,6 +2,7 @@ import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/core/services/users.service';
 
 @Component({
     selector: 'app-respondent',
@@ -12,8 +13,8 @@ import { Router } from '@angular/router';
   export class RespondentComponent implements OnInit{
     element:any;
     dataSource:any;
-    displayedColumns: string[] = ['idEstudio','estado','nombreMarca','fecIniEstudio','icons'];
-    constructor(private router: Router,) { }
+    displayedColumns: string[] = ['estudioId','nombreEstudio','icons'];
+    constructor(private router: Router,private userService:UsersService) { }
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -21,33 +22,36 @@ import { Router } from '@angular/router';
       this.getEstudios();
       
     }
-    ngAfterViewInit() {
-      this.dataSource.paginator = this.paginator;
-    }
+  
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
+
     getEstudios(){
-      
-      this.element = [
-        {idEstudio:'1',estado:'Medicamentos',nombreMarca:'Sante',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'2',estado:'Frutas',nombreMarca:'Fruta',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'3',estado:'Verduras',nombreMarca:'Verdura',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'4',estado:'Pisos',nombreMarca:'Click',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'5',estado:'Papeleria',nombreMarca:'Ofimania',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'6',estado:'Cuadernos',nombreMarca:'Norma',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'7',estado:'Vajillas',nombreMarca:'Vidrio',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'8',estado:'Cubiertos',nombreMarca:'Cubierto',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'9',estado:'Sofas',nombreMarca:'Sofa',fecIniEstudio:'01/01/2020'},
-        {idEstudio:'10',estado:'Perifericos',nombreMarca:'Panasonic',fecIniEstudio:'01/01/2020'},
-      ];
-      this.dataSource = new MatTableDataSource(this.element);
+      let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+      let encuestado = JSON.parse(encuestadoStorage);
+      encuestado = encuestado.id;
+      this.userService.getEstudioEncuestado(encuestado) 
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+              this.element = auxRes.estudios;
+              this.dataSource = new MatTableDataSource(auxRes.estudios);
+              this.dataSource.paginator = this.paginator;
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
   
     }
   
     verEncuesta(idEncuesta){
-      this.router.navigate(['pages-respondent/poll', idEncuesta]);
+      this.router.navigate(['pages-respondent/questions', idEncuesta]);
       console.log(idEncuesta)
     }
   

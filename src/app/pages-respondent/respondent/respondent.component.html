@@ -11,29 +11,19 @@
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
-        <ng-container matColumnDef="idEstudio">
+        <ng-container matColumnDef="estudioId">
           <th mat-header-cell *matHeaderCellDef> ID</th>
-          <td mat-cell *matCellDef="let element"> {{element.idEstudio}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.estudioId}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef> Estado </th>
-          <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="nombreMarca">
-          <th mat-header-cell *matHeaderCellDef> Marca</th>
-          <td mat-cell *matCellDef="let element"> {{element.nombreMarca}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="fecIniEstudio">
-          <th mat-header-cell *matHeaderCellDef> Fecha inicio</th>
-          <td mat-cell *matCellDef="let element"> {{element.fecIniEstudio}} </td>
+        <ng-container matColumnDef="nombreEstudio">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombreEstudio}} </td>
         </ng-container>
 
         <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef>Encuestas</th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-tasks fa-lg" style="margin-left: 15px;cursor: pointer;color: #111792;" (click)="verEncuesta(element.idEstudio)"></i></span></td>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-tasks fa-lg" style="margin-left: 15px;cursor: pointer;color: #111792;" (click)="verEncuesta(element.encuestaId)"></i></span></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

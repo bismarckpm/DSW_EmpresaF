@@ -10,10 +10,11 @@ import { InterviewSurveyComponent } from './interview-survey/interview-survey.co
 import { DescriptionCardComponent } from './interview-survey/description-card.component';
 import { OptionCardComponent } from './interview-survey/option-card.component';
 import { RangeCardComponent } from './interview-survey/range-card.component';
+import { MyStudiesComponent } from './my-studies/my-studies.component';
 
 @NgModule({
     declarations: [MenuAnaliticsComponent,GlobalMenuAComponent,SampleComponent,UpdateSampleComponent,
-       InterviewSurveyComponent,  DescriptionCardComponent, OptionCardComponent, RangeCardComponent
+       InterviewSurveyComponent,  DescriptionCardComponent, OptionCardComponent, RangeCardComponent, MyStudiesComponent
     ],
     imports: [
       AnaliticsRoutingModule,

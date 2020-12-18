@@ -13,11 +13,11 @@ const routes: Routes = [
     component:GlobalMenuPComponent,
     children: [
     { path: "respondent", component: RespondentComponent},
-    { path: "questions", component: QuestionsComponent},
+    { path: "questions/:id", component: QuestionsComponent},
     { path: "study", component: StudyComponent},
+    { path: 'poll/:id', component: PollComponent },
     ],
   },
-  { path: 'poll/:id', component: PollComponent },
 ];
 
 @NgModule({

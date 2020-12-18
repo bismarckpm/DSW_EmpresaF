@@ -75,4 +75,19 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
   }
 
+  getEstudioEncuestado(idEncuestado:number){
+    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions);
+  }
+
+  getPreguntaEncuesta(idEncuesta:number){
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions);
+  }
+
+  respuestaEncuesta(respuesta:any,idEncuesta:number,idPregunta:number){
+    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas/'+idPregunta+'/respuesta',respuesta,this.httpOptions)
+  }
+
+  getIdEncuestado(idEncuestado:number){
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
+  }
 }
