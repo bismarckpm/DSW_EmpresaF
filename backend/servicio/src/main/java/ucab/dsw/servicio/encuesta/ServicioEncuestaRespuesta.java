@@ -1,6 +1,5 @@
 package ucab.dsw.servicio.encuesta;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.json.Json;
@@ -12,15 +11,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ucab.dsw.accesodatos.DaoEncuesta;
-import ucab.dsw.accesodatos.DaoEncuestado;
-import ucab.dsw.accesodatos.DaoPregunta;
-import ucab.dsw.accesodatos.DaoPreguntaEncuesta;
-import ucab.dsw.accesodatos.DaoRespuesta;
-import ucab.dsw.accesodatos.DaoRespuestaOpcion;
-import ucab.dsw.dtos.OpcionDto;
-import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.dtos.RespuestaDto;
+
+import ucab.dsw.accesodatos.*;
+import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Opcion;
@@ -38,19 +31,8 @@ import ucab.dsw.entidades.RespuestaOpcion;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServicioEncuestaRespuesta {
 
-    /**
-     * Metodo para agregar una respuesta a una pregunta de una encuesta Accedido
-     * mediante /encuestas/{id}/preguntas/{id}/respuestas} con el metodo POST
-     *
-     * Las preguntas deben estar previamente creadas
-     *
-     * @param _idEncuesta id de la encuesta
-     * @param _idPregunta id de la pregunta
-     * @param respuestaDto Lista de DTOs de las respuestas
-     * @return JSON success: {data, estado, code}; error: {mensaje, estado,
-     * code}
-     */
-    @POST
+
+   /* @POST
     @Path("/{idEncuesta}/preguntas/{idPregunta}/respuesta")
     public Response addRespuesta(
             @PathParam("idEncuesta") long _idEncuesta,
@@ -124,6 +106,73 @@ public class ServicioEncuestaRespuesta {
         }
 
         return Response.status(200).entity(data).build();
+    }*/
 
+    @POST
+    @Path("/respuesta/{idEncuesta}")
+  public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto pruebaBaseDto){
+
+      try{
+        DaoEncuesta daoEncuesta = new DaoEncuesta();
+        Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
+
+        for(ArrayRespuestaDto respuesta:pruebaBaseDto.getRespuestas()){
+          DaoPregunta daoPregunta = new DaoPregunta();
+          Pregunta pregunta = daoPregunta.find(respuesta.getPregunta().getId(), Pregunta.class);
+
+          DaoEncuestado daoEncuestado = new DaoEncuestado();
+          Encuestado encuestado = daoEncuestado.find(respuesta.getEncuestado().getId(), Encuestado.class);
+
+          for (OpcionDto opcionDto : respuesta.getOpciones()) {
+            RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
+            DaoOpcion daoOpcion = new DaoOpcion();
+
+            Opcion opcion = daoOpcion.find(opcionDto.getId(), Opcion.class);
+            respuestaOpcion.set_opcion(opcion);
+
+            Respuesta res = new Respuesta();
+            Date fecha = new Date();
+
+            res.set_fecha(fecha);
+
+            res.set_descripcion(respuesta.getDescripcion());
+            res.set_rango(respuesta.getRango());
+            res.set_encuestado(encuestado);
+
+            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+            List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
+
+            for(PreguntaEncuesta preguntaEncuesta: preguntaEncuestas){
+              if(preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()){
+                res.set_preguntaEncuesta(preguntaEncuesta);
+              }
+            }
+
+            DaoRespuesta daoRespuesta = new DaoRespuesta();
+            daoRespuesta.insert(res);
+
+            DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
+            respuestaOpcion.set_opcion(opcion);
+            respuestaOpcion.set_respuesta(res);
+
+            daoRespuestaOpcion.insert(respuestaOpcion);
+            }
+          }
+
+        JsonObject data = Json.createObjectBuilder()
+          .add("estado", "success")
+          .add("code", 200).build();
+
+        System.out.println(data);
+        return Response.ok().entity(data).build();
+
+      }catch (Exception ex){
+        JsonObject data = Json.createObjectBuilder()
+          .add("estado", "error")
+          .add("code", 400).build();
+
+        System.out.println(data);
+        return Response.ok().entity(data).build();
+      }
     }
 }

@@ -12,10 +12,10 @@ public class pruebaDirectorioActivo
     public void createUserLDAP()
     {
         UsuarioDto user = new UsuarioDto();
-        user.setNombreUsuario( "danJieldddju" );
-        user.setContrasena( "1234" );
+        user.setNombreUsuario( "administrador3" );
+        user.setContrasena( "12345" );
         DirectorioActivo ldap = new DirectorioActivo();
-        ldap.addEntryToLdap( user, "cliente" );
+        ldap.addEntryToLdap( user, "administrador" );
     }
 
     @Test

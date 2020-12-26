@@ -33,4 +33,6 @@ public class OpcionDto extends DtoBase{
   public void setPreguntasOpciones(List<PreguntaOpcionDto> preguntasOpciones) {
     this.preguntasOpciones = preguntasOpciones;
   }
+
+
 }
