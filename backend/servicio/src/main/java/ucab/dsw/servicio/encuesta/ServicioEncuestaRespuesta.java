@@ -252,10 +252,12 @@ public class ServicioEncuestaRespuesta {
 
       }catch (Exception ex){
 
-        ex.printStackTrace();
+        data = Json.createObjectBuilder()
+          .add("code", 400)
+          .add("estado", "error")
+          .build();
 
-
-        return Response.ok().entity(null).build();
+        return Response.ok().entity(data).build();
       }
     }
 }
