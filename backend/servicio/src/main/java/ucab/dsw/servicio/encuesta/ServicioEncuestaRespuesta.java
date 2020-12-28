@@ -3,12 +3,9 @@ package ucab.dsw.servicio.encuesta;
 import java.util.Date;
 import java.util.List;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -110,7 +107,7 @@ public class ServicioEncuestaRespuesta {
 
     @POST
     @Path("/respuesta/{idEncuesta}")
-  public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto pruebaBaseDto){
+    public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto pruebaBaseDto){
 
       try{
         DaoEncuesta daoEncuesta = new DaoEncuesta();
@@ -123,41 +120,45 @@ public class ServicioEncuestaRespuesta {
           DaoEncuestado daoEncuestado = new DaoEncuestado();
           Encuestado encuestado = daoEncuestado.find(respuesta.getEncuestado().getId(), Encuestado.class);
 
-          for (OpcionDto opcionDto : respuesta.getOpciones()) {
-            RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
-            DaoOpcion daoOpcion = new DaoOpcion();
+          Respuesta res = new Respuesta();
+          Date fecha = new Date();
 
-            Opcion opcion = daoOpcion.find(opcionDto.getId(), Opcion.class);
-            respuestaOpcion.set_opcion(opcion);
+          res.set_fecha(fecha);
 
-            Respuesta res = new Respuesta();
-            Date fecha = new Date();
+          res.set_descripcion(respuesta.getDescripcion());
+          res.set_rango(respuesta.getRango());
+          res.set_encuestado(encuestado);
 
-            res.set_fecha(fecha);
+          DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+          List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
 
-            res.set_descripcion(respuesta.getDescripcion());
-            res.set_rango(respuesta.getRango());
-            res.set_encuestado(encuestado);
-
-            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
-            List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
-
-            for(PreguntaEncuesta preguntaEncuesta: preguntaEncuestas){
-              if(preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()){
-                res.set_preguntaEncuesta(preguntaEncuesta);
-              }
-            }
-
-            DaoRespuesta daoRespuesta = new DaoRespuesta();
-            daoRespuesta.insert(res);
-
-            DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
-            respuestaOpcion.set_opcion(opcion);
-            respuestaOpcion.set_respuesta(res);
-
-            daoRespuestaOpcion.insert(respuestaOpcion);
+          for (PreguntaEncuesta preguntaEncuesta : preguntaEncuestas) {
+            if (preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()) {
+              res.set_preguntaEncuesta(preguntaEncuesta);
             }
           }
+
+          DaoRespuesta daoRespuesta = new DaoRespuesta();
+          daoRespuesta.insert(res);
+
+
+          if(respuesta.getOpciones()!=null) {
+
+            for (OpcionDto opcionDto : respuesta.getOpciones()) {
+              RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
+              DaoOpcion daoOpcion = new DaoOpcion();
+
+              Opcion opcion = daoOpcion.find(opcionDto.getId(), Opcion.class);
+              respuestaOpcion.set_opcion(opcion);
+
+              DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
+              respuestaOpcion.set_opcion(opcion);
+              respuestaOpcion.set_respuesta(res);
+
+              daoRespuestaOpcion.insert(respuestaOpcion);
+            }
+          }
+        }
 
         JsonObject data = Json.createObjectBuilder()
           .add("estado", "success")
@@ -173,6 +174,88 @@ public class ServicioEncuestaRespuesta {
 
         System.out.println(data);
         return Response.ok().entity(data).build();
+      }
+    }
+
+    @GET
+    @Path("/respuesta/{idEncuesta}")
+    public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){
+      List<Respuesta> respuestas;
+      List<PreguntaEncuesta> preguntaEncuestas;
+      String pregunta = null;
+      JsonObject data;
+      JsonArrayBuilder respuestasArray = Json.createArrayBuilder();
+
+      try{
+
+        DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+
+        DaoEncuesta daoEncuesta = new DaoEncuesta();
+        Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
+
+        preguntaEncuestas = daoPreguntaEncuesta.getPreguntasEncuestaByEncuestaId(encuesta);
+
+        JsonArrayBuilder opcionArray = Json.createArrayBuilder();
+
+        for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
+
+          //Muestro la pregunta
+          DaoPregunta daoPregunta = new DaoPregunta();
+          pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class).get_descripcionPregunta();
+
+          if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
+
+            //Muestro opciones
+            List<Opcion> opciones;
+            opciones = preguntaEncuesta.get_pregunta().getOpciones();
+            for(Opcion opcion:opciones){
+              DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
+              Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
+
+              JsonObject option = Json.createObjectBuilder()
+                .add("opcion", opcion.get_descripcion())
+                .add("opcionId", opcion.get_id())
+                .add("conteo", respuestaCont)
+                .build();
+
+              opcionArray.add(option);
+            }
+
+            JsonObject answer = Json.createObjectBuilder()
+              .add("pregunta", pregunta)
+              .add("opciones", opcionArray)
+              .build();
+
+            respuestasArray.add(answer);
+
+          }else{
+            respuestas = preguntaEncuesta.get_respuestas();
+            for (Respuesta respuesta:respuestas){
+              JsonObject answer = Json.createObjectBuilder()
+                .add("pregunta", pregunta)
+                .add("respuesta",respuesta.get_descripcion())
+                .add("rango", respuesta.get_rango()).build();
+
+              respuestasArray.add(answer);
+            }
+          }
+        }
+
+        data = Json.createObjectBuilder()
+          .add("code", 200)
+          .add("estado", "success")
+          .add("respuestas", respuestasArray)
+          .build();
+
+        System.out.println(data);
+        return Response.ok().entity(data).build();
+
+      }catch (Exception ex){
+
+        ex.printStackTrace();
+
+
+        return Response.ok().entity(null).build();
       }
     }
 }

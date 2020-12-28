@@ -1,16 +1,13 @@
 package ucab.dsw.entidades;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "respuesta_opcion")
+@NamedQueries({
+  @NamedQuery(name = "getOpcionesRespondidas", query = "select o from RespuestaOpcion o where o._respuesta=:respuesta"),
+  @NamedQuery(name = "contRespuesta", query = "select count (o) from RespuestaOpcion o where o._opcion=:opcion"),
+})
 public class RespuestaOpcion extends EntidadBase {
 
     @Id

@@ -154,7 +154,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
         }
       }
       data = Json.createObjectBuilder()
-        .add("estado", 200)
+        .add("code", 200)
         .add("estado", "success")
         .add("usuarios", usuariosArray).build();
 

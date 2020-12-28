@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "pregunta_encuesta")
 @NamedQueries({
-  @NamedQuery(name = "getPreguntasByEncuesta", query = "select p._pregunta from PreguntaEncuesta p where p._encuesta =:encuesta")
+  @NamedQuery(name = "getPreguntasByEncuesta", query = "select p._pregunta from PreguntaEncuesta p where p._encuesta =:encuesta"),
+  @NamedQuery(name = "getPreguntasEncuestaByEncuestaId", query = "select p from PreguntaEncuesta p where p._encuesta =:encuesta")
 })
 public class PreguntaEncuesta extends EntidadBase{
 
