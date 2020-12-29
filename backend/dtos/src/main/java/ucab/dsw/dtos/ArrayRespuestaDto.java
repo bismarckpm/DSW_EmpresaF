@@ -6,7 +6,7 @@ public class ArrayRespuestaDto {
 
   private PreguntaDto pregunta;
   private String descripcion;
-  private String rango;
+  private Integer rango;
   private EncuestadoDto encuestado;
   private List<OpcionDto> opciones;
 
@@ -26,11 +26,11 @@ public class ArrayRespuestaDto {
     this.descripcion = descripcion;
   }
 
-  public String getRango() {
+  public Integer getRango() {
     return rango;
   }
 
-  public void setRango(String rango) {
+  public void setRango(Integer rango) {
     this.rango = rango;
   }
 

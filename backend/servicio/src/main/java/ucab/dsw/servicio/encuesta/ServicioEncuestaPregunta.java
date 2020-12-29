@@ -178,7 +178,9 @@ public class ServicioEncuestaPregunta {
         JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
 
         for (Pregunta pregunta : preguntas) {
-          preguntasJson.add(pregunta.toJson());
+          DaoPregunta daoPregunta = new DaoPregunta();
+          Pregunta question = daoPregunta.find(pregunta.get_id(), Pregunta.class);
+          preguntasJson.add(question.toJson());
         }
 
         data = Json.createObjectBuilder()

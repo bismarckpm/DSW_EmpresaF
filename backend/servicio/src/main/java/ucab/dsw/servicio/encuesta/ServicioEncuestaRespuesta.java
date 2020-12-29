@@ -18,6 +18,7 @@ import ucab.dsw.entidades.Pregunta;
 import ucab.dsw.entidades.PreguntaEncuesta;
 import ucab.dsw.entidades.Respuesta;
 import ucab.dsw.entidades.RespuestaOpcion;
+import ucab.dsw.excepciones.RangoExcepcion;
 
 /**
  * Clase para gestionar las respuestas de una pregunta de una encuesta
@@ -107,13 +108,13 @@ public class ServicioEncuestaRespuesta {
 
     @POST
     @Path("/respuesta/{idEncuesta}")
-    public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto pruebaBaseDto){
+    public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto baseDto){
 
       try{
         DaoEncuesta daoEncuesta = new DaoEncuesta();
         Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
 
-        for(ArrayRespuestaDto respuesta:pruebaBaseDto.getRespuestas()){
+        for(ArrayRespuestaDto respuesta:baseDto.getRespuestas()){
           DaoPregunta daoPregunta = new DaoPregunta();
           Pregunta pregunta = daoPregunta.find(respuesta.getPregunta().getId(), Pregunta.class);
 
@@ -124,10 +125,17 @@ public class ServicioEncuestaRespuesta {
           Date fecha = new Date();
 
           res.set_fecha(fecha);
-
           res.set_descripcion(respuesta.getDescripcion());
-          res.set_rango(respuesta.getRango());
           res.set_encuestado(encuestado);
+
+          System.out.println(pregunta.get_min() );
+          System.out.println(pregunta.get_max() );
+          System.out.println(respuesta.getRango());
+          if( (respuesta.getRango() < pregunta.get_min() ) || (respuesta.getRango() > pregunta.get_max())){
+            throw new RangoExcepcion("Rango seleccionado fuera de los límites de maximo y mínimo");
+          }else {
+            res.set_rango(respuesta.getRango());
+          }
 
           DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
           List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
@@ -135,6 +143,7 @@ public class ServicioEncuestaRespuesta {
           for (PreguntaEncuesta preguntaEncuesta : preguntaEncuestas) {
             if (preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()) {
               res.set_preguntaEncuesta(preguntaEncuesta);
+
             }
           }
 
@@ -167,13 +176,21 @@ public class ServicioEncuestaRespuesta {
         System.out.println(data);
         return Response.ok().entity(data).build();
 
-      }catch (Exception ex){
+      }
+      catch (RangoExcepcion ex){
         JsonObject data = Json.createObjectBuilder()
           .add("estado", "error")
+          .add("mensaje", ex.getMessage())
           .add("code", 400).build();
 
         System.out.println(data);
         return Response.ok().entity(data).build();
+      }
+      catch (Exception ex){
+        ex.printStackTrace();
+
+
+        return Response.ok().entity(null).build();
       }
     }
 
@@ -199,13 +216,11 @@ public class ServicioEncuestaRespuesta {
 
         for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
 
-          //Muestro la pregunta
           DaoPregunta daoPregunta = new DaoPregunta();
           pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class).get_descripcionPregunta();
 
           if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
 
-            //Muestro opciones
             List<Opcion> opciones;
             opciones = preguntaEncuesta.get_pregunta().getOpciones();
             for(Opcion opcion:opciones){

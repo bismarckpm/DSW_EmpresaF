@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ucab.dsw.accesodatos.DaoPregunta;
 import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.entidades.Pregunta;
+import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -45,8 +46,14 @@ public class ServicioPregunta extends AplicacionBase {
 
             Pregunta pregunta = new Pregunta();
             pregunta.set_descripcionPregunta(preguntaDto.getDescripcionPregunta());
-            pregunta.set_min(preguntaDto.getMin());
-            pregunta.set_max(preguntaDto.getMax());
+
+            if(preguntaDto.getMin() > preguntaDto.getMax()){
+              throw new LimiteExcepcion("El limite superior no puede ser menor al limite inferior");
+            }else {
+              pregunta.set_min(preguntaDto.getMin());
+              pregunta.set_max(preguntaDto.getMax());
+            }
+
             pregunta.set_tipoPregunta(preguntaDto.getTipoPregunta());
 
             DaoPregunta daoPregunta = new DaoPregunta();

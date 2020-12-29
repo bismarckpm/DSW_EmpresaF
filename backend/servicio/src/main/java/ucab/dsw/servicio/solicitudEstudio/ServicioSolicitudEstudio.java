@@ -3,6 +3,7 @@ package ucab.dsw.servicio.solicitudEstudio;
 import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
+import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 
@@ -29,8 +30,14 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
       SolicitudEstudio solicitudEstudio = new SolicitudEstudio();
       solicitudEstudio.set_estado("solicitado");
-      solicitudEstudio.set_edadInicial(solicitudEstudioDto.getEdadInicial());
-      solicitudEstudio.set_edadfinal(solicitudEstudioDto.getEdadfinal());
+
+      if(solicitudEstudioDto.getEdadInicial() > solicitudEstudioDto.getEdadfinal()){
+        throw new LimiteExcepcion("El limite superior no puede ser menor al limite inferior");
+      }else {
+        solicitudEstudio.set_edadInicial(solicitudEstudioDto.getEdadInicial());
+        solicitudEstudio.set_edadfinal(solicitudEstudioDto.getEdadfinal());
+      }
+
       solicitudEstudio.set_genero(solicitudEstudioDto.getGenero());
 
       DaoUsuario daoUsuario = new DaoUsuario();
@@ -80,6 +87,15 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         .add("code", 200)
         .build();
 
+    }
+    catch (LimiteExcepcion ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
     }
     catch (Exception ex){
       data = Json.createObjectBuilder().add("mensaje", ex.getMessage())

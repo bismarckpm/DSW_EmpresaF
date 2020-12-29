@@ -21,7 +21,7 @@ public class Respuesta extends EntidadBase {
     private String _descripcion;
 
     @Column(name = "rango")
-    private String _rango;
+    private Integer _rango;
 
     @ManyToOne
     @JoinColumn(name = "fk_encuestado")
@@ -67,15 +67,15 @@ public class Respuesta extends EntidadBase {
         this._descripcion = _descripcion;
     }
 
-    public String get_rango() {
-        return _rango;
-    }
+  public Integer get_rango() {
+    return _rango;
+  }
 
-    public void set_rango(String _rango) {
-        this._rango = _rango;
-    }
+  public void set_rango(Integer _rango) {
+    this._rango = _rango;
+  }
 
-    public Encuestado get_encuestado() {
+  public Encuestado get_encuestado() {
         return _encuestado;
     }
 
@@ -98,7 +98,7 @@ public class Respuesta extends EntidadBase {
     public void set_respuestasOpciones(List<RespuestaOpcion> _respuestasOpciones) {
         this._respuestasOpciones = _respuestasOpciones;
     }
-    
+
     public List<Opcion> get_opciones() {
         return get_respuestasOpciones()
                 .stream()
