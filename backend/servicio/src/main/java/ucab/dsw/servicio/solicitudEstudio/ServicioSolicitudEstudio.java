@@ -65,7 +65,6 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       if( !solicitudesExistentes.isEmpty()){
 
         for(SolicitudEstudio soli:solicitudesExistentes){
-          DaoUsuario dao = new DaoUsuario();
           solicitudEstudio.set_analista(soli.get_analista());
           break;
         }

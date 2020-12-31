@@ -1,8 +1,10 @@
 package ucab.dsw.servicio.muestra;
 
+import ucab.dsw.accesodatos.Dao;
 import ucab.dsw.accesodatos.DaoEncuestado;
 import ucab.dsw.accesodatos.DaoMuestra;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.dtos.EncuestadoDto;
 import ucab.dsw.dtos.MuestraDto;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
@@ -67,24 +69,27 @@ public class ServicioMuestra {
   public Response addManualMuestra(@PathParam("idSolicitudEstudio") long idSolicitudEstudio, MuestraDto muestraDto){
     JsonObject data;
     try{
-      Muestra muestra = new Muestra();
-      DaoMuestra daoMuestra = new DaoMuestra();
-
-      DaoEncuestado daoEncuestado = new DaoEncuestado();
-      Encuestado encuestado = daoEncuestado.find(muestraDto.getEncuestado().getId(), Encuestado.class);
-      muestra.set_encuestado(encuestado);
-
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
       SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(idSolicitudEstudio, SolicitudEstudio.class);
-      muestra.set_solicitudEstudio(solicitudEstudio);
 
-      Muestra resultado = daoMuestra.insert(muestra);
+      DaoMuestra daoMuestra = new DaoMuestra();
+
+      for(EncuestadoDto encuestados:muestraDto.getEncuestados()) {
+        Muestra muestra = new Muestra();
+        DaoEncuestado daoEncuestado = new DaoEncuestado();
+
+        Encuestado encuestado = daoEncuestado.find(encuestados.getId(), Encuestado.class);
+        muestra.set_encuestado(encuestado);
+
+        muestra.set_solicitudEstudio(solicitudEstudio);
+
+        daoMuestra.insert(muestra);
+      }
 
       data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("encuestadoAgregado", resultado.get_encuestado().get_id())
-        .add("solicitudEstudio", resultado.get_solicitudEstudio().get_id())
+        .add("solicitudEstudio", idSolicitudEstudio)
         .build();
 
       System.out.println(data);

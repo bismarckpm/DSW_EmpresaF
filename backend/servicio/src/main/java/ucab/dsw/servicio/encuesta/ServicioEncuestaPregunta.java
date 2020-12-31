@@ -114,7 +114,8 @@ public class ServicioEncuestaPregunta {
             DaoEncuesta daoEncuesta = new DaoEncuesta();
             Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
 
-            Pregunta pregunta = new Pregunta(preguntaDto.getId());
+            DaoPregunta daoPregunta = new DaoPregunta();
+            Pregunta pregunta = daoPregunta.find(preguntaDto.getId(), Pregunta.class);
 
             encuesta.add_pregunta(pregunta);
 
@@ -164,7 +165,7 @@ public class ServicioEncuestaPregunta {
     @GET
     @Path("/{id}/preguntas")
     public Response getPreguntas(@PathParam("id") long _idEncuesta) {
-      List<Pregunta> preguntas = null;
+      List<Pregunta> preguntas ;
       JsonObject data = null;
       try {
 
@@ -176,11 +177,35 @@ public class ServicioEncuestaPregunta {
         preguntas = daoPreguntaEncuesta.getPreguntasByEncuesta(encuesta);
 
         JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
+        JsonArrayBuilder opcionesJson = Json.createArrayBuilder();
 
         for (Pregunta pregunta : preguntas) {
           DaoPregunta daoPregunta = new DaoPregunta();
           Pregunta question = daoPregunta.find(pregunta.get_id(), Pregunta.class);
-          preguntasJson.add(question.toJson());
+
+          for(Opcion opcion:question.getOpciones()) {
+
+              DaoOpcion daoOpcion = new DaoOpcion();
+              Opcion opc = daoOpcion.find(opcion.get_id(), Opcion.class);
+
+              JsonObject option = Json.createObjectBuilder()
+                .add("idPregunta", question.get_id())
+                .add("idOpcion", opc.get_id())
+                .add("descripcion", opc.get_descripcion()).build();
+
+              opcionesJson.add(option);
+            }
+
+
+          JsonObject quest = Json.createObjectBuilder()
+            .add("idPregunta", question.get_id())
+            .add("descripcion", question.get_descripcionPregunta())
+            .add("tipo", question.get_tipoPregunta())
+            .add("min", question.get_min())
+            .add("max", question.get_max())
+            .add("opciones", opcionesJson).build();
+
+          preguntasJson.add(quest);
         }
 
         data = Json.createObjectBuilder()

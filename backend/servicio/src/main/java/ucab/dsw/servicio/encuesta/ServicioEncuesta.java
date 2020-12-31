@@ -15,10 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ucab.dsw.accesodatos.DaoEncuesta;
-import ucab.dsw.accesodatos.DaoPregunta;
-import ucab.dsw.accesodatos.DaoPreguntaEncuesta;
-import ucab.dsw.accesodatos.DaoPreguntaOpcion;
+
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.EncuestaDto;
 import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Pregunta;
@@ -117,15 +115,10 @@ public class ServicioEncuesta {
               for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
                 if(encuesta.get_id() == preguntaEncuesta.get_encuesta().get_id()){
 
-                  JsonObject JsonQuestions = Json.createObjectBuilder()
-                    .add("preguntaId", preguntaEncuesta.get_pregunta().get_id())
-                    .add("descripcionPregunta", preguntaEncuesta.get_pregunta().get_descripcionPregunta())
-                    .add("tipoPregunta", preguntaEncuesta.get_pregunta().get_tipoPregunta())
-                    .add("max", preguntaEncuesta.get_pregunta().get_max())
-                    .add("min", preguntaEncuesta.get_pregunta().get_min())
-                    .build();
+                  DaoPregunta daoPregunta = new DaoPregunta();
+                  Pregunta pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class);
 
-                  preguntasArray.add(JsonQuestions);
+                  preguntasArray.add(pregunta.toJson());
                 }
               }
 
@@ -146,13 +139,12 @@ public class ServicioEncuesta {
                     .build();
 
         } catch (Exception ex) {
-
-            data = Json.createObjectBuilder()
-                    .add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
+          data = Json.createObjectBuilder()
+            .add("mensaje", ex.getMessage())
+            .add("estado", "error")
+            .add("code", 400)
+            .build();
+          return Response.status(400).entity(data).build();
         }
         return Response.ok().entity(data).build();
     }
@@ -180,22 +172,37 @@ public class ServicioEncuesta {
             DaoEncuesta dao = new DaoEncuesta();
             encuesta = dao.find(_id, Encuesta.class);
 
-            JsonObject encuestaJson = encuesta.toJson();
+            DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+            List<PreguntaEncuesta> preguntaEncuestas= daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
+
+            JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
+
+          for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
+            if(encuesta.get_id() == preguntaEncuesta.get_encuesta().get_id()){
+
+              DaoPregunta daoPregunta = new DaoPregunta();
+              Pregunta pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class);
+
+              preguntasArray.add(pregunta.toJson());
+            }
+          }
 
             data = Json.createObjectBuilder()
-                    .add("data", encuestaJson)
+                    .add("encuestaId", encuesta.get_id())
+                    .add("subcategoriaId",encuesta.get_subcategoria().get_id())
+                    .add("subcategoria", encuesta.get_subcategoria().get_nombreSubcategoria())
+                    .add("preguntas", preguntasArray)
                     .add("code", 200)
                     .add("estado", "success")
                     .build();
 
         } catch (Exception ex) {
-
-            data = Json.createObjectBuilder()
-                    .add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
+          data = Json.createObjectBuilder()
+            .add("mensaje", ex.getMessage())
+            .add("code", 400)
+            .add("estado", "success")
+            .build();
+          return Response.status(400).entity(data).build();
         }
         return Response.ok().entity(data).build();
     }

@@ -1,10 +1,13 @@
 package ucab.dsw.dtos;
 
+import java.util.List;
+
 public class MuestraDto extends DtoBase{
 
 
   private EncuestadoDto encuestado;
 
+  private List<EncuestadoDto> encuestados;
 
   private SolicitudEstudioDto solicitudEstudio;
 
@@ -29,5 +32,13 @@ public class MuestraDto extends DtoBase{
 
   public void setSolicitudEstudio(SolicitudEstudioDto solicitudEstudio) {
     this.solicitudEstudio = solicitudEstudio;
+  }
+
+  public List<EncuestadoDto> getEncuestados() {
+    return encuestados;
+  }
+
+  public void setEncuestados(List<EncuestadoDto> encuestados) {
+    this.encuestados = encuestados;
   }
 }
