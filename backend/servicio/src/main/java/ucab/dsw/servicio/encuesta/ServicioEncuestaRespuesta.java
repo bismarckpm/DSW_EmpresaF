@@ -3,6 +3,7 @@ package ucab.dsw.servicio.encuesta;
 import java.util.Date;
 import java.util.List;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -11,13 +12,7 @@ import javax.ws.rs.core.Response;
 
 import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.*;
-import ucab.dsw.entidades.Encuesta;
-import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.Opcion;
-import ucab.dsw.entidades.Pregunta;
-import ucab.dsw.entidades.PreguntaEncuesta;
-import ucab.dsw.entidades.Respuesta;
-import ucab.dsw.entidades.RespuestaOpcion;
+import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.RangoExcepcion;
 
 /**
@@ -114,12 +109,16 @@ public class ServicioEncuestaRespuesta {
         DaoEncuesta daoEncuesta = new DaoEncuesta();
         Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
 
+        Encuestado encuestado = null;
+
+        DaoMuestra daoMuestra = new DaoMuestra();
+
         for(ArrayRespuestaDto respuesta:baseDto.getRespuestas()){
           DaoPregunta daoPregunta = new DaoPregunta();
           Pregunta pregunta = daoPregunta.find(respuesta.getPregunta().getId(), Pregunta.class);
 
           DaoEncuestado daoEncuestado = new DaoEncuestado();
-          Encuestado encuestado = daoEncuestado.find(respuesta.getEncuestado().getId(), Encuestado.class);
+          encuestado = daoEncuestado.find(respuesta.getEncuestado().getId(), Encuestado.class);
 
           Respuesta res = new Respuesta();
           Date fecha = new Date();
@@ -128,9 +127,6 @@ public class ServicioEncuestaRespuesta {
           res.set_descripcion(respuesta.getDescripcion());
           res.set_encuestado(encuestado);
 
-          System.out.println(pregunta.get_min() );
-          System.out.println(pregunta.get_max() );
-          System.out.println(respuesta.getRango());
           if( (respuesta.getRango() < pregunta.get_min() ) || (respuesta.getRango() > pregunta.get_max())){
             throw new RangoExcepcion("Rango seleccionado fuera de los límites de maximo y mínimo");
           }else {
@@ -143,7 +139,6 @@ public class ServicioEncuestaRespuesta {
           for (PreguntaEncuesta preguntaEncuesta : preguntaEncuestas) {
             if (preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()) {
               res.set_preguntaEncuesta(preguntaEncuesta);
-
             }
           }
 
@@ -169,6 +164,16 @@ public class ServicioEncuestaRespuesta {
           }
         }
 
+        for(SolicitudEstudio solicitudEstudio: encuesta.get_estudio().get_solicitudesEstudio()){
+          List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
+          for (Muestra muestra:muestras) {
+            if (solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id() && encuestado.get_id() == muestra.get_encuestado().get_id()){
+              muestra.set_estado("completo");
+              daoMuestra.update(muestra);
+            }
+          }
+        }
+
         JsonObject data = Json.createObjectBuilder()
           .add("estado", "success")
           .add("code", 200).build();
@@ -187,10 +192,14 @@ public class ServicioEncuestaRespuesta {
         return Response.ok().entity(data).build();
       }
       catch (Exception ex){
-        ex.printStackTrace();
+        JsonObject data = Json.createObjectBuilder()
+          .add("estado", "error")
+          .add("mensaje", ex.getMessage())
+          .add("code", 400).build();
 
+        System.out.println(data);
 
-        return Response.ok().entity(null).build();
+        return Response.ok().entity(data).build();
       }
     }
 
@@ -227,10 +236,9 @@ public class ServicioEncuestaRespuesta {
               DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
               Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
 
-              JsonObject option = Json.createObjectBuilder()
-                .add("opcion", opcion.get_descripcion())
-                .add("opcionId", opcion.get_id())
-                .add("conteo", respuestaCont)
+              JsonArray option = Json.createArrayBuilder()
+                .add(opcion.get_descripcion())
+                .add(respuestaCont)
                 .build();
 
               opcionArray.add(option);

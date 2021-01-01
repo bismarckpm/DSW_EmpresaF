@@ -11,6 +11,8 @@ public class MuestraDto extends DtoBase{
 
   private SolicitudEstudioDto solicitudEstudio;
 
+  private String estado;
+
   public MuestraDto(long id) throws Exception {
     super(id);
   }
@@ -40,5 +42,13 @@ public class MuestraDto extends DtoBase{
 
   public void setEncuestados(List<EncuestadoDto> encuestados) {
     this.encuestados = encuestados;
+  }
+
+  public String getEstado() {
+    return estado;
+  }
+
+  public void setEstado(String estado) {
+    this.estado = estado;
   }
 }

@@ -11,6 +11,7 @@ import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -49,6 +50,7 @@ public class ServicioMuestra {
           Muestra muestra = new Muestra();
           muestra.set_encuestado(encuestado);
           muestra.set_solicitudEstudio(solicitudEstudio);
+          muestra.set_estado("pendiente");
           daoMuestra.insert(muestra);
         }
 
@@ -58,6 +60,7 @@ public class ServicioMuestra {
           Muestra muestra = new Muestra();
           muestra.set_encuestado(encuestado);
           muestra.set_solicitudEstudio(solicitudEstudio);
+          muestra.set_estado("pendiente");
           daoMuestra.insert(muestra);
         }
       }
@@ -100,5 +103,50 @@ public class ServicioMuestra {
       ex.printStackTrace();
       return Response.ok().entity(null).build();
     }
+  }
+
+  @GET
+  @Path("/getmuestra/{solicitudId}")
+  public Response getMuestra(@PathParam("solicitudId") long solicitudId){
+
+    JsonObject data;
+
+    try {
+      DaoMuestra daoMuestra = new DaoMuestra();
+
+      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+
+      List<Encuestado> encuestadosMuestra = daoMuestra.getEncuestadosMuestraBySolicitud(solicitudEstudio);
+
+      JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
+
+      for (Encuestado encuestado : encuestadosMuestra) {
+        JsonObject encu = Json.createObjectBuilder()
+          .add("encuestadoId", encuestado.get_id())
+          .add("encuestadoNombre", encuestado.get_primerNombre())
+          .add("encuestadoApellido", encuestado.get_primerApellido())
+          .build();
+
+        encuestadosArray.add(encu);
+      }
+
+      data = Json.createObjectBuilder()
+        .add("code", 200)
+        .add("estado", "success")
+        .add("solicitudes", encuestadosArray).build();
+
+    }
+    catch (Exception ex){
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error").build();
+
+      System.out.println(data);
+      return Response.ok().entity(data).build();
+    }
+
+    System.out.println(data);
+    return Response.ok().entity(data).build();
   }
 }

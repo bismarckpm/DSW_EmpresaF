@@ -28,7 +28,7 @@ public class Estudio extends EntidadBase{
   @Column(name = "fecha_fin")
   private Date _fechaFin;
 
-  @ManyToOne
+  @OneToOne
   @JoinColumn( name = "fk_encuesta")
   private Encuesta _encuesta;
 

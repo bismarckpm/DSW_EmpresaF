@@ -21,9 +21,9 @@ public class Encuesta extends EntidadBase{
     @JoinColumn(name = "fk_subcategoria")
     private Subcategoria _subcategoria;
 
-    @OneToMany(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Estudio> _estudios;
-    
+    @OneToOne(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Estudio _estudio;
+
     @OneToMany(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<PreguntaEncuesta> _preguntasEncuestas;
 
@@ -43,14 +43,14 @@ public class Encuesta extends EntidadBase{
         this._id = _id;
     }
 
-    public List<Estudio> get_estudios() {
-        return _estudios;
+    public Estudio get_estudio() {
+      return _estudio;
     }
 
-    public void set_estudios(List<Estudio> _estudios) {
-        this._estudios = _estudios;
+    public void set_estudio(Estudio _estudio) {
+      this._estudio = _estudio;
     }
-    
+
     public Subcategoria get_subcategoria() {
         return _subcategoria;
     }
@@ -66,7 +66,7 @@ public class Encuesta extends EntidadBase{
     public void set_preguntasEncuestas(List<PreguntaEncuesta> _preguntasEncuestas) {
         this._preguntasEncuestas = _preguntasEncuestas;
     }
-    
+
     public void add_pregunta(Pregunta _pregunta){
         PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
         preguntaEncuesta.set_encuesta(this);
@@ -84,10 +84,10 @@ public class Encuesta extends EntidadBase{
     public JsonObject toJson() {
         JsonObject encuestaJson = JsonObject.EMPTY_JSON_OBJECT;
         try {
-            
+
             List<Pregunta> preguntasList = getPreguntas();
             JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
-            
+
             for (Pregunta pregunta : preguntasList) {
                 preguntasJson.add(pregunta.toJson());
             }
@@ -102,5 +102,5 @@ public class Encuesta extends EntidadBase{
         }
         return encuestaJson;
     }
-    
+
 }

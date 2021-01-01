@@ -327,60 +327,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
       data = Json.createObjectBuilder()
         .add("code", 200)
-        .add("estado", "success")
+        .add("estado", "sucess")
         .add("estudios", estudioRealizableArray).build();
     }
     catch (Exception ex){
 
       data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .build();
-    }
-
-    System.out.println(data);
-    return Response.ok().entity(data).build();
-  }
-
-  @GET
-  @Path("/getmuestra/{solicitudId}")
-  public Response getMuestra(@PathParam("solicitudId") long solicitudId){
-
-    JsonObject data;
-
-    try {
-      DaoMuestra daoMuestra = new DaoMuestra();
-
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
-
-      List<Encuestado> encuestadosMuestra = daoMuestra.getEncuestadosMuestraBySolicitud(solicitudEstudio);
-
-      JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
-
-      for (Encuestado encuestado : encuestadosMuestra) {
-        JsonObject encu = Json.createObjectBuilder()
-          .add("encuestadoId", encuestado.get_id())
-          .add("encuestadoNombre", encuestado.get_primerNombre())
-          .add("encuestadoApellido", encuestado.get_primerApellido())
-          .build();
-
-        encuestadosArray.add(encu);
-      }
-
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("solicitudes", encuestadosArray).build();
-
-    }
-    catch (Exception ex){
-      data = Json.createObjectBuilder()
         .add("code", 400)
-        .add("estado", "error").build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+        .add("estado", "error")
+        .build();
     }
 
     System.out.println(data);

@@ -47,4 +47,19 @@ public class DaoMuestra extends Dao<Muestra>{
       return null;
     }
   }
+
+  public Muestra getMuestraBySolicitudAndEncuestado(SolicitudEstudio solicitudEstudio, Encuestado encuestado){
+
+    try{
+      TypedQuery<Muestra> muestra = this._em.createNamedQuery("getMuestraBySolicitudAndEncuestado", Muestra.class);
+      muestra.setParameter("solicitud", solicitudEstudio)
+      .setParameter("encuestado", encuestado);
+
+      Muestra resultado = muestra.getSingleResult();
+      return resultado;
+    }
+    catch (Exception ex){
+      return null;
+    }
+  }
 }
