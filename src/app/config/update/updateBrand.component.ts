@@ -25,7 +25,6 @@ export class UpdateBrandComponent implements OnInit {
   oldcapacidad:any;
   oldunidad:any;
   subcategorias:any;
-  val:number;
   constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
 
@@ -87,33 +86,33 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   handleUpdateMarca(){
-    this.val=0;
+    let val=0;
     this.nombre = this.updateMarcaForm.get('nombre').value;
     if (!this.nombre){
       this.nombre = this.oldnombre;
-      this.val++;
+      val++;
     }
     this.subcategoria = this.updateMarcaForm.get('subcategoria').value;
     if (!this.subcategoria){
       this.subcategoria = this.oldsubcategoriaId;
-      this.val++;
+      val++;
     }
     this.tipo = this.updateMarcaForm.get('tipo').value;
     if (!this.tipo){
       this.tipo = this.oldtipo;
-      this.val++;
+      val++;
     }
     this.capacidad = this.updateMarcaForm.get('capacidad').value;
     if (!this.capacidad){
       this.capacidad = this.oldcapacidad;
-      this.val++;
+      val++;
     }
     this.unidad = this.updateMarcaForm.get('unidad').value;
     if (!this.unidad){
       this.unidad = this.oldunidad;
-      this.val++;
+      val++;
     }
-    if(this.val!=5){
+    if(val!=5){
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
         console.log(this.nombre,this.tipo,this.capacidad,this.unidad,this.subcategoria,this.id)

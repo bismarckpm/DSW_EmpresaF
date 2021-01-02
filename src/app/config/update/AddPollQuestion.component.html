@@ -9,12 +9,25 @@
             </div>
         </div>
         <form [formGroup]="EncuestaPreguntaForm" (ngSubmit)="handlePollQuestion()" fxLayout="column" fxLayoutAlign="center center">
-            <mat-form-field appearance="outline">
-                <mat-label>Preguntas</mat-label>
-                <mat-select formControlName="selectPregunta">
-                    <mat-option *ngFor="let pregunta of Preguntas" [value]="pregunta.preguntaId">{{pregunta.descripcionPregunta}}  Tipo:{{pregunta.tipo}}</mat-option>
-                </mat-select>
-            </mat-form-field>       
+            <div formArrayName="itemRows">
+                <div *ngFor="let itemrow of EncuestaPreguntaForm?.controls.itemRows.controls; let i=index" [formGroupName]="i" >
+                    <mat-form-field appearance="outline">
+                        <mat-label>Preguntas</mat-label>
+                        <mat-select formControlName="selectPregunta">
+                            <mat-option *ngFor="let pregunta of Preguntas" [value]="pregunta.preguntaId">{{pregunta.descripcionPregunta}}  Tipo:{{pregunta.tipo}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                    <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <button *ngIf="EncuestaPreguntaForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)" mat-raised-button class="delete-btn" >Eliminar</button>
+                    </div>
+                    <br>
+                </div> 
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <button mat-raised-button class="add-option width-100"  (click)="addNewRow()" >Seleccionar otra pregunta</button>
+                </div>
+            </div>    
+            <br>
             <button mat-raised-button class="create-btn width-100" [disabled]="!EncuestaPreguntaForm.valid">Crear</button>
         </form>
     </mat-card>
