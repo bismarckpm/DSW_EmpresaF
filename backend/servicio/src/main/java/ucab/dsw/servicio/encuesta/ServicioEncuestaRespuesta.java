@@ -208,7 +208,7 @@ public class ServicioEncuestaRespuesta {
     public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){
       List<Respuesta> respuestas;
       List<PreguntaEncuesta> preguntaEncuestas;
-      String pregunta = null;
+      Pregunta pregunta;
       JsonObject data;
       JsonArrayBuilder respuestasArray = Json.createArrayBuilder();
 
@@ -226,7 +226,7 @@ public class ServicioEncuestaRespuesta {
         for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
 
           DaoPregunta daoPregunta = new DaoPregunta();
-          pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class).get_descripcionPregunta();
+          pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class);
 
           if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
 
@@ -236,16 +236,18 @@ public class ServicioEncuestaRespuesta {
               DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
               Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
 
-              JsonArray option = Json.createArrayBuilder()
-                .add(opcion.get_descripcion())
-                .add(respuestaCont)
+              JsonObject option = Json.createObjectBuilder()
+                .add("opcion",opcion.get_descripcion())
+                .add("opcionId", opcion.get_id())
+                .add("conteo",respuestaCont)
                 .build();
 
               opcionArray.add(option);
             }
 
             JsonObject answer = Json.createObjectBuilder()
-              .add("pregunta", pregunta)
+              .add("pregunta", pregunta.get_descripcionPregunta())
+              .add("tipoPregunta", pregunta.get_tipoPregunta())
               .add("opciones", opcionArray)
               .build();
 
@@ -255,7 +257,8 @@ public class ServicioEncuestaRespuesta {
             respuestas = preguntaEncuesta.get_respuestas();
             for (Respuesta respuesta:respuestas){
               JsonObject answer = Json.createObjectBuilder()
-                .add("pregunta", pregunta)
+                .add("pregunta", pregunta.get_descripcionPregunta())
+                .add("tipoPregunta", pregunta.get_tipoPregunta())
                 .add("respuesta",respuesta.get_descripcion())
                 .add("rango", respuesta.get_rango()).build();
 
