@@ -32,6 +32,7 @@ import { UpdateRespondentComponent } from 'src/app/config/update/updateResponden
 import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.component';
 import { AssignStudyComponent } from 'src/app/config/menus/assign-study/assign-study.component';
 import { AddStudyComponent } from 'src/app/config/create/addStudy.component';
+import { ResultsComponent } from 'src/app/config/menus/results/results.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,7 @@ const routes: Routes = [
     { path: "pollquestion/:id", component: AddPollQuestionComponent},
     { path: "profile", component: ProfileComponent},
     { path: "passwordProfile", component: PasswordProfileComponent},
+    { path: "results/:id", component: ResultsComponent},
     ],
   },
   { path: 'assign/:id', component: AssignStudyComponent },

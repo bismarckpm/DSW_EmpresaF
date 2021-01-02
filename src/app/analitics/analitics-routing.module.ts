@@ -13,7 +13,7 @@ import { MyStudiesComponent } from 'src/app/analitics/my-studies/my-studies.comp
 import { AnalysisComponent } from './analysis/analysis.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import { ResultsComponent } from 'src/app/analitics/results/results.component'
 
 const routes: Routes = [
     {
@@ -30,7 +30,8 @@ const routes: Routes = [
         { path: "card-op", component: OptionCardComponent},
         { path: "analysis", component: AnalysisComponent},
         { path: "password", component: PasswordProfileComponent},
-        { path: "profile", component: ProfileComponent}
+        { path: "profile", component: ProfileComponent},
+        { path: "results/:id", component: ResultsComponent},
       ]
     }
   ];

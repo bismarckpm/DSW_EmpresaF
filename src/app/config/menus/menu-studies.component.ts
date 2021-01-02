@@ -39,15 +39,15 @@ export class MenuStudiesComponent implements OnInit{
         }
       },
       err => {
-
+        console.log(err)
       }
     )
    
 
   }
 
-  deleteStudy(idEstudio){
-    console.log(idEstudio)
+  verResultado(idEncuesta){
+    this.router.navigate(['/config/results/'+idEncuesta]);
   }
 
   updateStudy(idEstudio){
