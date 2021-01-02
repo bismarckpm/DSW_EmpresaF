@@ -33,7 +33,6 @@ export class UpdateRespondentComponent implements OnInit {
     Parroquias:any;
     generos:any;
     estadosCiviles:any;
-    val:number;
     sub: any;
     id: number;
     constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
@@ -118,43 +117,43 @@ export class UpdateRespondentComponent implements OnInit {
       }
   
     handleUpdateEncuestado(){
-      this.val=0;
+      let val=0;
       this.numiden = this.updateRespondtForm.get('numeroIdentificacion').value;
       if (!this.numiden){
           this.numiden = this.oldnumiden;
-          this.val++;
+          val++;
       }
       this.nombre = this.updateRespondtForm.get('primerNombre').value;
       if (!this.nombre){
           this.nombre = this.oldnombre;
-          this.val++;
+          val++;
       }
       this.apellido = this.updateRespondtForm.get('primerApellido').value;
       if (!this.apellido){
           this.apellido = this.oldapellido;
-          this.val++;
+          val++;
       }
       this.genero = this.updateRespondtForm.get('genero').value;
       if (!this.genero){
           this.genero = this.oldgenero;
-          this.val++;
+          val++;
       }
       this.estadocivil = this.updateRespondtForm.get('estadoCivil').value;
       if (!this.estadocivil){
           this.estadocivil = this.oldestadocivil;
-          this.val++;
+          val++;
       }
       this.ocupacion = this.updateRespondtForm.get('ocupacion').value;
       if (!this.ocupacion){
           this.ocupacion = this.oldocupacion;
-          this.val++;
+          val++;
       }
       this.parroquiaId = this.updateRespondtForm.get('Selectparroquia').value;
       if (!this.parroquiaId){
           this.parroquiaId = this.oldparroquiaId;
-          this.val++;
+          val++;
       }
-      if(this.val!=7){
+      if(val!=7){
           this.sub = this.route.params.subscribe(params => {
           this.id = +params['id'];
             this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.id)
@@ -175,8 +174,7 @@ export class UpdateRespondentComponent implements OnInit {
               }
             )
             });
-          /*console.log(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.usuario,codigo,numero,this.idEncuestado)*/
-      }else{
+          }else{
         this.openSnackBar("Debe ingresar al menos un campo para realizar la modificación");
       }
     }

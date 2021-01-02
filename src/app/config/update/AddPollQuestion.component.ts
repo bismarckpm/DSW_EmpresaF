@@ -1,5 +1,5 @@
 import { Component,OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
 import { AdminService } from './../../core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -19,12 +19,13 @@ export class AddPollQuestionComponent implements OnInit{
   admin: any;
   Preguntas:any;
   token: string;
+  IdPreguntas:any;
   IdPregunta:number;
   constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.EncuestaPreguntaForm = this.formBuilder.group({
-      selectPregunta: ['',Validators.required]
+      itemRows: this.formBuilder.array([this.initItemRows()])
     });
     this.getPreguntas();
   }
@@ -36,7 +37,9 @@ export class AddPollQuestionComponent implements OnInit{
   }
 
   handlePollQuestion(){
-    this.sub = this.route.params.subscribe(params => {
+    this.IdPreguntas = this.EncuestaPreguntaForm.get('itemRows').value;
+    console.log(this.IdPreguntas);
+    /*this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
         this.IdPregunta =  this.EncuestaPreguntaForm.get('selectPregunta').value;
         this.adminService.addQuestiontoPoll(this.id,this.IdPregunta)
@@ -53,7 +56,7 @@ export class AddPollQuestionComponent implements OnInit{
             console.log(err)
           }
         )
-      });
+      });*/
   } 
 
   getPreguntas(){
@@ -70,6 +73,25 @@ export class AddPollQuestionComponent implements OnInit{
         console.log(err)
       }
     )
+  }
+
+   //Agregar preguntas dinamicas
+  initItemRows() {
+    return this.formBuilder.group({
+      selectPregunta: ['']
+    });
+  }
+
+  get formArr() {
+    return this.EncuestaPreguntaForm.get('itemRows') as FormArray;
+  }
+
+  addNewRow() {
+    this.formArr.push(this.initItemRows());
+  }
+
+  deleteRow(index: number) {
+    this.formArr.removeAt(index);
   }
   
 }

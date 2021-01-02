@@ -19,7 +19,6 @@ export class UpdateSubcategoryComponent implements OnInit {
   oldcategoria: any;
   oldcategoriaId:any;
   categorias:any;
-  val:number;
   constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder, private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
 
@@ -75,18 +74,18 @@ export class UpdateSubcategoryComponent implements OnInit {
 
 
   handleUpdateSubategoria(){
-    this.val=0;
+    let val=0;
     this.nombre = this.updateSubcategoriaForm.get('nombre').value;
     if (!this.nombre){
       this.nombre = this.oldnombre;
-      this.val++;
+      val++;
     }
     this.categoria = this.updateSubcategoriaForm.get('categoria').value;
     if (!this.categoria){
       this.categoria = this.oldcategoriaId;
-      this.val++;
+      val++;
     }
-    if(this.val!=2){
+    if(val!=2){
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
         this.adminService.updateSubcategoria(this.nombre,this.categoria,this.id)
