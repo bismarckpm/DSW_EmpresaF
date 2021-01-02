@@ -3,10 +3,16 @@ import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
-import { concatMap, delay, map, mergeMap } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
 
 export interface DataItem  {
+  descripcion: string;
+  rango: number;
+  encuestado: {};
+  opciones: [{}];
+};
+
+export interface respuestFormulada  {
+  pregunta: {};
   descripcion: string;
   rango: number;
   encuestado: {};
@@ -17,6 +23,9 @@ type ObjType = {
   data: DataItem[]
 };
 
+type auxObjType = {
+  data: respuestFormulada[]
+};
 
 @Component({
   selector: 'app-questions',
@@ -100,11 +109,15 @@ export class QuestionsComponent implements OnInit {
   private readonly obj: ObjType = {
     data: []
   };
+
+  private readonly auxObj: auxObjType = {
+    data: []
+  };
+
   handleRespuesta(){
     this.checkedIDs =  { 
       opciones: this.radioSelected
     }
-    //console.log(this.radioSelected)
     let i:number = 0;
     for(let item in this.radioSelected){
         if(this.radioSelected[item].descripcion == undefined && this.radioSelected[item].idOpcion == undefined){
@@ -131,26 +144,36 @@ export class QuestionsComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
     this.id = +params['id'];
     })
-    for (let j=0;j < this.obj.data.length; j++){
-     this.respuesta.push(this.userService.respuestaEncuesta(this.obj.data[j],this.id,this.auxPreguntas[j])) 
-      /*.subscribe(
+    let j = 0;
+    if(this.obj.data.length == this.auxPreguntas.length){
+      for(let item in this.obj.data){
+        const auxDataCopy : respuestFormulada = {
+          pregunta: {id:this.auxPreguntas[j]},
+          descripcion: this.obj.data[item].descripcion,
+          rango: 0,
+          encuestado : {id:this.idEncuestado},
+          opciones: this.obj.data[item].opciones ,
+        };
+        this.auxObj.data[j] = auxDataCopy;
+        j++
+        
+      }
+      this.userService.respuestaEncuesta(this.auxObj.data,this.id) 
+      .subscribe(
         res => {
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
-            console.log('respuesta insertada')
+            this.openSnackBar("Encuesta respondida");
           }
         },
         err => {
           console.log(err)
         }
-      )*/
+      )
     }
-    forkJoin(this.respuesta)
-    .subscribe(
-      results => {
-        console.log(results);
-      }
-    )
+    else {
+      this.openSnackBar("Responda todas las preguntas");
+    }
   }
 }

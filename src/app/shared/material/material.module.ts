@@ -25,6 +25,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -51,7 +52,8 @@ const MATERIAL_MODULES = [
   MatPaginatorModule,
   MatRadioModule,
   MatCheckboxModule,
-  MatGridListModule
+  MatGridListModule,
+  MatTooltipModule
 ]
 
 

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './../app/core/core.module';
 import { DatePipe } from '@angular/common'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +15,7 @@ import { DatePipe } from '@angular/common'
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CoreModule
+    CoreModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

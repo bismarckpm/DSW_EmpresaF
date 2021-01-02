@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -309,5 +310,10 @@ export class AdminService extends ApiService {
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
                              this.httpOptions);
+    }
+
+    getRespuestaEncuesta(idEncuesta:number){
+      return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions)
+      .pipe(map(resultado => resultado))
     }
 }

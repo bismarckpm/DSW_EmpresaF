@@ -17,4 +17,8 @@ export class AnalystService extends ApiService{
   getMyStudies(idAnalista:number){
     return this.http.get(this.API_URL+'api/analista/obtenerestudios/'+idAnalista,this.httpOptions);
   }
+
+  getRespuestaEncuesta(idEncuesta:number){
+    return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions)
+  }
 }
