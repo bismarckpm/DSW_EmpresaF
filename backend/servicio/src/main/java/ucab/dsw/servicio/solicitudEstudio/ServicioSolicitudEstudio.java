@@ -4,6 +4,7 @@ import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
+import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 
@@ -13,6 +14,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 @Path( "/solicitud" )
@@ -64,6 +66,12 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
       if( !solicitudesExistentes.isEmpty()){
 
+        for(SolicitudEstudio sol:solicitudesExistentes){
+          if(sol.get_estado().equals("solicitado")){
+            throw new SolicitudPendienteExcepcion("Ya posee una solicitud en espera con las mismas caracteristicas");
+          }
+        }
+
         for(SolicitudEstudio soli:solicitudesExistentes){
           solicitudEstudio.set_analista(soli.get_analista());
           break;
@@ -88,6 +96,15 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
     }
     catch (LimiteExcepcion ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      System.out.println(data);
+      return  Response.ok().entity(data).build();
+    }
+    catch (SolicitudPendienteExcepcion ex){
       data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
         .add("estado", "error")
         .add("code", 400)
@@ -180,4 +197,43 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     System.out.println(data);
     return Response.ok().entity(data).build();
   }
+
+  /*@PUT
+  @Path("/finalize/{solicitudId}")
+  public Response culminarSolicitud(@PathParam("solicitudId") long solicitudId){
+    JsonObject data;
+    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+    SolicitudEstudio solicitudEstudio;
+    DaoEstudio daoEstudio = new DaoEstudio();
+    Estudio estudio;
+
+    try{
+        solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+        solicitudEstudio.set_estado("culminado");
+
+        estudio = daoEstudio.find(solicitudEstudio.get_estudio().get_id(), Estudio.class);
+        estudio.set_estado("culminado");
+
+        Date fecha = new Date();
+        estudio.set_fechaFin(fecha);
+
+        daoSolicitudEstudio.update(solicitudEstudio);
+        daoEstudio.update(estudio);
+
+      data = Json.createObjectBuilder().add("solicitud", solicitudEstudio.get_id())
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+  }*/
 }

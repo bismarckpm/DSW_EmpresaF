@@ -310,7 +310,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
           for(Estudio estudio:estudios){
 
-            if(solicitud.get_estudio().get_id() == estudio.get_id()){
+            if(solicitud.get_estudio().get_id() == estudio.get_id() && !estudio.get_estado().equals("culminado")){
               DaoEncuesta daoEncuesta = new DaoEncuesta();
               Encuesta encuesta = daoEncuesta.find(estudio.get_encuesta().get_id(), Encuesta.class);
               JsonObject estu = Json.createObjectBuilder()

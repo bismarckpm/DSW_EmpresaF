@@ -31,14 +31,17 @@ public class ServicioEncuestaPreguntaTest {
         preguntas.add(preguntaDos);
         preguntas.add(preguntaTres);
 
+        PreguntaDto preguntaDto = new PreguntaDto();
+        preguntaDto.setPreguntas(preguntas);
+
         Response resultado = servicioEncuestaPregunta
-                .addPreguntasToEncuesta(encuestaDto.getId(), preguntas);
+                .addPreguntaToEncuesta(encuestaDto.getId(), preguntaDto);
 
         System.out.println(resultado.getEntity().toString());
 
         Assert.assertEquals(200, resultado.getStatus());
     }
-    
+
     @Test
     public void t1_addPreguntaToEncuesta() throws Exception {
         ServicioEncuestaPregunta servicioEncuestaPregunta;

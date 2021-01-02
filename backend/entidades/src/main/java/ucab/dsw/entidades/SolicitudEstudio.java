@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "solicitud_estudio")
 @NamedQueries({
-  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._marca=:marcaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico and sol._genero=:genero and sol._estado<>'solicitado'"),
+  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._marca=:marcaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico and sol._genero=:genero"),
   @NamedQuery(name = "getSolicitudesPendientesByAdmin", query = "select sol from SolicitudEstudio sol where sol._administrador =:administradorId")
 })
 public class SolicitudEstudio extends EntidadBase {

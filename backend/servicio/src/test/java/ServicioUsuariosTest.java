@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.Telefono;
+import ucab.dsw.servicio.muestra.ServicioMuestra;
 import ucab.dsw.servicio.usuario.ServicioCliente;
 import ucab.dsw.servicio.usuario.ServicioEncuestado;
 
@@ -99,15 +100,6 @@ public class ServicioUsuariosTest {
 
     ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
     Response resultado = servicioEncuestado.getEstudiosRealizables(92);
-
-    Assert.assertEquals(resultado.getStatus(), 200);
-  }
-
-  @Test
-  public void getMuestra(){
-
-    ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
-    Response resultado = servicioEncuestado.getMuestra(78);
 
     Assert.assertEquals(resultado.getStatus(), 200);
   }

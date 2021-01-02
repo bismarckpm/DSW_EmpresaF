@@ -14,6 +14,8 @@ public class PreguntaDto extends DtoBase {
 
     private List<OpcionDto> opciones;
 
+    private List<PreguntaDto> preguntas;
+
     public PreguntaDto(long id) throws Exception {
         super(id);
     }
@@ -61,4 +63,11 @@ public class PreguntaDto extends DtoBase {
         this.opciones = opciones;
     }
 
+  public List<PreguntaDto> getPreguntas() {
+    return preguntas;
+  }
+
+  public void setPreguntas(List<PreguntaDto> preguntas) {
+    this.preguntas = preguntas;
+  }
 }

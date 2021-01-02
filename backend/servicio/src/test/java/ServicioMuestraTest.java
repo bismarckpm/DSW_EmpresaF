@@ -23,4 +23,13 @@ public class ServicioMuestraTest {
 
     Assert.assertEquals(resultado.getStatus(), 200);
   }
+
+  @Test
+  public void getMuestra(){
+
+    ServicioMuestra servicioMuestra = new ServicioMuestra();
+    Response resultado = servicioMuestra.getMuestra(78);
+
+    Assert.assertEquals(resultado.getStatus(), 200);
+  }
 }
