@@ -9,7 +9,6 @@ import javax.persistence.*;
   @NamedQuery(name = "getPreguntasByEncuesta", query = "select p._pregunta from PreguntaEncuesta p where p._encuesta =:encuesta"),
   @NamedQuery(name = "getPreguntasEncuestaByEncuestaId", query = "select p from PreguntaEncuesta p where p._encuesta =:encuesta"),
   @NamedQuery(name = "getPreguntaAgregable", query = "select p._pregunta from PreguntaEncuesta p where p._pregunta =:pregunta and p._encuesta =:encuesta")
-
 })
 public class PreguntaEncuesta extends EntidadBase{
 

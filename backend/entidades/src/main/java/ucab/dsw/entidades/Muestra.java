@@ -8,7 +8,8 @@ import javax.persistence.*;
 @NamedQueries({
   @NamedQuery(name = "getEstudiosRealizablesByEncuestado", query = "select m._solicitudEstudio from Muestra m where m._encuestado =:encuestado and m._estado='pendiente'"),
   @NamedQuery(name = "getEncuestadosMuestraBySolicitud", query = "select m._encuestado from Muestra m where m._solicitudEstudio =:solicitud"),
-  @NamedQuery(name = "getMuestraBySolicitudAndEncuestado", query = "select m from Muestra m where m._solicitudEstudio =:solicitud and m._encuestado =:encuestado")
+  @NamedQuery(name = "getMuestraBySolicitudAndEncuestado", query = "select m from Muestra m where m._solicitudEstudio =:solicitud and m._encuestado =:encuestado"),
+  @NamedQuery(name = "getEncuestadoAgregable", query = "select m._encuestado from Muestra m where m._encuestado =:encuestado and m._solicitudEstudio =:solicitudEstudio")
 })
 public class Muestra {
 

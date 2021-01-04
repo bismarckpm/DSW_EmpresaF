@@ -204,7 +204,7 @@ public class ServicioEncuestaPregunta {
                 .add("tipoPregunta", preguntaList.get_tipoPregunta()).build();
 
               preguntaArray.add(question);
-          }
+            }
         }
         data = Json.createObjectBuilder()
           .add("estado", "success")

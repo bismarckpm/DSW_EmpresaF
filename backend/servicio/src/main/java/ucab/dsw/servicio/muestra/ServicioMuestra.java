@@ -1,9 +1,6 @@
 package ucab.dsw.servicio.muestra;
 
-import ucab.dsw.accesodatos.Dao;
-import ucab.dsw.accesodatos.DaoEncuestado;
-import ucab.dsw.accesodatos.DaoMuestra;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.EncuestadoDto;
 import ucab.dsw.dtos.MuestraDto;
 import ucab.dsw.entidades.Encuestado;
@@ -184,5 +181,63 @@ public class ServicioMuestra {
 
     System.out.println(data);
     return Response.ok().entity(data).build();
+  }
+
+  /**
+   * Metodo para Obtener los usuarios encuestados agregables a una muestra
+   * Accedido mediante /muestra/usuarioagregable/solicitudId con el metodo GET
+   *
+   * @param solicitudId id de la solicitud de estudio
+   *
+   * @return JSON success: {encuestados, code, estado}; error: {mensaje, estado,
+   * code}
+   *
+   */
+  @GET
+  @Path("/usuarioagregable/{solicitudId}")
+  public Response getUsuarioAgregable(@PathParam("solicitudId") long solicitudId){
+
+    JsonObject data;
+
+    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+    SolicitudEstudio solicitudEstudio;
+
+    DaoEncuestado daoEncuestado = new DaoEncuestado();
+    List <Encuestado> encuestados = daoEncuestado.findAll(Encuestado.class);
+
+    DaoMuestra daoMuestra = new DaoMuestra();
+
+    JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
+
+    try{
+      solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+
+      for(Encuestado encuestado:encuestados){
+        Encuestado encuestadoAgregado = daoMuestra.getEncuestadoAgregable(encuestado, solicitudEstudio);
+        if(encuestadoAgregado ==  null){
+          JsonObject encuest = Json.createObjectBuilder()
+            .add("encuestadoId", encuestado.get_id())
+            .add("primerNombre", encuestado.get_primerNombre())
+            .add("primerApellido", encuestado.get_primerApellido())
+            .add("genero", encuestado.get_genero())
+            .add("estadoCivil", encuestado.get_estadoCivil())
+            .build();
+
+          encuestadosArray.add(encuest);
+        }
+      }
+
+      data = Json.createObjectBuilder()
+        .add("estado", "success")
+        .add("code", 200)
+        .add("encuestados", encuestadosArray).build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+
+      return Response.ok().entity(null).build();
+    }
   }
 }

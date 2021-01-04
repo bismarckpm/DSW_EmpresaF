@@ -1,8 +1,6 @@
 package ucab.dsw.accesodatos;
 
-import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.Muestra;
-import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -60,6 +58,21 @@ public class DaoMuestra extends Dao<Muestra>{
     }
     catch (Exception ex){
       return null;
+    }
+  }
+
+  public Encuestado getEncuestadoAgregable(Encuestado encuestado, SolicitudEstudio solicitudEstudio){
+    try {
+      TypedQuery<Encuestado> encuestadoAgregable = this._em.createNamedQuery("getEncuestadoAgregable", Encuestado.class);
+      encuestadoAgregable.setParameter("encuestado", encuestado);
+      encuestadoAgregable.setParameter("solicitudEstudio", solicitudEstudio);
+
+      Encuestado resultado = encuestadoAgregable.getSingleResult();
+      return resultado;
+    }
+    catch (Exception ex){
+      ex.printStackTrace();
+      return  null;
     }
   }
 }
