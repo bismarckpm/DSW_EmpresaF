@@ -102,6 +102,7 @@ export class RequestStudyComponent implements OnInit {
         auxRes = res;
         if(auxRes.estado == 'success'){
           this.openSnackBar("Solicitud enviada con exito");
+          window.location.reload();
         }
         else {
           this.openSnackBar(auxRes.mensaje);
