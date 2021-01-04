@@ -448,7 +448,8 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
        if(solicitudes.get_estudio() != null){
           if(solicitudes.get_analista().get_id() == id) {
             JsonObject estudio = Json.createObjectBuilder()
-              .add("id", solicitudes.get_estudio().get_estado())
+              .add("estado", solicitudes.get_estudio().get_estado())
+              .add("id", solicitudes.get_id())
               .add("nombreEstudio", solicitudes.get_estudio().get_nombreEstudio())
               .add("encuestaId", solicitudes.get_estudio().get_encuesta().get_id()).build();
 

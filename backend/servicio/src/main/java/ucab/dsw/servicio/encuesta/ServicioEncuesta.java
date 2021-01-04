@@ -49,8 +49,9 @@ public class ServicioEncuesta {
         try {
 
             Encuesta encuesta = new Encuesta();
-            Subcategoria subcategoria = new Subcategoria(encuestaDto.getSubcategoria().getId());
 
+            DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+            Subcategoria subcategoria = daoSubcategoria.find(encuestaDto.getSubcategoria().getId(), Subcategoria.class);
             encuesta.set_subcategoria(subcategoria);
 
             DaoEncuesta dao = new DaoEncuesta();
