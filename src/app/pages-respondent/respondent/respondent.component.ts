@@ -37,7 +37,7 @@ import { UsersService } from 'src/app/core/services/users.service';
         res => {
           let auxRes:any;
           auxRes = res;
-          if(auxRes.estado == 'success'){
+          if(auxRes.estado == 'sucess'){
               this.element = auxRes.estudios;
               this.dataSource = new MatTableDataSource(auxRes.estudios);
               this.dataSource.paginator = this.paginator;

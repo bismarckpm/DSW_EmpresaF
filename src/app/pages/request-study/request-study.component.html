@@ -32,7 +32,7 @@
             <mat-form-field appearance="outline">
                 <mat-label>Marca</mat-label>
                 <mat-select formControlName="selectMarca">
-                    <mat-option *ngFor="let marca of marcas" [value]="marca.id">{{marca.nombreMarca}}</mat-option>
+                    <mat-option *ngFor="let marca of marcas" [value]="marca.id"><span *ngIf="marca.estado=='activo'">{{marca.nombreMarca}}</span></mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">

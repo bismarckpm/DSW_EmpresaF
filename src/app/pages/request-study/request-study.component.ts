@@ -104,7 +104,7 @@ export class RequestStudyComponent implements OnInit {
           this.openSnackBar("Solicitud enviada con exito");
         }
         else {
-          this.openSnackBar("Ocurrio un problema intente nuevamente");
+          this.openSnackBar(auxRes.mensaje);
         }
       },
       err => {
