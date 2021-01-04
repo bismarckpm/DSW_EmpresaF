@@ -48,6 +48,21 @@ public class DaoPreguntaEncuesta extends  Dao<PreguntaEncuesta>{
       return  null;
     }
   }
+
+  public Pregunta getPreguntaAgregable(Pregunta pregunta, Encuesta encuesta){
+    try {
+      TypedQuery<Pregunta> preguntaEncuesta = this._em.createNamedQuery("getPreguntaAgregable", Pregunta.class);
+      preguntaEncuesta.setParameter("pregunta", pregunta);
+      preguntaEncuesta.setParameter("encuesta", encuesta);
+
+      Pregunta resultado = preguntaEncuesta.getSingleResult();
+      return resultado;
+    }
+    catch (Exception ex){
+      ex.printStackTrace();
+      return  null;
+    }
+  }
 }
 
 

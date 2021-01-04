@@ -12,7 +12,6 @@ import javax.json.JsonObject;
 @Entity
 @Table(name = "pregunta")
 public class Pregunta extends EntidadBase {
-
     @Id
     @Column(name = "codigo_pregunta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,7 +118,7 @@ public class Pregunta extends EntidadBase {
         }
         set_preguntasOpciones(preguntasOpciones);
     }
-    
+
     public List<Encuesta> getEncuestas() {
         return get_preguntasEncuestas()
                 .stream()

@@ -13,5 +13,7 @@ public class DaoPregunta extends Dao<Pregunta>{
   public DaoPregunta( )
   {
     super( _handler );
+    this._em=_handler.getSession();
   }
+
 }

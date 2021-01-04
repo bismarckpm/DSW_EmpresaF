@@ -167,4 +167,61 @@ public class ServicioEncuestaPregunta {
 
     }
 
+  /**
+   * Metodo para Obtener las preguntas agregables a una encuesta
+   * Accedido mediante /encuestas/{id}/preguntasagregables con el metodo GET
+   *
+   * @param _idEncuesta id de la encuesta
+   *
+   * @return JSON success: {preguntas, code, estado}; error: {mensaje, estado,
+   * code}
+   *
+   */
+    @GET
+    @Path("/{id}/preguntasagregables")
+    public Response getPreguntasAgregables(@PathParam("id") long _idEncuesta){
+
+      JsonObject data;
+      DaoEncuesta daoEncuesta = new DaoEncuesta();
+      Encuesta encuesta;
+
+      DaoPregunta daoPregunta = new DaoPregunta();
+      List<Pregunta> preguntas = daoPregunta.findAll(Pregunta.class);
+
+      DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+
+      JsonArrayBuilder preguntaArray = Json.createArrayBuilder();
+
+      try{
+        encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+
+        for(Pregunta preguntaList: preguntas){
+          Pregunta preguntaAgregada = daoPreguntaEncuesta.getPreguntaAgregable(preguntaList, encuesta);
+            if(preguntaAgregada ==  null){
+              JsonObject question = Json.createObjectBuilder()
+                .add("preguntaId", preguntaList.get_id())
+                .add("descripcionPregunta", preguntaList.get_descripcionPregunta())
+                .add("tipoPregunta", preguntaList.get_tipoPregunta()).build();
+
+              preguntaArray.add(question);
+          }
+        }
+        data = Json.createObjectBuilder()
+          .add("estado", "success")
+          .add("code", 200)
+          .add("preguntas", preguntaArray).build();
+
+        return Response.ok().entity(data).build();
+
+      }catch (Exception ex){
+
+        data = Json.createObjectBuilder()
+          .add("estado", "error")
+          .add("code", 400)
+          .add("mensaje", ex.getMessage()).build();
+
+        return Response.ok().entity(data).build();
+      }
+    }
+
 }

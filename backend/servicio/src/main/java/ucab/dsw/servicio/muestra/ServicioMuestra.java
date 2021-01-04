@@ -104,6 +104,7 @@ public class ServicioMuestra {
 
         Encuestado encuestado = daoEncuestado.find(encuestados.getId(), Encuestado.class);
         muestra.set_encuestado(encuestado);
+        muestra.set_estado("pendiente");
 
         muestra.set_solicitudEstudio(solicitudEstudio);
 
