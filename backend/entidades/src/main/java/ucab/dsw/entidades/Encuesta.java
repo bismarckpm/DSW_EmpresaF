@@ -10,12 +10,18 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "encuesta")
+@NamedQueries({
+  @NamedQuery(name = "getEncuestasBySubcategoria", query = "select e from Encuesta e where e._subcategoria=:subcategoria")
+})
 public class Encuesta extends EntidadBase{
 
     @Id
     @Column(name = "codigo_encuesta")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long _id;
+
+    @Column(name = "nombre_encuesta")
+    private String _nombreEncuesta;
 
     @ManyToOne
     @JoinColumn(name = "fk_subcategoria")
@@ -34,7 +40,15 @@ public class Encuesta extends EntidadBase{
     public Encuesta() {
     }
 
-    @Override
+  public String get_nombreEncuesta() {
+    return _nombreEncuesta;
+  }
+
+  public void set_nombreEncuesta(String _nombreEncuesta) {
+    this._nombreEncuesta = _nombreEncuesta;
+  }
+
+  @Override
     public long get_id() {
         return _id;
     }

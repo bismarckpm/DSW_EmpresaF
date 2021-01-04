@@ -53,6 +53,7 @@ public class ServicioEncuesta {
             DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
             Subcategoria subcategoria = daoSubcategoria.find(encuestaDto.getSubcategoria().getId(), Subcategoria.class);
             encuesta.set_subcategoria(subcategoria);
+            encuesta.set_nombreEncuesta(encuestaDto.getNombreEncuesta());
 
             DaoEncuesta dao = new DaoEncuesta();
             Encuesta encuestaAgregada = dao.insert(encuesta);
@@ -125,6 +126,7 @@ public class ServicioEncuesta {
 
               JsonObject JsonEncuesta = Json.createObjectBuilder()
                 .add("encuestaId", encuesta.get_id())
+                .add("nombreEncuesta", encuesta.get_nombreEncuesta())
                 .add("subcategoriaId", encuesta.get_subcategoria().get_id())
                 .add("subcategoria", encuesta.get_subcategoria().get_nombreSubcategoria())
                 .add("preguntas", preguntasArray)
@@ -190,6 +192,7 @@ public class ServicioEncuesta {
 
             data = Json.createObjectBuilder()
                     .add("encuestaId", encuesta.get_id())
+                    .add("encuestaNombre", encuesta.get_nombreEncuesta())
                     .add("subcategoriaId",encuesta.get_subcategoria().get_id())
                     .add("subcategoria", encuesta.get_subcategoria().get_nombreSubcategoria())
                     .add("preguntas", preguntasArray)

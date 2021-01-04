@@ -164,6 +164,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
             .add("ocupacion", user.get_encuestado().get_ocupacion())
             .add("estadoCivil", user.get_encuestado().get_estadoCivil())
             .add("estado", user.get_estado())
+            .add("idEncuestado", user.get_encuestado().get_id())
             .add("telefonos", telefonosArray)
             .build();
 

@@ -2,9 +2,10 @@ package ucab.dsw.servicio.pregunta;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import ucab.dsw.accesodatos.DaoPregunta;
+
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.entidades.Pregunta;
+import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.servicio.AplicacionBase;
 
@@ -15,11 +16,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import ucab.dsw.accesodatos.DaoOpcion;
-import ucab.dsw.accesodatos.DaoPreguntaOpcion;
+
 import ucab.dsw.dtos.OpcionDto;
-import ucab.dsw.entidades.Opcion;
-import ucab.dsw.entidades.PreguntaOpcion;
 
 /**
  * Clase para gestionar las preguntas
@@ -226,5 +224,63 @@ public class ServicioPregunta extends AplicacionBase {
         }
         return Response.ok().entity(data).build();
     }
+
+  /**
+   * Metodo para Obtener las preguntas sugeridas para una encuesta. Accedido mediante
+   * /preguntas/{idEncuesta}/sugerencias con el metodo GET
+   *
+   * @param _idEncuesta identificador de la encuesta
+   * @return JSON success: {preguntas, estado, code};
+   * error: {mensaje, estado, code}
+   *
+   */
+    @GET
+    @Path("/{idEncuesta}/sugerencias")
+    public Response getPreguntasSugeridas(@PathParam("idEncuesta") long _idEncuesta){
+
+    JsonObject data;
+    DaoEncuesta daoEncuesta = new DaoEncuesta();
+    Encuesta encuesta;
+    List<Encuesta> encuestas;
+
+    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+    Subcategoria subcategoria;
+
+    JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
+
+    try {
+      encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+      subcategoria = daoSubcategoria.find(encuesta.get_subcategoria().get_id(), Subcategoria.class);
+
+      encuestas = daoEncuesta.getEncuestasBySubcategoria(subcategoria);
+
+      for (Encuesta encuest: encuestas){
+        for(Pregunta pregunta: encuest.getPreguntas()) {
+          JsonObject question = Json.createObjectBuilder()
+            .add("preguntaId", pregunta.get_id())
+            .add("descripcionPregunta", pregunta.get_descripcionPregunta())
+            .add("tipoPregunta", pregunta.get_tipoPregunta()).build();
+
+          preguntasArray.add(question);
+        }
+      }
+      data = Json.createObjectBuilder()
+        .add("preguntas", preguntasArray)
+        .add("estado", "success")
+        .add("code", 200)
+        .build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400)
+        .build();
+
+      return Response.ok().entity(data).build();
+    }
+  }
 
 }
