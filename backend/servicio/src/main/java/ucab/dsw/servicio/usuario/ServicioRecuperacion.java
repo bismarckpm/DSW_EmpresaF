@@ -16,12 +16,24 @@ import javax.ws.rs.core.Response;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * Clase para gestionar la recuperacion de contraseña
+ *
+ */
 @Path( "/recuperacion" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioRecuperacion extends AplicacionBase {
 
 
+  /**
+   * Metodo para agregar un cliente. Accedido mediante /recuperacion/recuperarcontrasena con el
+   * metodo POST
+   *
+   * @param usuario DTO del usuario
+   * @return JSON success: {estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/recuperarcontrasena")
   public Response recuperacionContrasena(UsuarioDto usuario){

@@ -20,11 +20,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Clase para gestionar la autenticacion de usuario
+ *
+ */
 @Path( "/auth" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioAutenticacion extends AplicacionBase {
 
+  /**
+   * Metodo para acceder al sistema con credenciales y generar token /auth/login con el
+   * metodo POST
+   *
+   * @param usuarioDto DTO del usuario
+   * @return JSON success: {token, id, rol, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/login")
   public Response login(UsuarioDto usuarioDto){
@@ -87,6 +99,14 @@ public class ServicioAutenticacion extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para decodificar el token de un usuario autenticado /auth/decode con el
+   * metodo GET
+   *
+   * @param token token del usuario autenticado
+   * @return JSON success: {resultado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/decode")
   public Response decodeToken(String token){

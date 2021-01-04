@@ -23,12 +23,23 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Clase para gestionar la muestra
+ *
+ */
 @Path("/muestra")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServicioMuestra {
 
-
+  /**
+   * Metodo para añadir usuarios encuestados a la muestra de una solicitud de estudio de forma automatica
+   * al crearse una solicitud de estudio
+   *
+   * @param encuestados lista de encuestados
+   * @param solicitudEstudio Solicitud de estudio
+   *
+   */
   public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio){
 
 
@@ -67,6 +78,16 @@ public class ServicioMuestra {
     }
   }
 
+  /**
+   * Metodo para agregar usuarios a la muestra de una soicitud de estudio
+   * Accedido mediante /muestra/add/{idSolicitudEstudio} con el
+   * metodo POST
+   *
+   * @param idSolicitudEstudio Id de la solicitud de estudio
+   * @param muestraDto DTO de la muestra
+   * @return JSON success: {code, estado, solicitudEstudio}; error: {estado,
+   * code}
+   */
   @POST
   @Path("/add/{idSolicitudEstudio}")
   public Response addManualMuestra(@PathParam("idSolicitudEstudio") long idSolicitudEstudio, MuestraDto muestraDto){
@@ -100,11 +121,25 @@ public class ServicioMuestra {
 
     }catch (Exception ex){
 
-      ex.printStackTrace();
-      return Response.ok().entity(null).build();
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error")
+        .build();
+      return Response.ok().entity(data).build();
     }
   }
 
+
+  /**
+   * Metodo para obtener la muestra dada una solicitud de estudio
+   * Accedido mediante /muestra/getmuestra/{solicitudId} con el
+   * metodo GET
+   *
+   * @param solicitudId Id de la solicitud de estudio
+   *
+   * @return JSON success: {code, estado, encuestados}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getmuestra/{solicitudId}")
   public Response getMuestra(@PathParam("solicitudId") long solicitudId){
@@ -134,7 +169,7 @@ public class ServicioMuestra {
       data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("solicitudes", encuestadosArray).build();
+        .add("encuestados", encuestadosArray).build();
 
     }
     catch (Exception ex){

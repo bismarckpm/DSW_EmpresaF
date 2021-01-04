@@ -23,11 +23,23 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Clase para gestionar las subcategorias
+ *
+ */
 @Path( "/subcategoria" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioSubcategoria extends AplicacionBase {
 
+  /**
+   * Metodo para agregar una subcategoria. Accedido mediante /subcategoria/add con el
+   * metodo POST
+   *
+   * @param subcategoriaDto DTO de la subcategoria
+   * @return JSON success: {subcategoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addSubcategoria(SubcategoriaDto subcategoriaDto){
@@ -79,6 +91,14 @@ public class ServicioSubcategoria extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para obtener una subcategoria. Accedido mediante /subcategoria/getsubcategoria/{subcategoriaId}
+   * con el metodo GET
+   *
+   * @param id Id de la subcategoria
+   * @return JSON success: {estado, code, id, nombreSubcategoria, estadoSubcategoria, categoriaId, categoriaNombre}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getsubcategoria/{subcategoriaId}")
   public Response getSubcategoriaById(@PathParam("subcategoriaId") long id){
@@ -113,6 +133,15 @@ public class ServicioSubcategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para actualizar una subcategoria. Accedido mediante /subcategoria/update({subcategoriaId} con el
+   * metodo PUT
+   *
+   * @param subcategoriaDto DTO de la subcategoria
+   * @param id Id de la subcategoria
+   * @return JSON success: {subcategoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{subcategoriaId}")
   public Response updateSubcategoria(@PathParam("subcategoriaId") long id, SubcategoriaDto subcategoriaDto){
@@ -159,6 +188,13 @@ public class ServicioSubcategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todas las subcategorias. Accedido mediante /subcategoria/add con el
+   * metodo GET
+   *
+   * @return JSON success: {subcategorias, estado, estado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getSubcategories() {
@@ -206,6 +242,14 @@ public class ServicioSubcategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar una subcategoria. Accedido mediante /subcategoria/disable/({subcategoriaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la subcategoria
+   * @return JSON success: {subcategoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{subcategoriaId}")
   public Response disableSubcategoria(@PathParam("subcategoriaId") long id) {
@@ -250,6 +294,14 @@ public class ServicioSubcategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar una subcategoria. Accedido mediante /subcategoria/enable/({subcategoriaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la subcategoria
+   * @return JSON success: {subcategoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{subcategoriaId}")
   public Response enableSubcategoria(@PathParam("subcategoriaId") long id) {

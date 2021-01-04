@@ -21,11 +21,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Clase para gestionar los usuarios administradores
+ *
+ */
 @Path( "/administrador" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioAdministrador extends AplicacionBase implements IServicioEmpleado {
 
+  /**
+   * Metodo para agregar un administrador. Accedido mediante /administrador/add con el
+   * metodo POST
+   *
+   * @param usuarioDto DTO del usuario
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addUser(UsuarioDto usuarioDto) {
@@ -75,6 +87,13 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
 
   }
 
+  /**
+   * Metodo para obtener todos los usuarios. Accedido mediante /administrador/getall con el
+   * metodo GET
+   *
+   * @return JSON success: {usuarios, code, estado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getUsers() {
@@ -119,6 +138,15 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener un usuario administrador.
+   * Accedido mediante /administrador/getuser/{usuarioAdministradorId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario administrador
+   * @return JSON success: {estado, code, id, nombreUsuario, estadoUsuario}; error: {estado,
+   * code}
+   */
   @GET
   @Path("getuser/{usuarioAdministradorId}")
   public Response getUserById(@PathParam("usuarioAdministradorId") long id){
@@ -150,6 +178,16 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para actualizar (cambiar pwd) un usuario administrador.
+   * Accedido mediante /administrador/update({usuarioAdministradorId} con el
+   * metodo PUT
+   *
+   * @param usuarioDto DTO del usuario
+   * @param id Id del usuario administrador
+   * @return JSON success: {estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{usuarioAdministradorId}")
   public Response changePassword(@PathParam("usuarioAdministradorId") long id, UsuarioDto usuarioDto){
@@ -181,6 +219,15 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario administrador.
+   * Accedido mediante /administrador/disable/({usuarioAdministradorId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario administrador
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{usuarioAdministradorId}")
   public Response disableUser(@PathParam("usuarioAdministradorId") long id) {
@@ -214,6 +261,15 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar un usuario administrador.
+   * Accedido mediante /administrador/enable/({usuarioAdministradoId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario administrador
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{usuarioAdministradorId}")
   public Response enableUser(@PathParam("usuarioAdministradorId") long id) {
@@ -247,6 +303,15 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener un las solicitudes pendientes de un usuario administrador.
+   * Accedido mediante /administrador/getsolicitudespendientes/{usuarioAdministradorId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario administrador
+   * @return JSON success: {estado, code, id, solicitudes}; error: {estado, mensaje
+   * code}
+   */
   @GET
   @Path("/getsolicitudespendientes/{usuarioAdministradorId}")
   public Response getSolicitudesPendientes(@PathParam("usuarioAdministradorId") long id){
@@ -303,6 +368,16 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
   }
 
 
+  /**
+   * Metodo para asignar un estudio a una solicitud de estudio.
+   * Accedido mediante /administrador/asignarsolicitud/({idSolicitud} con el
+   * metodo PUT
+   *
+   * @param id Id de la solicitud
+   * @param solicitudEstudioDto DTO de la solicitud de estudio
+   * @return JSON success: {id, estado, code}; error: {estado,
+   * code}
+   */
   @PUT
   @Path("/asignarsolicitud/{idSolicitud}")
   public Response asignarEstudioASolicitud(@PathParam("idSolicitud") long id, SolicitudEstudioDto solicitudEstudioDto){

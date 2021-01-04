@@ -24,83 +24,17 @@ import ucab.dsw.excepciones.RangoExcepcion;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServicioEncuestaRespuesta {
 
-
-   /* @POST
-    @Path("/{idEncuesta}/preguntas/{idPregunta}/respuesta")
-    public Response addRespuesta(
-            @PathParam("idEncuesta") long _idEncuesta,
-            @PathParam("idPregunta") long _idPregunta,
-            RespuestaDto respuestaDto) {
-
-        JsonObject data;
-        try {
-
-            Respuesta respuesta = new Respuesta();
-            DaoRespuesta daoRespuestas = new DaoRespuesta();
-
-            DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
-
-            DaoPregunta daoPregunta = new DaoPregunta();
-            Pregunta pregunta = daoPregunta.find(_idPregunta, Pregunta.class);
-
-            PreguntaEncuesta preguntaEncuesta = null;
-
-            for (PreguntaEncuesta _preguntasEncuesta : encuesta.get_preguntasEncuestas()) {
-                if (_preguntasEncuesta.get_pregunta().get_id() == _idPregunta) {
-                    preguntaEncuesta = _preguntasEncuesta;
-                }
-            }
-
-            DaoEncuestado daoEncuestado = new DaoEncuestado();
-            Encuestado encuestado = daoEncuestado.find(respuestaDto.getEncuestado().getId(), Encuestado.class);
-
-            Date fecha = new Date();
-
-            respuesta.set_fecha(fecha);
-            respuesta.set_descripcion(respuestaDto.getDescripcion());
-            respuesta.set_rango(respuestaDto.getRango());
-            respuesta.set_encuestado(encuestado);
-            respuesta.set_preguntaEncuesta(preguntaEncuesta);
-
-            respuesta = daoRespuestas.insert(respuesta);
-
-            List<OpcionDto> opciones = respuestaDto.getOpciones();
-            DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
-
-            for (OpcionDto opcionDto : opciones) {
-                RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
-                respuestaOpcion.set_opcion(new Opcion(opcionDto.getId()));
-                respuestaOpcion.set_respuesta(respuesta);
-
-                daoRespuestaOpcion.insert(respuestaOpcion);
-            }
-
-            data = Json.createObjectBuilder()
-                    .add("data", respuesta.get_id())
-                    .add("estado", "success")
-                    .add("code", 200)
-                    .build();
-
-        } catch (javax.persistence.PersistenceException ex) {
-            String mensaje = "Estas opciones ya se encuentran añadidas";
-            data = Json.createObjectBuilder()
-                    .add("mensaje", mensaje)
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
-        } catch (Exception ex) {
-            data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
-        }
-
-        return Response.status(200).entity(data).build();
-    }*/
-
+  /**
+   * Metodo para agregar las respuestas de una encuesta
+   * Accedido mediante /encuestas/respuestas/{idEncuesta} con el metodo POST
+   *
+   * @param idEncuesta id de la encuesta
+   * @param baseDto DTO base para recibir un arreglo de respuestas
+   *
+   * @return JSON success: {estado, mensaje, code}; error: {mensaje, estado,
+   * code}
+   *
+   */
     @POST
     @Path("/respuesta/{idEncuesta}")
     public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto baseDto){
@@ -228,6 +162,17 @@ public class ServicioEncuestaRespuesta {
       }
     }
 
+  /**
+   * Metodo para obtener las respuestas de una encuesta
+   * Accedido mediante /encuestas/respuesta/{idEncuesta} con el metodo GET
+   *
+   * @param idEncuesta id de la encuesta
+   *
+   *
+   * @return JSON success: {code, estado, respuestas}; error: {mensaje, estado,
+   * code}
+   *
+   */
     @GET
     @Path("/respuesta/{idEncuesta}")
     public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){

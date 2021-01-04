@@ -10,6 +10,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Clase para gestionar la recuperacion de contraseña
+ *
+ */
 public class RecuperacionEmail {
 
   private final Properties props = new Properties();
@@ -26,6 +30,15 @@ public class RecuperacionEmail {
     props.put("password", "empresafdsw123");
   }
 
+  /**
+   * Metodo para enviar email con la nueva contraseña provisional
+   *
+   *
+   * @param to Destinatario del correo
+   * @param subject Asunto del correo
+   * @param content Contenido del correo
+   *
+   */
   public void enviarMail(String to, String subject, String content) throws MessagingException {
     Session session = Session.getInstance(props, new javax.mail.Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {

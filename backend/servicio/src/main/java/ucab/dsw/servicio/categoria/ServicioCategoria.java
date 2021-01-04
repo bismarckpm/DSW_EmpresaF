@@ -17,11 +17,24 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
+/**
+ * Clase para gestionar las categorias
+ *
+ */
+
 @Path( "/categoria" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioCategoria extends AplicacionBase {
 
+  /**
+   * Metodo para agregar una categoria Accedido mediante categoria/add/ con el
+   * metodo POST
+   *
+   * @param categoriaDto DTO de la categoria
+   * @return JSON success: {categoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addCategoria(CategoriaDto categoriaDto){
@@ -66,6 +79,15 @@ public class ServicioCategoria extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para actualizar una categoria Accedido mediante categoria/update/{categoriaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la categoria
+   * @param categoriaDto DTO de la categoria
+   * @return JSON success: {categoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{categoriaId}")
   public Response updateCategoria(@PathParam("categoriaId") long id, CategoriaDto categoriaDto){
@@ -108,6 +130,14 @@ public class ServicioCategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener una categoria Accedido mediante categoria/getcategoria/{categoriaId} con el
+   * metodo GET
+   *
+   * @param id Id de la categoria
+   * @return JSON success: {id, nombreCategoria, estadoCategoria, estado, code}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getcategoria/{categoriaId}")
   public Response getCategoriaById(@PathParam("categoriaId") long id){
@@ -139,6 +169,14 @@ public class ServicioCategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todas las categorias Accedido mediante categoria/getall con el
+   * metodo GET
+   *
+   *
+   * @return JSON success: {categorias, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getCategories() {
@@ -163,7 +201,7 @@ public class ServicioCategoria extends AplicacionBase {
         categoriasArray.add(categories);
       }
       data = Json.createObjectBuilder()
-        .add("estado", 200)
+        .add("code", 200)
         .add("estado", "success")
         .add("categorias", categoriasArray).build();
 
@@ -182,6 +220,14 @@ public class ServicioCategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar una categoria Accedido mediante categoria/disable/{categoriaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la categoria
+   * @return JSON success: {categoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{categoriaId}")
   public Response disableCategoria(@PathParam("categoriaId") long id) {
@@ -238,6 +284,14 @@ public class ServicioCategoria extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar una categoria Accedido mediante categoria/enable/{categoriaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la categoria
+   * @return JSON success: {categoria, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{categoriaId}")
   public Response enableCategoria(@PathParam("categoriaId") long id) {

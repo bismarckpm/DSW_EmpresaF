@@ -17,12 +17,24 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Clase para gestionar las solicitudes de estudios
+ *
+ */
 @Path( "/solicitud" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioSolicitudEstudio extends AplicacionBase {
 
 
+  /**
+   * Metodo para agregar una solicitud de estudio Accedido mediante /solicitud/add con el
+   * metodo POST
+   *
+   * @param solicitudEstudioDto DTO de la solicitud de estudio
+   * @return JSON success: {solicitud, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addSolicitud(SolicitudEstudioDto solicitudEstudioDto){
@@ -127,6 +139,13 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     return  Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para asignar una solicitud de estudio previa con las mismas caracteristicas
+   *
+   *
+   * @param solicitudEstudio solicitud de estudio recien agregada
+   * @return List SolicitudEstudio
+   */
   private List<SolicitudEstudio> asignarSolicitud(SolicitudEstudio solicitudEstudio){
     DaoSolicitudEstudio dao = new DaoSolicitudEstudio();
     List<SolicitudEstudio> solicitudEstudioPrevia = dao.getSolicitudesByCaracteristicas(solicitudEstudio);
@@ -143,6 +162,14 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para asignar un usuario a la muestra a una solicitud de estudio dependiendo
+   * de sus caracteristicas demográficas
+   *
+   *
+   * @param solicitudEstudio solicitud de estudio
+   *
+   */
   private void inicializarMuestra(SolicitudEstudio solicitudEstudio){
     DaoEncuestado dao = new DaoEncuestado();
     List<Encuestado> usuariosEncuestados = dao.getUsersMuestra(solicitudEstudio);
@@ -150,6 +177,14 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
     servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
   }
 
+  /**
+   * Metodo para obtener todas las solicitudes. Accedido mediante /solicitud/getall mediante el
+   * metodo GET
+   *
+   *
+   * @return JSON success: {solicitudes, estado, code}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getSolicitudes() {
@@ -188,52 +223,16 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
         .add("estado", "success")
         .add("solicitudes", solicitudesArray).build();
 
-
     } catch (Exception ex) {
-      ex.printStackTrace();
-      return null;
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error").build();
+
+      return Response.ok().entity(data).build();
     }
 
     System.out.println(data);
     return Response.ok().entity(data).build();
   }
 
-  /*@PUT
-  @Path("/finalize/{solicitudId}")
-  public Response culminarSolicitud(@PathParam("solicitudId") long solicitudId){
-    JsonObject data;
-    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-    SolicitudEstudio solicitudEstudio;
-    DaoEstudio daoEstudio = new DaoEstudio();
-    Estudio estudio;
-
-    try{
-        solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
-        solicitudEstudio.set_estado("culminado");
-
-        estudio = daoEstudio.find(solicitudEstudio.get_estudio().get_id(), Estudio.class);
-        estudio.set_estado("culminado");
-
-        Date fecha = new Date();
-        estudio.set_fechaFin(fecha);
-
-        daoSolicitudEstudio.update(solicitudEstudio);
-        daoEstudio.update(estudio);
-
-      data = Json.createObjectBuilder().add("solicitud", solicitudEstudio.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
-
-      return Response.ok().entity(data).build();
-
-    }catch (Exception ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
-
-      return Response.ok().entity(data).build();
-    }
-  }*/
 }

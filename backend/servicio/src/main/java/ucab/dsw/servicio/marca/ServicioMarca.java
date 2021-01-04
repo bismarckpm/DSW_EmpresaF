@@ -17,11 +17,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Clase para gestionar las marcas
+ *
+ */
 @Path( "/marca" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioMarca extends AplicacionBase {
 
+  /**
+   * Metodo para agregar una marca Accedido mediante /marca/add con el
+   * metodo POST
+   *
+   * @param marcaDto DTO de la marca
+   * @return JSON success: {marca, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addMarca (MarcaDto marcaDto){
@@ -63,6 +75,15 @@ public class ServicioMarca extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para actualizar una marca Accedido mediante /marca/update/{marcaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la marca
+   * @param marcaDto DTO de la marca
+   * @return JSON success: {marca, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{marcaId}")
   public Response updateMarca(@PathParam("marcaId") long id, MarcaDto marcaDto){
@@ -103,6 +124,15 @@ public class ServicioMarca extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener una marca Accedido mediante /marca/getmarca/{marcaId} con el
+   * metodo GET
+   *
+   * @param id Id de la marca
+   *
+   * @return JSON success: {data, estado, code}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getmarca/{marcaId}")
   public Response getMarcaById(@PathParam("marcaId") long id){
@@ -141,6 +171,14 @@ public class ServicioMarca extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todas las marcas Accedido mediante /marca/getall con el
+   * metodo GET
+   *
+   *
+   * @return JSON success: {code, estado, marcas}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getMarcas() {
@@ -192,6 +230,15 @@ public class ServicioMarca extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar una marca Accedido mediante /marca/disable/{marcaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la marca
+   *
+   * @return JSON success: {marca, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{marcaId}")
   public Response disableMarca(@PathParam("marcaId") long id) {
@@ -225,6 +272,15 @@ public class ServicioMarca extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar una marca Accedido mediante /marca/enable/{marcaId} con el
+   * metodo PUT
+   *
+   * @param id Id de la marca
+   *
+   * @return JSON success: {marca, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{marcaId}")
   public Response enableMarca(@PathParam("marcaId") long id) {

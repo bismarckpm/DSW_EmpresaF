@@ -16,13 +16,23 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
+/**
+ * Clase para gestionar los usuarios encuestados
+ *
+ */
 @Path( "/encuestado" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioEncuestado extends AplicacionBase implements IServicioUsuario{
 
-
+  /**
+   * Metodo para agregar un cliente. Accedido mediante /encuestado/add con el
+   * metodo POST
+   *
+   * @param usuarioDto DTO del usuario
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addUser(UsuarioDto usuarioDto) {
@@ -109,6 +119,13 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return  Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todos los usuarios. Accedido mediante /encuestado/getall con el
+   * metodo GET
+   *
+   * @return JSON success: {usuarios, code, estado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getUsers() {
@@ -174,6 +191,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener un usuario encuestado.
+   * Accedido mediante /encuestado/getuser/{usuarioEncuestadoId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario encuestado
+   * @return JSON success: {estado, code, data}; error: {estado,
+   * code}
+   */
   @GET
   @Path("getuser/{usuarioEncuestadoId}")
   public Response getUserById(@PathParam("usuarioEncuestadoId") long id){
@@ -228,6 +254,16 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
   }
 
+  /**
+   * Metodo para actualizar un usuario encuestado.
+   * Accedido mediante /encuestado/update({usuarioEncuestadoId} con el
+   * metodo PUT
+   *
+   * @param usuarioDto DTO del usuario
+   * @param id Id del usuario encuestado
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{usuarioEncuestadoid}")
   public Response updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
@@ -284,6 +320,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return  Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener estudios realizables para un usuario encuestado.
+   * Accedido mediante /encuestado/getestudios/{usuarioEncuestadoId}
+   * con el metodo GET
+   *
+   * @param usuarioEncuestadoId Id del usuario encuestado
+   * @return JSON success: {estado, code, estudios}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getestudios/{usuarioEncuestadoId}")
   public Response getEstudiosRealizables(@PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
@@ -342,6 +387,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario encuestado.
+   * Accedido mediante /encuestado/disable/({usuarioEncuestadoId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario encuestado
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{usuarioEncuestadoId}")
   public Response disableUser(@PathParam("usuarioEncuestadoId") long id) {
@@ -380,6 +434,15 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario encuestado.
+   * Accedido mediante /encuestado/enable/({usuarioEncuestadoId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario encuestado
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{usuarioEncuestadoId}")
   public Response enableUser(@PathParam("usuarioEncuestadoId") long id) {

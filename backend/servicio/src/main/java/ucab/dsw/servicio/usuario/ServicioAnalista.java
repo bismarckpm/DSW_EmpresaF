@@ -17,11 +17,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Clase para gestionar los usuarios analistas
+ *
+ */
 @Path( "/analista" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioAnalista extends AplicacionBase implements IServicioEmpleado{
 
+  /**
+   * Metodo para agregar un analista. Accedido mediante /analista/add con el
+   * metodo POST
+   *
+   * @param usuarioDto DTO del usuario
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addUser(UsuarioDto usuarioDto) {
@@ -70,6 +82,13 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return  Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todos los usuarios. Accedido mediante /analista/getall con el
+   * metodo GET
+   *
+   * @return JSON success: {usuarios, code, estado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getUsers() {
@@ -114,6 +133,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener un usuario analista.
+   * Accedido mediante /analista/getuser/{usuarioAnalistaId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario analista
+   * @return JSON success: {estado, code, id, nombreUsuario, estadoUsuario}; error: {estado,
+   * code}
+   */
   @GET
   @Path("getuser/{usuarioAnalistaId}")
   public Response getUserById(@PathParam("usuarioAnalistaId") long id){
@@ -145,6 +173,16 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para actualizar (cambiar pwd) un usuario analista.
+   * Accedido mediante /analista/update({usuarioAnalistaId} con el
+   * metodo PUT
+   *
+   * @param usuarioDto DTO del usuario
+   * @param id Id del usuario analista
+   * @return JSON success: {estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{usuarioAnalistaId}")
   public Response changePassword(@PathParam("usuarioAnalistaId") long id, UsuarioDto usuarioDto){
@@ -176,6 +214,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario analista.
+   * Accedido mediante /analista/disable/({usuarioAnalistaId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario analista
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{usuarioAnalistaId}")
   public Response disableUser(@PathParam("usuarioAnalistaId") long id) {
@@ -209,6 +256,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar un usuario analista.
+   * Accedido mediante /analista/enable/({usuarioAnalistaId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario analista
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{usuarioAnalistaId}")
   public Response enableUser(@PathParam("usuarioAnalistaId") long id) {
@@ -242,7 +298,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
-
+  /**
+   * Metodo para obtener un las solicitudes pendientes de un usuario analista.
+   * Accedido mediante /analista/getsolicitudespendientes/{usuarioAnalistaId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario analista
+   * @return JSON success: {estado, code, id, solicitudes}; error: {estado, mensaje
+   * code}
+   */
   @Path("/getsolicitudespendientes/{usuarioAnalistaId}")
   @GET
   public Response getSolicitudesPendientes(@PathParam("usuarioAnalistaId") long id){
@@ -304,6 +368,16 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para activar un estudio dada una solicitud de estudio.
+   * Accedido mediante /analista/activarestudio/({solicitudId} con el
+   * metodo PUT
+   *
+   * @param id Id de la solicitud
+   *
+   * @return JSON success: {idSolicitud, estadoSolicitud, estado, code}; error: {estado,
+   * code}
+   */
   @Path("/activarestudio/{solicitudId}")
   @PUT
   public Response activarEstudio(@PathParam("solicitudId") long id){
@@ -350,6 +424,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener los estudios asignados a un usuario analista.
+   * Accedido mediante /analista/obtenerestudios/{analistaId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario analista
+   * @return JSON success: {estado, code, id, estudios}; error: {estado, mensaje
+   * code}
+   */
   @Path("/obtenerestudios/{analistaId}")
   @GET
   public Response obtenerEstudiosByAnalista(@PathParam("analistaId") long id){

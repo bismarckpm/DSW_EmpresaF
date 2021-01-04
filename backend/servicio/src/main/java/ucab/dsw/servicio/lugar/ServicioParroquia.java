@@ -17,12 +17,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-
+/**
+ * Clase para gestionar las parroquias
+ *
+ */
 @Path( "/parroquia" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioParroquia extends AplicacionBase {
 
+
+  /**
+   * Metodo para Obtener todas las parroquias. Accedido mediante
+   * /parroquia/getall con el metodo GET
+   *
+   *
+   * @return JSON success: {code, estado, parroquias};
+   * error: {mensaje, estado, code}
+   *
+   */
   @GET
   @Path("/getall")
   public Response getParroquias() {

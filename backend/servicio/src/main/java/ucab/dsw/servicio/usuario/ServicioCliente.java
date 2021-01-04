@@ -20,11 +20,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+/**
+ * Clase para gestionar los usuarios clientes
+ *
+ */
 @Path( "/cliente" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
+  /**
+   * Metodo para agregar un cliente. Accedido mediante /cliente/add con el
+   * metodo POST
+   *
+   * @param usuarioDto DTO del usuario
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addUser(UsuarioDto usuarioDto){
@@ -80,6 +92,16 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
   }
 
+  /**
+   * Metodo para actualizar un cliente.
+   * Accedido mediante /cliente/update({usuarioClienteId} con el
+   * metodo PUT
+   *
+   * @param usuarioDto DTO del usuario
+   * @param id Id del usuario analista
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/update/{usuarioClienteId}")
   public Response updateUser(@PathParam("usuarioClienteId") long id, UsuarioDto usuarioDto){
@@ -118,6 +140,13 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener todos los usuarios clientes. Accedido mediante /cliente/getall con el
+   * metodo GET
+   *
+   * @return JSON success: {usuarios, code, estado}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getUsers() {
@@ -164,6 +193,15 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener un usuario cliente.
+   * Accedido mediante /cliente/getuser/{usuarioClienteId}
+   * con el metodo GET
+   *
+   * @param id Id del usuario cliente
+   * @return JSON success: {estado, code, id, nombreUsuario, nombre}; error: {estado,
+   * code}
+   */
   @GET
   @Path("getuser/{usuarioClienteId}")
   public Response getUserById(@PathParam("usuarioClienteId") long id){
@@ -195,6 +233,15 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario cliente.
+   * Accedido mediante /cliente/disable/({usuarioClienteId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario cliente
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/disable/{usuarioClienteId}")
   public Response disableUser(@PathParam("usuarioClienteId") long id) {
@@ -233,6 +280,15 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para inactivar un usuario cliente.
+   * Accedido mediante /cliente/enable/({usuarioClienteId} con el
+   * metodo PUT
+   *
+   * @param id Id del usuario cliente
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @PUT
   @Path("/enable/{usuarioClienteId}")
   public Response enableUser(@PathParam("usuarioClienteId") long id) {
@@ -271,6 +327,15 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
     return Response.ok().entity(data).build();
   }
 
+  /**
+   * Metodo para obtener las solicitudes creadas por un usuario cliente.
+   * Accedido mediante /cliente/getsolicitudes/({usuarioClienteId} con el
+   * metodo GET
+   *
+   * @param id Id del usuario cliente
+   * @return JSON success: {solicitudes, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @GET
   @Path("/getsolicitudes/{usuarioClienteId}")
   public Response getSolicitudes(@PathParam("usuarioClienteId") long id){

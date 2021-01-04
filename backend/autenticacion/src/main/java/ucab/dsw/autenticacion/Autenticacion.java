@@ -13,6 +13,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 
+/**
+ * Clase para gestionar los metodos de JWT
+ *
+ */
 public class Autenticacion {
   private String secret = "Clavesecreta02847585923hsddkwn";
 
@@ -23,11 +27,27 @@ public class Autenticacion {
   public Autenticacion() {
   }
 
+  /**
+   * Metodo para autenticar un usuario
+   *
+   *
+   * @param usuarioDto DTO del usuario
+   * @return Boolean success: True; error: False
+   * code}
+   */
   public static Boolean isAuthenticated(UsuarioDto usuarioDto){
     DirectorioActivo directorioActivo = new DirectorioActivo();
     return directorioActivo.userAuthentication(usuarioDto);
   }
 
+  /**
+   * Metodo para generar el token de un usuario al ser autenticado
+   *
+   *
+   * @param usuarioDto DTO del usuario
+   * @return String success: jwtToken
+   * code}
+   */
   public String generateToken(UsuarioDto usuarioDto){
     String jwtToken = null;
     DirectorioActivo directorio = new DirectorioActivo();
@@ -46,6 +66,14 @@ public class Autenticacion {
     return  jwtToken;
   }
 
+  /**
+   * Metodo para decodificar el token de un usuario autenticado
+   *
+   *
+   * @param token token del usuario autenticado
+   * @return Claims success: jwt
+   * code}
+   */
   public Claims decode(String token){
     String secret = "Clavesecreta02847585923hsddkwn";
     Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),

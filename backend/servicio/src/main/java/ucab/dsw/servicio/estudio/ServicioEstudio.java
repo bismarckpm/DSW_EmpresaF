@@ -16,11 +16,23 @@ import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Clase para gestionar los estudios
+ *
+ */
 @Path( "/estudio" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
 public class ServicioEstudio extends AplicacionBase {
 
+  /**
+   * Metodo para agregar un estudio Accedido mediante estudio/add/ con el
+   * metodo POST
+   *
+   * @param estudioDto DTO del estudio
+   * @return JSON success: {estudioId, estado, code}; error: {mensaje, estado,
+   * code}
+   */
   @POST
   @Path("/add")
   public Response addEstudio (EstudioDto estudioDto){
@@ -71,6 +83,14 @@ public class ServicioEstudio extends AplicacionBase {
 
   }
 
+  /**
+   * Metodo para obtener un estudio Accedido mediante estudio/getestudio/{estudioId} con el
+   * metodo GET
+   *
+   * @param id Id del estudio
+   * @return JSON success: {id, nombreEstudio, encuestaId, estado, code}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getestudio/{estudioId}")
   public Response getEstudioById(@PathParam("estudioId") long id){
@@ -101,6 +121,15 @@ public class ServicioEstudio extends AplicacionBase {
     return Response.ok().entity(data).build();
   }
 
+
+  /**
+   * Metodo para obtener todos los estudios Accedido mediante estudio/getall con el
+   * metodo GET
+   *
+   *
+   * @return JSON success: {estudios, estado, code}; error: {estado,
+   * code}
+   */
   @GET
   @Path("/getall")
   public Response getEstudios(){
