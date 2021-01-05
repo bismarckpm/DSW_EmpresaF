@@ -159,6 +159,7 @@ public class ServicioMuestra {
           .add("encuestadoId", encuestado.get_id())
           .add("encuestadoNombre", encuestado.get_primerNombre())
           .add("encuestadoApellido", encuestado.get_primerApellido())
+          .add("usuarioId", encuestado.get_usuario().get_id())
           .build();
 
         encuestadosArray.add(encu);

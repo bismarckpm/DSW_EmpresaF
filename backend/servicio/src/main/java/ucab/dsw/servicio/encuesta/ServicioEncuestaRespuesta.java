@@ -176,7 +176,6 @@ public class ServicioEncuestaRespuesta {
     @GET
     @Path("/respuesta/{idEncuesta}")
     public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){
-      List<Respuesta> respuestas;
       List<PreguntaEncuesta> preguntaEncuestas;
       Pregunta pregunta;
       JsonObject data;
@@ -224,15 +223,18 @@ public class ServicioEncuestaRespuesta {
             respuestasArray.add(answer);
 
           }else{
-            respuestas = preguntaEncuesta.get_respuestas();
-            for (Respuesta respuesta:respuestas){
-              JsonObject answer = Json.createObjectBuilder()
-                .add("pregunta", pregunta.get_descripcionPregunta())
-                .add("tipoPregunta", pregunta.get_tipoPregunta())
-                .add("respuesta",respuesta.get_descripcion())
-                .add("rango", respuesta.get_rango()).build();
+            DaoRespuesta daoRespuesta = new DaoRespuesta();
+            List<Respuesta> ress = daoRespuesta.findAll(Respuesta.class);
+            for(Respuesta respuesta: ress){
+              if(respuesta.get_preguntaEncuesta().get_id() == preguntaEncuesta.get_id()){
+                JsonObject answer = Json.createObjectBuilder()
+                  .add("pregunta", pregunta.get_descripcionPregunta())
+                  .add("tipoPregunta", pregunta.get_tipoPregunta())
+                  .add("respuesta",respuesta.get_descripcion())
+                  .add("rango", respuesta.get_rango()).build();
 
-              respuestasArray.add(answer);
+                respuestasArray.add(answer);
+              }
             }
           }
         }

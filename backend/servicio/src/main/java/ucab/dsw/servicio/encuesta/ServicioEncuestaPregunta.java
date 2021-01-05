@@ -120,19 +120,21 @@ public class ServicioEncuestaPregunta {
           DaoPregunta daoPregunta = new DaoPregunta();
           Pregunta question = daoPregunta.find(pregunta.get_id(), Pregunta.class);
 
-          for(Opcion opcion:question.getOpciones()) {
+          DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+          List<PreguntaOpcion> preguntaOpciones =  daoPreguntaOpcion.findAll(PreguntaOpcion.class);
 
+          for(PreguntaOpcion preguntaOpcion:preguntaOpciones){
+            if(preguntaOpcion.get_pregunta().get_id() == question.get_id()){
               DaoOpcion daoOpcion = new DaoOpcion();
-              Opcion opc = daoOpcion.find(opcion.get_id(), Opcion.class);
-
+              Opcion opcion = daoOpcion.find(preguntaOpcion.get_opcion().get_id(), Opcion.class);
               JsonObject option = Json.createObjectBuilder()
                 .add("idPregunta", question.get_id())
-                .add("idOpcion", opc.get_id())
-                .add("descripcion", opc.get_descripcion()).build();
+                .add("idOpcion", opcion.get_id())
+                .add("descripcion", opcion.get_descripcion()).build();
 
               opcionesJson.add(option);
             }
-
+          }
 
           JsonObject quest = Json.createObjectBuilder()
             .add("idPregunta", question.get_id())
