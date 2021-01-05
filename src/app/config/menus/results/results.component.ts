@@ -5,6 +5,16 @@ import * as Highcharts from 'highcharts';
 import highcharts3D from 'highcharts/highcharts-3d';
 highcharts3D(Highcharts);
 
+export interface DataItem  {
+  pregunta: any;
+  respuesta:any
+  
+};
+
+type ObjType = {
+  data: DataItem[]
+};
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -14,6 +24,7 @@ export class ResultsComponent implements OnInit {
 
   sub: any;
   id: number;
+  resDesarrollo:any;
   //charts
   highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options[] = [];
@@ -24,11 +35,7 @@ export class ResultsComponent implements OnInit {
       chart: {
         type: "pie",
         plotShadow: false,
-        options3d: {
-          enabled: true,
-          alpha: 45,
-          beta: 0,
-      },
+      
     },
     title: {
         text: enunciado
@@ -74,10 +81,15 @@ export class ResultsComponent implements OnInit {
     this.getRespuestaEncuesta();
   }
 
+  private readonly obj: ObjType = {
+    data: []
+  };
+
   getRespuestaEncuesta(){
     this.sub = this.route.params.subscribe(params => {
     this.id = +params['id'];
     })
+    var i:number = 0;
     this.adminService.getRespuestaEncuesta(this.id)
     .subscribe(
       res => {
@@ -85,15 +97,26 @@ export class ResultsComponent implements OnInit {
         auxRes = res;
         this.respuesta = auxRes.respuestas
         if(auxRes.estado == 'success'){
-            this.respuesta.forEach(element => {
-              if(element.tipoPregunta != 'desarrollo'){
-                const valor = element.opciones.map((x:any) => { return {name: x.opcion, y: x.conteo} })
-                const enunciado = element.pregunta;
+          for(let item in this.respuesta){
+            if(this.respuesta[item].tipoPregunta == 'desarrollo'){
+              const dataCopy : DataItem = {
+                pregunta: this.respuesta[item].pregunta,
+                respuesta: this.respuesta[item].respuesta
+              };
+              this.obj.data[i] = dataCopy;
+              i++;
+            }
+          }
+          this.resDesarrollo = this.obj.data;
+          this.respuesta.forEach(element => {
+            if(element.tipoPregunta != 'desarrollo'){
+              const valor = element.opciones.map((x:any) => { return {name: x.opcion, y: x.conteo} })
+              const enunciado = element.pregunta;
 
-                this.chartOptions.push( this.chart(enunciado, valor ) );
-              }
+              this.chartOptions.push( this.chart(enunciado, valor ) );
+            }
 
-            })
+          })
           
         }
       },

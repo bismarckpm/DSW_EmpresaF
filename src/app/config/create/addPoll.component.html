@@ -10,6 +10,10 @@
         </div>
         <form [formGroup]="createEncuestaForm" (ngSubmit)="handleCreateMarca()" fxLayout="column" fxLayoutAlign="center center">
             <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="Nombre" type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Subcategorias</mat-label>
                 <mat-select formControlName="selectSubCategoria">
                     <mat-option *ngFor="let subCategoria of subCategorias" [value]="subCategoria.id">{{subCategoria.nombreSubcategoria}}</mat-option>

@@ -44,8 +44,6 @@ export class AddQuestionComponent implements OnInit{
     this.tipoPregunta = this.createPreguntaForm.get('selectTipo').value;
     this.min = 0;
     this.max = 0;
-    this.opciones = this.createPreguntaForm.get('itemRows').value;
-    console.log(this.opciones)
     /*this.adminService.createQuestion(this.descripcionPregunta,this.tipoPregunta,this.min,this.max,this.opciones)
     .subscribe(
       res => {
@@ -70,7 +68,9 @@ export class AddQuestionComponent implements OnInit{
     this.min = 0;
     this.max = 0;
     this.opciones = this.createPreguntaForm.get('itemRows').value;
-    
+    if(this.tipoPregunta == "desarrollo"){
+      this.opciones = null;
+    }
     this.adminService.createQuestion(this.descripcionPregunta,this.tipoPregunta,this.min,this.max,this.opciones)
     .subscribe(
       res => {
@@ -78,6 +78,7 @@ export class AddQuestionComponent implements OnInit{
         auxRes = res;
         if(auxRes.estado == 'success'){
           this.openSnackBar("Pregunta creada exitosamente");
+          window.location.reload();
         }
         else {
           this.openSnackBar("Ocurrio un problema");
@@ -91,7 +92,7 @@ export class AddQuestionComponent implements OnInit{
 
   getPregunta(){
     this.tipos = [
-      { idPregunta:1, name: 'rango'},
+     
       { idPregunta:2, name: 'multiple'},
       { idPregunta:3, name: 'simple'},
       { idPregunta:4, name: 'desarrollo'},

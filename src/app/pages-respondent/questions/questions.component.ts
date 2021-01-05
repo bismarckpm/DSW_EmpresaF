@@ -99,6 +99,7 @@ export class QuestionsComponent implements OnInit {
         res => {
           let auxRes:any;
           auxRes = res;
+          console.log(auxRes)
           if(auxRes.estado == 'success'){
             this.preguntas = auxRes.data;
             for (let item of this.preguntas ){

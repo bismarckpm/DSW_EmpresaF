@@ -18,11 +18,13 @@ export class AddPollComponent implements OnInit{
   subCategorias:any;
   token: string;
   Idsubcategoria:number;
+  nombreCategoria:string;
   constructor(private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.createEncuestaForm = this.formBuilder.group({
-      selectSubCategoria: ['',Validators.required]
+      selectSubCategoria: ['',Validators.required],
+      Nombre: ['',Validators.required]
     });
     this.getSubCategoria();
   }
@@ -35,7 +37,8 @@ export class AddPollComponent implements OnInit{
 
   handleCreateMarca(){
     this.Idsubcategoria = this.createEncuestaForm.get('selectSubCategoria').value
-    this.adminService.createEncuesta(this.Idsubcategoria)
+    this.nombreCategoria = this.createEncuestaForm.get('Nombre').value
+    this.adminService.createEncuesta(this.Idsubcategoria,this.nombreCategoria)
     .subscribe(
       res => {
         let auxRes:any;

@@ -16,7 +16,7 @@
             <mat-form-field appearance="outline">
                 <mat-label>Encuestas</mat-label>
                 <mat-select formControlName="selectEncuesta">
-                    <mat-option *ngFor="let encuesta of encuestas" [value]="encuesta.encuestaId">{{encuesta.subcategoria}}</mat-option>
+                    <mat-option *ngFor="let encuesta of encuestas" [value]="encuesta.encuestaId">{{encuesta.nombreEncuesta}}</mat-option>
                 </mat-select>
             </mat-form-field>  
             <button mat-raised-button class="create-btn width-100" [disabled]="!createStudyForm.valid">Crear</button>

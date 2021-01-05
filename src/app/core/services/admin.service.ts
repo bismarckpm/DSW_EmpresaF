@@ -232,9 +232,10 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/encuestas',this.httpOptions);
     }
 
-    createEncuesta(idSubcategoria:number){
+    createEncuesta(idSubcategoria:number,nombreEncuesta:string){
       return this.http.post(this.API_URL+'api/encuestas',
-      { "subcategoria":
+      { "nombreEncuesta":nombreEncuesta,
+        "subcategoria":
         {
         "id":idSubcategoria
         }
