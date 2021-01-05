@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminService } from './../../core/services/admin.service';
+import { AnalystService } from './../../core/services/analyst.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +9,7 @@ import { AdminService } from './../../core/services/admin.service';
 export class ProfileComponent implements OnInit {
   nombre:any;
   iduser:any;
-  constructor(private adminService:AdminService) { }
+  constructor(private analisService:AnalystService) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
     let userStorage = localStorage.getItem('analistaLogged');
     this.iduser = JSON.parse(userStorage);
     this.iduser = this.iduser.id;
-    this.adminService.getAdministrador(this.iduser).
+    this.analisService.getAdministrador(this.iduser).
     subscribe(
       res =>{
         let auxRes:any = res;

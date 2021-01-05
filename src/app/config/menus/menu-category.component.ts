@@ -61,7 +61,7 @@ export class MenuCategoryComponent implements OnInit{
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
-            this.openSnackBar("Usuario inactivado");
+            this.openSnackBar("Categoría inactivado");
             window.location.reload();
           }
         },
@@ -76,7 +76,7 @@ export class MenuCategoryComponent implements OnInit{
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
-            this.openSnackBar("Usuario activado");
+            this.openSnackBar("Categoría activado");
             window.location.reload();
           }
         },
