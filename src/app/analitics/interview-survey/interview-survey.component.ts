@@ -1,7 +1,32 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { UsersService } from 'src/app/core/services/users.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router,ActivatedRoute } from '@angular/router';
+
+export interface DataItem  {
+  pregunta: {id};
+  descripcion: string;
+  rango: number;
+  encuestado: {};
+  opciones: [{}];
+};
+
+export interface respuestFormulada  {
+  pregunta: {};
+  descripcion: string;
+  rango: number;
+  encuestado: {};
+  opciones: [{}];
+};
+
+type ObjType = {
+  data: DataItem[]
+};
+
+type auxObjType = {
+  data: respuestFormulada[]
+};
 
 @Component({
   selector: 'app-interview-survey',
@@ -10,51 +35,180 @@ import { Router } from '@angular/router';
 })
 export class InterviewSurveyComponent implements OnInit {
 
-  element:any;
-  dataSource:any;
-  displayedColumns: string[] = ['idPE','idEncuesta','idPregunta','tipoPregunta','icono'];
-  constructor(public router: Router) { }
+  preguntas:any;
+  opciones:any;
+  respuestaForm: FormGroup;
+  radioSelected:any;
+  checked:any;
+  checkedIDs:any;
+  arraytest:any;
+  sub: any;
+  id: number;
+  auxPreguntas: any =[];
+  idEncuestado:number;
+  respuesta:any = [];
+  multipleSelected:any;
+  first: boolean = false;
+  second: boolean = false;
+  constructor(private router: Router, private userService:UsersService,public _snackBar: MatSnackBar,private formBuilder: FormBuilder,private route: ActivatedRoute) { }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  openSnackBar(message: string){
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+      panelClass: ['blue-snackbar']
+    });
+  }
 
   ngOnInit(): void {
+    this.respuestaForm = this.formBuilder.group({
+      Respuesta: ['', Validators.required],
+    });
     this.getPreguntas();
+    this.getIdEncuestado();
+    this.radioSelected = {
 
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  getPreguntas(){
-
-    this.element = [
-      {idPE: 1, idEncuesta: 4, idPregunta: 2, tipoPregunta:'desarrollo', icono: true},
-      {idPE: 2, idEncuesta: 4, idPregunta: 6, tipoPregunta:'opcion', icono: true},
-      {idPE: 3, idEncuesta: 4, idPregunta: 7, tipoPregunta:'desarrollo', icono: true},
-      {idPE: 5, idEncuesta: 4, idPregunta: 3, tipoPregunta:'rango', icono: true},
-      {idPE: 6, idEncuesta: 4, idPregunta: 11, tipoPregunta:'rango', icono: true},
-      {idPE: 7, idEncuesta: 4, idPregunta: 22, tipoPregunta:'opcion', icono: true},
-      {idPE: 8, idEncuesta: 4, idPregunta: 4, tipoPregunta:'desarrollo', icono: true},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
-
-  }
-
-  interviewAnswer(tipoPregunta, idPregunta, icono){
-    console.log(idPregunta,tipoPregunta,icono);
-
-    if(tipoPregunta == 'desarrollo'){
-      this.router.navigate(['analitics/card-desc']);
-    } else if(tipoPregunta == 'opcion'){
-      this.router.navigate(['analitics/card-op']);
-    } else if(tipoPregunta == 'rango'){
-      this.router.navigate(['analitics/card-range']);
-    } else{
-      console.log("No eraaaa");
     }
+    this.multipleSelected = {
+
+    }
+    this.auxPreguntas = []
+  }
+
+  getIdEncuestado(){
+    this.sub = this.route.params.subscribe(params => {
+    let encuestado = +params['id'];
+    this.idEncuestado = encuestado;
+    })
+  }
+
+  getPreguntas(){
+    let encuestadoStorage = localStorage.getItem('encuesta');
+    let encuestado = JSON.parse(encuestadoStorage);
+    this.id = encuestado.encuestaId; 
+    this.userService.getPreguntaEncuesta(this.id)
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          console.log(auxRes)
+          if(auxRes.estado == 'success'){
+            this.preguntas = auxRes.data;
+            for (let item of this.preguntas ){
+              this.auxPreguntas.push(item.idPregunta)
+            }
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+  }
+
+  private readonly obj: ObjType = {
+    data: []
+  };
+
+  private readonly auxObj: auxObjType = {
+    data: []
+  };
+
+  handleRespuesta(){
+    let i:number = 0;
+    for(let item in this.radioSelected){
+        if(this.radioSelected[item].descripcion == undefined && this.radioSelected[item].idOpcion == undefined ){
+          const dataCopy : DataItem = {
+            pregunta: {id:this.radioSelected[item].idPregunta},
+            descripcion: this.radioSelected[item],
+            rango: 0,
+            encuestado : {id:this.idEncuestado},
+            opciones: [{id:item}],
+          };
+          this.obj.data[i] = dataCopy;
+        }
+        else{
+          const dataCopy : DataItem = {
+            pregunta: {id:this.radioSelected[item].idPregunta},
+            descripcion: "",
+            rango: 0,
+            encuestado : {id:this.idEncuestado},
+            opciones: [{id:this.radioSelected[item].idOpcion}],
+          };
+          this.obj.data[i] = dataCopy;
+      }
+      i++; 
+    }
+    console.log(this.idEncuestado)
+    let j = 0;
+    for(let item in this.multipleSelected){
+      const auxDataCopy : respuestFormulada = {
+        pregunta: {id:this.multipleSelected[item].idPregunta},
+        descripcion: "",
+        rango: 0,
+        encuestado : {id:this.idEncuestado},
+        opciones: [{id:this.multipleSelected[item].idOpcion}],
+      };
+      this.auxObj.data[j] = auxDataCopy;
+      j++; 
+    }
+    if(this.obj.data.length > 0){
+      j = 0;
+      for(let item in this.obj.data){
+        if(this.obj.data[item].pregunta.id == undefined){
+          this.obj.data[item].pregunta.id = this.auxPreguntas[j-1]
+        }
+        j++
+      }
+    }
+
+      /*for(let item in this.obj.data){
+        const auxDataCopy : respuestFormulada = {
+          pregunta: {id:this.auxPreguntas[j]},
+          descripcion: this.obj.data[item].descripcion,
+          rango: 0,
+          encuestado : {id:this.idEncuestado},
+          opciones: this.obj.data[item].opciones ,
+        };
+        this.auxObj.data[j] = auxDataCopy;
+        j++
+      }
+      console.log(this.auxObj.data)*/
+      if(this.obj.data.length > 0){
+        this.userService.respuestaEncuesta(this.obj.data,this.id) 
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            console.log(auxRes)
+            if(auxRes.estado == 'success'){
+              console.log('en proceso')
+              this.first= true;
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+      else if(this.auxObj.data.length > 0){
+        this.userService.respuestaEncuesta(this.auxObj.data,this.id) 
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            console.log(auxRes)
+            if(auxRes.estado == 'success'){
+              this.second = true
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }
+      localStorage.removeItem('encuesta');
+      this.openSnackBar("Encuesta respondida");
+      this.router.navigate(['analitics/myStudies']);
+    
   }
 
 

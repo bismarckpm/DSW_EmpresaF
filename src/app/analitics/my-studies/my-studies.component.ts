@@ -54,7 +54,8 @@ export class MyStudiesComponent implements OnInit {
     this.router.navigate(['/analitics/results/'+encuestaId]);
   }
 
-  getMuestra(idEstudio){
+  getMuestra(idEstudio,idEncuesta){
+    localStorage.setItem('encuesta', JSON.stringify({encuestaId:idEncuesta}))
     this.router.navigate(['/analitics/sample/'+idEstudio]);
   }
 
