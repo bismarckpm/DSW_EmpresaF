@@ -62,7 +62,7 @@ export class MenuBrandComponent implements OnInit{
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
-            this.openSnackBar("Usuario inactivado");
+            this.openSnackBar("Marca inactivado");
             window.location.reload();
           }
         },
@@ -77,7 +77,7 @@ export class MenuBrandComponent implements OnInit{
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
-            this.openSnackBar("Usuario activado");
+            this.openSnackBar("Marca activado");
             window.location.reload();
           }
         },
