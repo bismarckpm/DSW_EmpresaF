@@ -15,9 +15,9 @@
                 The actual rendered columns are set as a property on the row definition" -->
   
           <!-- idMarca Column -->
-          <ng-container matColumnDef="id">
+          <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef> Estado</th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
           </ng-container>
   
           <!-- nombreMarca Column -->
@@ -28,7 +28,7 @@
   
           <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <button style="background: white;border:none;outline: none;" ><i class="fas fa-user-edit" matTooltip="Ver resultados" style="color: #A759F1;cursor: pointer;"  (click)="verResultado(element.encuestaId)"></i></button ></td>
+            <td mat-cell *matCellDef="let element"> <button style="background: white;border:none;outline: none;" ><i class="fas fa-user-edit" matTooltip="Ver resultados" style="color: #A759F1;cursor: pointer;"  (click)="verResultado(element.encuestaId)"></i></button ><span><i class="far fa-address-card" style="margin-left: 12px;cursor: pointer;" (click)="getMuestra(element.id)"></i></span></td>
         </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

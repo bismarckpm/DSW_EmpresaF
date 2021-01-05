@@ -67,7 +67,7 @@ const routes: Routes = [
     { path: "updateClient/:id", component: UpdateClientComponent},
     { path: "menuRequeststudies", component: RequestStudyComponent},
     { path: "updateRespondent/:id", component: UpdateRespondentComponent},
-    { path: "pollquestion/:id", component: AddPollQuestionComponent},
+    { path: "pollquestion/:id/:x", component: AddPollQuestionComponent},
     { path: "profile", component: ProfileComponent},
     { path: "passwordProfile", component: PasswordProfileComponent},
     { path: "results/:id", component: ResultsComponent},

@@ -6,7 +6,7 @@
         <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
             <a class="fas fa-arrow-left fa-2x" routerLink="/config/menuusers"></a>
         </div> 
-    <form [formGroup]="updateRespondtForm" (ngSubmit)="handleUpdateEncuestado()" fxLayout="column" fxLayoutAlign="center center" >
+    <form [formGroup]="updateRespondtForm" fxLayout="column" fxLayoutAlign="center center" >
         <mat-label>Numero de Identificacion</mat-label>
         <mat-form-field appearance="outline" >
             <mat-label>{{oldnumiden}}</mat-label>
@@ -57,7 +57,7 @@
             <mat-label>Contraseña</mat-label>
             <input matInput formControlName="contrasena" type="text">
         </mat-form-field>-->
-        <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;">Actualizar</button>
+        <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;" (click)="handleUpdateEncuestado()">Actualizar</button>
     </form>
     </mat-card>
 </div>

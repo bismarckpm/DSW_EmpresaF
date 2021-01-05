@@ -4,6 +4,13 @@ $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
 
+table {
+    width: 80%;
+  }
+
+  mat-card{
+      width: 300px;
+  }
 .menu-bg{
     background-image: url(./../../../assets/images/loginBackground.png);
     background-position-x: right;
@@ -16,6 +23,13 @@ mat-form-field{
     margin-right: auto;
     margin-left: auto;
 }
+
+.menu-container{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.title-container{ margin-top: 21px; margin-bottom: 21px; }
 
 .btn-update-text{
     font-size: 14px;
@@ -31,4 +45,18 @@ mat-form-field{
     color: $mercadoucab-light;
     text-align: -webkit-center;
     color: whitesmoke;
+}
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+
+.fa-plus{
+    padding-left: 20px;
+    color: #94d82d;
+    cursor: pointer;
+    position: fixed;
 }
