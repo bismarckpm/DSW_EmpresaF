@@ -83,11 +83,23 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions);
   }
 
-  respuestaEncuesta(respuesta:any,idEncuesta:number,idPregunta:number){
-    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas/'+idPregunta+'/respuesta',respuesta,this.httpOptions)
+  respuestaEncuesta(respuesta:any,idEncuesta:number){
+    return this.http.post(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,
+    {respuestas: respuesta},this.httpOptions)
   }
 
   getIdEncuestado(idEncuestado:number){
     return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
+  }
+
+  getAdministrador(id:number){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
+    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+  }
+
+  updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+    return this.http.put(this.API_URL+'api/administrador/update/'+id,
+                          {"nombreUsuario":nombreUsuario,
+                           "contrasena":contrasena},
+                           this.httpOptions);
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -32,7 +33,7 @@ export class RegisterComponent implements OnInit {
   contrasena:any;
   nivelS:any;
   nivelE:any;
-  constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar,public datepipe: DatePipe) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar,public datepipe: DatePipe) { }
 
 
   ngOnInit(): void {
@@ -155,8 +156,10 @@ export class RegisterComponent implements OnInit {
     .subscribe(
       res => {
         let auxRes:any = res;
+        console.log(auxRes)
         if(auxRes.estado == 'success'){
           this.openSnackBar("Registro exitoso");
+          this.router.navigate(['']);
         }
         else if(auxRes.estado != 'success'){
           this.openSnackBar("Registro fallido");

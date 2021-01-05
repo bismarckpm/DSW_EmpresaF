@@ -13,7 +13,7 @@
                             </mat-radio-group>
                         </div>
                         <div *ngIf="pregunta.tipo=='multiple'">
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[item.idOpcion]">
+                            <mat-radio-group aria-label="Select an option" [(ngModel)]="multipleSelected[item.idOpcion]">
                                 <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
                             </mat-radio-group>
                         </div>
@@ -27,7 +27,7 @@
             </div>
         <br>
         </div>
-        <button mat-raised-button class="create-btn " color="primary" (click)="handleRespuesta()">Enviar</button>
+        <button mat-raised-button class="create-btn " color="primary" (click)="handleRespuesta()" >Enviar</button>
         <br>
         <!--<pre>{{ radioSelected | json }}</pre>-->
 </div>

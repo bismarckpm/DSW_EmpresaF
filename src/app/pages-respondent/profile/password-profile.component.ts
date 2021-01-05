@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminService } from './../../core/services/admin.service';
+import { UsersService } from './../../core/services/users.service';
 
 @Component({
   selector: 'app-password-profile',
@@ -14,7 +14,7 @@ export class PasswordProfileComponent implements OnInit {
   contrasena:any;
   iduser:any;
   nombre:any;
-  constructor(private formBuilder: FormBuilder,private router: Router,public _snackBar: MatSnackBar,private adminService:AdminService) {
+  constructor(private formBuilder: FormBuilder,private router: Router,public _snackBar: MatSnackBar,private userService:UsersService) {
 
       this.passwordForm = this.formBuilder.group({
         contrasena: ['', Validators.required]
@@ -36,7 +36,7 @@ export class PasswordProfileComponent implements OnInit {
     let userStorage = localStorage.getItem('encuestadoLogged');
     this.iduser = JSON.parse(userStorage);
     this.iduser = this.iduser.id;
-    this.adminService.getAdministrador(this.iduser).
+    this.userService.getAdministrador(this.iduser).
     subscribe(
       res =>{
         let auxRes:any = res;
@@ -52,7 +52,7 @@ export class PasswordProfileComponent implements OnInit {
     if (this.passwordForm.valid) {
       console.log(this.passwordForm.value);
       this.contrasena = this.passwordForm.get('contrasena').value;
-      this.adminService.updateAdministrador(this.nombre,this.contrasena,this.iduser)
+      this.userService.updateAdministrador(this.nombre,this.contrasena,this.iduser)
         .subscribe(
           res => {
             let auxRes:any = res;

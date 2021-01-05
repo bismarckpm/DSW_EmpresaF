@@ -1,0 +1,21 @@
+<div *ngFor="let chartOptions of chartOptions" fxLayoutAlign="center center">
+    <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions">
+    </highcharts-chart>
+</div>
+<br>
+<div *ngFor="let res of resDesarrollo" fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card" style="width: 40%;">
+        <div fxLayout="row">
+            <div >
+                <div><span style="color:#5970F1">Pregunta</span>: {{res.pregunta}}</div>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <div >
+                <div><span style="color:#5970F1">Respuesta</span>: {{res.respuesta}}</div>
+            </div>
+        </div>
+       
+    </mat-card>
+    <br>
+</div>

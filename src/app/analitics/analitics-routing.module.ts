@@ -13,7 +13,8 @@ import { MyStudiesComponent } from 'src/app/analitics/my-studies/my-studies.comp
 import { AnalysisComponent } from './analysis/analysis.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import { ResultsComponent } from 'src/app/analitics/results/results.component';
+import { AddSampleComponent } from 'src/app/analitics/addSample/addSample.component'
 
 const routes: Routes = [
     {
@@ -22,15 +23,17 @@ const routes: Routes = [
       children: [
         { path: "menuanalitics", component: MenuAnaliticsComponent},
         { path: "myStudies", component: MyStudiesComponent},
-        { path: "sample", component: SampleComponent},
-        { path: "updatesample", component: UpdateSampleComponent},
-        { path: "interview", component: InterviewSurveyComponent},
+        { path: "sample/:id", component: SampleComponent},
+        { path: "updatesample/:id", component: UpdateSampleComponent},
+        { path: "interview/:id", component: InterviewSurveyComponent},
         { path: "card-desc", component: DescriptionCardComponent},
         { path: "card-range", component: RangeCardComponent},
         { path: "card-op", component: OptionCardComponent},
         { path: "analysis", component: AnalysisComponent},
         { path: "password", component: PasswordProfileComponent},
-        { path: "profile", component: ProfileComponent}
+        { path: "profile", component: ProfileComponent},
+        { path: "results/:id", component: ResultsComponent},
+        { path: "addsample/:id", component: AddSampleComponent},
       ]
     }
   ];

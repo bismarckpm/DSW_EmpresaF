@@ -1,71 +1,27 @@
-@import './../../../styles.scss';
-
 $mercadoucab-dark: #222327;
 $mercadoucab-light: whitesmoke;
 $mercadoucab-blue: #5454C9;
+table {
+    width: 80%;
+  }
 
 mat-card{
   -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
   -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
   box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+  width: 350px;
+  border-top: #5454C9 solid 3px;
 }
 
-table {
-    width: 50%;
-}
-
-.space{
-  margin-top: 1rem;
-}
-
-.texto-entrada h1 {
-  margin: 0;
-  line-height: 1.4;
-  text-align: center;
-}
-.texto-entrada h1::after {
-  content: '';
-  display:  block;
-  width: 13rem;
-  height: .1rem;
-  background-color: blue;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+.create-btn{
+  font-size: large;
+  width: 10%;
 }
 
 .menu-bg{
-    background-image: url(./../../../assets/images/loginBackground.png);
-    background-position-x: right;
-    background-position-y: top;
-    background-repeat: no-repeat;
-    background-size: 65%;
+  background-image: url(./../../../assets/images/loginBackground.png);
+  background-position-x: right;
+  background-position-y: top;
+  background-repeat: no-repeat;
+  background-size: 65%;
 }
-
-
-mat-card-content{
-  margin-top: 2rem;
-}
-
-mat-form-field {
-  width: 40rem;
-  margin-bottom: 0;
-
-}
-
-mat-label{
-  width: 25rem;
-}
-.menu-container{
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-button{
-  margin-top: 1rem;
-  background-color:$mercadoucab-primary;
-  color: white;
-}
-
-

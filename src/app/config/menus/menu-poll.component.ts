@@ -13,7 +13,7 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuPollComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['encuestaId', 'subcategoria','icons'];
+  displayedColumns: string[] = ['encuestaId', 'nombreEncuesta','subcategoria','icons'];
   constructor(private router: Router,private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;

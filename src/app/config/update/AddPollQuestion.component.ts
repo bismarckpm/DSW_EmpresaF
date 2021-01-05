@@ -1,5 +1,5 @@
 import { Component,OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
 import { AdminService } from './../../core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -19,12 +19,13 @@ export class AddPollQuestionComponent implements OnInit{
   admin: any;
   Preguntas:any;
   token: string;
+  IdPreguntas:any;
   IdPregunta:number;
   constructor(private router: Router,private route: ActivatedRoute,private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.EncuestaPreguntaForm = this.formBuilder.group({
-      selectPregunta: ['',Validators.required]
+      itemRows: this.formBuilder.array([this.initItemRows()])
     });
     this.getPreguntas();
   }
@@ -36,10 +37,10 @@ export class AddPollQuestionComponent implements OnInit{
   }
 
   handlePollQuestion(){
+    this.IdPreguntas = this.EncuestaPreguntaForm.get('itemRows').value;
     this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.IdPregunta =  this.EncuestaPreguntaForm.get('selectPregunta').value;
-        this.adminService.addQuestiontoPoll(this.id,this.IdPregunta)
+        this.adminService.setQuestions(this.id,this.IdPreguntas)
         .subscribe(
           res => {
             let auxRes:any;
@@ -57,19 +58,75 @@ export class AddPollQuestionComponent implements OnInit{
   } 
 
   getPreguntas(){
-    this.adminService.getQuestions()/*cambiar por get de preguntas que no esten en la encuesta*/
-    .subscribe(
-      res => {
-        let auxRes:any;
-        auxRes = res;
-        if(auxRes.estado == 'success'){
-          this.Preguntas = auxRes.data;
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      let x : number;
+      let y : number;
+      x= +params['x'];
+      if (x==0){
+        this.adminService.getQuestionsSu(this.id)  
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.Preguntas = auxRes.preguntas;
+              if (auxRes.preguntas.length==0){
+                this.adminService.getQuestionsNo(this.id)
+                  .subscribe(
+                    res => {
+                      let auxRes:any;
+                      auxRes = res;
+                      if(auxRes.estado == 'success'){
+                        this.Preguntas = auxRes.preguntas;
+                      }
+                    },
+                    err => {
+                      console.log(err)
+                    }
+                  )
+              }
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else if (x==1){ 
+        this.adminService.getQuestionsNo(this.id)
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.Preguntas = auxRes.preguntas;
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }  
+    });
+  }
+
+   //Agregar preguntas dinamicas
+  initItemRows() {
+    return this.formBuilder.group({
+      id: ['']
+    });
+  }
+
+  get formArr() {
+    return this.EncuestaPreguntaForm.get('itemRows') as FormArray;
+  }
+
+  addNewRow() {
+    this.formArr.push(this.initItemRows());
+  }
+
+  deleteRow(index: number) {
+    this.formArr.removeAt(index);
   }
   
 }
