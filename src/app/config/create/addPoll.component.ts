@@ -2,6 +2,7 @@ import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from 'src/app/core/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-addpoll',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 export class AddPollComponent implements OnInit{
-    
+  nombre:any;
   auxRes: any;
   createEncuestaForm: FormGroup;
   admin: any;
@@ -45,6 +46,7 @@ export class AddPollComponent implements OnInit{
         auxRes = res;
         if(auxRes.estado == 'success'){
           this.openSnackBar("Encuesta creada con exito");
+          window.location.reload();
         }
         else if(auxRes.estado != 'success'){
           this.openSnackBar("Ocurrio un problema");

@@ -19,6 +19,7 @@ export class UpdatePollComponent implements OnInit{
   dataSource:any;
   sub: any;
   id: number;
+  x:number;
   displayedColumns: string[] = ['idPregunta', 'descripcionPregunta','tipo','icons'];
   constructor(private router: Router,private route: ActivatedRoute, private adminService:AdminService,public _snackBar: MatSnackBar) { }
   
@@ -41,7 +42,12 @@ export class UpdatePollComponent implements OnInit{
         res => {
           let auxRes:any;
           auxRes = res;
-          if(auxRes.estado == 'success'){          
+          if(auxRes.estado == 'success'){   
+            if (auxRes.data.length!=0){
+              this.x = 1;
+            }else{
+              this.x = 0;
+            }
             this.element = [auxRes.data];
             this.dataSource = new MatTableDataSource(auxRes.data);
             this.dataSource.paginator = this.paginator;
@@ -63,6 +69,6 @@ export class UpdatePollComponent implements OnInit{
   }
 
   addQuestion(){
-    this.router.navigate(['/config/pollquestion/'+this.id]);
+    this.router.navigate(['/config/pollquestion/'+this.id+'/'+this.x]);
   }
 }

@@ -125,11 +125,23 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/preguntas',this.httpOptions);
   }
 
+  getQuestionsSu(idEncuesta){/*Preguntas sugeridas para la encuesta*/
+    return this.http.get(this.API_URL+'api/preguntas/'+idEncuesta+'/sugerencias',this.httpOptions);
+  }
+
+  getQuestionsNo(idEncuesta){/*Preguntas que no estan en la encuesta*/ 
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntasagregables',this.httpOptions);
+  }
+
   getQuestionP(id:number){/*Preguntas que esten en una encuesta*/
     return this.http.get(this.API_URL+'api/encuestas/'+id+'/preguntas',this.httpOptions);
   }
 
-  addQuestiontoPoll(idEncuesta:number,idPregunta:number){/*http://localhost:8081/servicio-1.0-SNAPSHOT/api/encuestas/2/pregunta  json {"id":2}*/
+  setQuestions(idEncuesta:number,Ids :any){/*Agrega preguntas a una encuesta*/
+    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/pregunta',{"preguntas":Ids},this.httpOptions)
+  }
+
+  addQuestiontoPoll(idEncuesta:number,idPregunta:number){/*Agrega una pregunta a la encuesta NO SE ESTA USANDO*/
     return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/pregunta',{"id":idPregunta},this.httpOptions);
 
   }

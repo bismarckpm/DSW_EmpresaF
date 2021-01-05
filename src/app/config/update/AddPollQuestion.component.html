@@ -8,13 +8,13 @@
                 <h1 class=" text-center"><span style="color: #5454C9;">A</span>gregar Pregunta</h1>
             </div>
         </div>
-        <form [formGroup]="EncuestaPreguntaForm" (ngSubmit)="handlePollQuestion()" fxLayout="column" fxLayoutAlign="center center">
+        <form [formGroup]="EncuestaPreguntaForm"  fxLayout="column" fxLayoutAlign="center center">
             <div formArrayName="itemRows">
                 <div *ngFor="let itemrow of EncuestaPreguntaForm?.controls.itemRows.controls; let i=index" [formGroupName]="i" >
                     <mat-form-field appearance="outline">
                         <mat-label>Preguntas</mat-label>
-                        <mat-select formControlName="selectPregunta">
-                            <mat-option *ngFor="let pregunta of Preguntas" [value]="pregunta.preguntaId">{{pregunta.descripcionPregunta}}  Tipo:{{pregunta.tipo}}</mat-option>
+                        <mat-select formControlName="id">
+                            <mat-option *ngFor="let pregunta of Preguntas" [value]="pregunta.preguntaId">{{pregunta.descripcionPregunta}}  Tipo:{{pregunta.tipoPregunta}}</mat-option>
                         </mat-select>
                     </mat-form-field>  
                     <br>
@@ -28,7 +28,7 @@
                 </div>
             </div>    
             <br>
-            <button mat-raised-button class="create-btn width-100" [disabled]="!EncuestaPreguntaForm.valid">Crear</button>
+            <button mat-raised-button class="create-btn width-100" [disabled]="!EncuestaPreguntaForm.valid" (click)="handlePollQuestion()">Agregar</button>
         </form>
     </mat-card>
 </div>   
