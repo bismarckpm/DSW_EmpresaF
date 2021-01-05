@@ -57,6 +57,19 @@ public class ServicioPregunta extends AplicacionBase {
             DaoPregunta daoPregunta = new DaoPregunta();
             Pregunta preguntaAgregada = daoPregunta.insert(pregunta);
 
+          if(preguntaDto.getTipoPregunta().equals("desarrollo")){
+            DaoOpcion daoOpcion = new DaoOpcion();
+            Integer id = 8;
+            Opcion opcion = daoOpcion.find(id.longValue(), Opcion.class);
+
+            DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+            PreguntaOpcion preguntaOpcion = new PreguntaOpcion();
+            preguntaOpcion.set_pregunta(preguntaAgregada);
+            preguntaOpcion.set_opcion(opcion);
+
+            daoPreguntaOpcion.insert(preguntaOpcion);
+          }
+
             preguntaDto.setId(preguntaAgregada.get_id());
 
             List<OpcionDto> opcionesDtos = preguntaDto.getOpciones();
@@ -247,6 +260,7 @@ public class ServicioPregunta extends AplicacionBase {
     Subcategoria subcategoria;
 
     JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
+    ArrayList<String> arrayListPregunta = new ArrayList<>();
 
     try {
       encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
@@ -256,12 +270,14 @@ public class ServicioPregunta extends AplicacionBase {
 
       for (Encuesta encuest: encuestas){
         for(Pregunta pregunta: encuest.getPreguntas()) {
-          JsonObject question = Json.createObjectBuilder()
-            .add("preguntaId", pregunta.get_id())
-            .add("descripcionPregunta", pregunta.get_descripcionPregunta())
-            .add("tipoPregunta", pregunta.get_tipoPregunta()).build();
-
-          preguntasArray.add(question);
+          if(!arrayListPregunta.contains(pregunta.get_descripcionPregunta())){
+            JsonObject question = Json.createObjectBuilder()
+              .add("preguntaId", pregunta.get_id())
+              .add("descripcionPregunta", pregunta.get_descripcionPregunta())
+              .add("tipoPregunta", pregunta.get_tipoPregunta()).build();
+            preguntasArray.add(question);
+            arrayListPregunta.add(pregunta.get_descripcionPregunta());
+          }
         }
       }
       data = Json.createObjectBuilder()
