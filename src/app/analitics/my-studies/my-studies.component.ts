@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MyStudiesComponent implements OnInit {
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['id', 'nombreEstudio','icons'];
+  displayedColumns: string[] = ['estado', 'nombreEstudio','icons'];
 
   constructor(private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
@@ -52,6 +52,10 @@ export class MyStudiesComponent implements OnInit {
 
   verResultado(encuestaId){
     this.router.navigate(['/analitics/results/'+encuestaId]);
+  }
+
+  getMuestra(idEstudio){
+    this.router.navigate(['/analitics/sample/'+idEstudio]);
   }
 
 }

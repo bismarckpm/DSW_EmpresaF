@@ -1,6 +1,9 @@
 import { Component,OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router,ActivatedRoute } from '@angular/router';
+import { AnalystService } from 'src/app/core/services/analyst.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sample',
@@ -9,40 +12,47 @@ import {MatPaginator} from '@angular/material/paginator';
 })
 
 export class SampleComponent implements OnInit{
+  
+  sub: any;
+  id: number;
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['idUsuario','nombreUsuario','apellidoUsuario','fecnacUsuario','icons'];
-  constructor() { }
+  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','icons'];
+  constructor(private route: ActivatedRoute,private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
     this.getMuestras();
-    
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   getMuestras(){
-    
-    this.element = [
-      {idUsuario: 1, nombreUsuario: 'Carlos23',apellidoUsuario:'Medicamentos',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 2, nombreUsuario: 'LOPZ1998',apellidoUsuario:'Frutas',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 3, nombreUsuario: 'PaoVar',apellidoUsuario:'Verduras',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 4, nombreUsuario: 'Ofic14',apellidoUsuario:'Pisos',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 5, nombreUsuario: 'Escolar75',apellidoUsuario:'Papeleria',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 6, nombreUsuario: 'Comr',apellidoUsuario:'Cuadernos',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 7, nombreUsuario: 'Mueb4',apellidoUsuario:'Vajillas',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 8, nombreUsuario: 'Computadoras185',apellidoUsuario:'Cubiertos',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 9, nombreUsuario: 'Hi99',apellidoUsuario:'Sofas',fecnacUsuario:'01/01/1999'},
-      {idUsuario: 10, nombreUsuario: 'Masna74',apellidoUsuario:'Perifericos',fecnacUsuario:'01/01/1999'},
-    ];
-    this.dataSource = new MatTableDataSource(this.element);
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.analistService.getSample(this.id).
+      subscribe(
+        res =>{
+          let auxRes:any = res;
+          if(auxRes.estado == 'success'){
+            this.element = auxRes.encuestados;
+            this.dataSource = new MatTableDataSource(auxRes.encuestados);
+            this.dataSource.paginator = this.paginator;
+          }
+        },
+        err =>{
+          console.log(err)
+        }
+      )
+    });
 
+  }
+
+  addMuestra(){
+    this.router.navigate(['/analitics/addsample/'+this.id]);
   }
 
   deleteMuestra(idUsuario){
@@ -50,6 +60,7 @@ export class SampleComponent implements OnInit{
   }
 
   updateMuestra(idUsuario){
+    this.router.navigate(['/analitics/updatesample/'+idUsuario]);
     console.log(idUsuario)
   }
 

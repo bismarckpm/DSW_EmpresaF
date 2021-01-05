@@ -38,11 +38,9 @@ export class AddPollQuestionComponent implements OnInit{
 
   handlePollQuestion(){
     this.IdPreguntas = this.EncuestaPreguntaForm.get('itemRows').value;
-    console.log(this.IdPreguntas);
-    /*this.sub = this.route.params.subscribe(params => {
+    this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.IdPregunta =  this.EncuestaPreguntaForm.get('selectPregunta').value;
-        this.adminService.addQuestiontoPoll(this.id,this.IdPregunta)
+        this.adminService.setQuestions(this.id,this.IdPreguntas)
         .subscribe(
           res => {
             let auxRes:any;
@@ -56,29 +54,66 @@ export class AddPollQuestionComponent implements OnInit{
             console.log(err)
           }
         )
-      });*/
+      });
   } 
 
   getPreguntas(){
-    this.adminService.getQuestions()/*cambiar por get de preguntas que no esten en la encuesta*/
-    .subscribe(
-      res => {
-        let auxRes:any;
-        auxRes = res;
-        if(auxRes.estado == 'success'){
-          this.Preguntas = auxRes.data;
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    this.sub = this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      let x : number;
+      let y : number;
+      x= +params['x'];
+      if (x==0){
+        this.adminService.getQuestionsSu(this.id)  
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.Preguntas = auxRes.preguntas;
+              if (auxRes.preguntas.length==0){
+                this.adminService.getQuestionsNo(this.id)
+                  .subscribe(
+                    res => {
+                      let auxRes:any;
+                      auxRes = res;
+                      if(auxRes.estado == 'success'){
+                        this.Preguntas = auxRes.preguntas;
+                      }
+                    },
+                    err => {
+                      console.log(err)
+                    }
+                  )
+              }
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else if (x==1){ 
+        this.adminService.getQuestionsNo(this.id)
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.Preguntas = auxRes.preguntas;
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }  
+    });
   }
 
    //Agregar preguntas dinamicas
   initItemRows() {
     return this.formBuilder.group({
-      selectPregunta: ['']
+      id: ['']
     });
   }
 

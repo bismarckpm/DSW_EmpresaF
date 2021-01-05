@@ -32,6 +32,7 @@ export class ClientComponent implements OnInit{
       res => {
         let auxRes:any;
         auxRes = res;
+        console.log(auxRes)
         if(auxRes.estado == 'success'){
           this.elements = auxRes.solicitudes
         }

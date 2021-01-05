@@ -1,48 +1,54 @@
-<mat-toolbar class="container-fluid mat-toolbar">
-    <div class="row d-flex align-items-center">
-        <a mat-icon-button  routerLink="/analitics/sample" class="d-flex justify-content-start">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-        </a>    
-    </div>
-</mat-toolbar>
-<br>
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div fxLayout fxLayoutAlign="center center ">
-        <mat-card-content fxLayout="column">
-            <mat-label>Nombre</mat-label>
-            <mat-form-field appearance="fill" >
-            <mat-label>{{info.nombre}}</mat-label>
-                <input matInput type="text">
-            </mat-form-field>
-            <br>
-            <mat-label>Apellido</mat-label>
-            <mat-form-field appearance="fill" >
-                <mat-label>{{info.apellido}}</mat-label>
-                    <input matInput type="text">
-                </mat-form-field>
-            <br>
-            <mat-label>Estado civil</mat-label>
-            <mat-form-field appearance="fill">
-            <mat-label>{{info.estadocivil}}</mat-label>
-            <mat-select>
-                <mat-option value="option">Casado</mat-option>
-                <mat-option value="option">Soltero</mat-option>
-                <mat-option value="option">Divorciado</mat-option>
-                <mat-option value="option">Viudo</mat-option>
+    <mat-card class="example-card" >
+        <div class="texto-entrada">
+            <h1 >Actualizar Encuestado</h1>
+        </div>
+        <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
+            <a class="fas fa-arrow-left fa-2x" routerLink="/analitics/myStudies"></a>
+        </div> 
+    <form [formGroup]="updateRespondtForm"  fxLayout="column" fxLayoutAlign="center center" >
+        <mat-label>Numero de Identificacion</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldnumiden}}</mat-label>
+            <input matInput formControlName="numeroIdentificacion" type="text">
+        </mat-form-field>
+        <mat-label>Primer nombre</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldnombre}}</mat-label>
+            <input matInput formControlName="primerNombre" type="text">
+        </mat-form-field>
+        <mat-label>Primer apellido</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldapellido}}</mat-label>
+            <input matInput formControlName="primerApellido" type="text">
+        </mat-form-field>
+        <mat-label>Genero</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldgenero}}</mat-label>
+            <mat-select formControlName="genero">
+                <mat-option *ngFor="let genero of generos, index as i" [value]="genero.descripcion">{{genero.descripcion}}</mat-option>
             </mat-select>
-            </mat-form-field>
-            <br>
-            <mat-label>Fecha de Nacimiento</mat-label>
-            <mat-form-field appearance="fill" >
-                <mat-label>{{info.fechanac}}</mat-label>
-                <input matInput type="date">
-              </mat-form-field>
-            <br>
-            <div class="slide-in-fwd-center content" fxLayout="column" fxLayoutAlign="center center">
-                <button class="width-send-btn" mat-raised-button  fxLayoutAlign="center center" (click)="updateUsuario()">
-                    <span class="btn-send-text">Actualizar</span>
-                </button>
-            </div>
-        </mat-card-content>
-    </div>     
+        </mat-form-field>
+        <mat-label>Estado civil</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldestadocivil}}</mat-label>
+            <mat-select formControlName="estadoCivil">
+                <mat-option *ngFor="let estado of estadosCiviles, index as i" [value]="estado.descripcion">{{estado.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-label>Ocupacion</mat-label>
+        <mat-form-field appearance="outline" >
+            <mat-label>{{oldocupacion}}</mat-label>
+            <input matInput formControlName="ocupacion" type="text">
+        </mat-form-field>
+        <mat-label>Parroquia</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-label>{{oldparroquia}}</mat-label>
+            <mat-select formControlName="Selectparroquia">
+            <mat-option *ngFor="let parroquia of Parroquias" [value]="parroquia.idParroquia">{{parroquia.nombreParroquia}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button class="create-btn " color="primary"  style="width: 100%;font-size: large;" (click)="handleUpdateEncuestado()">Actualizar</button>
+    </form>
+    </mat-card>
 </div>
