@@ -91,4 +91,15 @@ export class UsersService extends ApiService{
   getIdEncuestado(idEncuestado:number){
     return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
   }
+
+  getAdministrador(id:number){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
+    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+  }
+
+  updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+    return this.http.put(this.API_URL+'api/administrador/update/'+id,
+                          {"nombreUsuario":nombreUsuario,
+                           "contrasena":contrasena},
+                           this.httpOptions);
+  }
 }
