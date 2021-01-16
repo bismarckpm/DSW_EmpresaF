@@ -163,7 +163,7 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
   }
 
   /**
-   * Metodo para asignar un usuario a la muestra a una solicitud de estudio dependiendo
+   * Metodo para asignar usuarios a la muestra a una solicitud de estudio dependiendo
    * de sus caracteristicas demográficas
    *
    *

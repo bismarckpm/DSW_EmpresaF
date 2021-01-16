@@ -101,7 +101,10 @@ public class ServicioEncuestaRespuesta {
         Integer flag = 0;
         SolicitudEstudio solicitud = null;
 
-        for(SolicitudEstudio solicitudEstudio: encuesta.get_estudio().get_solicitudesEstudio()){
+        DaoEstudio dao = new DaoEstudio();
+        Estudio est = dao.find(encuesta.get_estudio().get_id(), Estudio.class);
+
+        for(SolicitudEstudio solicitudEstudio: est.get_solicitudesEstudio()){
           List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
           for (Muestra muestra:muestras) {
             if (solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id() && encuestado.get_id() == muestra.get_encuestado().get_id()){
@@ -151,14 +154,11 @@ public class ServicioEncuestaRespuesta {
         return Response.ok().entity(data).build();
       }
       catch (Exception ex){
-        JsonObject data = Json.createObjectBuilder()
-          .add("estado", "error")
-          .add("mensaje", ex.getMessage())
-          .add("code", 400).build();
+        ex.printStackTrace();
 
-        System.out.println(data);
+        //System.out.println(data);
 
-        return Response.ok().entity(data).build();
+        return Response.ok().entity(null).build();
       }
     }
 
@@ -224,8 +224,8 @@ public class ServicioEncuestaRespuesta {
 
           }else{
             DaoRespuesta daoRespuesta = new DaoRespuesta();
-            List<Respuesta> ress = daoRespuesta.findAll(Respuesta.class);
-            for(Respuesta respuesta: ress){
+            List<Respuesta> answers = daoRespuesta.findAll(Respuesta.class);
+            for(Respuesta respuesta: answers){
               if(respuesta.get_preguntaEncuesta().get_id() == preguntaEncuesta.get_id()){
                 JsonObject answer = Json.createObjectBuilder()
                   .add("pregunta", pregunta.get_descripcionPregunta())

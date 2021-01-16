@@ -1,6 +1,9 @@
 package ucab.dsw.dtos;
 
+import ucab.dsw.entidades.Pregunta;
+
 import java.util.Date;
+import java.util.List;
 
 public class EstudioDto extends  DtoBase{
 
@@ -17,6 +20,8 @@ public class EstudioDto extends  DtoBase{
   private EncuestaDto encuesta;
 
   private SolicitudEstudioDto solicitudEstudio;
+
+  private List<PreguntaDto> preguntas;
 
   public EstudioDto(long id) throws Exception {
     super(id);
@@ -79,5 +84,13 @@ public class EstudioDto extends  DtoBase{
 
   public void setSolicitudEstudio(SolicitudEstudioDto solicitudEstudio) {
     this.solicitudEstudio = solicitudEstudio;
+  }
+
+  public List<PreguntaDto> getPreguntas() {
+    return preguntas;
+  }
+
+  public void setPreguntas(List<PreguntaDto> preguntas) {
+    this.preguntas = preguntas;
   }
 }

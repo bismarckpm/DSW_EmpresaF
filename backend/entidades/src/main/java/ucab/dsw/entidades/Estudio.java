@@ -28,7 +28,7 @@ public class Estudio extends EntidadBase{
   @Column(name = "fecha_fin")
   private Date _fechaFin;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn( name = "fk_encuesta")
   private Encuesta _encuesta;
 

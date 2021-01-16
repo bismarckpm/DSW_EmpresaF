@@ -1,5 +1,6 @@
 package ucab.dsw.servicio.usuario;
 
+import ucab.dsw.accesodatos.DaoEstudio;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
 import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.directorioactivo.DirectorioActivo;
@@ -447,8 +448,10 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
       for (SolicitudEstudio solicitudes : solicitudEstudios) {
        if(solicitudes.get_estudio() != null){
           if(solicitudes.get_analista().get_id() == id) {
+            DaoEstudio daoEstudio = new DaoEstudio();
+            Estudio estu = daoEstudio.find(solicitudes.get_estudio().get_id(), Estudio.class);
             JsonObject estudio = Json.createObjectBuilder()
-              .add("estado", solicitudes.get_estudio().get_estado())
+              .add("estado", estu.get_estado())
               .add("id", solicitudes.get_id())
               .add("nombreEstudio", solicitudes.get_estudio().get_nombreEstudio())
               .add("encuestaId", solicitudes.get_estudio().get_encuesta().get_id()).build();

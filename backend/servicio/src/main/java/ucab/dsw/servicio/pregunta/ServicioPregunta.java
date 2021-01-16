@@ -273,6 +273,7 @@ public class ServicioPregunta extends AplicacionBase {
           if(!arrayListPregunta.contains(pregunta.get_descripcionPregunta())){
             JsonObject question = Json.createObjectBuilder()
               .add("preguntaId", pregunta.get_id())
+              .add("subcategoria", subcategoria.get_nombreSubcategoria())
               .add("descripcionPregunta", pregunta.get_descripcionPregunta())
               .add("tipoPregunta", pregunta.get_tipoPregunta()).build();
             preguntasArray.add(question);

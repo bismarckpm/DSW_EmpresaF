@@ -6,6 +6,7 @@ import ucab.dsw.dtos.MuestraDto;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.Usuario;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -155,11 +156,13 @@ public class ServicioMuestra {
       JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
 
       for (Encuestado encuestado : encuestadosMuestra) {
+        DaoUsuario daoUsuario = new DaoUsuario();
+        Usuario usuario = daoUsuario.find(encuestado.get_usuario().get_id(), Usuario.class);
         JsonObject encu = Json.createObjectBuilder()
           .add("encuestadoId", encuestado.get_id())
           .add("encuestadoNombre", encuestado.get_primerNombre())
           .add("encuestadoApellido", encuestado.get_primerApellido())
-          .add("usuarioId", encuestado.get_usuario().get_id())
+          .add("usuarioId", usuario.get_id())
           .build();
 
         encuestadosArray.add(encu);
@@ -177,7 +180,7 @@ public class ServicioMuestra {
         .add("estado", "error").build();
 
       System.out.println(data);
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(null).build();
     }
 
     System.out.println(data);

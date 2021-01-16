@@ -27,7 +27,7 @@ public class Encuesta extends EntidadBase{
     @JoinColumn(name = "fk_subcategoria")
     private Subcategoria _subcategoria;
 
-    @OneToOne(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "_encuesta")
     private Estudio _estudio;
 
     @OneToMany(mappedBy = "_encuesta", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
