@@ -4,6 +4,7 @@ import ucab.dsw.accesodatos.DaoEstudio;
 import ucab.dsw.accesodatos.DaoSolicitudEstudio;
 import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.directorioactivo.DirectorioActivo;
+import ucab.dsw.dtos.EstudioDto;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
@@ -16,6 +17,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -330,11 +332,7 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
             add("genero", solicitudes.get_genero()).
             add("estado", solicitudes.get_estado()).
             add("cliente", solicitudes.get_cliente().get_nombreUsuario()).
-            add("marca", solicitudes.get_marca().get_nombreMarca()).
-            add("tipoMarca", solicitudes.get_marca().get_tipoMarca()).
-            add("capacidadMarca", solicitudes.get_marca().get_capacidad()).
-            add("unidadMarca", solicitudes.get_marca().get_unidad()).
-            add("unidadSubcategoria", solicitudes.get_marca().get_subcategoria().get_nombreSubcategoria()).
+            add("subcategoria", solicitudes.get_subcategoria().get_nombreSubcategoria()).
             add("nivelSocioeconomico", solicitudes.get_nivelSocioeconomico().getTipo()).
             add("parroquia", solicitudes.get_parroquia().get_nombreParroquia()).build();
 
@@ -390,12 +388,17 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
       solicitud = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
 
-     List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.getSolicitudesByCaracteristicas(solicitud);
+      List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.getSolicitudesByCaracteristicas(solicitud);
+      DaoEstudio daoEstudio = new DaoEstudio();
 
      for(SolicitudEstudio solicitudes:solicitudesEstudio){
         if(solicitudes.get_analista() == solicitud.get_analista() &&
           (solicitudes.get_estado().equals("procesado") || solicitudes.get_estado().equals("ejecutando") || solicitudes.get_estado().equals("culminado"))){
-            Estudio estudio = new Estudio(solicitudes.get_estudio().get_id());
+            Estudio estudio = daoEstudio.find(solicitudes.get_estudio().get_id(), Estudio.class);
+
+            estudio.set_estado("procesado");
+            daoEstudio.update(estudio);
+
             solicitud.set_estudio(estudio);
             solicitud.set_estado("procesado");
             break;
@@ -414,11 +417,9 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
     }
     catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("code", 400)
-        .add("estado", "error").build();
+      ex.printStackTrace();
 
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(null).build();
     }
 
     System.out.println(data);
@@ -440,6 +441,8 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
     DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
     JsonObject data;
+    String resultadoEstudio;
+
     try {
       List<SolicitudEstudio> solicitudEstudios = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
@@ -450,10 +453,17 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
           if(solicitudes.get_analista().get_id() == id) {
             DaoEstudio daoEstudio = new DaoEstudio();
             Estudio estu = daoEstudio.find(solicitudes.get_estudio().get_id(), Estudio.class);
+
+            if(estu.get_resultado() != null){
+              resultadoEstudio = estu.get_resultado();
+            }else{
+              resultadoEstudio = "Sin resultado";
+            }
             JsonObject estudio = Json.createObjectBuilder()
               .add("estado", estu.get_estado())
               .add("id", solicitudes.get_id())
               .add("nombreEstudio", solicitudes.get_estudio().get_nombreEstudio())
+              .add("resultadoEstudio", resultadoEstudio)
               .add("encuestaId", solicitudes.get_estudio().get_encuesta().get_id()).build();
 
             estudiosArray.add(estudio);
@@ -487,6 +497,44 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
       return Response.ok().entity(data).build();
     }
 
+  }
+
+  @Path("/finalizar/{estudioId}")
+  @PUT
+  public Response finalizarEstudio(@PathParam("estudioId") long estudioId, EstudioDto estudioDto){
+
+    JsonObject data;
+
+    try{
+      DaoEstudio daoEstudio = new DaoEstudio();
+      Estudio estudio = daoEstudio.find(estudioId, Estudio.class);
+
+      estudio.set_estado("culminado");
+      estudio.set_resultado(estudioDto.getResultado());
+
+      Date fecha = new Date();
+      estudio.set_fechaFin(fecha);
+
+      List<SolicitudEstudio> solicitudEstudios = estudio.get_solicitudesEstudio();
+      for(SolicitudEstudio solicitud:solicitudEstudios){
+        solicitud.set_estado("culminado");
+        DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+        daoSolicitudEstudio.update(solicitud);
+      }
+
+      Estudio resultado = daoEstudio.update(estudio);
+
+      data = Json.createObjectBuilder()
+        .add("estudioCulminado", resultado.get_id())
+        .add("estado", "success")
+        .add("code", 200).build();
+
+      return Response.ok().entity(data).build();
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return Response.status(400).build();
+    }
   }
 
 }

@@ -40,6 +40,7 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
   public Response addSolicitud(SolicitudEstudioDto solicitudEstudioDto){
 
     JsonObject data;
+    SolicitudEstudio solicitudEstudioAgregada;
     try {
 
       SolicitudEstudio solicitudEstudio = new SolicitudEstudio();
@@ -62,18 +63,16 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
       Parroquia parroquia = daoParroquia.find(solicitudEstudioDto.getParroquia().getId(), Parroquia.class);
       solicitudEstudio.set_parroquia(parroquia);
 
-      DaoMarca daoMarca = new DaoMarca();
-      Marca marca = daoMarca.find(solicitudEstudioDto.getMarca().getId(), Marca.class);
-      solicitudEstudio.set_marca(marca);
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
+      Subcategoria subcategoria = daoSubcategoria.find(solicitudEstudioDto.getSubcategoria().getId(), Subcategoria.class);
+      solicitudEstudio.set_subcategoria(subcategoria);
 
       DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
       NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(solicitudEstudioDto.getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       solicitudEstudio.set_nivelSocioeconomico(nivelSocioeconomico);
 
-      SolicitudEstudio solicitudEstudioAgregada;
-
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      List<SolicitudEstudio> solicitudesExistentes = asignarSolicitud(solicitudEstudio);
+      List<SolicitudEstudio> solicitudesExistentes = obtenerSolicitudesPrevias(solicitudEstudio);
 
 
       if( !solicitudesExistentes.isEmpty()){
@@ -140,13 +139,13 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
   }
 
   /**
-   * Metodo para asignar una solicitud de estudio previa con las mismas caracteristicas
+   * Metodo para obtener las solicituds de estudio previa con las mismas caracteristicas
    *
    *
    * @param solicitudEstudio solicitud de estudio recien agregada
    * @return List SolicitudEstudio
    */
-  private List<SolicitudEstudio> asignarSolicitud(SolicitudEstudio solicitudEstudio){
+  private List<SolicitudEstudio> obtenerSolicitudesPrevias(SolicitudEstudio solicitudEstudio){
     DaoSolicitudEstudio dao = new DaoSolicitudEstudio();
     List<SolicitudEstudio> solicitudEstudioPrevia = dao.getSolicitudesByCaracteristicas(solicitudEstudio);
 
@@ -208,11 +207,7 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
           add("genero", solicitudEstudio.get_genero()).
           add("estado", solicitudEstudio.get_estado()).
           add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
-          add("marca", solicitudEstudio.get_marca().get_nombreMarca()).
-          add("tipoMarca", solicitudEstudio.get_marca().get_tipoMarca()).
-          add("capacidadMarca", solicitudEstudio.get_marca().get_capacidad()).
-          add("unidadMarca", solicitudEstudio.get_marca().get_unidad()).
-          add("unidadSubcategoria", solicitudEstudio.get_marca().get_subcategoria().get_nombreSubcategoria()).
+          add("subcategoria", solicitudEstudio.get_subcategoria().get_nombreSubcategoria()).
           add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
           add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
 

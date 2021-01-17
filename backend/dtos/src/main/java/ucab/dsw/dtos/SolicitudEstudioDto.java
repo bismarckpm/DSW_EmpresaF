@@ -14,7 +14,7 @@ public class SolicitudEstudioDto extends DtoBase{
 
   private ParroquiaDto parroquia;
 
-  private MarcaDto marca;
+  private SubcategoriaDto subcategoria;
 
   private EstudioDto estudio;
 
@@ -75,12 +75,12 @@ public class SolicitudEstudioDto extends DtoBase{
     this.parroquia = parroquia;
   }
 
-  public MarcaDto getMarca() {
-    return marca;
+  public SubcategoriaDto getSubcategoria() {
+    return subcategoria;
   }
 
-  public void setMarca(MarcaDto marca) {
-    this.marca = marca;
+  public void setSubcategoria(SubcategoriaDto subcategoria) {
+    this.subcategoria = subcategoria;
   }
 
   public EstudioDto getEstudio() {

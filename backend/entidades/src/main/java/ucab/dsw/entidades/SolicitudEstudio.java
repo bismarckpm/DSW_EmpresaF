@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "solicitud_estudio")
 @NamedQueries({
-  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._marca=:marcaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico and sol._genero=:genero"),
+  @NamedQuery(name = "getSolicitudesByCaracteristicas", query = "select sol from SolicitudEstudio sol where sol._cliente =:clienteId and sol._subcategoria=:subcategoriaId and  sol._edadInicial =:edadInicial and sol._edadfinal =:edadFinal and sol._parroquia=:parroquiaId and sol._nivelSocioeconomico =:nivelSocioeconomico and sol._genero=:genero"),
   @NamedQuery(name = "getSolicitudesPendientesByAdmin", query = "select sol from SolicitudEstudio sol where sol._administrador =:administradorId")
 })
 public class SolicitudEstudio extends EntidadBase {
@@ -33,8 +33,8 @@ public class SolicitudEstudio extends EntidadBase {
   private Parroquia _parroquia;
 
   @ManyToOne
-  @JoinColumn(name = "fk_marca")
-  private Marca _marca;
+  @JoinColumn(name = "fk_subcategoria")
+  private Subcategoria _subcategoria;
 
   @ManyToOne
   @JoinColumn(name = "fk_estudio")
@@ -139,12 +139,12 @@ public class SolicitudEstudio extends EntidadBase {
     this._parroquia = _parroquia;
   }
 
-  public Marca get_marca() {
-    return _marca;
+  public Subcategoria get_subcategoria() {
+    return _subcategoria;
   }
 
-  public void set_marca(Marca _marca) {
-    this._marca = _marca;
+  public void set_subcategoria(Subcategoria _subcategoria) {
+    this._subcategoria = _subcategoria;
   }
 
   public Usuario get_cliente() {

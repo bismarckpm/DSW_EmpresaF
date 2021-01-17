@@ -144,6 +144,7 @@ public class ServicioEstudio extends AplicacionBase {
         SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
 
         solicitudEstudio.set_estudio(estudioAgregado);
+        solicitudEstudio.set_estado("procesado");
 
         Usuario usuario = new Usuario(2);
         solicitudEstudio.set_analista(usuario);
@@ -159,8 +160,12 @@ public class ServicioEstudio extends AplicacionBase {
         .build();
 
     }catch (javax.persistence.PersistenceException ex){
-      ex.printStackTrace();
-      return  Response.status(400).entity(null).build();
+      data = Json.createObjectBuilder().add("mensaje", "Este estudio y/o encuesta ya se encuentra registrado")
+        .add("estado", "success")
+        .add("code", 400)
+        .build();
+
+      return  Response.status(400).entity(data).build();
     }
     catch (Exception ex){
       data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
@@ -188,14 +193,21 @@ public class ServicioEstudio extends AplicacionBase {
 
     DaoEstudio daoEstudio = new DaoEstudio();
     JsonObject data;
+    String resultadoEstudio;
 
     try{
       Estudio estudio = daoEstudio.find(id, Estudio.class);
+      if(estudio.get_resultado() != null){
+        resultadoEstudio = estudio.get_resultado();
+      }else{
+        resultadoEstudio = "Sin resultados";
+      }
 
       data = Json.createObjectBuilder()
         .add("id", estudio.get_id())
         .add("nombreEstudio", estudio.get_nombreEstudio())
         .add("estado", estudio.get_estado())
+        .add("resultadoEstudio", resultadoEstudio)
         .add("encuestaId", estudio.get_encuesta().get_id())
         .build();
 
@@ -224,8 +236,9 @@ public class ServicioEstudio extends AplicacionBase {
   @GET
   @Path("/getall")
   public Response getEstudios(){
-    JsonObject data;
 
+    JsonObject data;
+    String resultadoEstudio;
     try {
 
       DaoEstudio daoEstudio = new DaoEstudio();
@@ -234,10 +247,17 @@ public class ServicioEstudio extends AplicacionBase {
       JsonArrayBuilder estudiosArray = Json.createArrayBuilder();
 
       for(Estudio estudio: estudios) {
+          if(estudio.get_resultado() != null){
+            resultadoEstudio = estudio.get_resultado();
+          }else{
+            resultadoEstudio = "Sin resultados";
+          }
+
           JsonObject estu = Json.createObjectBuilder()
             .add("id", estudio.get_id())
             .add("nombreEstudio", estudio.get_nombreEstudio())
             .add("estado", estudio.get_estado())
+            .add("resultadoEstudio", resultadoEstudio)
             .add("encuestaId", estudio.get_encuesta().get_id())
             .build();
 

@@ -98,11 +98,8 @@ public class ServicioEncuestaRespuesta {
           }
         }
 
-        Integer flag = 0;
-        SolicitudEstudio solicitud = null;
-
         DaoEstudio dao = new DaoEstudio();
-        Estudio est = dao.find(encuesta.get_estudio().get_id(), Estudio.class);
+        Estudio est = dao.getEstudioByEncuesta(encuesta);
 
         for(SolicitudEstudio solicitudEstudio: est.get_solicitudesEstudio()){
           List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
@@ -110,30 +107,8 @@ public class ServicioEncuestaRespuesta {
             if (solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id() && encuestado.get_id() == muestra.get_encuestado().get_id()){
               muestra.set_estado("completo");
               daoMuestra.update(muestra);
-              solicitud = solicitudEstudio;
-            }
-            if(solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id()){
-              if(!muestra.get_estado().equals("completo")){
-                flag = flag + 1;
-              }
             }
           }
-        }
-
-        if(flag == 0){
-          DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-          solicitud.set_estado("culminado");
-
-          DaoEstudio daoEstudio = new DaoEstudio();
-          Estudio estudio = daoEstudio.find(solicitud.get_estudio().get_id(), Estudio.class);
-
-          estudio.set_estado("culminado");
-
-          Date fecha = new Date();
-          estudio.set_fechaFin(fecha);
-
-          daoSolicitudEstudio.update(solicitud);
-          daoEstudio.update(estudio);
         }
 
         JsonObject data = Json.createObjectBuilder()

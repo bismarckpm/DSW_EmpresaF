@@ -24,8 +24,8 @@ public class ServicioSolicitudEstudioTest {
     ParroquiaDto parroquia = new ParroquiaDto(1);
     solicitudEstudioDto.setParroquia(parroquia);
 
-    MarcaDto marca = new MarcaDto(1);
-    solicitudEstudioDto.setMarca(marca);
+    SubcategoriaDto subcategoria = new SubcategoriaDto(1);
+    solicitudEstudioDto.setSubcategoria(subcategoria);
 
     NivelSocioeconomicoDto nivelSocioeconomico = new NivelSocioeconomicoDto(1);
     solicitudEstudioDto.setNivelSocioeconomico(nivelSocioeconomico);

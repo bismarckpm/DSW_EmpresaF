@@ -28,6 +28,9 @@ public class Subcategoria extends EntidadBase{
   @OneToMany(mappedBy = "_subcategoria", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Encuesta> _encuestas;
 
+  @OneToMany(mappedBy = "_subcategoria", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private List<SolicitudEstudio> _solicitudesEstudio;
+
   public Subcategoria(long _id) {
     this._id = _id;
   }
@@ -82,5 +85,13 @@ public class Subcategoria extends EntidadBase{
 
   public void set_encuestas(List<Encuesta> _encuestas) {
     this._encuestas = _encuestas;
+  }
+
+  public List<SolicitudEstudio> get_solicitudesEstudio() {
+    return _solicitudesEstudio;
+  }
+
+  public void set_solicitudesEstudio(List<SolicitudEstudio> _solicitudesEstudio) {
+    this._solicitudesEstudio = _solicitudesEstudio;
   }
 }

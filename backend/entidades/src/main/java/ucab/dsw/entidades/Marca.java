@@ -31,9 +31,6 @@ public class Marca extends EntidadBase {
   @JoinColumn(name = "fk_subcategoria")
   private Subcategoria _subcategoria;
 
-  @OneToMany(mappedBy = "_marca", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<SolicitudEstudio> _solicitudesEstudio;
-
   public Marca(long _id) {
     this._id = _id;
   }
@@ -88,14 +85,6 @@ public class Marca extends EntidadBase {
 
   public void set_subcategoria(Subcategoria _subcategoria) {
     this._subcategoria = _subcategoria;
-  }
-
-  public List<SolicitudEstudio> get_solicitudesEstudio() {
-    return _solicitudesEstudio;
-  }
-
-  public void set_solicitudesEstudio(List<SolicitudEstudio> _solicitudesEstudio) {
-    this._solicitudesEstudio = _solicitudesEstudio;
   }
 
   public String get_estado() {

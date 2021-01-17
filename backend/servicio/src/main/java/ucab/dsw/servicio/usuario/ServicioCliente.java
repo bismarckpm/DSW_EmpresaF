@@ -359,11 +359,7 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
             add("genero", solicitud.get_genero()).
             add("estado", solicitud.get_estado()).
             add("cliente", solicitud.get_cliente().get_nombreUsuario()).
-            add("marca", solicitud.get_marca().get_nombreMarca()).
-            add("tipoMarca", solicitud.get_marca().get_tipoMarca()).
-            add("capacidadMarca", solicitud.get_marca().get_capacidad()).
-            add("unidadMarca", solicitud.get_marca().get_unidad()).
-            add("unidadSubcategoria", solicitud.get_marca().get_subcategoria().get_nombreSubcategoria()).
+            add("subcategoria", solicitud.get_subcategoria().get_nombreSubcategoria()).
             add("nivelSocioeconomico", solicitud.get_nivelSocioeconomico().getTipo()).
             add("parroquia", solicitud.get_parroquia().get_nombreParroquia()).build();
 

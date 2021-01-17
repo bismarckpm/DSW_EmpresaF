@@ -334,11 +334,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
             add("genero", solicitudes.get_genero()).
             add("estado", solicitudes.get_estado()).
             add("cliente", solicitudes.get_cliente().get_nombreUsuario()).
-            add("marca", solicitudes.get_marca().get_nombreMarca()).
-            add("tipoMarca", solicitudes.get_marca().get_tipoMarca()).
-            add("capacidadMarca", solicitudes.get_marca().get_capacidad()).
-            add("unidadMarca", solicitudes.get_marca().get_unidad()).
-            add("unidadSubcategoria", solicitudes.get_marca().get_subcategoria().get_nombreSubcategoria()).
+            add("subcategoria", solicitudes.get_subcategoria().get_nombreSubcategoria()).
             add("nivelSocioeconomico", solicitudes.get_nivelSocioeconomico().getTipo()).
             add("parroquia", solicitudes.get_parroquia().get_nombreParroquia()).build();
 

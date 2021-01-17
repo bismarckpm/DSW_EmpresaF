@@ -24,7 +24,7 @@ public class DaoSolicitudEstudio extends  Dao<SolicitudEstudio>{
     try {
        TypedQuery<SolicitudEstudio> array = this._em.createNamedQuery("getSolicitudesByCaracteristicas", SolicitudEstudio.class);
         array.setParameter("clienteId", solicitud.get_cliente()).
-        setParameter("marcaId", solicitud.get_marca()).
+        setParameter("subcategoriaId", solicitud.get_subcategoria()).
         setParameter("edadInicial", solicitud.get_edadInicial()).
         setParameter("edadFinal", solicitud.get_edadfinal()).
         setParameter("parroquiaId", solicitud.get_parroquia()).
