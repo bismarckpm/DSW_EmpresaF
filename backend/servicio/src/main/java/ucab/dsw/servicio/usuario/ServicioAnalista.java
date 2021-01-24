@@ -499,6 +499,15 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
   }
 
+  /**
+   * Metodo para finalizar un estudio asignado a un usuario analista.
+   * Accedido mediante /analista/finalizar/{estudioId}
+   * con el metodo PUT
+   *
+   * @param estudioId Id del estudio
+   * @return JSON success: {estudioCulminado, estado, code}; error: {estado, mensaje
+   * code}
+   */
   @Path("/finalizar/{estudioId}")
   @PUT
   public Response finalizarEstudio(@PathParam("estudioId") long estudioId, EstudioDto estudioDto){
@@ -532,8 +541,11 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
       return Response.ok().entity(data).build();
 
     }catch (Exception ex){
-      ex.printStackTrace();
-      return Response.status(400).build();
+      data = Json.createObjectBuilder()
+        .add("mensaje", ex.getMessage())
+        .add("estado", "error")
+        .add("code", 400).build();
+      return Response.status(400).entity(data).build();
     }
   }
 

@@ -52,14 +52,25 @@ public class ServicioEstudio extends AplicacionBase {
       Encuesta encuesta = new Encuesta();
       encuesta.set_nombreEncuesta(estudioDto.getEncuesta().getNombreEncuesta());
 
+      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+
       DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
-      Subcategoria subcategoria = daoSubcategoria.find(estudioDto.getEncuesta().getSubcategoria().getId(), Subcategoria.class);
+      Subcategoria subcategoria = daoSubcategoria.find(solicitudEstudio.get_subcategoria().get_id(), Subcategoria.class);
       encuesta.set_subcategoria(subcategoria);
 
       estudio.set_encuesta(encuesta);
 
       DaoEstudio daoEstudio = new DaoEstudio();
       Estudio estudioAgregado = daoEstudio.insert(estudio);
+
+      solicitudEstudio.set_estudio(estudioAgregado);
+      solicitudEstudio.set_estado("procesado");
+
+      Usuario usuario = new Usuario(2);
+      solicitudEstudio.set_analista(usuario);
+
+      daoSolicitudEstudio.update(solicitudEstudio);
 
       DaoPregunta daoPregunta = new DaoPregunta();
 
@@ -139,17 +150,6 @@ public class ServicioEstudio extends AplicacionBase {
           preguntaEncuesta.set_pregunta(question);
           daoPreguntaEncuesta.insert(preguntaEncuesta);
         }
-
-        DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-        SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
-
-        solicitudEstudio.set_estudio(estudioAgregado);
-        solicitudEstudio.set_estado("procesado");
-
-        Usuario usuario = new Usuario(2);
-        solicitudEstudio.set_analista(usuario);
-
-        daoSolicitudEstudio.update(solicitudEstudio);
 
       }
 
@@ -284,4 +284,5 @@ public class ServicioEstudio extends AplicacionBase {
     return  Response.ok().entity(data).build();
 
   }
+
 }

@@ -7,7 +7,8 @@ import java.util.List;
 @Entity
 @Table(name = "encuestado")
 @NamedQueries({
-  @NamedQuery(name = "getUsersMuestra", query = "select e from Encuestado e where e._parroquia=:parroquiaId and e._nivelSocioeconomico=:nivelId and e._genero=:genero")
+  @NamedQuery(name = "getUsersMuestraByGenero", query = "select e from Encuestado e where e._parroquia=:parroquiaId and e._nivelSocioeconomico=:nivelId and e._genero=:genero"),
+  @NamedQuery(name = "getUsersMuestra", query = "select e from Encuestado e where e._parroquia=:parroquiaId and e._nivelSocioeconomico=:nivelId")
 })
 public class Encuestado extends EntidadBase{
 

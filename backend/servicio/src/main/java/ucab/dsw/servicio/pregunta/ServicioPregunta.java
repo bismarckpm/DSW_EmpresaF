@@ -149,11 +149,6 @@ public class ServicioPregunta extends AplicacionBase {
             JsonArrayBuilder preguntasArray = Json.createArrayBuilder();
             JsonArrayBuilder opcionesArray = Json.createArrayBuilder();
 
-           /* for (Pregunta question : preguntas) {
-                JsonObject JsonQuestion = question.toJson();
-                preguntasArray.add(JsonQuestion);
-            }*/
-
             for (Pregunta question : preguntas) {
                 DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
                 List<PreguntaOpcion> preguntaOpciones = daoPreguntaOpcion.findAll(PreguntaOpcion.class);
@@ -242,19 +237,21 @@ public class ServicioPregunta extends AplicacionBase {
    * Metodo para Obtener las preguntas sugeridas para una encuesta. Accedido mediante
    * /preguntas/{idEncuesta}/sugerencias con el metodo GET
    *
-   * @param _idEncuesta identificador de la encuesta
+   * @param _idSolicitud identificador de la solicitud
    * @return JSON success: {preguntas, estado, code};
    * error: {mensaje, estado, code}
    *
    */
     @GET
-    @Path("/{idEncuesta}/sugerencias")
-    public Response getPreguntasSugeridas(@PathParam("idEncuesta") long _idEncuesta){
+    @Path("/{idSolicitud}/sugerencias")
+    public Response getPreguntasSugeridas(@PathParam("idSolicitud") long _idSolicitud){
 
     JsonObject data;
     DaoEncuesta daoEncuesta = new DaoEncuesta();
-    Encuesta encuesta;
     List<Encuesta> encuestas;
+
+    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
+    SolicitudEstudio solicitud;
 
     DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
     Subcategoria subcategoria;
@@ -263,8 +260,8 @@ public class ServicioPregunta extends AplicacionBase {
     ArrayList<String> arrayListPregunta = new ArrayList<>();
 
     try {
-      encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
-      subcategoria = daoSubcategoria.find(encuesta.get_subcategoria().get_id(), Subcategoria.class);
+      solicitud = daoSolicitudEstudio.find(_idSolicitud, SolicitudEstudio.class);
+      subcategoria = daoSubcategoria.find(solicitud.get_subcategoria().get_id(), Subcategoria.class);
 
       encuestas = daoEncuesta.getEncuestasBySubcategoria(subcategoria);
 

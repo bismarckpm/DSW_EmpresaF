@@ -1,15 +1,9 @@
 package ucab.dsw.servicio.usuario;
 
-import ucab.dsw.accesodatos.DaoCliente;
-import ucab.dsw.accesodatos.DaoEncuestado;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
-import ucab.dsw.entidades.Cliente;
-import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
+import ucab.dsw.entidades.*;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -342,6 +336,11 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
     DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
     JsonObject data;
+    String resultadoEstudio;
+    Encuesta encuesta = null;
+    Estudio estudio = null;
+    long estudioId = 0;
+    long encuestaId = 0;
 
     try{
       List<SolicitudEstudio> solicitudes = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
@@ -352,8 +351,28 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
           solicitud.set_edadfinal(0);
         }
         if(solicitud.get_cliente().get_id() == id){
+
+          if(solicitud.get_estudio()!=null && solicitud.get_estudio().get_resultado()!=null) {
+            DaoEstudio daoEstudio = new DaoEstudio();
+            estudio = daoEstudio.find(solicitud.get_estudio().get_id(), Estudio.class);
+
+            DaoEncuesta daoEncuesta = new DaoEncuesta();
+            encuesta = daoEncuesta.find(estudio.get_encuesta().get_id(), Encuesta.class);
+
+            estudioId = estudio.get_id();
+            encuestaId = encuesta.get_id();
+            resultadoEstudio = estudio.get_resultado();
+
+          }else {
+            estudioId = 0;
+            encuestaId = 0;
+            resultadoEstudio = "Sin resultados hasta el momento";
+          }
           JsonObject solis = Json.createObjectBuilder().
             add("id", solicitud.get_id()).
+            add("estudioId", estudioId).
+            add("resultadoEstudio", resultadoEstudio).
+            add("encuestaId", encuestaId).
             add("edadInicial", solicitud.get_edadInicial()).
             add("edadFinal", solicitud.get_edadfinal()).
             add("genero", solicitud.get_genero()).
@@ -373,11 +392,13 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
         .add("solicitudes", solicitudesArray).build();
 
     }catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success").build();
 
-        return Response.ok().entity(data).build();
+      data = Json.createObjectBuilder()
+        .add("code", 400)
+        .add("estado", "error")
+        .add("mensaje", ex.getMessage()).build();
+
+      return Response.status(400).entity(data).build();
     }
 
     return Response.ok().entity(data).build();

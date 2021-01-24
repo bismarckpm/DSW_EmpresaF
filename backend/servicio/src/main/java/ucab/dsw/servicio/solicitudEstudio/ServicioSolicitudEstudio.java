@@ -5,6 +5,10 @@ import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
+import ucab.dsw.logica.comando.solicitudestudio.ComandoAddSolicitud;
+import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudes;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 
@@ -39,142 +43,38 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
   @Path("/add")
   public Response addSolicitud(SolicitudEstudioDto solicitudEstudioDto){
 
-    JsonObject data;
-    SolicitudEstudio solicitudEstudioAgregada;
     try {
 
-      SolicitudEstudio solicitudEstudio = new SolicitudEstudio();
-      solicitudEstudio.set_estado("solicitado");
+      ComandoAddSolicitud comandoAddSolicitud = Fabrica.crearComandoConDto(ComandoAddSolicitud.class, solicitudEstudioDto);
+      comandoAddSolicitud.execute();
 
-      if(solicitudEstudioDto.getEdadInicial() > solicitudEstudioDto.getEdadfinal()){
-        throw new LimiteExcepcion("El limite superior no puede ser menor al limite inferior");
-      }else {
-        solicitudEstudio.set_edadInicial(solicitudEstudioDto.getEdadInicial());
-        solicitudEstudio.set_edadfinal(solicitudEstudioDto.getEdadfinal());
-      }
-
-      solicitudEstudio.set_genero(solicitudEstudioDto.getGenero());
-
-      DaoUsuario daoUsuario = new DaoUsuario();
-      Usuario cliente = daoUsuario.find(solicitudEstudioDto.getCliente().getId(), Usuario.class);
-      solicitudEstudio.set_cliente(cliente);
-
-      DaoParroquia daoParroquia = new DaoParroquia();
-      Parroquia parroquia = daoParroquia.find(solicitudEstudioDto.getParroquia().getId(), Parroquia.class);
-      solicitudEstudio.set_parroquia(parroquia);
-
-      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
-      Subcategoria subcategoria = daoSubcategoria.find(solicitudEstudioDto.getSubcategoria().getId(), Subcategoria.class);
-      solicitudEstudio.set_subcategoria(subcategoria);
-
-      DaoNivelSocioeconomico daoNivelSocioeconomico = new DaoNivelSocioeconomico();
-      NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(solicitudEstudioDto.getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
-      solicitudEstudio.set_nivelSocioeconomico(nivelSocioeconomico);
-
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      List<SolicitudEstudio> solicitudesExistentes = obtenerSolicitudesPrevias(solicitudEstudio);
-
-
-      if( !solicitudesExistentes.isEmpty()){
-
-        for(SolicitudEstudio sol:solicitudesExistentes){
-          if(sol.get_estado().equals("solicitado")){
-            throw new SolicitudPendienteExcepcion("Ya posee una solicitud en espera con las mismas caracteristicas");
-          }
-        }
-
-        for(SolicitudEstudio soli:solicitudesExistentes){
-          solicitudEstudio.set_analista(soli.get_analista());
-          break;
-        }
-
-        solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
-
-      }else{
-        DaoUsuario dao = new DaoUsuario();
-        Integer id = 4;
-        Usuario usuario = dao.find(id.longValue(), Usuario.class);
-        solicitudEstudio.set_administrador(usuario);
-        solicitudEstudioAgregada = daoSolicitudEstudio.insert(solicitudEstudio);
-      }
-
-     inicializarMuestra(solicitudEstudio);
-
-      data = Json.createObjectBuilder().add("solicitud", solicitudEstudioAgregada.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      return Response.ok().entity(comandoAddSolicitud.getResultado()).build();
 
     }
     catch (LimiteExcepcion ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+
     }
     catch (SolicitudPendienteExcepcion ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+
     }
     catch (Exception ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
-    }
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-    System.out.println(data);
-    return  Response.ok().entity(data).build();
-  }
-
-  /**
-   * Metodo para obtener las solicituds de estudio previa con las mismas caracteristicas
-   *
-   *
-   * @param solicitudEstudio solicitud de estudio recien agregada
-   * @return List SolicitudEstudio
-   */
-  private List<SolicitudEstudio> obtenerSolicitudesPrevias(SolicitudEstudio solicitudEstudio){
-    DaoSolicitudEstudio dao = new DaoSolicitudEstudio();
-    List<SolicitudEstudio> solicitudEstudioPrevia = dao.getSolicitudesByCaracteristicas(solicitudEstudio);
-
-    if(solicitudEstudioPrevia != null){
-
-      return solicitudEstudioPrevia;
-
-    }else{
-
-      return null;
-
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
     }
 
   }
 
-  /**
-   * Metodo para asignar usuarios a la muestra a una solicitud de estudio dependiendo
-   * de sus caracteristicas demográficas
-   *
-   *
-   * @param solicitudEstudio solicitud de estudio
-   *
-   */
-  private void inicializarMuestra(SolicitudEstudio solicitudEstudio){
-    DaoEncuestado dao = new DaoEncuestado();
-    List<Encuestado> usuariosEncuestados = dao.getUsersMuestra(solicitudEstudio);
-    ServicioMuestra servicioMuestra = new ServicioMuestra();
-    servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
-  }
 
   /**
    * Metodo para obtener todas las solicitudes. Accedido mediante /solicitud/getall mediante el
@@ -187,47 +87,23 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
   @GET
   @Path("/getall")
   public Response getSolicitudes() {
-    JsonObject data;
 
     try {
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
-      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
+      ComandoGetSolicitudes comandoGetSolicitudes = Fabrica.crear(ComandoGetSolicitudes.class);
+      comandoGetSolicitudes.execute();
 
-      for (SolicitudEstudio solicitudEstudio : solicitudesEstudio) {
-        if(solicitudEstudio.get_edadfinal() == null) {
-          solicitudEstudio.set_edadfinal(0);
-        }
-
-        JsonObject sol = Json.createObjectBuilder().
-          add("id", solicitudEstudio.get_id()).
-          add("edadInicial", solicitudEstudio.get_edadInicial()).
-          add("edadFinal", solicitudEstudio.get_edadfinal()).
-          add("genero", solicitudEstudio.get_genero()).
-          add("estado", solicitudEstudio.get_estado()).
-          add("cliente", solicitudEstudio.get_cliente().get_nombreUsuario()).
-          add("subcategoria", solicitudEstudio.get_subcategoria().get_nombreSubcategoria()).
-          add("nivelSocioeconomico", solicitudEstudio.get_nivelSocioeconomico().getTipo()).
-          add("parroquia", solicitudEstudio.get_parroquia().get_nombreParroquia()).build();
-
-        solicitudesArray.add(sol);
-      }
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("solicitudes", solicitudesArray).build();
+      return Response.ok().entity(comandoGetSolicitudes.getResultado()).build();
 
     } catch (Exception ex) {
-      data = Json.createObjectBuilder()
-        .add("code", 400)
-        .add("estado", "error").build();
 
-      return Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    System.out.println(data);
-    return Response.ok().entity(data).build();
   }
 
 }

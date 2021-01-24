@@ -24,8 +24,7 @@ public class DaoEncuestado extends Dao<Encuestado>
     try {
       TypedQuery<Encuestado> encuestados = this._em.createNamedQuery("getUsersMuestra", Encuestado.class);
       encuestados.setParameter("parroquiaId", solicitudEstudio.get_parroquia())
-        .setParameter("nivelId", solicitudEstudio.get_nivelSocioeconomico())
-        .setParameter("genero", solicitudEstudio.get_genero()).getResultList();
+        .setParameter("nivelId", solicitudEstudio.get_nivelSocioeconomico()).getResultList();
 
       List<Encuestado> resultado = encuestados.getResultList();
       return resultado;
@@ -33,6 +32,21 @@ public class DaoEncuestado extends Dao<Encuestado>
     catch (Exception ex){
       ex.printStackTrace();
       return  null;
+    }
+  }
+
+  public List<Encuestado> getUsersMuestraByGenero(SolicitudEstudio solicitudEstudio) {
+    try {
+      TypedQuery<Encuestado> encuestados = this._em.createNamedQuery("getUsersMuestraByGenero", Encuestado.class);
+      encuestados.setParameter("parroquiaId", solicitudEstudio.get_parroquia())
+        .setParameter("nivelId", solicitudEstudio.get_nivelSocioeconomico())
+        .setParameter("genero", solicitudEstudio.get_genero()).getResultList();
+
+      List<Encuestado> resultado = encuestados.getResultList();
+      return resultado;
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
     }
   }
 }

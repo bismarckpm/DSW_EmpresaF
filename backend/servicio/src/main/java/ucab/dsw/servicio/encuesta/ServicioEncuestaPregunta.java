@@ -169,16 +169,16 @@ public class ServicioEncuestaPregunta {
 
     }
 
-  /**
-   * Metodo para Obtener las preguntas agregables a una encuesta
-   * Accedido mediante /encuestas/{id}/preguntasagregables con el metodo GET
-   *
-   * @param _idEncuesta id de la encuesta
-   *
-   * @return JSON success: {preguntas, code, estado}; error: {mensaje, estado,
-   * code}
-   *
-   */
+    /**
+    * Metodo para Obtener las preguntas agregables a una encuesta previamente creada
+    * Accedido mediante /encuestas/{id}/preguntasagregables con el metodo GET
+    *
+    * @param _idEncuesta id de la encuesta
+    *
+    * @return JSON success: {preguntas, code, estado}; error: {mensaje, estado,
+    * code}
+    *
+    */
     @GET
     @Path("/{id}/preguntasagregables")
     public Response getPreguntasAgregables(@PathParam("id") long _idEncuesta){

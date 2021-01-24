@@ -1,21 +1,21 @@
 package ucab.dsw.servicio.categoria;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
-import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.CategoriaDto;
-import ucab.dsw.entidades.*;
-import ucab.dsw.excepciones.PruebaExcepcion;
+import ucab.dsw.logica.comando.activador.ComandoActivarCategoria;
+import ucab.dsw.logica.comando.activador.ComandoDesactivarCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoAddCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoUpdateCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoGetCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoGetCategorias;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
 
 /**
  * Clase para gestionar las categorias
@@ -38,44 +38,31 @@ public class ServicioCategoria extends AplicacionBase {
   @POST
   @Path("/add")
   public Response addCategoria(CategoriaDto categoriaDto){
-    JsonObject data;
+
     try {
 
-      Categoria categoria = new Categoria();
-      categoria.set_nombreCategoria(categoriaDto.getNombreCategoria());
-      categoria.set_estado("activo");
+      ComandoAddCategoria comandoAddCategoria = Fabrica.crearComandoConDto(ComandoAddCategoria.class, categoriaDto);
+      comandoAddCategoria.execute();
 
-      DaoCategoria daoCategoria = new DaoCategoria();
-      Categoria categoriaAgregada = daoCategoria.insert(categoria);
-
-      data = Json.createObjectBuilder().add("categoria", categoriaAgregada.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      return Response.ok().entity(comandoAddCategoria.getResultado()).build();
 
     }
     catch (PersistenceException | DatabaseException  ex){
-        String mensaje = "Esta categoría ya se encuentra añadida";
-        data = Json.createObjectBuilder().add("mensaje", mensaje)
-          .add("estado", "error")
-          .add("code", 400)
-          .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "Esta categoria ya se encuentra agregada en el sistema";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+
     }
     catch (Exception ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
-
-    System.out.println(data);
-    return  Response.ok().entity(data).build();
 
   }
 
@@ -92,42 +79,30 @@ public class ServicioCategoria extends AplicacionBase {
   @Path("/update/{categoriaId}")
   public Response updateCategoria(@PathParam("categoriaId") long id, CategoriaDto categoriaDto){
 
-    JsonObject data;
-    DaoCategoria daoCategoria = new DaoCategoria();
-
     try{
-      Categoria categoria = daoCategoria.find(id, Categoria.class);
 
-      categoria.set_nombreCategoria(categoriaDto.getNombreCategoria());
+      ComandoUpdateCategoria comandoUpdateCategoria = Fabrica.crearComandoConAmbos(ComandoUpdateCategoria.class, id, categoriaDto);
+      comandoUpdateCategoria.execute();
 
-      Categoria resul = daoCategoria.update(categoria);
-
-      data = Json.createObjectBuilder().add("categoria", resul.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      return Response.ok().entity(comandoUpdateCategoria.getResultado()).build();
 
     }catch (PersistenceException | DatabaseException  ex){
-      String mensaje = "Esta categoría ya se encuentra añadida";
-      data = Json.createObjectBuilder().add("mensaje", mensaje)
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "Esta categoria ya se encuentra agregada en el sistema";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+
     }
     catch (Exception ex){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -142,31 +117,22 @@ public class ServicioCategoria extends AplicacionBase {
   @Path("/getcategoria/{categoriaId}")
   public Response getCategoriaById(@PathParam("categoriaId") long id){
 
-    DaoCategoria daoCategoria = new DaoCategoria();
-    JsonObject data;
-
     try{
-      Categoria categoria = daoCategoria.find(id, Categoria.class);
 
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .add("id", categoria.get_id())
-        .add("nombreCategoria", categoria.get_nombreCategoria())
-        .add("estadoCategoria", categoria.get_estado())
-        .build();
+      ComandoGetCategoria comandoGetCategoria = Fabrica.crearComandoConId(ComandoGetCategoria.class, id);
+      comandoGetCategoria.execute();
 
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(comandoGetCategoria.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -181,43 +147,21 @@ public class ServicioCategoria extends AplicacionBase {
   @Path("/getall")
   public Response getCategories() {
 
-    List<Categoria> categorias;
-    JsonObject data;
-
     try {
 
-      DaoCategoria dao = new DaoCategoria();
-      categorias = dao.findAll(Categoria.class);
+      ComandoGetCategorias comandoGetCategorias = Fabrica.crear(ComandoGetCategorias.class);
+      comandoGetCategorias.execute();
 
-      JsonArrayBuilder categoriasArray = Json.createArrayBuilder();
-
-      for(Categoria category: categorias){
-        JsonObject categories = Json.createObjectBuilder()
-          .add("id", category.get_id())
-          .add("nombreCategoria", category.get_nombreCategoria())
-          .add("estado", category.get_estado())
-          .build();
-
-        categoriasArray.add(categories);
-      }
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("categorias", categoriasArray).build();
+      return Response.ok().entity(comandoGetCategorias.getResultado()).build();
 
     } catch (Exception ex) {
 
-      data = Json.createObjectBuilder()
-        .add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+      return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
     }
-    System.out.println(data);
-    return Response.ok().entity(data).build();
+
   }
 
   /**
@@ -232,56 +176,20 @@ public class ServicioCategoria extends AplicacionBase {
   @Path("/disable/{categoriaId}")
   public Response disableCategoria(@PathParam("categoriaId") long id) {
 
-    DaoCategoria daoCategoria = new DaoCategoria();
-    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
-    DaoMarca daoMarca = new DaoMarca();
-    JsonObject data;
-
     try{
-      Categoria categoria = daoCategoria.find(id, Categoria.class);
+      ComandoDesactivarCategoria comandoDesactivarCategoria = Fabrica.crearComandoConId(ComandoDesactivarCategoria.class, id);
+      comandoDesactivarCategoria.execute();
 
-      List<Subcategoria> subcategorias = daoSubcategoria.findAll(Subcategoria.class);
-
-      List<Marca> marcas = daoMarca.findAll(Marca.class);
-
-      categoria.set_estado("inactivo");
-
-      for(Subcategoria subcategoria:subcategorias){
-
-        if(subcategoria.get_categoria().get_id() == id){
-          subcategoria.set_estado("inactivo");
-          daoSubcategoria.update(subcategoria);
-
-          for (Marca marca:marcas){
-
-            if(marca.get_subcategoria().get_id() == subcategoria.get_id()){
-              marca.set_estado("inactivo");
-              daoMarca.update(marca);
-
-            }
-          }
-        }
-      }
-
-      Categoria resul = daoCategoria.update(categoria);
-
-      data = Json.createObjectBuilder().add("categoria", resul.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
-
+      return Response.ok().entity(comandoDesactivarCategoria.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500 )).build();
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -296,56 +204,21 @@ public class ServicioCategoria extends AplicacionBase {
   @Path("/enable/{categoriaId}")
   public Response enableCategoria(@PathParam("categoriaId") long id) {
 
-    DaoCategoria daoCategoria = new DaoCategoria();
-    DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
-    DaoMarca daoMarca = new DaoMarca();
-    JsonObject data;
-
     try{
-      Categoria categoria = daoCategoria.find(id, Categoria.class);
 
-      List<Subcategoria> subcategorias = daoSubcategoria.findAll(Subcategoria.class);
+      ComandoActivarCategoria comandoActivarCategoria = Fabrica.crearComandoConId(ComandoActivarCategoria.class, id);
+      comandoActivarCategoria.execute();
 
-      List<Marca> marcas = daoMarca.findAll(Marca.class);
-
-      categoria.set_estado("activo");
-
-      for(Subcategoria subcategoria:subcategorias){
-
-        if(subcategoria.get_categoria().get_id() == id){
-          subcategoria.set_estado("activo");
-          daoSubcategoria.update(subcategoria);
-
-          for (Marca marca:marcas){
-
-            if(marca.get_subcategoria().get_id() == subcategoria.get_id()){
-              marca.set_estado("activo");
-              daoMarca.update(marca);
-
-            }
-          }
-        }
-      }
-
-      Categoria resul = daoCategoria.update(categoria);
-
-      data = Json.createObjectBuilder().add("categoria", resul.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
-
+      return Response.ok().entity(comandoActivarCategoria.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500 )).build();
     }
 
-    return Response.ok().entity(data).build();
   }
 
 }
