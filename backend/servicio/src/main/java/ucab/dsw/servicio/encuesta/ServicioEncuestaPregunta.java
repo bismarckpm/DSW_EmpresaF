@@ -18,6 +18,10 @@ import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.dtos.PreguntaEncuestaDto;
 import ucab.dsw.entidades.*;
+import ucab.dsw.logica.comando.encuesta.ComandoAddPreguntaEncuesta;
+import ucab.dsw.logica.comando.encuesta.ComandoGetPreguntasEncuesta;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 
 /**
  * Clase para gestionar las preguntas de una encuesta
@@ -42,50 +46,29 @@ public class ServicioEncuestaPregunta {
     @POST
     @Path("/{id}/pregunta")
     public Response addPreguntaToEncuesta(@PathParam("id") long _idEncuesta, PreguntaDto preguntaDto) {
-        JsonObject data;
 
         try {
 
-            DaoEncuesta daoEncuesta = new DaoEncuesta();
-            Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+          ComandoAddPreguntaEncuesta comandoAddPreguntaEncuesta = Fabrica.crearComandoConAmbos( ComandoAddPreguntaEncuesta.class, _idEncuesta, preguntaDto);
+          comandoAddPreguntaEncuesta.execute();
 
-            for(PreguntaDto pregunta: preguntaDto.getPreguntas()) {
-
-              DaoPregunta daoPregunta = new DaoPregunta();
-              Pregunta question = daoPregunta.find(pregunta.getId(), Pregunta.class);
-
-              encuesta.add_pregunta(question);
-
-              PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
-              preguntaEncuesta.set_encuesta(encuesta);
-              preguntaEncuesta.set_pregunta(question);
-
-              DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
-              daoPreguntaEncuesta.insert(preguntaEncuesta);
-            }
-
-            data = Json.createObjectBuilder()
-                    .add("estado", "success")
-                    .add("code", 200)
-                    .build();
+          return Response.ok().entity(comandoAddPreguntaEncuesta.getResultado()).build();
 
         } catch (javax.persistence.PersistenceException ex) {
-            String mensaje = "Estas opciones ya se encuentran añadidas";
-            data = Json.createObjectBuilder()
-                    .add("mensaje", mensaje)
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
-        } catch (Exception ex) {
-            data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-                    .add("estado", "error")
-                    .add("code", 400)
-                    .build();
-            return Response.status(400).entity(data).build();
-        }
 
-        return Response.status(200).entity(data).build();
+          String mensaje = "Hay opciones que ya se encuentran añadidas";
+          ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+          return Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+
+        } catch (Exception ex) {
+
+          String mensaje = "Ha ocurrido un error en el servidor";
+          ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+          return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
+        }
 
     }
 
@@ -102,70 +85,22 @@ public class ServicioEncuestaPregunta {
     @GET
     @Path("/{id}/preguntas")
     public Response getPreguntas(@PathParam("id") long _idEncuesta) {
-      List<Pregunta> preguntas ;
-      JsonObject data = null;
+
       try {
 
-        DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+        ComandoGetPreguntasEncuesta comandoGetPreguntasEncuesta = Fabrica.crearComandoConId(ComandoGetPreguntasEncuesta.class, _idEncuesta);
+        comandoGetPreguntasEncuesta.execute();
 
-        DaoEncuesta daoEncuesta = new DaoEncuesta();
-        Encuesta encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
+        return Response.ok().entity(comandoGetPreguntasEncuesta.getResultado()).build();
 
-        preguntas = daoPreguntaEncuesta.getPreguntasByEncuesta(encuesta);
-
-        JsonArrayBuilder preguntasJson = Json.createArrayBuilder();
-        JsonArrayBuilder opcionesJson = Json.createArrayBuilder();
-
-        for (Pregunta pregunta : preguntas) {
-          DaoPregunta daoPregunta = new DaoPregunta();
-          Pregunta question = daoPregunta.find(pregunta.get_id(), Pregunta.class);
-
-          DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
-          List<PreguntaOpcion> preguntaOpciones =  daoPreguntaOpcion.findAll(PreguntaOpcion.class);
-
-          for(PreguntaOpcion preguntaOpcion:preguntaOpciones){
-            if(preguntaOpcion.get_pregunta().get_id() == question.get_id()){
-              DaoOpcion daoOpcion = new DaoOpcion();
-              Opcion opcion = daoOpcion.find(preguntaOpcion.get_opcion().get_id(), Opcion.class);
-              JsonObject option = Json.createObjectBuilder()
-                .add("idPregunta", question.get_id())
-                .add("idOpcion", opcion.get_id())
-                .add("descripcion", opcion.get_descripcion()).build();
-
-              opcionesJson.add(option);
-            }
-          }
-
-          JsonObject quest = Json.createObjectBuilder()
-            .add("idPregunta", question.get_id())
-            .add("descripcion", question.get_descripcionPregunta())
-            .add("tipo", question.get_tipoPregunta())
-            .add("min", question.get_min())
-            .add("max", question.get_max())
-            .add("opciones", opcionesJson).build();
-
-          preguntasJson.add(quest);
-        }
-
-        data = Json.createObjectBuilder()
-          .add("data", preguntasJson)
-          .add("estado", "success")
-          .add("code", 200)
-          .build();
-
-      } catch (javax.persistence.PersistenceException ex) {
-        String mensaje = "Estas opciones ya se encuentran añadidas";
-        data = Json.createObjectBuilder()
-          .add("mensaje", mensaje)
-          .add("estado", "error")
-          .add("code", 400)
-          .build();
-        return Response.status(400).entity(data).build();
       } catch (Exception ex) {
-       ex.printStackTrace();
-      }
 
-      return Response.status(200).entity(data).build();
+        String mensaje = "Ha ocurrido un error en el servidor";
+        ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+        return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
+      }
 
     }
 

@@ -48,6 +48,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:8.0.18" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="module" module-name="entidades" />
+    <orderEntry type="module" module-name="logica" />
+    <orderEntry type="module" module-name="mapper" />
     <orderEntry type="library" name="Maven: com.thetransactioncompany:cors-filter:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.thetransactioncompany:java-property-utils:1.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.10" level="project" />

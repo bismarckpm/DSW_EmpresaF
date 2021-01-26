@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -14,65 +15,45 @@ import ucab.dsw.servicio.encuesta.ServicioEncuestaPregunta;
 public class ServicioEncuestaPreguntaTest {
 
     @Test
-    public void t1_addPreguntasToEncuesta() throws Exception {
+    public void addPreguntasToEncuestaTest() throws Exception {
+
         ServicioEncuestaPregunta servicioEncuestaPregunta;
         servicioEncuestaPregunta = new ServicioEncuestaPregunta();
 
         EncuestaDto encuestaDto = new EncuestaDto();
-        encuestaDto.setId(2);
+        encuestaDto.setId(9);
 
         List<PreguntaDto> preguntas = new ArrayList<>();
 
-        PreguntaDto preguntaUno = new PreguntaDto(49);
-        PreguntaDto preguntaDos = new PreguntaDto(51);
-        PreguntaDto preguntaTres = new PreguntaDto(50);
+        PreguntaDto preguntaUno = new PreguntaDto(24);
 
         preguntas.add(preguntaUno);
-        preguntas.add(preguntaDos);
-        preguntas.add(preguntaTres);
 
         PreguntaDto preguntaDto = new PreguntaDto();
         preguntaDto.setPreguntas(preguntas);
 
-        Response resultado = servicioEncuestaPregunta
-                .addPreguntaToEncuesta(encuestaDto.getId(), preguntaDto);
+        Response resultado = servicioEncuestaPregunta.addPreguntaToEncuesta(encuestaDto.getId(), preguntaDto);
+        JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-        System.out.println(resultado.getEntity().toString());
+        Assert.assertNotNull(respuesta.get("idUltPreguntaEncuesta"));
 
-        Assert.assertEquals(200, resultado.getStatus());
     }
 
+
     @Test
-    public void t1_addPreguntaToEncuesta() throws Exception {
+    public void getPreguntasTest() throws Exception {
+
         ServicioEncuestaPregunta servicioEncuestaPregunta;
         servicioEncuestaPregunta = new ServicioEncuestaPregunta();
 
         EncuestaDto encuestaDto = new EncuestaDto();
-        encuestaDto.setId(2);
-
-        PreguntaDto preguntaUno = new PreguntaDto(1);
-
-        Response resultado = servicioEncuestaPregunta
-                .addPreguntaToEncuesta(encuestaDto.getId(), preguntaUno);
-
-        System.out.println(resultado.getEntity().toString());
-
-        Assert.assertEquals(200, resultado.getStatus());
-    }
-
-    @Test
-    public void t2_getPreguntas() throws Exception {
-        ServicioEncuestaPregunta servicioEncuestaPregunta;
-        servicioEncuestaPregunta = new ServicioEncuestaPregunta();
-
-        EncuestaDto encuestaDto = new EncuestaDto();
-        encuestaDto.setId(2);
+        encuestaDto.setId(12);
 
         Response resultado = servicioEncuestaPregunta.getPreguntas(encuestaDto.getId());
+        JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-        System.out.println(resultado.getEntity().toString());
+        Assert.assertNotNull(respuesta.get("data"));
 
-        Assert.assertEquals(200, resultado.getStatus());
     }
 
 }

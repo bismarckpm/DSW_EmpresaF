@@ -81,12 +81,12 @@ public class Encuesta extends EntidadBase{
         this._preguntasEncuestas = _preguntasEncuestas;
     }
 
-    public void add_pregunta(Pregunta _pregunta){
+   /* public void add_pregunta(Pregunta _pregunta){
         PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
         preguntaEncuesta.set_encuesta(this);
         preguntaEncuesta.set_pregunta(_pregunta);
         this._preguntasEncuestas.add(preguntaEncuesta);
-    }
+    }*/
 
     public List<Pregunta> getPreguntas() {
         return get_preguntasEncuestas()

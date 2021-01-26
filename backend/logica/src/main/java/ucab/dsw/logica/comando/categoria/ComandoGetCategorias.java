@@ -34,7 +34,6 @@ public class ComandoGetCategorias implements ComandoBase {
           .add("id", categoriaDto.getId())
           .add("nombreCategoria", categoriaDto.getNombreCategoria())
           .add("estado", categoriaDto.getEstado())
-          .add("code", 200)
           .build();
 
          categoriasDtos.add(category);

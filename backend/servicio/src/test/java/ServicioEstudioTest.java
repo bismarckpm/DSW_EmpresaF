@@ -4,15 +4,19 @@ import ucab.dsw.dtos.EncuestaDto;
 import ucab.dsw.dtos.EstudioDto;
 import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.dtos.SubcategoriaDto;
+import ucab.dsw.servicio.categoria.ServicioCategoria;
 import ucab.dsw.servicio.estudio.ServicioEstudio;
 
+import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServicioEstudioTest {
 
   @Test
   public void addEstudioTest() throws Exception {
+
     ServicioEstudio servicioEstudio = new ServicioEstudio();
 
     EstudioDto estudioDto = new EstudioDto();
@@ -27,18 +31,49 @@ public class ServicioEstudioTest {
 
     estudioDto.setEncuesta(encuestaDto);
 
-    List<PreguntaDto> preguntas = null;
     PreguntaDto preguntaDto = new PreguntaDto();
     preguntaDto.setDescripcionPregunta("Descripcion");
-    preguntaDto.setTipoPregunta("Desarrollo");
+    preguntaDto.setTipoPregunta("desarrollo");
     preguntaDto.setMax(0);
     preguntaDto.setMin(0);
+    preguntaDto.setOpciones(null);
 
-    preguntas.add(preguntaDto);
+    PreguntaDto preguntaDto2 = new PreguntaDto(21);
+
+    List<PreguntaDto> preguntas =  Arrays.asList(preguntaDto, preguntaDto2);
 
     estudioDto.setPreguntas(preguntas);
 
-    Response resultado = servicioEstudio.addEstudio(12, estudioDto);
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Response resultado = servicioEstudio.addEstudio(178, estudioDto);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+    System.out.println(respuesta);
+
+    Assert.assertNotNull(respuesta.get("estudioId"));
+
+  }
+
+  @Test
+  public void getEstudioByIdTest() {
+
+    ServicioEstudio servicioEstudio = new ServicioEstudio();
+
+    Response resultado = servicioEstudio.getEstudioById(21);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("nombreEstudio"));
+
+  }
+
+  @Test
+  public void getAllEstudiosTest(){
+
+    ServicioEstudio servicioEstudio = new ServicioEstudio();
+
+    Response resultado = servicioEstudio.getEstudios();
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+    System.out.println(respuesta);
+
+    Assert.assertNotNull(respuesta.get("estudios"));
+
   }
 }

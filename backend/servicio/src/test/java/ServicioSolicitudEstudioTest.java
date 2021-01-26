@@ -16,8 +16,8 @@ public class ServicioSolicitudEstudioTest {
     ServicioSolicitudEstudio servicio = new ServicioSolicitudEstudio();
     SolicitudEstudioDto solicitudEstudioDto = new SolicitudEstudioDto();
 
-    solicitudEstudioDto.setEdadInicial(15);
-    solicitudEstudioDto.setEdadfinal(25);
+    solicitudEstudioDto.setEdadInicial(156);
+    solicitudEstudioDto.setEdadfinal(250);
     solicitudEstudioDto.setGenero("masculino");
 
     UsuarioDto usuariocliente = new UsuarioDto(153);
@@ -29,13 +29,13 @@ public class ServicioSolicitudEstudioTest {
     SubcategoriaDto subcategoria = new SubcategoriaDto(30);
     solicitudEstudioDto.setSubcategoria(subcategoria);
 
-    NivelSocioeconomicoDto nivelSocioeconomico = new NivelSocioeconomicoDto(9);
+    NivelSocioeconomicoDto nivelSocioeconomico = new NivelSocioeconomicoDto(4);
     solicitudEstudioDto.setNivelSocioeconomico(nivelSocioeconomico);
 
     Response resultado = servicio.addSolicitud(solicitudEstudioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-    Assert.assertEquals(respuesta.get("solicitud"), 0);
+    Assert.assertNotNull(respuesta.get("solicitud"));
 
   }
 
