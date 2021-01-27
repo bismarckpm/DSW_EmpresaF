@@ -1,4 +1,4 @@
-package ucab.dsw.logica.comando.activador;
+package ucab.dsw.logica.comando.categoria;
 
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.accesodatos.DaoMarca;
@@ -52,8 +52,11 @@ public class ComandoDesactivarCategoria implements ComandoBase {
               daoMarca.update(marca);
 
             }
+
           }
+
         }
+
       }
 
       Categoria resultado = daoCategoria.update(categoria);
