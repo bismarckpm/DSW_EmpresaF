@@ -9,7 +9,7 @@ public class RespuestaDto extends  DtoBase{
 
   private String descripcion;
 
-  private String rango;
+  private Integer rango;
 
   private EncuestadoDto encuestado;
 
@@ -40,12 +40,12 @@ public class RespuestaDto extends  DtoBase{
     this.descripcion = descripcion;
   }
 
-  public String getRango() {
-    return rango;
+  public void setRango(Integer rango) {
+    this.rango = rango;
   }
 
-  public void setRango(String rango) {
-    this.rango = rango;
+  public Integer getRango() {
+    return rango;
   }
 
   public EncuestadoDto getEncuestado() {

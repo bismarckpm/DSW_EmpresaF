@@ -1,9 +1,7 @@
 package ucab.dsw.servicio.encuesta;
 
-import java.util.Date;
 import java.util.List;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
@@ -14,6 +12,10 @@ import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.RangoExcepcion;
+import ucab.dsw.logica.comando.encuesta.ComandoAddRespuestaEncuesta;
+import ucab.dsw.logica.comando.encuesta.ComandoGetRespuestasEncuesta;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 
 /**
  * Clase para gestionar las respuestas de una pregunta de una encuesta
@@ -40,100 +42,27 @@ public class ServicioEncuestaRespuesta {
     public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto baseDto){
 
       try{
-        DaoEncuesta daoEncuesta = new DaoEncuesta();
-        Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
 
-        Encuestado encuestado = null;
+        ComandoAddRespuestaEncuesta comandoAddRespuestaEncuesta = Fabrica.crearComandoConAmbos(ComandoAddRespuestaEncuesta.class, idEncuesta, baseDto);
+        comandoAddRespuestaEncuesta.execute();
 
-        DaoMuestra daoMuestra = new DaoMuestra();
-
-        for(ArrayRespuestaDto respuesta:baseDto.getRespuestas()){
-          DaoPregunta daoPregunta = new DaoPregunta();
-          Pregunta pregunta = daoPregunta.find(respuesta.getPregunta().getId(), Pregunta.class);
-
-          DaoEncuestado daoEncuestado = new DaoEncuestado();
-          encuestado = daoEncuestado.find(respuesta.getEncuestado().getId(), Encuestado.class);
-
-          Respuesta res = new Respuesta();
-          Date fecha = new Date();
-
-          res.set_fecha(fecha);
-          res.set_descripcion(respuesta.getDescripcion());
-          res.set_encuestado(encuestado);
-
-          if( (respuesta.getRango() < pregunta.get_min() ) || (respuesta.getRango() > pregunta.get_max())){
-            throw new RangoExcepcion("Rango seleccionado fuera de los límites de maximo y mínimo");
-          }else {
-            res.set_rango(respuesta.getRango());
-          }
-
-          DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
-          List<PreguntaEncuesta> preguntaEncuestas = daoPreguntaEncuesta.findAll(PreguntaEncuesta.class);
-
-          for (PreguntaEncuesta preguntaEncuesta : preguntaEncuestas) {
-            if (preguntaEncuesta.get_encuesta().get_id() == encuesta.get_id() && preguntaEncuesta.get_pregunta().get_id() == pregunta.get_id()) {
-              res.set_preguntaEncuesta(preguntaEncuesta);
-            }
-          }
-
-          DaoRespuesta daoRespuesta = new DaoRespuesta();
-          daoRespuesta.insert(res);
-
-
-          if(respuesta.getOpciones()!=null) {
-
-            for (OpcionDto opcionDto : respuesta.getOpciones()) {
-              RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
-              DaoOpcion daoOpcion = new DaoOpcion();
-
-              Opcion opcion = daoOpcion.find(opcionDto.getId(), Opcion.class);
-              respuestaOpcion.set_opcion(opcion);
-
-              DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
-              respuestaOpcion.set_opcion(opcion);
-              respuestaOpcion.set_respuesta(res);
-
-              daoRespuestaOpcion.insert(respuestaOpcion);
-            }
-          }
-        }
-
-        DaoEstudio dao = new DaoEstudio();
-        Estudio est = dao.getEstudioByEncuesta(encuesta);
-
-        for(SolicitudEstudio solicitudEstudio: est.get_solicitudesEstudio()){
-          List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
-          for (Muestra muestra:muestras) {
-            if (solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id() && encuestado.get_id() == muestra.get_encuestado().get_id()){
-              muestra.set_estado("completo");
-              daoMuestra.update(muestra);
-            }
-          }
-        }
-
-        JsonObject data = Json.createObjectBuilder()
-          .add("estado", "success")
-          .add("code", 200).build();
-
-        System.out.println(data);
-        return Response.ok().entity(data).build();
+        return Response.ok().entity(comandoAddRespuestaEncuesta.getResultado()).build();
 
       }
       catch (RangoExcepcion ex){
-        JsonObject data = Json.createObjectBuilder()
-          .add("estado", "error")
-          .add("mensaje", ex.getMessage())
-          .add("code", 400).build();
 
-        System.out.println(data);
-        return Response.ok().entity(data).build();
+        ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+        return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+
       }
       catch (Exception ex){
-        ex.printStackTrace();
 
-        //System.out.println(data);
+        String mensaje = "Ha ocurrido un error en el servidor";
+        ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-        return Response.ok().entity(null).build();
+        return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
       }
     }
 
@@ -151,86 +80,22 @@ public class ServicioEncuestaRespuesta {
     @GET
     @Path("/respuesta/{idEncuesta}")
     public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){
-      List<PreguntaEncuesta> preguntaEncuestas;
-      Pregunta pregunta;
-      JsonObject data;
-      JsonArrayBuilder respuestasArray = Json.createArrayBuilder();
 
       try{
 
-        DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+        ComandoGetRespuestasEncuesta comandoGetRespuestasEncuesta = Fabrica.crearComandoConId(ComandoGetRespuestasEncuesta.class, idEncuesta);
+        comandoGetRespuestasEncuesta.execute();
 
-        DaoEncuesta daoEncuesta = new DaoEncuesta();
-        Encuesta encuesta = daoEncuesta.find(idEncuesta, Encuesta.class);
-
-        preguntaEncuestas = daoPreguntaEncuesta.getPreguntasEncuestaByEncuestaId(encuesta);
-
-        JsonArrayBuilder opcionArray = Json.createArrayBuilder();
-
-        for(PreguntaEncuesta preguntaEncuesta:preguntaEncuestas){
-
-          DaoPregunta daoPregunta = new DaoPregunta();
-          pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class);
-
-          if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
-
-            List<Opcion> opciones;
-            opciones = preguntaEncuesta.get_pregunta().getOpciones();
-            for(Opcion opcion:opciones){
-              DaoRespuestaOpcion daoRespuestaOpcion = new DaoRespuestaOpcion();
-              Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
-
-              JsonObject option = Json.createObjectBuilder()
-                .add("opcion",opcion.get_descripcion())
-                .add("opcionId", opcion.get_id())
-                .add("conteo",respuestaCont)
-                .build();
-
-              opcionArray.add(option);
-            }
-
-            JsonObject answer = Json.createObjectBuilder()
-              .add("pregunta", pregunta.get_descripcionPregunta())
-              .add("tipoPregunta", pregunta.get_tipoPregunta())
-              .add("opciones", opcionArray)
-              .build();
-
-            respuestasArray.add(answer);
-
-          }else{
-            DaoRespuesta daoRespuesta = new DaoRespuesta();
-            List<Respuesta> answers = daoRespuesta.findAll(Respuesta.class);
-            for(Respuesta respuesta: answers){
-              if(respuesta.get_preguntaEncuesta().get_id() == preguntaEncuesta.get_id()){
-                JsonObject answer = Json.createObjectBuilder()
-                  .add("pregunta", pregunta.get_descripcionPregunta())
-                  .add("tipoPregunta", pregunta.get_tipoPregunta())
-                  .add("respuesta",respuesta.get_descripcion())
-                  .add("rango", respuesta.get_rango()).build();
-
-                respuestasArray.add(answer);
-              }
-            }
-          }
-        }
-
-        data = Json.createObjectBuilder()
-          .add("code", 200)
-          .add("estado", "success")
-          .add("respuestas", respuestasArray)
-          .build();
-
-        System.out.println(data);
-        return Response.ok().entity(data).build();
+        return Response.ok().entity(comandoGetRespuestasEncuesta.getResultado()).build();
 
       }catch (Exception ex){
 
-        data = Json.createObjectBuilder()
-          .add("code", 400)
-          .add("estado", "error")
-          .build();
+        String mensaje = "Ha ocurrido un error en el servidor";
+        ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-        return Response.ok().entity(data).build();
+        return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
       }
+
     }
 }

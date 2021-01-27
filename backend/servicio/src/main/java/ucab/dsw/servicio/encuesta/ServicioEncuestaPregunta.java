@@ -19,6 +19,7 @@ import ucab.dsw.dtos.PreguntaDto;
 import ucab.dsw.dtos.PreguntaEncuestaDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.logica.comando.encuesta.ComandoAddPreguntaEncuesta;
+import ucab.dsw.logica.comando.encuesta.ComandoGetPreguntasAgregables;
 import ucab.dsw.logica.comando.encuesta.ComandoGetPreguntasEncuesta;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
@@ -118,47 +119,22 @@ public class ServicioEncuestaPregunta {
     @Path("/{id}/preguntasagregables")
     public Response getPreguntasAgregables(@PathParam("id") long _idEncuesta){
 
-      JsonObject data;
-      DaoEncuesta daoEncuesta = new DaoEncuesta();
-      Encuesta encuesta;
-
-      DaoPregunta daoPregunta = new DaoPregunta();
-      List<Pregunta> preguntas = daoPregunta.findAll(Pregunta.class);
-
-      DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
-
-      JsonArrayBuilder preguntaArray = Json.createArrayBuilder();
-
       try{
-        encuesta = daoEncuesta.find(_idEncuesta, Encuesta.class);
 
-        for(Pregunta preguntaList: preguntas){
-          Pregunta preguntaAgregada = daoPreguntaEncuesta.getPreguntaAgregable(preguntaList, encuesta);
-            if(preguntaAgregada ==  null){
-              JsonObject question = Json.createObjectBuilder()
-                .add("preguntaId", preguntaList.get_id())
-                .add("descripcionPregunta", preguntaList.get_descripcionPregunta())
-                .add("tipoPregunta", preguntaList.get_tipoPregunta()).build();
+        ComandoGetPreguntasAgregables comandoGetPreguntasAgregables = Fabrica.crearComandoConId(ComandoGetPreguntasAgregables.class, _idEncuesta);
+        comandoGetPreguntasAgregables.execute();
 
-              preguntaArray.add(question);
-            }
-        }
-        data = Json.createObjectBuilder()
-          .add("estado", "success")
-          .add("code", 200)
-          .add("preguntas", preguntaArray).build();
-
-        return Response.ok().entity(data).build();
+        return Response.ok().entity(comandoGetPreguntasAgregables.getResultado()).build();
 
       }catch (Exception ex){
 
-        data = Json.createObjectBuilder()
-          .add("estado", "error")
-          .add("code", 400)
-          .add("mensaje", ex.getMessage()).build();
+        String mensaje = "Ha ocurrido un error en el servidor";
+        ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-        return Response.ok().entity(data).build();
+        return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
       }
+
     }
 
 }

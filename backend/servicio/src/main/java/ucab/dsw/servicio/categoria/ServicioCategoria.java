@@ -2,8 +2,8 @@ package ucab.dsw.servicio.categoria;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.dtos.CategoriaDto;
-import ucab.dsw.logica.comando.activador.ComandoActivarCategoria;
-import ucab.dsw.logica.comando.activador.ComandoDesactivarCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoActivarCategoria;
+import ucab.dsw.logica.comando.categoria.ComandoDesactivarCategoria;
 import ucab.dsw.logica.comando.categoria.ComandoAddCategoria;
 import ucab.dsw.logica.comando.categoria.ComandoUpdateCategoria;
 import ucab.dsw.logica.comando.categoria.ComandoGetCategoria;
@@ -177,6 +177,7 @@ public class ServicioCategoria extends AplicacionBase {
   public Response disableCategoria(@PathParam("categoriaId") long id) {
 
     try{
+
       ComandoDesactivarCategoria comandoDesactivarCategoria = Fabrica.crearComandoConId(ComandoDesactivarCategoria.class, id);
       comandoDesactivarCategoria.execute();
 
@@ -188,6 +189,7 @@ public class ServicioCategoria extends AplicacionBase {
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
       return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500 )).build();
+
     }
 
   }

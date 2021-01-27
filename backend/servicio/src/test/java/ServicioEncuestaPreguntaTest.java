@@ -41,18 +41,30 @@ public class ServicioEncuestaPreguntaTest {
 
 
     @Test
-    public void getPreguntasTest() throws Exception {
+    public void getPreguntasByEncuestaTest() throws Exception {
 
-        ServicioEncuestaPregunta servicioEncuestaPregunta;
-        servicioEncuestaPregunta = new ServicioEncuestaPregunta();
+        ServicioEncuestaPregunta servicioEncuestaPregunta = new ServicioEncuestaPregunta();
 
         EncuestaDto encuestaDto = new EncuestaDto();
-        encuestaDto.setId(12);
+        encuestaDto.setId(9);
 
         Response resultado = servicioEncuestaPregunta.getPreguntas(encuestaDto.getId());
         JsonObject respuesta = (JsonObject) resultado.getEntity();
 
         Assert.assertNotNull(respuesta.get("data"));
+
+    }
+
+
+    @Test
+  public void getPreguntasAgregablesTest(){
+
+      ServicioEncuestaPregunta servicioEncuestaPregunta = new ServicioEncuestaPregunta();
+
+      Response resultado = servicioEncuestaPregunta.getPreguntasAgregables(9);
+      JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+      Assert.assertNotNull(respuesta.get("preguntas"));
 
     }
 

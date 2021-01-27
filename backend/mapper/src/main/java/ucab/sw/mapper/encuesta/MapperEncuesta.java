@@ -1,12 +1,10 @@
 package ucab.sw.mapper.encuesta;
 
-import ucab.dsw.dtos.EncuestaDto;
-import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.dtos.PreguntaEncuestaDto;
-import ucab.dsw.entidades.Encuesta;
-import ucab.dsw.entidades.Pregunta;
-import ucab.dsw.entidades.PreguntaEncuesta;
+import ucab.dsw.dtos.*;
+import ucab.dsw.entidades.*;
 import ucab.dsw.logica.fabrica.Fabrica;
+
+import java.util.Date;
 
 public class MapperEncuesta {
 
@@ -17,6 +15,7 @@ public class MapperEncuesta {
       EncuestaDto encuestaDto = Fabrica.crear(EncuestaDto.class);
       encuestaDto.setId(encuesta.get_id());
       encuestaDto.setNombreEncuesta(encuesta.get_nombreEncuesta());
+
 
       return encuestaDto;
 
@@ -44,6 +43,44 @@ public class MapperEncuesta {
 
   }
 
+  public static Respuesta MapRespuestaEncuestaDtoToEntityAdd(ArrayRespuestaDto respuestaDto, Date fecha, Integer rango, Encuestado encuestado, PreguntaEncuesta preguntaEncuesta){
+
+    try{
+
+      Respuesta respuesta = Fabrica.crear(Respuesta.class);
+      respuesta.set_fecha(fecha);
+      respuesta.set_descripcion(respuestaDto.getDescripcion());
+      respuesta.set_encuestado(encuestado);
+      respuesta.set_rango(rango);
+      respuesta.set_preguntaEncuesta(preguntaEncuesta);
+
+      return respuesta;
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+    }
+
+  }
+
+  public static RespuestaOpcion MapRespuestaOpcionToEntity(Opcion opcion, Respuesta respuestaAgregada){
+
+    try{
+
+      RespuestaOpcion respuestaOpcion = Fabrica.crear(RespuestaOpcion.class);
+
+      respuestaOpcion.set_opcion(opcion);
+      respuestaOpcion.set_respuesta(respuestaAgregada);
+
+      return respuestaOpcion;
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+    }
+
+  }
+
   public static PreguntaEncuestaDto MapEntityToPreguntaEncuestaDto(PreguntaEncuesta preguntaEncuesta){
 
     try{
@@ -59,6 +96,7 @@ public class MapperEncuesta {
     }
 
   }
+
 
   public static PreguntaDto MapEntityToPreguntaInEncuestaDto(Pregunta pregunta){
 

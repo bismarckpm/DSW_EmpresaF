@@ -59,7 +59,7 @@ public class DaoPreguntaEncuesta extends  Dao<PreguntaEncuesta>{
       return resultado;
     }
     catch (Exception ex){
-      ex.printStackTrace();
+      //ex.printStackTrace();
       return  null;
     }
   }

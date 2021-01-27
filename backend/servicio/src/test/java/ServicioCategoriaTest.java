@@ -36,7 +36,7 @@ public class ServicioCategoriaTest {
     Response resultado = servicioCategoria.updateCategoria(59, categoriaDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-    Assert.assertEquals(respuesta.get("categoria"), 0);
+    Assert.assertNotEquals(respuesta.get("categoria"), 0);
 
   }
 
@@ -87,4 +87,5 @@ public class ServicioCategoriaTest {
     Assert.assertNotNull(respuesta.get("categoria"));
 
   }
+
 }

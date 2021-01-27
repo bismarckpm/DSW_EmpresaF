@@ -2,7 +2,7 @@ package ucab.dsw.dtos;
 
 import java.util.List;
 
-public class BaseRespuestaDto{
+public class BaseRespuestaDto extends DtoBase{
 
   private List<ArrayRespuestaDto>  respuestas;
 

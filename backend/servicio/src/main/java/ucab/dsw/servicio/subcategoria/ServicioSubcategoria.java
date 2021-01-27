@@ -47,6 +47,8 @@ public class ServicioSubcategoria extends AplicacionBase {
 
     try {
 
+
+
       Subcategoria subcategoria = new Subcategoria();
       subcategoria.set_nombreSubcategoria(subcategoriaDto.getNombreSubcategoria());
       subcategoria.set_estado("activo");
