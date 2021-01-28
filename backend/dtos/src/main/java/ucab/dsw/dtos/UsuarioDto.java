@@ -5,6 +5,7 @@ public class UsuarioDto extends DtoBase
     private String nombreUsuario;
     private String contrasena;
     private String rol;
+    private String estado;
     private ClienteDto clienteDto;
 
   public UsuarioDto(long id) throws Exception {
@@ -28,6 +29,14 @@ public class UsuarioDto extends DtoBase
 
   public void setContrasena(String contrasena) {
     this.contrasena = contrasena;
+  }
+
+  public String getEstado() {
+    return estado;
+  }
+
+  public void setEstado(String estado) {
+    this.estado = estado;
   }
 
   public ClienteDto getClienteDto() {

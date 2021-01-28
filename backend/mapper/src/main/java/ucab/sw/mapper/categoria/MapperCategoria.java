@@ -57,38 +57,4 @@ public class MapperCategoria {
 
   }
 
-  public static Categoria MapCategoriaDtoToEntityDisabled(Categoria categoria){
-
-    try{
-
-      Categoria cat = Fabrica.crear(Categoria.class);
-      categoria.set_estado("inactivo");
-
-      return cat;
-
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return null;
-    }
-
-  }
-
-  public static Categoria MapCategoriaDtoToEntityEnabled(Categoria categoria){
-
-    try{
-
-      Categoria cat = Fabrica.crear(Categoria.class);
-      categoria.set_estado("activo");
-
-      return cat;
-
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return null;
-    }
-
-  }
-
-
-
 }

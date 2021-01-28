@@ -160,6 +160,7 @@ public class ServicioCategoria extends AplicacionBase {
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
       return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
   }
