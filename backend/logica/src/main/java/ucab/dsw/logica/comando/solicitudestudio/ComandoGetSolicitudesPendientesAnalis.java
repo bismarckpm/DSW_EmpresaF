@@ -20,13 +20,13 @@ import javax.naming.NamingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class ComandoGetSolicitudesPendientes implements ComandoBase {
+public class ComandoGetSolicitudesPendientesAnalis implements ComandoBase {
 
-  private long idUsuarioAdministrador;
-  private  JsonArrayBuilder solicitudesDtos = Json.createArrayBuilder();
+  long idUsuarioAnalista;
+  private JsonArrayBuilder solicitudesDtos = Json.createArrayBuilder();
 
-  public ComandoGetSolicitudesPendientes(long idUsuarioAdministrador) {
-    this.idUsuarioAdministrador = idUsuarioAdministrador;
+  public ComandoGetSolicitudesPendientesAnalis(long idUsuarioAnalista) {
+    this.idUsuarioAnalista = idUsuarioAnalista;
   }
 
   public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion, NamingException {
@@ -37,11 +37,11 @@ public class ComandoGetSolicitudesPendientes implements ComandoBase {
       List<SolicitudEstudio> solicitudesPendientes = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
       DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
-      Usuario usuario = daoUsuario.find(this.idUsuarioAdministrador, Usuario.class);
+      Usuario usuario = daoUsuario.find(this.idUsuarioAnalista, Usuario.class);
 
       for(SolicitudEstudio solicitudes:solicitudesPendientes) {
 
-        if (solicitudes.get_administrador() != null && solicitudes.get_administrador().get_id() == usuario.get_id() && solicitudes.get_estado().equals("solicitado")) {
+        if (solicitudes.get_analista() != null && solicitudes.get_analista().get_id() == usuario.get_id() && solicitudes.get_estado().equals("solicitado")) {
 
           SolicitudEstudioDto solicitudEstudioDto = MapperSolicitud.MapEntityToSolicitudDto(solicitudes);
 
@@ -75,7 +75,7 @@ public class ComandoGetSolicitudesPendientes implements ComandoBase {
       JsonObject data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("id", this.idUsuarioAdministrador)
+        .add("id", this.idUsuarioAnalista)
         .add("solicitudes", this.solicitudesDtos).build();
 
       return data;

@@ -8,7 +8,7 @@ import ucab.dsw.logica.fabrica.Fabrica;
 
 public class MapperUsuario {
 
-  public static Usuario MapUsuarioDtoToEntityAdd(UsuarioDto usuarioDto){
+  public static Usuario MapUsuarioAdminDtoToEntityAdd(UsuarioDto usuarioDto){
 
     try {
 
@@ -17,6 +17,27 @@ public class MapperUsuario {
       usuario.set_estado("activo");
 
       String rol = "administrador";
+      usuario.set_rol(rol);
+
+
+      return usuario;
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+    }
+
+  }
+
+  public static Usuario MapUsuarioAnalisDtoToEntityAdd(UsuarioDto usuarioDto){
+
+    try {
+
+      Usuario usuario = Fabrica.crear(Usuario.class);
+      usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
+      usuario.set_estado("activo");
+
+      String rol = "analista";
       usuario.set_rol(rol);
 
 

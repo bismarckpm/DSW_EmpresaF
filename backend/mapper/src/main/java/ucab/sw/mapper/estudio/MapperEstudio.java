@@ -170,6 +170,7 @@ public class MapperEstudio {
 
   }
 
+
   public static EstudioDto MapEntityToEstudioDtoGet(Estudio estudio, EncuestaDto encuestaDto){
 
     try{

@@ -29,7 +29,7 @@ public class ComandoAddAdministrador implements ComandoBase {
     try{
 
       DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
-      Usuario usuario = MapperUsuario.MapUsuarioDtoToEntityAdd(this.usuarioDto);
+      Usuario usuario = MapperUsuario.MapUsuarioAdminDtoToEntityAdd(this.usuarioDto);
 
       Usuario resultado = daoUsuario.insert(usuario);
 

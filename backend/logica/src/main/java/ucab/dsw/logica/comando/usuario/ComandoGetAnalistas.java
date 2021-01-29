@@ -1,7 +1,6 @@
 package ucab.dsw.logica.comando.usuario;
 
 import ucab.dsw.accesodatos.DaoUsuario;
-import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Usuario;
 import ucab.dsw.excepciones.LimiteExcepcion;
@@ -10,33 +9,41 @@ import ucab.dsw.excepciones.RangoExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
 import ucab.dsw.logica.fabrica.Fabrica;
+import ucab.sw.mapper.usuario.MapperUsuario;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-public class ComandoUpdatePassword implements ComandoBase {
+public class ComandoGetAnalistas implements ComandoBase {
 
-  private long usuarioId;
-  private UsuarioDto usuarioDto;
-
-  public ComandoUpdatePassword(long usuarioId, UsuarioDto usuarioDto) {
-    this.usuarioId = usuarioId;
-    this.usuarioDto = usuarioDto;
-  }
+  private JsonArrayBuilder usuariosDtos = Json.createArrayBuilder();
 
   public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion, NamingException {
 
     try {
 
       DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
-      daoUsuario.find(this.usuarioId, Usuario.class);
+      List<Usuario> usuarios = daoUsuario.findAll(Usuario.class);
 
-      if(this.usuarioDto.getContrasena () != null){
+      for(Usuario usuario:usuarios){
 
-        DirectorioActivo directorioActivo = new DirectorioActivo();
-        directorioActivo.changePassword(this.usuarioDto);
+        if(usuario.get_rol().equals("analista")) {
+
+          UsuarioDto usuarioDto = MapperUsuario.MapEntityToUsuarioDto(usuario);
+
+          JsonObject users = Json.createObjectBuilder()
+            .add("id", usuarioDto.getId())
+            .add("nombreUsuario", usuarioDto.getNombreUsuario())
+            .add("estado", usuarioDto.getEstado())
+            .build();
+
+          usuariosDtos.add(users);
+
+        }
 
       }
 
@@ -51,9 +58,9 @@ public class ComandoUpdatePassword implements ComandoBase {
     try {
 
       JsonObject data = Json.createObjectBuilder()
-        .add("estado", "success")
         .add("code", 200)
-        .build();
+        .add("estado", "success")
+        .add("usuarios", this.usuariosDtos).build();
 
       return data;
 

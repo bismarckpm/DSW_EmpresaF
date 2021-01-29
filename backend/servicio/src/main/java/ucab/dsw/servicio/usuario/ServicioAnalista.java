@@ -9,6 +9,14 @@ import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
+import ucab.dsw.logica.comando.estudio.ComandoActivarEstudio;
+import ucab.dsw.logica.comando.estudio.ComandoFinalizarEstudio;
+import ucab.dsw.logica.comando.estudio.ComandoGetEstudioByAnalista;
+import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesPendientesAdmin;
+import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesPendientesAnalis;
+import ucab.dsw.logica.comando.usuario.*;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
 import javax.json.Json;
@@ -40,49 +48,32 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @POST
   @Path("/add")
   public Response addUser(UsuarioDto usuarioDto) {
-    JsonObject data;
-    String rol = "analista";
+
     try {
 
-      DaoUsuario daoUsuario = new DaoUsuario();
-      Usuario usuario = new Usuario();
-      usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
-      usuario.set_estado("activo");
-      usuario.set_rol(rol);
+      ComandoAddAnalista comandoAddAnalista = Fabrica.crearComandoConDto(ComandoAddAnalista.class, usuarioDto);
+      comandoAddAnalista.execute();
 
-      Usuario usuarioAgregado = daoUsuario.insert(usuario);
-
-      DirectorioActivo ldap = new DirectorioActivo();
-      ldap.addEntryToLdap(usuarioDto, rol);
-
-      data = Json.createObjectBuilder().add("usuario", usuarioAgregado.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      return Response.ok().entity(comandoAddAnalista.getResultado()).build();
 
     }
     catch (javax.persistence.PersistenceException ex){
-      String mensaje = "El usuario ya se encuentra registrado en el sistema";
-      data = Json.createObjectBuilder().add("mensaje", mensaje)
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "El usuario ya se encuentra registrado en el sistema";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+
     }
     catch ( Exception ex ){
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
 
-      System.out.println(data);
-      return  Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    System.out.println(data);
-    return  Response.ok().entity(data).build();
   }
 
   /**
@@ -95,45 +86,23 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @GET
   @Path("/getall")
   public Response getUsers() {
-    List<Usuario> usuarios ;
-    JsonObject data;
+
     try {
 
-      DaoUsuario dao = new DaoUsuario();
-      usuarios = dao.findAll(Usuario.class);
+      ComandoGetAnalistas comandoGetAnalistas = Fabrica.crear(ComandoGetAnalistas.class);
+      comandoGetAnalistas.execute();
 
-      JsonArrayBuilder usuariosArray = Json.createArrayBuilder();
-
-      for(Usuario user: usuarios) {
-        if(user.get_rol().equals("analista")) {
-          JsonObject users = Json.createObjectBuilder()
-            .add("id", user.get_id())
-            .add("nombreUsuario", user.get_nombreUsuario())
-            .add("estado", user.get_estado())
-            .build();
-
-          usuariosArray.add(users);
-        }
-      }
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("usuarios", usuariosArray).build();
-
+      return Response.ok().entity(comandoGetAnalistas.getResultado()).build();
 
     } catch (Exception ex) {
 
-      data = Json.createObjectBuilder()
-        .add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+      return Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
-    System.out.println(data);
-    return Response.ok().entity(data).build();
+
   }
 
   /**
@@ -149,31 +118,22 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @Path("getuser/{usuarioAnalistaId}")
   public Response getUserById(@PathParam("usuarioAnalistaId") long id){
 
-    DaoUsuario daoUsuario = new DaoUsuario();
-    JsonObject data;
-
     try{
-      Usuario usuario = daoUsuario.find(id, Usuario.class);
 
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .add("id", usuario.get_id())
-        .add("nombreUsuario", usuario.get_nombreUsuario())
-        .add("estadoUsuario", usuario.get_estado())
-        .build();
+      ComandoGetAnalista comandoGetAnalista = Fabrica.crearComandoConId(ComandoGetAnalista.class, id);
+      comandoGetAnalista.execute();
+
+      return  Response.ok().entity(comandoGetAnalista.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
-      return Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
 
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -190,31 +150,22 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @Path("/update/{usuarioAnalistaId}")
   public Response changePassword(@PathParam("usuarioAnalistaId") long id, UsuarioDto usuarioDto){
 
-    JsonObject data;
-
     try{
 
-      if(usuarioDto.getContrasena () !=null){
-        DirectorioActivo directorioActivo = new DirectorioActivo();
-        directorioActivo.changePassword(usuarioDto);
-      }
+      ComandoUpdatePassword comandoUpdatePassword = Fabrica.crearComandoConAmbos(ComandoUpdatePassword.class, id, usuarioDto);
+      comandoUpdatePassword.execute();
 
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      return Response.ok().entity(comandoUpdatePassword.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -230,33 +181,22 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @Path("/disable/{usuarioAnalistaId}")
   public Response disableUser(@PathParam("usuarioAnalistaId") long id) {
 
-    DaoUsuario daoUsuario = new DaoUsuario();
-    JsonObject data;
-
     try{
 
-      Usuario usuario = daoUsuario.find(id, Usuario.class);
-      usuario.set_estado("inactivo");
+      ComandoDesactivarUsuario comandoDesactivarUsuario = Fabrica.crearComandoConId(ComandoDesactivarUsuario.class, id);
+      comandoDesactivarUsuario.execute();
 
-      Usuario resul = daoUsuario.update(usuario);
-
-      data = Json.createObjectBuilder().add("usuario", resul.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
-
+      return Response.ok().entity(comandoDesactivarUsuario.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -272,33 +212,22 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @Path("/enable/{usuarioAnalistaId}")
   public Response enableUser(@PathParam("usuarioAnalistaId") long id) {
 
-    DaoUsuario daoUsuario = new DaoUsuario();
-    JsonObject data;
-
     try{
 
-      Usuario usuario = daoUsuario.find(id, Usuario.class);
-      usuario.set_estado("activo");
+      ComandoActivarUsuario comandoActivarUsuario = Fabrica.crearComandoConId(ComandoActivarUsuario.class, id);
+      comandoActivarUsuario.execute();
 
-      Usuario resul = daoUsuario.update(usuario);
-
-      data = Json.createObjectBuilder().add("usuario", resul.get_id())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
-
+      return Response.ok().entity(comandoActivarUsuario.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder().add("mensaje", ex.getMessage())
-        .add("estado", "success")
-        .add("code", 200)
-        .build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -313,58 +242,23 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @Path("/getsolicitudespendientes/{usuarioAnalistaId}")
   @GET
   public Response getSolicitudesPendientes(@PathParam("usuarioAnalistaId") long id){
-    List<SolicitudEstudio> solicitudesPendientes;
-    JsonObject data;
 
     try {
 
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      solicitudesPendientes = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
+      ComandoGetSolicitudesPendientesAnalis comandoGetSolicitudesPendientes = Fabrica.crearComandoConId(ComandoGetSolicitudesPendientesAnalis.class, id);
+      comandoGetSolicitudesPendientes.execute();
 
-      JsonArrayBuilder solicitudesArray = Json.createArrayBuilder();
+      return Response.ok().entity(comandoGetSolicitudesPendientes.getResultado()).build();
 
-      for(SolicitudEstudio solicitudes:solicitudesPendientes) {
-        if (solicitudes.get_analista() != null && solicitudes.get_analista().get_id() == id && solicitudes.get_estado().equals("solicitado")) {
-          JsonObject solicitudesEstudios = Json.createObjectBuilder().
-            add("id", solicitudes.get_id()).
-            add("edadInicial", solicitudes.get_edadfinal()).
-            add("edadFinal", solicitudes.get_edadfinal()).
-            add("genero", solicitudes.get_genero()).
-            add("estado", solicitudes.get_estado()).
-            add("cliente", solicitudes.get_cliente().get_nombreUsuario()).
-            add("subcategoria", solicitudes.get_subcategoria().get_nombreSubcategoria()).
-            add("nivelSocioeconomico", solicitudes.get_nivelSocioeconomico().getTipo()).
-            add("parroquia", solicitudes.get_parroquia().get_nombreParroquia()).build();
+    }catch (Exception ex){
 
-          solicitudesArray.add(solicitudesEstudios);
-        }
-      }
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("id", id)
-        .add("solicitudes", solicitudesArray).build();
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
 
-    }catch (NullPointerException ex){
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("mensaje", "No hay solicitudes pendientes").build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
-
-    } catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("code", 400)
-        .add("estado", "error").build();
-
-      return Response.ok().entity(data).build();
     }
 
-    System.out.println(data);
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -381,49 +275,23 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @PUT
   public Response activarEstudio(@PathParam("solicitudId") long id){
 
-    JsonObject data;
-
     try {
-      SolicitudEstudio solicitud;
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      solicitud = daoSolicitudEstudio.find(id, SolicitudEstudio.class);
 
-      List<SolicitudEstudio> solicitudesEstudio = daoSolicitudEstudio.getSolicitudesByCaracteristicas(solicitud);
-      DaoEstudio daoEstudio = new DaoEstudio();
+      ComandoActivarEstudio comandoActivarEstudio = Fabrica.crearComandoConId(ComandoActivarEstudio.class, id);
+      comandoActivarEstudio.execute();
 
-     for(SolicitudEstudio solicitudes:solicitudesEstudio){
-        if(solicitudes.get_analista() == solicitud.get_analista() &&
-          (solicitudes.get_estado().equals("procesado") || solicitudes.get_estado().equals("ejecutando") || solicitudes.get_estado().equals("culminado"))){
-            Estudio estudio = daoEstudio.find(solicitudes.get_estudio().get_id(), Estudio.class);
-
-            estudio.set_estado("procesado");
-            daoEstudio.update(estudio);
-
-            solicitud.set_estudio(estudio);
-            solicitud.set_estado("procesado");
-            break;
-        }
-      }
-
-      SolicitudEstudio resultado = daoSolicitudEstudio.update(solicitud);
-
-      System.out.println(solicitud.get_id());
-
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("idSolicitud", id)
-        .add("estadoSolicitud", resultado.get_estado()).build();
+      return Response.ok().entity(comandoActivarEstudio.getResultado()).build();
 
     }
     catch (Exception ex){
-      ex.printStackTrace();
 
-      return Response.ok().entity(null).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    System.out.println(data);
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -439,62 +307,28 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @GET
   public Response obtenerEstudiosByAnalista(@PathParam("analistaId") long id){
 
-    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-    JsonObject data;
-    String resultadoEstudio;
-
     try {
-      List<SolicitudEstudio> solicitudEstudios = daoSolicitudEstudio.findAll(SolicitudEstudio.class);
 
-      JsonArrayBuilder estudiosArray = Json.createArrayBuilder();
+      ComandoGetEstudioByAnalista comandoGetEstudioByAnalista = Fabrica.crearComandoConId(ComandoGetEstudioByAnalista.class, id);
+      comandoGetEstudioByAnalista.execute();
 
-      for (SolicitudEstudio solicitudes : solicitudEstudios) {
-       if(solicitudes.get_estudio() != null){
-          if(solicitudes.get_analista().get_id() == id) {
-            DaoEstudio daoEstudio = new DaoEstudio();
-            Estudio estu = daoEstudio.find(solicitudes.get_estudio().get_id(), Estudio.class);
-
-            if(estu.get_resultado() != null){
-              resultadoEstudio = estu.get_resultado();
-            }else{
-              resultadoEstudio = "Sin resultado";
-            }
-            JsonObject estudio = Json.createObjectBuilder()
-              .add("estado", estu.get_estado())
-              .add("id", solicitudes.get_id())
-              .add("nombreEstudio", solicitudes.get_estudio().get_nombreEstudio())
-              .add("resultadoEstudio", resultadoEstudio)
-              .add("encuestaId", solicitudes.get_estudio().get_encuesta().get_id()).build();
-
-            estudiosArray.add(estudio);
-          }
-        }
-      }
-
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .add("estudios",estudiosArray)
-        .build();
-
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(comandoGetEstudioByAnalista.getResultado()).build();
 
     }catch (NullPointerException ex){
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .add("mensaje","No hay estudios")
-        .build();
 
-      return Response.ok().entity(data).build();
+      String mensaje = "No hay estudios";
+
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder()
-        .add("estado", "error")
-        .add("code", 400).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return Response.ok().entity(data).build();
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
   }
@@ -512,41 +346,22 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
   @PUT
   public Response finalizarEstudio(@PathParam("estudioId") long estudioId, EstudioDto estudioDto){
 
-    JsonObject data;
-
     try{
-      DaoEstudio daoEstudio = new DaoEstudio();
-      Estudio estudio = daoEstudio.find(estudioId, Estudio.class);
 
-      estudio.set_estado("culminado");
-      estudio.set_resultado(estudioDto.getResultado());
+      ComandoFinalizarEstudio comandoFinalizarEstudio = Fabrica.crearComandoConAmbos(ComandoFinalizarEstudio.class, estudioId, estudioDto);
+      comandoFinalizarEstudio.execute();
 
-      Date fecha = new Date();
-      estudio.set_fechaFin(fecha);
-
-      List<SolicitudEstudio> solicitudEstudios = estudio.get_solicitudesEstudio();
-      for(SolicitudEstudio solicitud:solicitudEstudios){
-        solicitud.set_estado("culminado");
-        DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-        daoSolicitudEstudio.update(solicitud);
-      }
-
-      Estudio resultado = daoEstudio.update(estudio);
-
-      data = Json.createObjectBuilder()
-        .add("estudioCulminado", resultado.get_id())
-        .add("estado", "success")
-        .add("code", 200).build();
-
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(comandoFinalizarEstudio.getResultado()).build();
 
     }catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("mensaje", ex.getMessage())
-        .add("estado", "error")
-        .add("code", 400).build();
-      return Response.status(400).entity(data).build();
+
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
+
   }
 
 }

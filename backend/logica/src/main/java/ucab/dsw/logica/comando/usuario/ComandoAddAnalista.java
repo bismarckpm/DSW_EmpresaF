@@ -10,35 +10,34 @@ import ucab.dsw.excepciones.RangoExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
 import ucab.dsw.logica.fabrica.Fabrica;
+import ucab.sw.mapper.usuario.MapperUsuario;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import java.lang.reflect.InvocationTargetException;
 
-public class ComandoUpdatePassword implements ComandoBase {
+public class ComandoAddAnalista implements ComandoBase {
 
-  private long usuarioId;
   private UsuarioDto usuarioDto;
 
-  public ComandoUpdatePassword(long usuarioId, UsuarioDto usuarioDto) {
-    this.usuarioId = usuarioId;
+  public ComandoAddAnalista(UsuarioDto usuarioDto) {
     this.usuarioDto = usuarioDto;
   }
 
   public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion, NamingException {
 
-    try {
+    try{
 
       DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
-      daoUsuario.find(this.usuarioId, Usuario.class);
+      Usuario usuario = MapperUsuario.MapUsuarioAnalisDtoToEntityAdd(this.usuarioDto);
 
-      if(this.usuarioDto.getContrasena () != null){
+      Usuario resultado = daoUsuario.insert(usuario);
 
-        DirectorioActivo directorioActivo = new DirectorioActivo();
-        directorioActivo.changePassword(this.usuarioDto);
+      DirectorioActivo ldap = Fabrica.crear(DirectorioActivo.class);
+      ldap.addEntryToLdap(this.usuarioDto, "analista");
 
-      }
+      this.usuarioDto = MapperUsuario.MapEntityToUsuarioDto(resultado);
 
     }catch (Exception ex){
       throw ex;
@@ -48,9 +47,9 @@ public class ComandoUpdatePassword implements ComandoBase {
 
   public JsonObject getResultado(){
 
-    try {
+    try{
 
-      JsonObject data = Json.createObjectBuilder()
+      JsonObject data = Json.createObjectBuilder().add("usuario", this.usuarioDto.getId())
         .add("estado", "success")
         .add("code", 200)
         .build();

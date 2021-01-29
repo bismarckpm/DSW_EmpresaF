@@ -1,29 +1,15 @@
 package ucab.dsw.servicio.usuario;
 
-import ucab.dsw.accesodatos.DaoCliente;
-import ucab.dsw.accesodatos.DaoEstudio;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
-import ucab.dsw.directorioactivo.DirectorioActivo;
-import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.dtos.UsuarioDto;
-import ucab.dsw.entidades.Cliente;
-import ucab.dsw.entidades.Estudio;
-import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
-import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesPendientes;
+import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesPendientesAdmin;
 import ucab.dsw.logica.comando.usuario.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * Clase para gestionar los usuarios administradores
@@ -242,7 +228,7 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
 
     try {
 
-      ComandoGetSolicitudesPendientes comandoGetSolicitudesPendientes = Fabrica.crearComandoConId(ComandoGetSolicitudesPendientes.class, id);
+      ComandoGetSolicitudesPendientesAdmin comandoGetSolicitudesPendientes = Fabrica.crearComandoConId(ComandoGetSolicitudesPendientesAdmin.class, id);
       comandoGetSolicitudesPendientes.execute();
 
       return Response.ok().entity(comandoGetSolicitudesPendientes.getResultado()).build();

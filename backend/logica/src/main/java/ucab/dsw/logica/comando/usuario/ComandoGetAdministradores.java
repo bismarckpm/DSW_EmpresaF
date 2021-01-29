@@ -13,7 +13,6 @@ import ucab.dsw.excepciones.RangoExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
 import ucab.dsw.logica.fabrica.Fabrica;
-import ucab.sw.mapper.categoria.MapperCategoria;
 import ucab.sw.mapper.usuario.MapperUsuario;
 
 import javax.json.Json;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class ComandoGetAdministradores implements ComandoBase {
 
-  private JsonArrayBuilder usuariosDtos= Json.createArrayBuilder();
+  private JsonArrayBuilder usuariosDtos = Json.createArrayBuilder();
 
   public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion {
 
@@ -37,13 +36,16 @@ public class ComandoGetAdministradores implements ComandoBase {
 
         if(usuario.get_rol().equals("administrador")) {
 
+          UsuarioDto usuarioDto = MapperUsuario.MapEntityToUsuarioDto(usuario);
+
           JsonObject users = Json.createObjectBuilder()
-            .add("id", usuario.get_id())
-            .add("nombreUsuario", usuario.get_nombreUsuario())
-            .add("estado", usuario.get_estado())
+            .add("id", usuarioDto.getId())
+            .add("nombreUsuario", usuarioDto.getNombreUsuario())
+            .add("estado", usuarioDto.getEstado())
             .build();
 
           usuariosDtos.add(users);
+
         }
 
       }
@@ -61,7 +63,7 @@ public class ComandoGetAdministradores implements ComandoBase {
       JsonObject data = Json.createObjectBuilder()
         .add("code", 200)
         .add("estado", "success")
-        .add("usuarios", usuariosDtos).build();
+        .add("usuarios", this.usuariosDtos).build();
 
       return data;
 
