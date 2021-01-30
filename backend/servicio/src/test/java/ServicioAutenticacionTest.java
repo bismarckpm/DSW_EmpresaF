@@ -14,7 +14,7 @@ public class ServicioAutenticacionTest {
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "new22@gmail.com");
+    usuarioDto.setNombreUsuario( "pruebarepetida245@gmail.com");
     usuarioDto.setContrasena("5678");
 
     Response resultado = servicio.login(usuarioDto);
