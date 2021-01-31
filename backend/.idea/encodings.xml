@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/accesodatos" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accesodatos/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/accesodatos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/autenticacion/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/directorioactivo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/directorioactivo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dtos" charset="UTF-8" />
@@ -13,6 +14,8 @@
     <file url="file://$PROJECT_DIR$/entidades/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/excepciones" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/excepciones/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/logica/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mapper/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servicio" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servicio/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/servicio/src/main/resources" charset="UTF-8" />
