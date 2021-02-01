@@ -15,6 +15,8 @@ public class MarcaDto extends DtoBase{
 
   private String marca;
 
+  private String estado;
+
   public MarcaDto(long id) throws Exception {
     super(id);
   }
@@ -68,5 +70,13 @@ public class MarcaDto extends DtoBase{
 
   public void setMarca(String marca) {
     this.marca = marca;
+  }
+
+  public  String getEstado() {
+    return estado;
+  }
+
+  public void setEstado(String estado){
+    this.estado = estado;
   }
 }
