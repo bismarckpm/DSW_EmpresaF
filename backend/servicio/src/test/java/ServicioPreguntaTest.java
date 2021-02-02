@@ -23,64 +23,17 @@ import ucab.dsw.servicio.pregunta.ServicioPregunta;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ServicioPreguntaTest {
 
-    private String preguntaBuscar;
-    
-    @Test
-    public void t1_addPreguntaTipoRango() {
-
-        ServicioPregunta servicioPregunta = new ServicioPregunta();
-
-        PreguntaDto preguntaDto = new PreguntaDto();
-
-        preguntaDto.setTipoPregunta("rango");
-        preguntaDto.setDescripcionPregunta("¿Cantidad de vasos de agua?");
-        preguntaDto.setMin(0);
-        preguntaDto.setMax(10);
-
-        Response resultado = servicioPregunta.addPregunta(preguntaDto);
-       
-        System.out.println(resultado.getEntity().toString());
-        Assert.assertEquals(200, resultado.getStatus());
-
-    }
 
     @Test
-    public void t2_addPreguntaTipoMultiple() {
-
-        ServicioPregunta servicioPregunta = new ServicioPregunta();
-
-        PreguntaDto preguntaDto = new PreguntaDto();
-
-        preguntaDto.setTipoPregunta("multiple");
-        preguntaDto.setDescripcionPregunta("¿Cantidad de vasos de agua?");
-
-        List<OpcionDto> opcionesDto = new ArrayList<>();
-
-        OpcionDto op1 = new OpcionDto();
-        op1.setDescripcion("1");
-        opcionesDto.add(op1);
-
-        OpcionDto op2 = new OpcionDto();
-        op2.setDescripcion("8");
-        opcionesDto.add(op2);
-
-        preguntaDto.setOpciones(opcionesDto);
-
-        Response resultado = servicioPregunta.addPregunta(preguntaDto);
-
-        System.out.println(resultado.getEntity().toString());
-        Assert.assertEquals(200, resultado.getStatus());
-
-    }
-
-    @Test
-    public void t3_addPreguntaTipoSimple() {
+    public void addPreguntaTest() {
 
         ServicioPregunta servicioPregunta = new ServicioPregunta();
 
         PreguntaDto preguntaDto = new PreguntaDto();
 
         preguntaDto.setTipoPregunta("simple");
+        preguntaDto.setMin(0);
+        preguntaDto.setMax(0);
         preguntaDto.setDescripcionPregunta("¿Equipo de futbol?");
 
         List<OpcionDto> opcionesDto = new ArrayList<>();
@@ -96,30 +49,34 @@ public class ServicioPreguntaTest {
         preguntaDto.setOpciones(opcionesDto);
 
         Response resultado = servicioPregunta.addPregunta(preguntaDto);
+        JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-        System.out.println(resultado.getEntity().toString());
-        Assert.assertEquals(200, resultado.getStatus());
+        Assert.assertNotNull(respuesta.get("data"));
 
     }
 
     @Test
-    public void t4_getAllPreguntasTest() {
+    public void getPreguntasTest() {
 
         ServicioPregunta servicioPregunta = new ServicioPregunta();
 
         Response resultado = servicioPregunta.getPreguntas();
-        System.out.println(resultado.getEntity().toString());
-        Assert.assertEquals(200, resultado.getStatus());
+        JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+        Assert.assertNotEquals(respuesta.get("data").toString().length(), 2);
 
     }
 
     @Test
-    public void t5_getPreguntaTest() {
-        ServicioPregunta servicioPregunta = new ServicioPregunta();
+    public void getPreguntasSugeridas(){
 
-        Response resultado = servicioPregunta.getPregunta(44);
-        System.out.println(resultado.getEntity().toString());
-        Assert.assertEquals(200, resultado.getStatus());
+      ServicioPregunta servicioPregunta = new ServicioPregunta();
+
+      Response resultado = servicioPregunta.getPreguntasSugeridas(179);
+      JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+      Assert.assertNotEquals(respuesta.get("preguntas").toString().length(), 2);
 
     }
+
 }

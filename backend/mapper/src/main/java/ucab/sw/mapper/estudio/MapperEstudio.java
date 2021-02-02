@@ -160,6 +160,24 @@ public class MapperEstudio {
 
       EstudioDto estudioDto = Fabrica.crear(EstudioDto.class);
       estudioDto.setId(estudio.get_id());
+      estudioDto.setNombreEstudio(estudio.get_nombreEstudio());
+
+      return estudioDto;
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+    }
+
+  }
+
+  public static EstudioDto MapEntityToEstudioDtoByEncuestado(Estudio estudio){
+
+    try{
+
+      EstudioDto estudioDto = Fabrica.crear(EstudioDto.class);
+      estudioDto.setId(estudio.get_id());
+      estudioDto.setNombreEstudio(estudio.get_nombreEstudio());
 
       return estudioDto;
 

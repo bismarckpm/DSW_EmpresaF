@@ -24,4 +24,20 @@ public class MapperOpcion {
 
   }
 
+  public static Opcion MapOpcionDtoToEntity(OpcionDto opcionDto){
+
+    try{
+
+      Opcion opcion = Fabrica.crear(Opcion.class);
+      opcion.set_descripcion(opcionDto.getDescripcion());
+
+      return opcion;
+
+    }catch (Exception ex){
+      ex.printStackTrace();
+      return null;
+    }
+
+  }
+
 }

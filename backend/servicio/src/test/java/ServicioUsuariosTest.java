@@ -59,6 +59,7 @@ public class ServicioUsuariosTest {
   public void addUserEncuestadoTest(){
 
     try {
+
       ServicioEncuestado servicio = new ServicioEncuestado();
       UsuarioDto usuarioDto = new UsuarioDto();
       EncuestadoDto encuestadoDto = new EncuestadoDto();
@@ -85,10 +86,10 @@ public class ServicioUsuariosTest {
       ParroquiaDto parroquiaDto = new ParroquiaDto(1);
       encuestadoDto.setParroquia(parroquiaDto);
 
-      NivelEstudioDto nivelEstudioDto = new NivelEstudioDto(1);
+      NivelEstudioDto nivelEstudioDto = new NivelEstudioDto(6);
       encuestadoDto.setNivelEstudio(nivelEstudioDto);
 
-      NivelSocioeconomicoDto nivelSocioeconomico = new NivelSocioeconomicoDto(1);
+      NivelSocioeconomicoDto nivelSocioeconomico = new NivelSocioeconomicoDto(4);
       encuestadoDto.setNivelSocioeconomico(nivelSocioeconomico);
 
       usuarioDto.setEncuestadoDto(encuestadoDto);
@@ -96,12 +97,50 @@ public class ServicioUsuariosTest {
       usuarioDto.setContrasena("12345");
 
       Response resultado = servicio.addUser(usuarioDto);
+      JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-      Assert.assertEquals(resultado.getStatus(), 200);
+      Assert.assertNotNull(respuesta.get("usuario"));
+
     }
     catch (Exception ex){
       ex.getMessage();
     }
+
+  }
+
+  @Test
+  public void updateUserEncuestadoTest(){
+
+    try {
+
+      ServicioEncuestado servicio = new ServicioEncuestado();
+      UsuarioDto usuarioDto = new UsuarioDto();
+      EncuestadoDto encuestadoDto = new EncuestadoDto();
+
+      encuestadoDto.setNumeroIdentificacion("1526788");
+      encuestadoDto.setPrimerNombre("PruebaRoler");
+      encuestadoDto.setPrimerApellido("Pruebapp");
+      encuestadoDto.setEstadoCivil("soltero");
+      encuestadoDto.setGenero("masculino");
+      encuestadoDto.setOcupacion("Ingeniero");
+
+      ParroquiaDto parroquiaDto = new ParroquiaDto(1);
+      encuestadoDto.setParroquia(parroquiaDto);
+
+      usuarioDto.setEncuestadoDto(encuestadoDto);
+      usuarioDto.setNombreUsuario("maria25@gmail.com");
+      usuarioDto.setContrasena("12345");
+
+      Response resultado = servicio.updateUser(155, usuarioDto);
+      JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+      Assert.assertNotNull(respuesta.get("usuario"));
+
+    }
+    catch (Exception ex){
+      ex.getMessage();
+    }
+
   }
 
   @Test
@@ -129,12 +168,26 @@ public class ServicioUsuariosTest {
   }
 
   @Test
+  public void getEncuestadosTest(){
+
+    ServicioEncuestado servicio = new ServicioEncuestado();
+
+    Response resultado = servicio.getUsers();
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("usuarios"));
+
+  }
+
+  @Test
   public void getEncuestadoTest(){
 
     ServicioEncuestado servicio = new ServicioEncuestado();
-    Response resultado = servicio.getUsers();
 
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Response resultado = servicio.getUserById(154);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("idUsuario"));
 
   }
 
@@ -142,7 +195,7 @@ public class ServicioUsuariosTest {
   public void desactivarUserTest(){
 
     ServicioAnalista servicioAnalista= new ServicioAnalista();
-    Response resultado = servicioAnalista.disableUser(166);
+    Response resultado = servicioAnalista.disableUser(155);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
@@ -154,7 +207,7 @@ public class ServicioUsuariosTest {
   public void activarUserTest(){
 
     ServicioAnalista servicioAnalista= new ServicioAnalista();
-    Response resultado = servicioAnalista.enableUser(166);
+    Response resultado = servicioAnalista.enableUser(155);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
@@ -166,9 +219,12 @@ public class ServicioUsuariosTest {
   public void getEstudiosRealizablesByEncuestadoTest(){
 
     ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
-    Response resultado = servicioEncuestado.getEstudiosRealizables(92);
 
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Response resultado = servicioEncuestado.getEstudiosRealizables(155);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotEquals(respuesta.get("estudios").toString().length(), 2);
+
   }
 
   @Test
