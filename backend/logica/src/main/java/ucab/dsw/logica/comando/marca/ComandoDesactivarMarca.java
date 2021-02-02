@@ -40,7 +40,7 @@ public class ComandoDesactivarMarca implements ComandoBase{
     try{
 
       JsonObject data = Json.createObjectBuilder()
-        .add("subcategoria", this.marcaDto.getId())
+        .add("marca", this.marcaDto.getId())
         .add("estado", "success")
         .add("code", 200)
         .build();
