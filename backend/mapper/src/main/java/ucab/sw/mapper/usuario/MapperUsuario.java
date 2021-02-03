@@ -253,4 +253,23 @@ public class MapperUsuario {
 
   }
 
+  public  static EncuestadoDto MapEntityToEncuestadoDto (Encuestado encuestado) throws Exception {
+
+    try {
+
+      EncuestadoDto encuestadoDto = Fabrica.crear(EncuestadoDto.class);
+      encuestadoDto.setId(encuestado.get_id());
+      encuestadoDto.setPrimerNombre(encuestado.get_primerNombre());
+      encuestadoDto.setPrimerApellido(encuestado.get_primerApellido());
+      encuestadoDto.setGenero(encuestado.get_genero());
+      encuestadoDto.setEstadoCivil(encuestado.get_estadoCivil());
+
+      return encuestadoDto;
+
+    }catch (Exception ex){
+      throw ex;
+    }
+
+  }
+
 }

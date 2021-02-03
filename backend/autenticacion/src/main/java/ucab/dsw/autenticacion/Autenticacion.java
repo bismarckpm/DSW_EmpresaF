@@ -75,14 +75,15 @@ public class Autenticacion {
    * code}
    */
   public Claims decode(String token){
+
     String secret = "Clavesecreta02847585923hsddkwn";
     Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
       SignatureAlgorithm.HS256.getJcaName());
 
     Claims jwt = Jwts.parser().setSigningKey(hmacKey).parseClaimsJws(token).getBody();
 
-
     return jwt;
+
   }
 
 }

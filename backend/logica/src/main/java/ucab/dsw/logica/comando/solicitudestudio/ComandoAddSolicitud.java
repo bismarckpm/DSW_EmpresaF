@@ -24,7 +24,7 @@ public class ComandoAddSolicitud implements ComandoBase {
     this.solicitudEstudioDto = solicitudEstudioDto;
   }
 
-  public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion {
+  public void execute() throws Exception {
 
     try {
 
@@ -68,7 +68,7 @@ public class ComandoAddSolicitud implements ComandoBase {
    * @param solicitudEstudio solicitud de estudio
    *
    */
-  private static void inicializarMuestra(SolicitudEstudio solicitudEstudio){
+  private static void inicializarMuestra(SolicitudEstudio solicitudEstudio) throws Exception {
 
     DaoEncuestado dao = Fabrica.crear(DaoEncuestado.class);
     List<Encuestado> usuariosEncuestados;
@@ -83,8 +83,9 @@ public class ComandoAddSolicitud implements ComandoBase {
 
     }
 
-    ServicioMuestra servicioMuestra = new ServicioMuestra();
+    ServicioMuestra servicioMuestra = Fabrica.crear(ServicioMuestra.class);
     servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
 
   }
+
 }

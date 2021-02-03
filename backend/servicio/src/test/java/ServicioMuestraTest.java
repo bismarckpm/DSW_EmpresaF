@@ -4,7 +4,10 @@ import ucab.dsw.dtos.EncuestadoDto;
 import ucab.dsw.dtos.MuestraDto;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 
+import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServicioMuestraTest {
 
@@ -15,21 +18,42 @@ public class ServicioMuestraTest {
 
     MuestraDto muestraDto = new MuestraDto();
 
-    EncuestadoDto encuestadoDto = new EncuestadoDto(52);
+    List<EncuestadoDto> encuestadosDto = new ArrayList<>();
 
-    muestraDto.setEncuestado(encuestadoDto);
+    EncuestadoDto encuestadoDto = new EncuestadoDto(69);
+    encuestadosDto.add(encuestadoDto);
 
-    Response resultado = servicioMuestra.addManualMuestra(133, muestraDto);
+    muestraDto.setEncuestados(encuestadosDto);
 
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Response resultado = servicioMuestra.addManualMuestra(179, muestraDto);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("solicitudEstudio"));
+
   }
 
   @Test
   public void getMuestra(){
 
     ServicioMuestra servicioMuestra = new ServicioMuestra();
-    Response resultado = servicioMuestra.getMuestra(78);
 
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Response resultado = servicioMuestra.getMuestra(179);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotEquals(respuesta.get("encuestados").toString().length(), 2);
+
   }
+
+  @Test
+  public void getUsuariosAgregablesMuestraTest(){
+
+    ServicioMuestra servicioMuestra = new ServicioMuestra();
+
+    Response resultado = servicioMuestra.getUsuarioAgregable(179);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("encuestados"));
+
+  }
+
 }

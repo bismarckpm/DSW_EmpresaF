@@ -20,6 +20,7 @@ public class RecuperacionEmail {
 
 
   public RecuperacionEmail() {
+
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
     props.put("mail.smtp.host", "smtp.gmail.com");
@@ -28,6 +29,7 @@ public class RecuperacionEmail {
     props.put("from", "empresafdsw@gmail.com");
     props.put("username", "empresafdsw@gmail.com");
     props.put("password", "empresafdsw123");
+
   }
 
   /**
@@ -40,6 +42,7 @@ public class RecuperacionEmail {
    *
    */
   public void enviarMail(String to, String subject, String content) throws MessagingException {
+
     Session session = Session.getInstance(props, new javax.mail.Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(props.getProperty("username"), props.getProperty("password"));
@@ -54,5 +57,6 @@ public class RecuperacionEmail {
     Transport.send(message);
 
     System.out.println("mensaje enviado!");
+
   }
 }

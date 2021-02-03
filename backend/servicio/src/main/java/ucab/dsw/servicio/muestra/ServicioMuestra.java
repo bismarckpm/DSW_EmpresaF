@@ -7,6 +7,12 @@ import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
+import ucab.dsw.logica.comando.muestra.ComandoAddMuestra;
+import ucab.dsw.logica.comando.muestra.ComandoAddMuestraManual;
+import ucab.dsw.logica.comando.muestra.ComandoGetMuestra;
+import ucab.dsw.logica.comando.muestra.ComandoGetUsuarioAgregable;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
+import ucab.dsw.logica.fabrica.Fabrica;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -40,40 +46,15 @@ public class ServicioMuestra {
    */
   public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio){
 
+    try {
 
-    DaoMuestra daoMuestra = new DaoMuestra();
+      ComandoAddMuestra comandoAddMuestra = new ComandoAddMuestra(encuestados, solicitudEstudio);
+      comandoAddMuestra.execute();
 
-    for(Encuestado encuestado:encuestados){
-
-      DateFormat fecha = new SimpleDateFormat(("dd-MM-yyyy"));
-      String fechaConvertido = fecha.format(encuestado.get_fechaNacimiento());
-
-      DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-      LocalDate fechaParse = LocalDate.parse(fechaConvertido, fmt);
-
-      Period periodo = Period.between(fechaParse, LocalDate.now());
-
-      if(solicitudEstudio.get_edadfinal() != null){
-
-        if(periodo.getYears() >= solicitudEstudio.get_edadInicial() && periodo.getYears() <= solicitudEstudio.get_edadfinal()) {
-          Muestra muestra = new Muestra();
-          muestra.set_encuestado(encuestado);
-          muestra.set_solicitudEstudio(solicitudEstudio);
-          muestra.set_estado("pendiente");
-          daoMuestra.insert(muestra);
-        }
-
-      }else{
-
-        if(periodo.getYears() >= solicitudEstudio.get_edadInicial()) {
-          Muestra muestra = new Muestra();
-          muestra.set_encuestado(encuestado);
-          muestra.set_solicitudEstudio(solicitudEstudio);
-          muestra.set_estado("pendiente");
-          daoMuestra.insert(muestra);
-        }
-      }
+    }catch (Exception ex){
+      ex.printStackTrace();
     }
+
   }
 
   /**
@@ -89,43 +70,23 @@ public class ServicioMuestra {
   @POST
   @Path("/add/{idSolicitudEstudio}")
   public Response addManualMuestra(@PathParam("idSolicitudEstudio") long idSolicitudEstudio, MuestraDto muestraDto){
-    JsonObject data;
+
     try{
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(idSolicitudEstudio, SolicitudEstudio.class);
 
-      DaoMuestra daoMuestra = new DaoMuestra();
+      ComandoAddMuestraManual comandoAddMuestraManual = Fabrica.crearComandoConAmbos(ComandoAddMuestraManual.class, idSolicitudEstudio, muestraDto);
+      comandoAddMuestraManual.execute();
 
-      for(EncuestadoDto encuestados:muestraDto.getEncuestados()) {
-        Muestra muestra = new Muestra();
-        DaoEncuestado daoEncuestado = new DaoEncuestado();
-
-        Encuestado encuestado = daoEncuestado.find(encuestados.getId(), Encuestado.class);
-        muestra.set_encuestado(encuestado);
-        muestra.set_estado("pendiente");
-
-        muestra.set_solicitudEstudio(solicitudEstudio);
-
-        daoMuestra.insert(muestra);
-      }
-
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("solicitudEstudio", idSolicitudEstudio)
-        .build();
-
-      System.out.println(data);
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(comandoAddMuestraManual.getResultado()).build();
 
     }catch (Exception ex){
 
-      data = Json.createObjectBuilder()
-        .add("code", 400)
-        .add("estado", "error")
-        .build();
-      return Response.ok().entity(data).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
+
   }
 
 
@@ -143,48 +104,23 @@ public class ServicioMuestra {
   @Path("/getmuestra/{solicitudId}")
   public Response getMuestra(@PathParam("solicitudId") long solicitudId){
 
-    JsonObject data;
-
     try {
-      DaoMuestra daoMuestra = new DaoMuestra();
 
-      DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
+      ComandoGetMuestra comandoGetMuestra = Fabrica.crearComandoConId(ComandoGetMuestra.class, solicitudId);
+      comandoGetMuestra.execute();
 
-      List<Encuestado> encuestadosMuestra = daoMuestra.getEncuestadosMuestraBySolicitud(solicitudEstudio);
-
-      JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
-
-      for (Encuestado encuestado : encuestadosMuestra) {
-        DaoUsuario daoUsuario = new DaoUsuario();
-        Usuario usuario = daoUsuario.find(encuestado.get_usuario().get_id(), Usuario.class);
-        JsonObject encu = Json.createObjectBuilder()
-          .add("encuestadoId", encuestado.get_id())
-          .add("encuestadoNombre", encuestado.get_primerNombre())
-          .add("encuestadoApellido", encuestado.get_primerApellido())
-          .add("usuarioId", usuario.get_id())
-          .build();
-
-        encuestadosArray.add(encu);
-      }
-
-      data = Json.createObjectBuilder()
-        .add("code", 200)
-        .add("estado", "success")
-        .add("encuestados", encuestadosArray).build();
+      return Response.ok().entity(comandoGetMuestra.getResultado()).build();
 
     }
     catch (Exception ex){
-      data = Json.createObjectBuilder()
-        .add("code", 400)
-        .add("estado", "error").build();
 
-      System.out.println(data);
-      return Response.ok().entity(null).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
 
-    System.out.println(data);
-    return Response.ok().entity(data).build();
   }
 
   /**
@@ -201,47 +137,23 @@ public class ServicioMuestra {
   @Path("/usuarioagregable/{solicitudId}")
   public Response getUsuarioAgregable(@PathParam("solicitudId") long solicitudId){
 
-    JsonObject data;
-
-    DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
-    SolicitudEstudio solicitudEstudio;
-
-    DaoEncuestado daoEncuestado = new DaoEncuestado();
-    List <Encuestado> encuestados = daoEncuestado.findAll(Encuestado.class);
-
-    DaoMuestra daoMuestra = new DaoMuestra();
-
-    JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
 
     try{
-      solicitudEstudio = daoSolicitudEstudio.find(solicitudId, SolicitudEstudio.class);
 
-      for(Encuestado encuestado:encuestados){
-        Encuestado encuestadoAgregado = daoMuestra.getEncuestadoAgregable(encuestado, solicitudEstudio);
-        if(encuestadoAgregado ==  null){
-          JsonObject encuest = Json.createObjectBuilder()
-            .add("encuestadoId", encuestado.get_id())
-            .add("primerNombre", encuestado.get_primerNombre())
-            .add("primerApellido", encuestado.get_primerApellido())
-            .add("genero", encuestado.get_genero())
-            .add("estadoCivil", encuestado.get_estadoCivil())
-            .build();
+      ComandoGetUsuarioAgregable comandoGetUsuarioAgregable = Fabrica.crearComandoConId(ComandoGetUsuarioAgregable.class, solicitudId);
+      comandoGetUsuarioAgregable.execute();
 
-          encuestadosArray.add(encuest);
-        }
-      }
-
-      data = Json.createObjectBuilder()
-        .add("estado", "success")
-        .add("code", 200)
-        .add("encuestados", encuestadosArray).build();
-
-      return Response.ok().entity(data).build();
+      return Response.ok().entity(comandoGetUsuarioAgregable.getResultado()).build();
 
     }catch (Exception ex){
-      ex.printStackTrace();
 
-      return Response.ok().entity(null).build();
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
     }
+
   }
+
 }

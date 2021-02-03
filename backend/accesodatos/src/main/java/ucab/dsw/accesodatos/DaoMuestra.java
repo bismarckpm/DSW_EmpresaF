@@ -71,8 +71,7 @@ public class DaoMuestra extends Dao<Muestra>{
       return resultado;
     }
     catch (Exception ex){
-      ex.printStackTrace();
-      return  null;
+      return null;
     }
   }
 }

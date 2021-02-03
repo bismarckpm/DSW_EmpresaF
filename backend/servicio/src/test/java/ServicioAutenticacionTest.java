@@ -4,6 +4,7 @@ import org.junit.Test;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.servicio.autenticacion.ServicioAutenticacion;
 
+import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 
 
@@ -11,21 +12,31 @@ public class ServicioAutenticacionTest {
 
   @Test
   public void generateToken(){
+
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "pruebarepetida245@gmail.com");
+    usuarioDto.setNombreUsuario( "maria254567@gmail.com");
     usuarioDto.setContrasena("5678");
 
     Response resultado = servicio.login(usuarioDto);
-    Assert.assertEquals(resultado.getStatus(), 200);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("token"));
+
   }
 
   @Test
   public void decodeToken(){
+
     ServicioAutenticacion servicio = new ServicioAutenticacion();
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJub21icmVVc3VhcmlvIjoiYmlzbWFyY2twbTIiLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNjA3MjE0MjYxLCJleHAiOjE2MDcyMTQ1NjF9.EdDKei-HmliSNMKstuvksw7EPAOMGziaWASmD5UXJJE";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJub21icmVVc3VhcmlvIjoibmV3MjJAZ21haWwuY29tIiwicm9sIjoiYW5hbGlzdGEiLCJpYXQiOjE2MTIyODgyNDYsImV4cCI6MTYxMjkzNjI0Nn0.XKO5BkdhtHaIjX7CNQLGzOKcmiiyeD8CVGow6cNDYEw";
+
     Response resultado = servicio.decodeToken(token);
-    Assert.assertEquals(resultado.getStatus(), 200);
+    Claims respuesta = (Claims) resultado.getEntity();
+
+    Assert.assertNotNull(respuesta.get("nombreUsuario"));
+
   }
+
 }
