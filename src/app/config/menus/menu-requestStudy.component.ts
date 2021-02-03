@@ -38,7 +38,7 @@ export class RequestStudyComponent implements OnInit{
     }
   
     asignarEstudio(idEstudio){
-      this.router.navigate(['/config/assign/'+idEstudio]);
+      this.router.navigate(['/config/newStudy/'+idEstudio]);
     }
   
     solicitarEstudio(){

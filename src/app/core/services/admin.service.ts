@@ -329,4 +329,37 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions)
       .pipe(map(resultado => resultado))
     }
+
+    /*Crear estudio nuevo flujo */
+    newCreateStudy(nombreEstudio:string,nombreEncuesta:string,preguntas:any,idSolicitud:number,preguntaExistente:boolean){
+      if(preguntaExistente == true){
+        return this.http.post(this.API_URL+'api/estudio/add/'+idSolicitud,
+                              {
+                                "nombreEstudio": nombreEstudio,
+                                "encuesta":{
+                                    "nombreEncuesta": nombreEncuesta
+                                },
+                                "preguntas":preguntas
+                            },
+                             this.httpOptions);
+      }
+      else if(preguntaExistente == false) {
+        console.log({
+          "nombreEstudio": nombreEstudio,
+          "encuesta":{
+              "nombreEncuesta": nombreEncuesta
+          },
+          "preguntas":preguntas
+      })
+        return this.http.post(this.API_URL+'api/estudio/add/'+idSolicitud,
+                              {
+                                "nombreEstudio": nombreEstudio,
+                                "encuesta":{
+                                    "nombreEncuesta": nombreEncuesta
+                                },
+                                "preguntas":preguntas
+                            },
+                            this.httpOptions);
+      }
+    }
 }
