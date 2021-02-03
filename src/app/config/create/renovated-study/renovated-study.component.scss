@@ -1,0 +1,60 @@
+mat-card{
+    -webkit-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    -moz-box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.31) !important;
+    overflow-y: auto;
+}
+
+mat-form-field{
+    width: 20rem;
+}
+
+.menu-bg{
+    background-image: url(./../../../../assets/images/loginBackground.png);
+    background-position-x: right;
+    background-position-y: top;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+
+
+.fa-arrow-left{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+
+  .add-option{
+    background: #94d82d;
+    font-size: large;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+.delete-btn{
+    width: 30%;
+    background: #D60602 !important;
+    font-size: large;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add-question{
+    width: 100% !important;
+    background: #C70039;
+    font-size: large;
+    color: white;
+}
+
+.add-question:hover{
+    color: #C70039;
+    background: white;
+}
