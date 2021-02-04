@@ -1,6 +1,8 @@
 package ucab.dsw.servicio.usuario;
 
 import ucab.dsw.dtos.UsuarioDto;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesPendientesAdmin;
 import ucab.dsw.logica.comando.usuario.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -18,7 +20,7 @@ import javax.ws.rs.core.Response;
 @Path( "/administrador" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class ServicioAdministrador extends AplicacionBase implements IServicioEmpleado {
+public class ServicioAdministrador extends AplicacionBase {
 
   /**
    * Metodo para agregar un administrador. Accedido mediante /administrador/add con el
@@ -30,9 +32,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @POST
   @Path("/add")
-  public Response addUser(UsuarioDto usuarioDto) {
+  public Response addUser(@HeaderParam("authorization") String token, UsuarioDto usuarioDto) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddAdministrador comandoAddAdministrador = Fabrica.crearComandoConDto(ComandoAddAdministrador.class, usuarioDto);
       comandoAddAdministrador.execute();
@@ -40,12 +45,11 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
       return  Response.ok().entity(comandoAddAdministrador.getResultado()).build();
 
     }
-    catch (javax.persistence.PersistenceException ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "El usuario ya se encuentra registrado en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch ( Exception ex ){
@@ -68,9 +72,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @GET
   @Path("/getall")
-  public Response getUsers() {
+  public Response getUsers(@HeaderParam("authorization") String token) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetAdministradores comandoGetAdministradores = Fabrica.crear(ComandoGetAdministradores.class);
       comandoGetAdministradores.execute();
@@ -99,9 +106,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @GET
   @Path("getuser/{usuarioAdministradorId}")
-  public Response getUserById(@PathParam("usuarioAdministradorId") long id){
+  public Response getUserById(@HeaderParam("authorization") String token, @PathParam("usuarioAdministradorId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetAdministrador comandoGetAdministrador = Fabrica.crearComandoConId(ComandoGetAdministrador.class, id);
       comandoGetAdministrador.execute();
@@ -131,9 +141,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @PUT
   @Path("/update/{usuarioAdministradorId}")
-  public Response changePassword(@PathParam("usuarioAdministradorId") long id, UsuarioDto usuarioDto){
+  public Response changePassword(@HeaderParam("authorization") String token, @PathParam("usuarioAdministradorId") long id, UsuarioDto usuarioDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdatePassword comandoUpdatePassword = Fabrica.crearComandoConAmbos(ComandoUpdatePassword.class, id, usuarioDto);
       comandoUpdatePassword.execute();
@@ -162,9 +175,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @PUT
   @Path("/disable/{usuarioAdministradorId}")
-  public Response disableUser(@PathParam("usuarioAdministradorId") long id) {
+  public Response disableUser(@HeaderParam("authorization") String token, @PathParam("usuarioAdministradorId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarUsuario comandoDesactivarUsuario = Fabrica.crearComandoConId(ComandoDesactivarUsuario.class, id);
       comandoDesactivarUsuario.execute();
@@ -193,9 +209,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @PUT
   @Path("/enable/{usuarioAdministradorId}")
-  public Response enableUser(@PathParam("usuarioAdministradorId") long id) {
+  public Response enableUser(@HeaderParam("authorization") String token, @PathParam("usuarioAdministradorId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarUsuario comandoActivarUsuario = Fabrica.crearComandoConId(ComandoActivarUsuario.class, id);
       comandoActivarUsuario.execute();
@@ -224,9 +243,12 @@ public class ServicioAdministrador extends AplicacionBase implements IServicioEm
    */
   @GET
   @Path("/getsolicitudespendientes/{usuarioAdministradorId}")
-  public Response getSolicitudesPendientes(@PathParam("usuarioAdministradorId") long id){
+  public Response getSolicitudesPendientes(@HeaderParam("authorization") String token, @PathParam("usuarioAdministradorId") long id){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetSolicitudesPendientesAdmin comandoGetSolicitudesPendientes = Fabrica.crearComandoConId(ComandoGetSolicitudesPendientesAdmin.class, id);
       comandoGetSolicitudesPendientes.execute();

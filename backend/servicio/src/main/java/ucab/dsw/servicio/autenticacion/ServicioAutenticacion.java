@@ -11,6 +11,8 @@ import ucab.dsw.autenticacion.Autenticacion;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
 import ucab.dsw.excepciones.EstadoExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoCleanToken;
 import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.autenticacion.ComandoLogin;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -87,7 +89,7 @@ public class ServicioAutenticacion extends AplicacionBase {
    */
   @GET
   @Path("/decode")
-  public Response decodeToken(String token){
+  public Response decodeToken(@HeaderParam("authorization") String token) {
 
     try{
 
@@ -122,7 +124,16 @@ public class ServicioAutenticacion extends AplicacionBase {
       return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
 
     }
+    catch (ProblemaExcepcion ex){
+
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+
+    }
     catch (Exception ex){
+
+      ex.printStackTrace();
 
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
@@ -132,4 +143,35 @@ public class ServicioAutenticacion extends AplicacionBase {
     }
 
   }
+
+  /**
+   * Metodo para borrar el token de un usuario autenticado /auth/logout/idUsuariologueado con el
+   * metodo PUT
+   *
+   * @param idUsuario id del usuario autenticado
+   * @return JSON success: {usuario, estado, code}; error: {mensaje, estado,
+   * code}
+   */
+  @PUT
+  @Path("/logout/{idUsuariologueado}")
+  public Response cleanToken(@PathParam("idUsuariologueado") long idUsuario){
+
+    try {
+
+      ComandoCleanToken comandoCleanToken = Fabrica.crearComandoConId(ComandoCleanToken.class, idUsuario);
+      comandoCleanToken.execute();
+
+      return Response.ok().entity(comandoCleanToken.getResultado()).build();
+
+    }catch (Exception ex){
+
+      String mensaje = "Ha ocurrido un error en el servidor";
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
+
+    }
+
+  }
+
 }

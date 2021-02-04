@@ -57,6 +57,7 @@ public class Autenticacion {
       jwtToken = Jwts.builder()
         .claim("nombreUsuario", usuarioDto.getNombreUsuario())
         .claim("rol", directorio.getEntry(usuarioDto))
+        .setSubject(String.valueOf(usuarioDto.getId()))
         .setIssuedAt(Date.from(now))
         .setExpiration(Date.from(now.plus(10800l, ChronoUnit.MINUTES)))
         .signWith(SignatureAlgorithm.HS256, hmacKey)

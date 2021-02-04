@@ -19,7 +19,7 @@ public class ServicioAnalistaTest {
 
     ServicioAnalista servicioAnalista = new ServicioAnalista();
 
-    Response resultado = servicioAnalista.addUser(usuarioDto);
+    Response resultado = servicioAnalista.addUser("22", usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("usuario"));

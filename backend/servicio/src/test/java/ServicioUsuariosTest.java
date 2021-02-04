@@ -27,7 +27,7 @@ public class ServicioUsuariosTest {
     usuarioDto.setNombreUsuario("pruebarepetida245@gmail.com");
     usuarioDto.setContrasena("12345");
 
-    Response resultado = servicio.addUser(usuarioDto);
+    Response resultado = servicio.addUser("222", usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("usuario"));
@@ -96,7 +96,7 @@ public class ServicioUsuariosTest {
       usuarioDto.setNombreUsuario("cdyy0p");
       usuarioDto.setContrasena("12345");
 
-      Response resultado = servicio.addUser(usuarioDto);
+      Response resultado = servicio.addUser("222", usuarioDto);
       JsonObject respuesta = (JsonObject) resultado.getEntity();
 
       Assert.assertNotNull(respuesta.get("usuario"));

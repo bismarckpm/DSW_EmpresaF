@@ -47,7 +47,7 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @POST
   @Path("/add")
-  public Response addUser(UsuarioDto usuarioDto) {
+  public Response addUser(@HeaderParam("authorization") String token, UsuarioDto usuarioDto) {
 
     try {
 

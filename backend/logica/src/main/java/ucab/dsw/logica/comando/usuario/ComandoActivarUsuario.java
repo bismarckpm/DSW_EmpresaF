@@ -35,7 +35,16 @@ public class ComandoActivarUsuario implements ComandoBase {
       Usuario usuario = daoUsuario.find(this.usuarioId, Usuario.class);
 
       usuario.set_estado("activo");
-      usuario.get_encuestado().set_estado("activo");
+
+      if(usuario.get_encuestado() !=null) {
+
+        usuario.get_encuestado().set_estado("activo");
+
+      }else if(usuario.get_cliente() !=null){
+
+        usuario.get_cliente().set_estado("activo");
+
+      }
 
       Usuario resultado = daoUsuario.update(usuario);
       this.usuarioDto = MapperUsuario.MapEntityToUsuarioDto(resultado);

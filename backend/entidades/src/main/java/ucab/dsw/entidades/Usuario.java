@@ -26,6 +26,9 @@ public class Usuario extends EntidadBase
     @Column( name = "rol" )
     private String _rol;
 
+    @Column( name = "token" )
+    private String _token;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "fk_cliente")
     private Cliente _cliente;
@@ -75,6 +78,14 @@ public class Usuario extends EntidadBase
 
   public void set_estado(String _estado) {
     this._estado = _estado;
+  }
+
+  public String get_token() {
+    return _token;
+  }
+
+  public void set_token(String _token) {
+    this._token = _token;
   }
 
   public String get_rol() {

@@ -48,10 +48,15 @@ public class ComandoLogin implements ComandoBase {
       }
 
       Autenticacion autenticacion = Fabrica.crear(Autenticacion.class);
-      this.resultado = autenticacion.generateToken(usuarioDto);
+      this.usuarioDto.setId(this.usuarioId);
+      this.resultado = autenticacion.generateToken(this.usuarioDto);
+
+      Usuario usuario = dao.find(this.usuarioId, Usuario.class);
+      usuario.set_token(this.resultado);
+      dao.update(usuario);
 
     }catch (Exception ex){
-
+      throw ex;
     }
 
   }

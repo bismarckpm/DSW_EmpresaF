@@ -33,7 +33,16 @@ public class ComandoDesactivarUsuario implements ComandoBase {
       Usuario usuario = daoUsuario.find(this.usuarioId, Usuario.class);
 
       usuario.set_estado("inactivo");
-      usuario.get_encuestado().set_estado("inactivo");
+
+      if(usuario.get_encuestado() !=null) {
+
+        usuario.get_encuestado().set_estado("activo");
+
+      }else if(usuario.get_cliente() !=null){
+
+        usuario.get_cliente().set_estado("activo");
+
+      }
 
       Usuario resultado = daoUsuario.update(usuario);
       this.usuarioDto = MapperUsuario.MapEntityToUsuarioDto(resultado);

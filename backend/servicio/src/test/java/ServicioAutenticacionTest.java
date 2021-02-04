@@ -2,6 +2,7 @@ import io.jsonwebtoken.Claims;
 import org.junit.Assert;
 import org.junit.Test;
 import ucab.dsw.dtos.UsuarioDto;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.servicio.autenticacion.ServicioAutenticacion;
 
 import javax.json.JsonObject;
@@ -16,8 +17,8 @@ public class ServicioAutenticacionTest {
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "maria254567@gmail.com");
-    usuarioDto.setContrasena("5678");
+    usuarioDto.setNombreUsuario( "administrador1@gmail.com");
+    usuarioDto.setContrasena("12345");
 
     Response resultado = servicio.login(usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
@@ -27,15 +28,14 @@ public class ServicioAutenticacionTest {
   }
 
   @Test
-  public void decodeToken(){
+  public void cleanToken(){
 
     ServicioAutenticacion servicio = new ServicioAutenticacion();
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJub21icmVVc3VhcmlvIjoibmV3MjJAZ21haWwuY29tIiwicm9sIjoiYW5hbGlzdGEiLCJpYXQiOjE2MTIyODgyNDYsImV4cCI6MTYxMjkzNjI0Nn0.XKO5BkdhtHaIjX7CNQLGzOKcmiiyeD8CVGow6cNDYEw";
 
-    Response resultado = servicio.decodeToken(token);
-    Claims respuesta = (Claims) resultado.getEntity();
+    Response resultado = servicio.cleanToken(171);
+    JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-    Assert.assertNotNull(respuesta.get("nombreUsuario"));
+    Assert.assertNotNull(respuesta.get("usuario"));
 
   }
 

@@ -6,6 +6,7 @@ public class UsuarioDto extends DtoBase
     private String contrasena;
     private String rol;
     private String estado;
+    private String token;
     private ClienteDto clienteDto;
 
   public UsuarioDto(long id) throws Exception {
@@ -37,6 +38,14 @@ public class UsuarioDto extends DtoBase
 
   public void setEstado(String estado) {
     this.estado = estado;
+  }
+
+  public String getToken() {
+    return token;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public ClienteDto getClienteDto() {

@@ -1,15 +1,18 @@
 package ucab.dsw.logica.comando.categoria;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.accesodatos.Dao;
 import ucab.dsw.accesodatos.DaoCategoria;
 import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.entidades.Categoria;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.categoria.MapperCategoria;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.persistence.PersistenceException;
 
 public class ComandoUpdateCategoria implements ComandoBase {
 
@@ -21,7 +24,7 @@ public class ComandoUpdateCategoria implements ComandoBase {
     this._categoriaId = _categoriaId;
   }
 
-  public void execute() {
+  public void execute() throws ProblemaExcepcion {
 
     try{
 
@@ -33,9 +36,14 @@ public class ComandoUpdateCategoria implements ComandoBase {
 
       this.categoriaDto = MapperCategoria.MapEntityToCategoriaDto(resultado);
 
+    }catch (PersistenceException | DatabaseException ex) {
+
+      throw new ProblemaExcepcion("Esta categoria ya se encuentra agregada en el sistema", ex.getMessage());
+
     }catch (Exception ex){
       throw ex;
     }
+
   }
 
   public JsonObject getResultado(){

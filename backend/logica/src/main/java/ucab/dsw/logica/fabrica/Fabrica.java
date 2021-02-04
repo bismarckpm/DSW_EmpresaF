@@ -37,4 +37,9 @@ public class Fabrica<T> {
     return (T) tipo.getConstructors()[0].newInstance(_id,parametro);
   }
 
+  public static <T> T crearComandoSeguridad(Class<T> tipo, String parametro) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    return (T) tipo.getConstructors()[0].newInstance(parametro);
+  }
+
+
 }

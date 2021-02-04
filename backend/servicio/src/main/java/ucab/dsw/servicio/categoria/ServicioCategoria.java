@@ -1,7 +1,12 @@
 package ucab.dsw.servicio.categoria;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.dtos.CategoriaDto;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.categoria.ComandoActivarCategoria;
 import ucab.dsw.logica.comando.categoria.ComandoDesactivarCategoria;
 import ucab.dsw.logica.comando.categoria.ComandoAddCategoria;
@@ -37,9 +42,12 @@ public class ServicioCategoria extends AplicacionBase {
    */
   @POST
   @Path("/add")
-  public Response addCategoria(CategoriaDto categoriaDto){
+  public Response addCategoria(@HeaderParam("authorization") String token, CategoriaDto categoriaDto){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddCategoria comandoAddCategoria = Fabrica.crearComandoConDto(ComandoAddCategoria.class, categoriaDto);
       comandoAddCategoria.execute();
@@ -47,12 +55,11 @@ public class ServicioCategoria extends AplicacionBase {
       return Response.ok().entity(comandoAddCategoria.getResultado()).build();
 
     }
-    catch (PersistenceException | DatabaseException  ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta categoria ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -77,21 +84,24 @@ public class ServicioCategoria extends AplicacionBase {
    */
   @PUT
   @Path("/update/{categoriaId}")
-  public Response updateCategoria(@PathParam("categoriaId") long id, CategoriaDto categoriaDto){
+  public Response updateCategoria(@HeaderParam("authorization") String token, @PathParam("categoriaId") long id, CategoriaDto categoriaDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdateCategoria comandoUpdateCategoria = Fabrica.crearComandoConAmbos(ComandoUpdateCategoria.class, id, categoriaDto);
       comandoUpdateCategoria.execute();
 
       return Response.ok().entity(comandoUpdateCategoria.getResultado()).build();
 
-    }catch (PersistenceException | DatabaseException  ex){
+    }
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta categoria ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -175,16 +185,27 @@ public class ServicioCategoria extends AplicacionBase {
    */
   @PUT
   @Path("/disable/{categoriaId}")
-  public Response disableCategoria(@PathParam("categoriaId") long id) {
+  public Response disableCategoria(@HeaderParam("authorization") String token, @PathParam("categoriaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarCategoria comandoDesactivarCategoria = Fabrica.crearComandoConId(ComandoDesactivarCategoria.class, id);
       comandoDesactivarCategoria.execute();
 
       return Response.ok().entity(comandoDesactivarCategoria.getResultado()).build();
 
-    }catch (Exception ex){
+    }
+    catch (ProblemaExcepcion ex){
+
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
+
+    }
+    catch (Exception ex){
 
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
@@ -205,16 +226,27 @@ public class ServicioCategoria extends AplicacionBase {
    */
   @PUT
   @Path("/enable/{categoriaId}")
-  public Response enableCategoria(@PathParam("categoriaId") long id) {
+  public Response enableCategoria(@HeaderParam("authorization") String token, @PathParam("categoriaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarCategoria comandoActivarCategoria = Fabrica.crearComandoConId(ComandoActivarCategoria.class, id);
       comandoActivarCategoria.execute();
 
       return Response.ok().entity(comandoActivarCategoria.getResultado()).build();
 
-    }catch (Exception ex){
+    }
+    catch (ProblemaExcepcion ex){
+
+      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
+
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
+
+    }
+    catch (Exception ex){
 
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);

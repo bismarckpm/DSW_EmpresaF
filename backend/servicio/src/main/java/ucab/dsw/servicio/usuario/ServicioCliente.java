@@ -37,7 +37,7 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @POST
   @Path("/add")
-  public Response addUser(UsuarioDto usuarioDto){
+  public Response addUser(@HeaderParam("authorization") String token, UsuarioDto usuarioDto){
 
     try {
 
