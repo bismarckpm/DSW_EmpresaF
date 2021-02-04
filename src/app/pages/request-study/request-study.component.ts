@@ -20,10 +20,8 @@ export class RequestStudyComponent implements OnInit {
   genero:string;
   cliente:any;
   parroquia:number;
-  marca:number;
-  nivelSocioeconomico1:number;
-  nivelSocioeconomico2:number;
-  nivelSocioeconomico3:number;
+  subcategoria:number;
+  nivelSocioeconomico:number;
   constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -32,12 +30,10 @@ export class RequestStudyComponent implements OnInit {
       edadFinal: ['',Validators.required],
       selectParroquia: ['',Validators.required],
       selectSubcategoria: ['',Validators.required],
-      selecNivelS1: [false],
-      selecNivelS2: [false],
-      selecNivelS3: [false],
+      selecNivelS: ['',Validators.required],
       selectGenero: ['',Validators.required],
     });
-    this.getSubcategories();
+    this.getSubcategorias();
     this.getParroquia();
     this.getNivelSocioeconomico();
     this.getGeneros();
@@ -49,7 +45,7 @@ export class RequestStudyComponent implements OnInit {
     });
   }
 
-  getSubcategories(){
+  getSubcategorias(){
     this.userService.getSubcategorias()
     .subscribe(
       res => {
@@ -90,22 +86,16 @@ export class RequestStudyComponent implements OnInit {
   }
 
   handleRequestStudy(){
-    this.nivelSocioeconomico1 = this.requestStudyForm.get('selecNivelS1').value;
-    console.log(this.nivelSocioeconomico1)
-    this.nivelSocioeconomico2 = this.requestStudyForm.get('selecNivelS2').value;
-    console.log(this.nivelSocioeconomico2)
-    this.nivelSocioeconomico3 = this.requestStudyForm.get('selecNivelS3').value;
-    console.log(this.nivelSocioeconomico3)
-    /*this.edadInicial = this.requestStudyForm.get('edadInicial').value;
+    this.edadInicial = this.requestStudyForm.get('edadInicial').value;
     this.edadfinal = this.requestStudyForm.get('edadFinal').value;
     this.genero = this.requestStudyForm.get('selectGenero').value;
     let userStorage = localStorage.getItem('clientLogged');
     this.cliente = JSON.parse(userStorage);
     this.cliente = this.cliente.id;
     this.parroquia = this.requestStudyForm.get('selectParroquia').value;
-    this.marca = this.requestStudyForm.get('selectMarca').value;
+    this.subcategoria = this.requestStudyForm.get('selectSubcategoria').value;
     this.nivelSocioeconomico = this.requestStudyForm.get('selecNivelS').value;
-    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.marca,this.nivelSocioeconomico)
+    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.subcategoria,this.nivelSocioeconomico)
     .subscribe(
       res => {
         let auxRes:any;
@@ -121,7 +111,7 @@ export class RequestStudyComponent implements OnInit {
       err => {
         console.log(err)
       }
-    )*/
+    )
   }
 
   getGeneros(){

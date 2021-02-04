@@ -32,17 +32,16 @@
             <mat-form-field appearance="outline">
                 <mat-label>Subcategoria</mat-label>
                 <mat-select formControlName="selectSubcategoria">
-                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id"><span *ngIf="subcategoria.estado=='activo'">{{subcategoria.categoria}}-{{subcategoria.nombreSubcategoria}}</span></mat-option>
+                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.id"><span *ngIf="subcategoria.estado=='activo'">{{subcategoria.nombreSubcategoria}}</span></mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-label>Nivel socioeconomico</mat-label>
-            <div>
-                <mat-checkbox formControlName="selecNivelS1" [value]="1" style="margin-left: 10px;margin-right: 10px;">Baja</mat-checkbox> 
-                <mat-checkbox formControlName="selecNivelS2" [value]="2" style="margin-left: 10px;margin-right: 10px;">Media</mat-checkbox> 
-                <mat-checkbox formControlName="selecNivelS3" [value]="3" style="margin-left: 10px;margin-right: 10px;">Alta</mat-checkbox> 
-            </div>
-            <br>
+            <mat-form-field appearance="outline">
+                <mat-label>Nivel socioeconomico</mat-label>
+                <mat-select formControlName="selecNivelS">
+                    <mat-option *ngFor="let nivel of nivelS" [value]="nivel.id">{{nivel.descripcionS}}</mat-option>
+                </mat-select>
+            </mat-form-field>    
             <button mat-raised-button class="create-btn width-100" [disabled]="!requestStudyForm.valid">Enviar solicitud</button>
         </form>
     </mat-card>
-</div>   
+</div> 

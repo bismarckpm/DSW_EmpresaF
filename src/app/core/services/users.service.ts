@@ -53,7 +53,7 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
 
-  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,marca:number,nivelSocioeconomico:number){
+  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,subcategoria:number,nivelSocioeconomico:number){
     return this.http.post(this.API_URL+'api/solicitud/add',
                           {
                           "edadInicial": edadInicial,
@@ -61,7 +61,7 @@ export class UsersService extends ApiService{
                           "genero": genero,
                           "cliente": cliente,
                           "parroquia": parroquia,
-                          "marca": marca,
+                          "subcategoria": subcategoria,
                           "nivelSocioeconomico": nivelSocioeconomico
                           },
                           this.httpOptions)

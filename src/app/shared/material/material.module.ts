@@ -26,6 +26,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatStepperModule} from '@angular/material/stepper';
 
 const MATERIAL_MODULES = [
   CommonModule,
@@ -53,7 +54,8 @@ const MATERIAL_MODULES = [
   MatRadioModule,
   MatCheckboxModule,
   MatGridListModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatStepperModule
 ]
 
 
