@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -12,7 +12,7 @@ export class RequestStudyComponent implements OnInit {
   requestStudyForm: FormGroup;
   parroquias:any;
   Parroquias:any;
-  marcas:any;
+  subcategorias:any;
   nivelS:any;
   generos:any;
   edadInicial:number;
@@ -21,7 +21,9 @@ export class RequestStudyComponent implements OnInit {
   cliente:any;
   parroquia:number;
   marca:number;
-  nivelSocioeconomico:number;
+  nivelSocioeconomico1:number;
+  nivelSocioeconomico2:number;
+  nivelSocioeconomico3:number;
   constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -29,11 +31,13 @@ export class RequestStudyComponent implements OnInit {
       edadInicial: ['', Validators.required],
       edadFinal: ['',Validators.required],
       selectParroquia: ['',Validators.required],
-      selectMarca: ['',Validators.required],
-      selecNivelS: ['',Validators.required],
+      selectSubcategoria: ['',Validators.required],
+      selecNivelS1: [false],
+      selecNivelS2: [false],
+      selecNivelS3: [false],
       selectGenero: ['',Validators.required],
     });
-    this.getMarcas();
+    this.getSubcategories();
     this.getParroquia();
     this.getNivelSocioeconomico();
     this.getGeneros();
@@ -45,14 +49,14 @@ export class RequestStudyComponent implements OnInit {
     });
   }
 
-  getMarcas(){
-    this.userService.getMarcas()
+  getSubcategories(){
+    this.userService.getSubcategorias()
     .subscribe(
       res => {
         let auxRes:any;
         auxRes = res;
         if(auxRes.estado == 'success'){
-          this.marcas = auxRes.marcas;
+          this.subcategorias = auxRes.subcategorias;
         }
       },
       err => {
@@ -76,7 +80,7 @@ export class RequestStudyComponent implements OnInit {
       }
     )
   }
-
+  
   getNivelSocioeconomico(){
     this.nivelS = [
       {id:1,descripcionS:'baja'},
@@ -86,7 +90,13 @@ export class RequestStudyComponent implements OnInit {
   }
 
   handleRequestStudy(){
-    this.edadInicial = this.requestStudyForm.get('edadInicial').value;
+    this.nivelSocioeconomico1 = this.requestStudyForm.get('selecNivelS1').value;
+    console.log(this.nivelSocioeconomico1)
+    this.nivelSocioeconomico2 = this.requestStudyForm.get('selecNivelS2').value;
+    console.log(this.nivelSocioeconomico2)
+    this.nivelSocioeconomico3 = this.requestStudyForm.get('selecNivelS3').value;
+    console.log(this.nivelSocioeconomico3)
+    /*this.edadInicial = this.requestStudyForm.get('edadInicial').value;
     this.edadfinal = this.requestStudyForm.get('edadFinal').value;
     this.genero = this.requestStudyForm.get('selectGenero').value;
     let userStorage = localStorage.getItem('clientLogged');
@@ -111,13 +121,14 @@ export class RequestStudyComponent implements OnInit {
       err => {
         console.log(err)
       }
-    )
+    )*/
   }
 
   getGeneros(){
     this.generos = [
       {id:1,descripcion:'masculino'},
       {id:2,descripcion:'femenino'},
+      {id:2,descripcion:'ambos'},
     ]
   }
 }

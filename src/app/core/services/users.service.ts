@@ -102,4 +102,9 @@ export class UsersService extends ApiService{
                            "contrasena":contrasena},
                            this.httpOptions);
   }
+
+  getSubcategorias(){
+    return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
+  }
 }
+
