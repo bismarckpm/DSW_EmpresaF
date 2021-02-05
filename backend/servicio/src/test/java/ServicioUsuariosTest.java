@@ -1,7 +1,12 @@
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.autenticacion.Autenticacion;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.Telefono;
+import ucab.dsw.entidades.Usuario;
+import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 import ucab.dsw.servicio.usuario.ServicioAnalista;
 import ucab.dsw.servicio.usuario.ServicioCliente;
@@ -15,6 +20,67 @@ import java.util.List;
 
 public class ServicioUsuariosTest {
 
+  private String tokenAdmin;
+  private String token;
+  private String tokenEncuestado;
+
+  @Before
+  public void generateTokenAdmin() throws PruebaExcepcion {
+
+    Autenticacion autenticacion = new Autenticacion();
+
+    UsuarioDto usuarioDto = new UsuarioDto();
+    usuarioDto.setId((long) 1);
+    usuarioDto.setNombreUsuario("administrador1@gmail.com");
+    usuarioDto.setContrasena("12345");
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    Usuario usuario = daoUsuario.find((long) 1, Usuario.class);
+
+    this.tokenAdmin = autenticacion.generateToken(usuarioDto);
+    usuario.set_token(this.tokenAdmin);
+    daoUsuario.update(usuario);
+
+  }
+
+  @Before
+  public void generateTokenEncuestado() throws PruebaExcepcion {
+
+    Autenticacion autenticacion = new Autenticacion();
+
+    UsuarioDto usuarioDto = new UsuarioDto();
+    usuarioDto.setId((long) 183);
+    usuarioDto.setNombreUsuario("token@gmail.com");
+    usuarioDto.setContrasena("12345");
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    Usuario usuario = daoUsuario.find((long) 183, Usuario.class);
+
+    this.tokenEncuestado = autenticacion.generateToken(usuarioDto);
+    usuario.set_token(this.tokenEncuestado);
+    daoUsuario.update(usuario);
+
+  }
+
+  @Before
+  public void generateToken() throws PruebaExcepcion {
+
+    Autenticacion autenticacion = new Autenticacion();
+
+    UsuarioDto usuarioDto = new UsuarioDto();
+    usuarioDto.setId((long) 153);
+    usuarioDto.setNombreUsuario("lisbethdiaz@gmail.com");
+    usuarioDto.setContrasena("12345");
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    Usuario usuario = daoUsuario.find((long) 153, Usuario.class);
+
+    this.token = autenticacion.generateToken(usuarioDto);
+    usuario.set_token(this.token);
+    daoUsuario.update(usuario);
+
+  }
+
   @Test
   public void addUserClienteTest(){
 
@@ -22,12 +88,12 @@ public class ServicioUsuariosTest {
     UsuarioDto usuarioDto = new UsuarioDto();
     ClienteDto clienteDto = new ClienteDto();
 
-    clienteDto.setNombre("Prueba Diaz");
+    clienteDto.setNombre("Prueba Diaz Token");
     usuarioDto.setClienteDto(clienteDto);
-    usuarioDto.setNombreUsuario("pruebarepetida245@gmail.com");
+    usuarioDto.setNombreUsuario("pruebarepetidatoken@gmail.com");
     usuarioDto.setContrasena("12345");
 
-    Response resultado = servicio.addUser("222", usuarioDto);
+    Response resultado = servicio.addUser(this.tokenAdmin, usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("usuario"));
@@ -40,15 +106,15 @@ public class ServicioUsuariosTest {
     ServicioCliente servicio = new ServicioCliente();
     UsuarioDto usuarioDto = new UsuarioDto();
 
-    usuarioDto.setNombreUsuario("pruebarepetida245@gmail.com");
+    usuarioDto.setNombreUsuario("pruebarepetidatoken@gmail.com");
     usuarioDto.setContrasena("5678");
 
     ClienteDto clienteDto = new ClienteDto(133);
-    clienteDto.setNombre("Prueba Peña");
+    clienteDto.setNombre("Prueba Token Token");
 
     usuarioDto.setClienteDto(clienteDto);
 
-    Response resultado = servicio.updateUser(166, usuarioDto);
+    Response resultado = servicio.updateUser(this.token, 166, usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("usuario"));
@@ -65,20 +131,20 @@ public class ServicioUsuariosTest {
       EncuestadoDto encuestadoDto = new EncuestadoDto();
 
       encuestadoDto.setNumeroIdentificacion("15267");
-      encuestadoDto.setPrimerNombre("PruebaRol");
+      encuestadoDto.setPrimerNombre("Prueba Token");
       encuestadoDto.setPrimerApellido("Prueba");
-      encuestadoDto.setSegundoApellido("Diaz");
+      encuestadoDto.setSegundoApellido("Diaz Token");
       encuestadoDto.setDireccionComplemento("Alta vista");
 
-      encuestadoDto.setFechaNacimiento("06-11-2020");
+      encuestadoDto.setFechaNacimiento("06-12-1998");
 
       encuestadoDto.setGenero("masculino");
       encuestadoDto.setEstadoCivil("Casado");
-      encuestadoDto.setOcupacion("Carpintero");
+      encuestadoDto.setOcupacion("Tokenero");
 
       List<Telefono> telefonos = new ArrayList<>();
-      Telefono telefono = new Telefono("0414", "1548889");
-      Telefono telefono2 = new Telefono("0414", "2669090");
+      Telefono telefono = new Telefono("0414", "1548859");
+      Telefono telefono2 = new Telefono("0414", "2669590");
       telefonos.add(telefono);
       telefonos.add(telefono2);
       encuestadoDto.setTelefonos(telefonos);
@@ -93,10 +159,10 @@ public class ServicioUsuariosTest {
       encuestadoDto.setNivelSocioeconomico(nivelSocioeconomico);
 
       usuarioDto.setEncuestadoDto(encuestadoDto);
-      usuarioDto.setNombreUsuario("cdyy0p");
+      usuarioDto.setNombreUsuario("token@gmail.com");
       usuarioDto.setContrasena("12345");
 
-      Response resultado = servicio.addUser("222", usuarioDto);
+      Response resultado = servicio.addUser(usuarioDto);
       JsonObject respuesta = (JsonObject) resultado.getEntity();
 
       Assert.assertNotNull(respuesta.get("usuario"));
@@ -118,8 +184,8 @@ public class ServicioUsuariosTest {
       EncuestadoDto encuestadoDto = new EncuestadoDto();
 
       encuestadoDto.setNumeroIdentificacion("1526788");
-      encuestadoDto.setPrimerNombre("PruebaRoler");
-      encuestadoDto.setPrimerApellido("Pruebapp");
+      encuestadoDto.setPrimerNombre("PruebaTokenEn");
+      encuestadoDto.setPrimerApellido("PruebaToken");
       encuestadoDto.setEstadoCivil("soltero");
       encuestadoDto.setGenero("masculino");
       encuestadoDto.setOcupacion("Ingeniero");
@@ -128,11 +194,12 @@ public class ServicioUsuariosTest {
       encuestadoDto.setParroquia(parroquiaDto);
 
       usuarioDto.setEncuestadoDto(encuestadoDto);
-      usuarioDto.setNombreUsuario("maria25@gmail.com");
+      usuarioDto.setNombreUsuario("token@gmail.com");
       usuarioDto.setContrasena("12345");
 
-      Response resultado = servicio.updateUser(155, usuarioDto);
+      Response resultado = servicio.updateUser(this.tokenEncuestado,183, usuarioDto);
       JsonObject respuesta = (JsonObject) resultado.getEntity();
+      System.out.println(respuesta);
 
       Assert.assertNotNull(respuesta.get("usuario"));
 
@@ -148,10 +215,10 @@ public class ServicioUsuariosTest {
 
     ServicioCliente servicio = new ServicioCliente();
 
-    Response resultado = servicio.getUsers();
+    Response resultado = servicio.getUsers(this.tokenAdmin);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-    Assert.assertNotNull(respuesta.get("usuarios"));
+    Assert.assertNotEquals(respuesta.get("usuarios").toString().length(), 2);
 
   }
 
@@ -160,7 +227,7 @@ public class ServicioUsuariosTest {
 
     ServicioCliente servicio = new ServicioCliente();
 
-    Response resultado = servicio.getUserById(166);
+    Response resultado = servicio.getUserById(this.token,180);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("id"));
@@ -172,10 +239,10 @@ public class ServicioUsuariosTest {
 
     ServicioEncuestado servicio = new ServicioEncuestado();
 
-    Response resultado = servicio.getUsers();
+    Response resultado = servicio.getUsers(this.tokenAdmin);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
-    Assert.assertNotNull(respuesta.get("usuarios"));
+    Assert.assertNotEquals(respuesta.get("usuarios").toString().length(), 2);
 
   }
 
@@ -184,7 +251,7 @@ public class ServicioUsuariosTest {
 
     ServicioEncuestado servicio = new ServicioEncuestado();
 
-    Response resultado = servicio.getUserById(154);
+    Response resultado = servicio.getUserById(this.tokenAdmin, 154);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("idUsuario"));
@@ -195,7 +262,7 @@ public class ServicioUsuariosTest {
   public void desactivarUserTest(){
 
     ServicioAnalista servicioAnalista= new ServicioAnalista();
-    Response resultado = servicioAnalista.disableUser(155);
+    Response resultado = servicioAnalista.disableUser(this.tokenAdmin, 180);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
@@ -207,7 +274,7 @@ public class ServicioUsuariosTest {
   public void activarUserTest(){
 
     ServicioAnalista servicioAnalista= new ServicioAnalista();
-    Response resultado = servicioAnalista.enableUser(155);
+    Response resultado = servicioAnalista.enableUser(this.tokenAdmin, 180);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
@@ -220,7 +287,7 @@ public class ServicioUsuariosTest {
 
     ServicioEncuestado servicioEncuestado = new ServicioEncuestado();
 
-    Response resultado = servicioEncuestado.getEstudiosRealizables(155);
+    Response resultado = servicioEncuestado.getEstudiosRealizables(this.tokenEncuestado, 152);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotEquals(respuesta.get("estudios").toString().length(), 2);
@@ -232,7 +299,7 @@ public class ServicioUsuariosTest {
 
     ServicioCliente servicioCliente = new ServicioCliente();
 
-    Response resultado = servicioCliente.getSolicitudes(153);
+    Response resultado = servicioCliente.getSolicitudes(this.token,153);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotEquals(respuesta.get("solicitudes").toString().length(), 2);

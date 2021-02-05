@@ -4,17 +4,16 @@ import ucab.dsw.accesodatos.DaoUsuario;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Usuario;
-import ucab.dsw.excepciones.LimiteExcepcion;
-import ucab.dsw.excepciones.PruebaExcepcion;
-import ucab.dsw.excepciones.RangoExcepcion;
-import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
+import ucab.dsw.excepciones.*;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.usuario.MapperUsuario;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
+import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
 
 public class ComandoAddAnalista implements ComandoBase {
@@ -25,7 +24,7 @@ public class ComandoAddAnalista implements ComandoBase {
     this.usuarioDto = usuarioDto;
   }
 
-  public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion, NamingException {
+  public void execute() throws ProblemaExcepcion {
 
     try{
 
@@ -39,7 +38,13 @@ public class ComandoAddAnalista implements ComandoBase {
 
       this.usuarioDto = MapperUsuario.MapEntityToUsuarioDto(resultado);
 
-    }catch (Exception ex){
+    }
+    catch (javax.persistence.PersistenceException ex){
+
+      throw new ProblemaExcepcion("El usuario ya se encuentra registrado en el sistema", ex.getMessage());
+
+    }
+    catch (Exception ex){
       throw ex;
     }
 

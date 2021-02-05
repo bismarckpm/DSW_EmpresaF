@@ -39,7 +39,7 @@ public class ComandoAddAdministrador implements ComandoBase {
 
     }catch (javax.persistence.PersistenceException ex){
 
-      throw new ProblemaExcepcion("Esta categoria ya se encuentra agregada en el sistema", ex.getMessage());
+      throw new ProblemaExcepcion("El usuario ya se encuentra registrado en el sistema", ex.getMessage());
 
     }catch (Exception ex){
       throw ex;

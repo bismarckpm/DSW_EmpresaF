@@ -4,6 +4,8 @@ import ucab.dsw.accesodatos.*;
 import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.*;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudesByCliente;
 import ucab.dsw.logica.comando.usuario.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -25,7 +27,7 @@ import java.util.List;
 @Path( "/cliente" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
+public class ServicioCliente extends AplicacionBase{
 
   /**
    * Metodo para agregar un cliente. Accedido mediante /cliente/add con el
@@ -41,18 +43,20 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
 
     try {
 
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
+
       ComandoAddCliente comandoAddCliente = Fabrica.crearComandoConDto(ComandoAddCliente.class, usuarioDto);
       comandoAddCliente.execute();
 
       return Response.ok().entity(comandoAddCliente.getResultado()).build();
 
     }
-    catch (javax.persistence.PersistenceException ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "El usuario ya se encuentra registrado en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch ( Exception ex ){
@@ -78,9 +82,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @PUT
   @Path("/update/{usuarioClienteId}")
-  public Response updateUser(@PathParam("usuarioClienteId") long id, UsuarioDto usuarioDto){
+  public Response updateUser(@HeaderParam("authorization") String token, @PathParam("usuarioClienteId") long id, UsuarioDto usuarioDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdateCliente comandoUpdateCliente = Fabrica.crearComandoConAmbos(ComandoUpdateCliente.class, id, usuarioDto);
       comandoUpdateCliente.execute();
@@ -107,9 +114,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @GET
   @Path("/getall")
-  public Response getUsers() {
+  public Response getUsers(@HeaderParam("authorization") String token) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetClientes comandoGetClientes = Fabrica.crear(ComandoGetClientes.class);
       comandoGetClientes.execute();
@@ -138,9 +148,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @GET
   @Path("getuser/{usuarioClienteId}")
-  public Response getUserById(@PathParam("usuarioClienteId") long id){
+  public Response getUserById(@HeaderParam("authorization") String token, @PathParam("usuarioClienteId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetCliente comandoGetCliente = Fabrica.crearComandoConId(ComandoGetCliente.class, id);
       comandoGetCliente.execute();
@@ -169,9 +182,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @PUT
   @Path("/disable/{usuarioClienteId}")
-  public Response disableUser(@PathParam("usuarioClienteId") long id) {
+  public Response disableUser(@HeaderParam("authorization") String token, @PathParam("usuarioClienteId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarUsuario comandoDesactivarUsuario = Fabrica.crearComandoConId(ComandoDesactivarUsuario.class, id);
       comandoDesactivarUsuario.execute();
@@ -200,9 +216,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @PUT
   @Path("/enable/{usuarioClienteId}")
-  public Response enableUser(@PathParam("usuarioClienteId") long id) {
+  public Response enableUser(@HeaderParam("authorization") String token, @PathParam("usuarioClienteId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarUsuario comandoActivarUsuario = Fabrica.crearComandoConId(ComandoActivarUsuario.class, id);
       comandoActivarUsuario.execute();
@@ -231,9 +250,12 @@ public class ServicioCliente extends AplicacionBase implements IServicioUsuario{
    */
   @GET
   @Path("/getsolicitudes/{usuarioClienteId}")
-  public Response getSolicitudes(@PathParam("usuarioClienteId") long id){
+  public Response getSolicitudes(@HeaderParam("authorization") String token, @PathParam("usuarioClienteId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetSolicitudesByCliente comandoGetSolicitudesByCliente = Fabrica.crearComandoConId(ComandoGetSolicitudesByCliente.class, id);
       comandoGetSolicitudesByCliente.execute();

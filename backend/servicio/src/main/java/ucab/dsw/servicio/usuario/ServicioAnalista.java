@@ -9,6 +9,8 @@ import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.entidades.Usuario;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.estudio.ComandoActivarEstudio;
 import ucab.dsw.logica.comando.estudio.ComandoFinalizarEstudio;
 import ucab.dsw.logica.comando.estudio.ComandoGetEstudioByAnalista;
@@ -35,7 +37,7 @@ import java.util.List;
 @Path( "/analista" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class ServicioAnalista extends AplicacionBase implements IServicioEmpleado{
+public class ServicioAnalista extends AplicacionBase{
 
   /**
    * Metodo para agregar un analista. Accedido mediante /analista/add con el
@@ -51,18 +53,20 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
 
     try {
 
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
+
       ComandoAddAnalista comandoAddAnalista = Fabrica.crearComandoConDto(ComandoAddAnalista.class, usuarioDto);
       comandoAddAnalista.execute();
 
       return Response.ok().entity(comandoAddAnalista.getResultado()).build();
 
     }
-    catch (javax.persistence.PersistenceException ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "El usuario ya se encuentra registrado en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch ( Exception ex ){
@@ -85,9 +89,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @GET
   @Path("/getall")
-  public Response getUsers() {
+  public Response getUsers(@HeaderParam("authorization") String token) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetAnalistas comandoGetAnalistas = Fabrica.crear(ComandoGetAnalistas.class);
       comandoGetAnalistas.execute();
@@ -116,9 +123,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @GET
   @Path("getuser/{usuarioAnalistaId}")
-  public Response getUserById(@PathParam("usuarioAnalistaId") long id){
+  public Response getUserById(@HeaderParam("authorization") String token, @PathParam("usuarioAnalistaId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetAnalista comandoGetAnalista = Fabrica.crearComandoConId(ComandoGetAnalista.class, id);
       comandoGetAnalista.execute();
@@ -148,9 +158,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @PUT
   @Path("/update/{usuarioAnalistaId}")
-  public Response changePassword(@PathParam("usuarioAnalistaId") long id, UsuarioDto usuarioDto){
+  public Response changePassword(@HeaderParam("authorization") String token, @PathParam("usuarioAnalistaId") long id, UsuarioDto usuarioDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdatePassword comandoUpdatePassword = Fabrica.crearComandoConAmbos(ComandoUpdatePassword.class, id, usuarioDto);
       comandoUpdatePassword.execute();
@@ -179,9 +192,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @PUT
   @Path("/disable/{usuarioAnalistaId}")
-  public Response disableUser(@PathParam("usuarioAnalistaId") long id) {
+  public Response disableUser(@HeaderParam("authorization") String token, @PathParam("usuarioAnalistaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarUsuario comandoDesactivarUsuario = Fabrica.crearComandoConId(ComandoDesactivarUsuario.class, id);
       comandoDesactivarUsuario.execute();
@@ -210,9 +226,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @PUT
   @Path("/enable/{usuarioAnalistaId}")
-  public Response enableUser(@PathParam("usuarioAnalistaId") long id) {
+  public Response enableUser(@HeaderParam("authorization") String token, @PathParam("usuarioAnalistaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarUsuario comandoActivarUsuario = Fabrica.crearComandoConId(ComandoActivarUsuario.class, id);
       comandoActivarUsuario.execute();
@@ -241,9 +260,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @Path("/getsolicitudespendientes/{usuarioAnalistaId}")
   @GET
-  public Response getSolicitudesPendientes(@PathParam("usuarioAnalistaId") long id){
+  public Response getSolicitudesPendientes(@HeaderParam("authorization") String token, @PathParam("usuarioAnalistaId") long id){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetSolicitudesPendientesAnalis comandoGetSolicitudesPendientes = Fabrica.crearComandoConId(ComandoGetSolicitudesPendientesAnalis.class, id);
       comandoGetSolicitudesPendientes.execute();
@@ -273,9 +295,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @Path("/activarestudio/{solicitudId}")
   @PUT
-  public Response activarEstudio(@PathParam("solicitudId") long id){
+  public Response activarEstudio(@HeaderParam("authorization") String token, @PathParam("solicitudId") long id){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarEstudio comandoActivarEstudio = Fabrica.crearComandoConId(ComandoActivarEstudio.class, id);
       comandoActivarEstudio.execute();
@@ -305,24 +330,27 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @Path("/obtenerestudios/{analistaId}")
   @GET
-  public Response obtenerEstudiosByAnalista(@PathParam("analistaId") long id){
+  public Response obtenerEstudiosByAnalista(@HeaderParam("authorization") String token, @PathParam("analistaId") long id){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEstudioByAnalista comandoGetEstudioByAnalista = Fabrica.crearComandoConId(ComandoGetEstudioByAnalista.class, id);
       comandoGetEstudioByAnalista.execute();
 
       return Response.ok().entity(comandoGetEstudioByAnalista.getResultado()).build();
 
-    }catch (NullPointerException ex){
-
-      String mensaje = "No hay estudios";
+    }
+    catch (ProblemaExcepcion ex){
 
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
-    }catch (Exception ex){
+    }
+    catch (Exception ex){
 
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
@@ -344,9 +372,12 @@ public class ServicioAnalista extends AplicacionBase implements IServicioEmplead
    */
   @Path("/finalizar/{estudioId}")
   @PUT
-  public Response finalizarEstudio(@PathParam("estudioId") long estudioId, EstudioDto estudioDto){
+  public Response finalizarEstudio(@HeaderParam("authorization") String token, @PathParam("estudioId") long estudioId, EstudioDto estudioDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoFinalizarEstudio comandoFinalizarEstudio = Fabrica.crearComandoConAmbos(ComandoFinalizarEstudio.class, estudioId, estudioDto);
       comandoFinalizarEstudio.execute();

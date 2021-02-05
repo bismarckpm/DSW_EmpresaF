@@ -8,11 +8,9 @@ import ucab.dsw.dtos.EstudioDto;
 import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Estudio;
 import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.excepciones.LimiteExcepcion;
-import ucab.dsw.excepciones.PruebaExcepcion;
-import ucab.dsw.excepciones.RangoExcepcion;
-import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
+import ucab.dsw.excepciones.*;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.encuesta.MapperEncuesta;
 import ucab.sw.mapper.estudio.MapperEstudio;
@@ -21,6 +19,7 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
+import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class ComandoGetEstudioByAnalista implements ComandoBase {
     this.analistaId = analistaId;
   }
 
-  public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion, NamingException {
+  public void execute() throws ProblemaExcepcion {
 
     String resultadoEstudio;
 
@@ -82,6 +81,10 @@ public class ComandoGetEstudioByAnalista implements ComandoBase {
         }
 
       }
+
+    }catch (NullPointerException ex){
+
+      throw new ProblemaExcepcion("No hay estudios", ex.getMessage());
 
     }catch (Exception ex){
       throw ex;

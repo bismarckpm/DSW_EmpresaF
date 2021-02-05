@@ -1,6 +1,8 @@
 package ucab.dsw.servicio.usuario;
 
 import ucab.dsw.dtos.UsuarioDto;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.estudio.ComandoGetEstudiosRelizablesByEncuestado;
 import ucab.dsw.logica.comando.usuario.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -19,7 +21,7 @@ import javax.ws.rs.core.Response;
 @Path( "/encuestado" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
-public class ServicioEncuestado extends AplicacionBase implements IServicioUsuario{
+public class ServicioEncuestado extends AplicacionBase{
 
   /**
    * Metodo para agregar un cliente. Accedido mediante /encuestado/add con el
@@ -31,7 +33,7 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @POST
   @Path("/add")
-  public Response addUser(@HeaderParam("authorization") String token, UsuarioDto usuarioDto) {
+  public Response addUser(UsuarioDto usuarioDto) {
 
     try{
 
@@ -40,12 +42,11 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
 
       return Response.ok().entity(comandoAddEncuestado.getResultado()).build();
 
-    }catch (javax.persistence.PersistenceException ex){
+    }catch (ProblemaExcepcion ex){
 
-      String mensaje = "El usuario ya se encuentra registrado en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -68,9 +69,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @GET
   @Path("/getall")
-  public Response getUsers() {
+  public Response getUsers(@HeaderParam("authorization") String token) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEncuestados comandoGetEncuestados = Fabrica.crear(ComandoGetEncuestados.class);
       comandoGetEncuestados.execute();
@@ -99,9 +103,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @GET
   @Path("getuser/{usuarioEncuestadoId}")
-  public Response getUserById(@PathParam("usuarioEncuestadoId") long id){
+  public Response getUserById(@HeaderParam("authorization") String token, @PathParam("usuarioEncuestadoId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEncuestado comandoGetEncuestado = Fabrica.crearComandoConId(ComandoGetEncuestado.class, id);
       comandoGetEncuestado.execute();
@@ -131,9 +138,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @PUT
   @Path("/update/{usuarioEncuestadoid}")
-  public Response updateUser(@PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
+  public Response updateUser(@HeaderParam("authorization") String token, @PathParam("usuarioEncuestadoid") long id, UsuarioDto usuarioDto) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdateEncuestado comandoUpdateEncuestado = Fabrica.crearComandoConAmbos(ComandoUpdateEncuestado.class, id, usuarioDto);
       comandoUpdateEncuestado.execute();
@@ -162,9 +172,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @GET
   @Path("/getestudios/{usuarioEncuestadoId}")
-  public Response getEstudiosRealizables(@PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
+  public Response getEstudiosRealizables(@HeaderParam("authorization") String token, @PathParam("usuarioEncuestadoId") long usuarioEncuestadoId){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEstudiosRelizablesByEncuestado comandoGetEstudiosRelizablesByEncuestado = Fabrica.crearComandoConId(ComandoGetEstudiosRelizablesByEncuestado.class, usuarioEncuestadoId);
       comandoGetEstudiosRelizablesByEncuestado.execute();
@@ -194,9 +207,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @PUT
   @Path("/disable/{usuarioEncuestadoId}")
-  public Response disableUser(@PathParam("usuarioEncuestadoId") long id) {
+  public Response disableUser(@HeaderParam("authorization") String token, @PathParam("usuarioEncuestadoId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarUsuario comandoDesactivarUsuario = Fabrica.crearComandoConId(ComandoDesactivarUsuario.class, id);
       comandoDesactivarUsuario.execute();
@@ -225,9 +241,12 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
    */
   @PUT
   @Path("/enable/{usuarioEncuestadoId}")
-  public Response enableUser(@PathParam("usuarioEncuestadoId") long id) {
+  public Response enableUser(@HeaderParam("authorization") String token, @PathParam("usuarioEncuestadoId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarUsuario comandoActivarUsuario = Fabrica.crearComandoConId(ComandoActivarUsuario.class, id);
       comandoActivarUsuario.execute();
@@ -244,4 +263,5 @@ public class ServicioEncuestado extends AplicacionBase implements IServicioUsuar
     }
 
   }
+
 }

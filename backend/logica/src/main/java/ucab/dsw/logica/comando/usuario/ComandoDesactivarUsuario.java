@@ -36,11 +36,11 @@ public class ComandoDesactivarUsuario implements ComandoBase {
 
       if(usuario.get_encuestado() !=null) {
 
-        usuario.get_encuestado().set_estado("activo");
+        usuario.get_encuestado().set_estado("inactivo");
 
       }else if(usuario.get_cliente() !=null){
 
-        usuario.get_cliente().set_estado("activo");
+        usuario.get_cliente().set_estado("inactivo");
 
       }
 
