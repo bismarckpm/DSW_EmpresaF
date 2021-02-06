@@ -4,7 +4,9 @@ import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.solicitudestudio.ComandoAddSolicitud;
 import ucab.dsw.logica.comando.solicitudestudio.ComandoGetSolicitudes;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -41,28 +43,23 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
    */
   @POST
   @Path("/add")
-  public Response addSolicitud(SolicitudEstudioDto solicitudEstudioDto){
+  public Response addSolicitud(@HeaderParam("authorization") String token, SolicitudEstudioDto solicitudEstudioDto){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddSolicitud comandoAddSolicitud = Fabrica.crearComandoConDto(ComandoAddSolicitud.class, solicitudEstudioDto);
       comandoAddSolicitud.execute();
 
       return Response.ok().entity(comandoAddSolicitud.getResultado()).build();
 
-    }
-    catch (LimiteExcepcion ex){
+    }catch (ProblemaExcepcion ex){
 
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
-
-    }
-    catch (SolicitudPendienteExcepcion ex){
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -86,9 +83,12 @@ public class ServicioSolicitudEstudio extends AplicacionBase {
    */
   @GET
   @Path("/getall")
-  public Response getSolicitudes() {
+  public Response getSolicitudes(@HeaderParam("authorization") String token) {
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetSolicitudes comandoGetSolicitudes = Fabrica.crear(ComandoGetSolicitudes.class);
       comandoGetSolicitudes.execute();

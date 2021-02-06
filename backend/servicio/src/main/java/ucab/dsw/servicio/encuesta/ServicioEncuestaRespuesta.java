@@ -11,7 +11,9 @@ import javax.ws.rs.core.Response;
 import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.*;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.excepciones.RangoExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.encuesta.ComandoAddRespuestaEncuesta;
 import ucab.dsw.logica.comando.encuesta.ComandoGetRespuestasEncuesta;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
@@ -24,7 +26,7 @@ import ucab.dsw.logica.fabrica.Fabrica;
 @Path("/encuestas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ServicioEncuestaRespuesta {
+public class  ServicioEncuestaRespuesta {
 
   /**
    * Metodo para agregar las respuestas de una encuesta
@@ -39,17 +41,19 @@ public class ServicioEncuestaRespuesta {
    */
     @POST
     @Path("/respuesta/{idEncuesta}")
-    public Response addRespuesta(@PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto baseDto){
+    public Response addRespuesta(@HeaderParam("authorization") String token, @PathParam("idEncuesta") long idEncuesta, BaseRespuestaDto baseDto){
 
       try{
+
+        ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+        comandoDecode.execute();
 
         ComandoAddRespuestaEncuesta comandoAddRespuestaEncuesta = Fabrica.crearComandoConAmbos(ComandoAddRespuestaEncuesta.class, idEncuesta, baseDto);
         comandoAddRespuestaEncuesta.execute();
 
         return Response.ok().entity(comandoAddRespuestaEncuesta.getResultado()).build();
 
-      }
-      catch (RangoExcepcion ex){
+      }catch (ProblemaExcepcion ex){
 
         ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
@@ -79,9 +83,12 @@ public class ServicioEncuestaRespuesta {
    */
     @GET
     @Path("/respuesta/{idEncuesta}")
-    public Response getRespuestaByEncuesta(@PathParam("idEncuesta") long idEncuesta){
+    public Response getRespuestaByEncuesta(@HeaderParam("authorization") String token, @PathParam("idEncuesta") long idEncuesta){
 
       try{
+
+        ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+        comandoDecode.execute();
 
         ComandoGetRespuestasEncuesta comandoGetRespuestasEncuesta = Fabrica.crearComandoConId(ComandoGetRespuestasEncuesta.class, idEncuesta);
         comandoGetRespuestasEncuesta.execute();

@@ -9,14 +9,17 @@ import ucab.dsw.entidades.Encuesta;
 import ucab.dsw.entidades.Pregunta;
 import ucab.dsw.entidades.PreguntaEncuesta;
 import ucab.dsw.excepciones.LimiteExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.encuesta.MapperEncuesta;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
 
 public class ComandoAddPreguntaEncuesta implements ComandoBase {
@@ -30,7 +33,7 @@ public class ComandoAddPreguntaEncuesta implements ComandoBase {
     this.preguntaDto = preguntaDto;
   }
 
-  public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException {
+  public void execute() throws Exception {
 
     try{
 
@@ -52,7 +55,11 @@ public class ComandoAddPreguntaEncuesta implements ComandoBase {
 
       this.preguntaEncuestaDto = MapperEncuesta.MapEntityToPreguntaEncuestaDto(resultado);
 
-    }catch (Exception ex){
+    }catch (javax.persistence.PersistenceException ex) {
+
+      throw new ProblemaExcepcion("Hay opciones que ya se encuentran añadidas", ex.getMessage());
+
+    } catch (Exception ex){
       throw ex;
     }
 

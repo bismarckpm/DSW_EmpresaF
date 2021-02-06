@@ -2,6 +2,8 @@ package ucab.dsw.servicio.pregunta;
 
 
 import ucab.dsw.dtos.PreguntaDto;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.pregunta.ComandoAddPregunta;
 import ucab.dsw.logica.comando.pregunta.ComandoGetPreguntas;
 import ucab.dsw.logica.comando.pregunta.ComandoGetPreguntasSugeridas;
@@ -32,21 +34,23 @@ public class ServicioPregunta extends AplicacionBase {
      */
     @POST
     @Path("/")
-    public Response addPregunta(PreguntaDto preguntaDto) {
+    public Response addPregunta(@HeaderParam("authorization") String token, PreguntaDto preguntaDto) {
 
         try {
+
+          ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+          comandoDecode.execute();
 
           ComandoAddPregunta comandoAddPregunta = Fabrica.crearComandoConDto(ComandoAddPregunta.class, preguntaDto);
           comandoAddPregunta.execute();
 
           return Response.ok().entity(comandoAddPregunta.getResultado()).build();
 
-        } catch (javax.persistence.PersistenceException ex) {
+        } catch (ProblemaExcepcion ex) {
 
-          String mensaje = "Esta pregunta ya se encuentra añadida";
           ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-          return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+          return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
         } catch (Exception ex) {
 
@@ -69,9 +73,12 @@ public class ServicioPregunta extends AplicacionBase {
      */
     @GET
     @Path("/")
-    public Response getPreguntas() {
+    public Response getPreguntas(@HeaderParam("authorization") String token) {
 
         try {
+
+          ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+          comandoDecode.execute();
 
           ComandoGetPreguntas comandoGetPreguntas = Fabrica.crear(ComandoGetPreguntas.class);
           comandoGetPreguntas.execute();
@@ -139,9 +146,12 @@ public class ServicioPregunta extends AplicacionBase {
    */
     @GET
     @Path("/{idSolicitud}/sugerencias")
-    public Response getPreguntasSugeridas(@PathParam("idSolicitud") long _idSolicitud){
+    public Response getPreguntasSugeridas(@HeaderParam("authorization") String token, @PathParam("idSolicitud") long _idSolicitud){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetPreguntasSugeridas comandoGetPreguntasSugeridas = Fabrica.crearComandoConId(ComandoGetPreguntasSugeridas.class, _idSolicitud);
       comandoGetPreguntasSugeridas.execute();

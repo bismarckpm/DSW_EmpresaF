@@ -1,16 +1,6 @@
 package ucab.dsw.servicio.autenticacion;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import ucab.dsw.accesodatos.DaoUsuario;
-import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
-import ucab.dsw.autenticacion.Autenticacion;
-import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
-import ucab.dsw.excepciones.EstadoExcepcion;
 import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.logica.comando.autenticacion.ComandoCleanToken;
 import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
@@ -19,12 +9,9 @@ import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * Clase para gestionar la autenticacion de usuario
@@ -54,87 +41,15 @@ public class ServicioAutenticacion extends AplicacionBase {
 
       return Response.ok().entity(comandoLogin.getResultado()).build();
 
-    }catch (EstadoExcepcion ex){
+    }catch (ProblemaExcepcion ex){
 
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
-
-    } catch (NullPointerException ex){
-
-      String mensaje = "Usuario y/o clave incorrecta";
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
-
-    }catch (Exception ex){
-
-      String mensaje = "Ha ocurrido un error en el servidor";
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(500).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 500)).build();
-
-    }
-
-  }
-
-  /**
-   * Metodo para decodificar el token de un usuario autenticado /auth/decode con el
-   * metodo GET
-   *
-   * @param token token del usuario autenticado
-   * @return JSON success: {resultado}; error: {mensaje, estado,
-   * code}
-   */
-  @GET
-  @Path("/decode")
-  public Response decodeToken(@HeaderParam("authorization") String token) {
-
-    try{
-
-      ComandoDecode comandoDecode = new ComandoDecode(token);
-      comandoDecode.execute();
-
-      return Response.ok().entity(comandoDecode.getResultado()).build();
-
-    }catch (MalformedJwtException ex){
-
-      String mensaje = "El token enviado es incorrecto";
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
-
-    }
-    catch (ExpiredJwtException ex){
-
-      String mensaje = "El token enviado ha expirado";
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
-
-    }
-    catch (SignatureException ex){
-      String mensaje = "El token no es valido y podria ser peligroso";
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
-
-    }
-    catch (ProblemaExcepcion ex){
-
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
 
-      ex.printStackTrace();
-
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
@@ -143,6 +58,7 @@ public class ServicioAutenticacion extends AplicacionBase {
     }
 
   }
+
 
   /**
    * Metodo para borrar el token de un usuario autenticado /auth/logout/idUsuariologueado con el
@@ -154,9 +70,12 @@ public class ServicioAutenticacion extends AplicacionBase {
    */
   @PUT
   @Path("/logout/{idUsuariologueado}")
-  public Response cleanToken(@PathParam("idUsuariologueado") long idUsuario){
+  public Response cleanToken(@HeaderParam("authorization") String token, @PathParam("idUsuariologueado") long idUsuario){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoCleanToken comandoCleanToken = Fabrica.crearComandoConId(ComandoCleanToken.class, idUsuario);
       comandoCleanToken.execute();

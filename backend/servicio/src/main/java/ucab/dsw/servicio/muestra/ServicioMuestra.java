@@ -1,30 +1,18 @@
 package ucab.dsw.servicio.muestra;
 
-import ucab.dsw.accesodatos.*;
-import ucab.dsw.dtos.EncuestadoDto;
 import ucab.dsw.dtos.MuestraDto;
 import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.muestra.ComandoAddMuestra;
 import ucab.dsw.logica.comando.muestra.ComandoAddMuestraManual;
 import ucab.dsw.logica.comando.muestra.ComandoGetMuestra;
 import ucab.dsw.logica.comando.muestra.ComandoGetUsuarioAgregable;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -44,7 +32,7 @@ public class ServicioMuestra {
    * @param solicitudEstudio Solicitud de estudio
    *
    */
-  public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio){
+  public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio) throws Exception{
 
     try {
 
@@ -52,7 +40,7 @@ public class ServicioMuestra {
       comandoAddMuestra.execute();
 
     }catch (Exception ex){
-      ex.printStackTrace();
+      throw  ex;
     }
 
   }
@@ -69,9 +57,12 @@ public class ServicioMuestra {
    */
   @POST
   @Path("/add/{idSolicitudEstudio}")
-  public Response addManualMuestra(@PathParam("idSolicitudEstudio") long idSolicitudEstudio, MuestraDto muestraDto){
+  public Response addManualMuestra(@HeaderParam("authorization") String token, @PathParam("idSolicitudEstudio") long idSolicitudEstudio, MuestraDto muestraDto){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddMuestraManual comandoAddMuestraManual = Fabrica.crearComandoConAmbos(ComandoAddMuestraManual.class, idSolicitudEstudio, muestraDto);
       comandoAddMuestraManual.execute();
@@ -102,9 +93,12 @@ public class ServicioMuestra {
    */
   @GET
   @Path("/getmuestra/{solicitudId}")
-  public Response getMuestra(@PathParam("solicitudId") long solicitudId){
+  public Response getMuestra(@HeaderParam("authorization") String token, @PathParam("solicitudId") long solicitudId){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetMuestra comandoGetMuestra = Fabrica.crearComandoConId(ComandoGetMuestra.class, solicitudId);
       comandoGetMuestra.execute();
@@ -135,10 +129,13 @@ public class ServicioMuestra {
    */
   @GET
   @Path("/usuarioagregable/{solicitudId}")
-  public Response getUsuarioAgregable(@PathParam("solicitudId") long solicitudId){
+  public Response getUsuarioAgregable(@HeaderParam("authorization") String token, @PathParam("solicitudId") long solicitudId){
 
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetUsuarioAgregable comandoGetUsuarioAgregable = Fabrica.crearComandoConId(ComandoGetUsuarioAgregable.class, solicitudId);
       comandoGetUsuarioAgregable.execute();

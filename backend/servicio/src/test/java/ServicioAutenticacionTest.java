@@ -1,8 +1,13 @@
 import io.jsonwebtoken.Claims;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.autenticacion.Autenticacion;
 import ucab.dsw.dtos.UsuarioDto;
+import ucab.dsw.entidades.Usuario;
 import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.autenticacion.ServicioAutenticacion;
 
 import javax.json.JsonObject;
@@ -11,28 +16,34 @@ import javax.ws.rs.core.Response;
 
 public class ServicioAutenticacionTest {
 
-  @Test
-  public void generateToken(){
+  private String token;
 
-    ServicioAutenticacion servicio = new ServicioAutenticacion();
+  @Before
+  public void generateToken() throws PruebaExcepcion {
+
+    Autenticacion autenticacion = new Autenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario( "administrador1@gmail.com");
+    usuarioDto.setId((long) 4);
+    usuarioDto.setNombreUsuario("administrador1@gmail.com");
     usuarioDto.setContrasena("12345");
 
-    Response resultado = servicio.login(usuarioDto);
-    JsonObject respuesta = (JsonObject) resultado.getEntity();
+    DaoUsuario daoUsuario = new DaoUsuario();
+    Usuario usuario = daoUsuario.find((long) 4, Usuario.class);
 
-    Assert.assertNotNull(respuesta.get("token"));
+    this.token = autenticacion.generateToken(usuarioDto);
+    usuario.set_token(this.token);
+    daoUsuario.update(usuario);
 
   }
+
 
   @Test
   public void cleanToken(){
 
     ServicioAutenticacion servicio = new ServicioAutenticacion();
 
-    Response resultado = servicio.cleanToken(171);
+    Response resultado = servicio.cleanToken(this.token, 171);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("usuario"));

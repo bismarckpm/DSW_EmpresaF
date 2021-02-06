@@ -62,9 +62,12 @@ public class Autenticacion {
         .setExpiration(Date.from(now.plus(10800l, ChronoUnit.MINUTES)))
         .signWith(SignatureAlgorithm.HS256, hmacKey)
         .compact();
+
+      return  jwtToken;
+    } else{
+      return null;
     }
 
-    return  jwtToken;
   }
 
   /**

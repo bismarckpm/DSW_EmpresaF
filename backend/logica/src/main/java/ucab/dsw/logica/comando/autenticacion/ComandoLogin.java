@@ -6,11 +6,14 @@ import ucab.dsw.directorioactivo.DirectorioActivo;
 import ucab.dsw.dtos.UsuarioDto;
 import ucab.dsw.entidades.Usuario;
 import ucab.dsw.excepciones.EstadoExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class ComandoLogin implements ComandoBase {
@@ -55,13 +58,21 @@ public class ComandoLogin implements ComandoBase {
       usuario.set_token(this.resultado);
       dao.update(usuario);
 
+    }catch (EstadoExcepcion ex){
+
+      throw new ProblemaExcepcion(ex.getMessage(), "El usuario se encuentra inactivo y no puede acceder al sistema");
+
+    } catch (NullPointerException ex) {
+
+      throw new ProblemaExcepcion("Usuario y/o clave incorrecta", "NullPointerException");
+
     }catch (Exception ex){
       throw ex;
     }
 
   }
 
-  public JsonObject getResultado(){
+  public JsonObject getResultado() throws Exception {
 
     try {
 
@@ -75,7 +86,11 @@ public class ComandoLogin implements ComandoBase {
 
       return data;
 
-    }catch (Exception ex){
+    }catch (NullPointerException ex) {
+
+    throw new ProblemaExcepcion("Usuario y/o clave incorrecta", ex.getMessage());
+
+  }catch (Exception ex){
       throw ex;
     }
 

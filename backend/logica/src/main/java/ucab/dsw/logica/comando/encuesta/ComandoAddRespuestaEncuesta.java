@@ -5,17 +5,16 @@ import ucab.dsw.dtos.ArrayRespuestaDto;
 import ucab.dsw.dtos.BaseRespuestaDto;
 import ucab.dsw.dtos.OpcionDto;
 import ucab.dsw.entidades.*;
-import ucab.dsw.excepciones.LimiteExcepcion;
-import ucab.dsw.excepciones.PruebaExcepcion;
-import ucab.dsw.excepciones.RangoExcepcion;
-import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
+import ucab.dsw.excepciones.*;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.encuesta.MapperEncuesta;
 import ucab.sw.mapper.muestra.MapperMuestra;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +30,7 @@ public class ComandoAddRespuestaEncuesta implements ComandoBase {
     this.baseRespuestaDto = baseRespuestaDto;
   }
 
-  public void execute() throws LimiteExcepcion, SolicitudPendienteExcepcion, PruebaExcepcion, InstantiationException, IllegalAccessException, InvocationTargetException, RangoExcepcion {
+  public void execute() throws Exception{
 
     try {
 
@@ -118,6 +117,10 @@ public class ComandoAddRespuestaEncuesta implements ComandoBase {
         }
 
       }
+
+    }catch (RangoExcepcion ex){
+
+      throw new ProblemaExcepcion(ex.getMessage(), "La respuesta posiblemente está fuera del rango permitido");
 
     }catch (Exception ex){
       throw  ex;

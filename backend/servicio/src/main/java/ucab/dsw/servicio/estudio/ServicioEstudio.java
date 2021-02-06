@@ -1,12 +1,8 @@
 package ucab.dsw.servicio.estudio;
 
-import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.EstudioDto;
-import ucab.dsw.dtos.OpcionDto;
-import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.entidades.*;
-import ucab.dsw.excepciones.LimiteExcepcion;
-import ucab.dsw.logica.comando.categoria.ComandoGetCategorias;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.estudio.ComandoAddEstudio;
 import ucab.dsw.logica.comando.estudio.ComandoGetEstudio;
 import ucab.dsw.logica.comando.estudio.ComandoGetEstudios;
@@ -14,15 +10,10 @@ import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 
 /**
  * Clase para gestionar los estudios
@@ -43,29 +34,27 @@ public class ServicioEstudio extends AplicacionBase {
    */
   @POST
   @Path("/add/{solicitudEstudioId}")
-  public Response addEstudio (@PathParam("solicitudEstudioId") long solicitudId, EstudioDto estudioDto){
+  public Response addEstudio (@HeaderParam("authorization") String token, @PathParam("solicitudEstudioId") long solicitudId, EstudioDto estudioDto){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddEstudio comandoAddEstudio = Fabrica.crearComandoConAmbos(ComandoAddEstudio.class, solicitudId, estudioDto);
       comandoAddEstudio.execute();
 
       return Response.ok().entity(comandoAddEstudio.getResultado()).build();
 
-    }catch (javax.persistence.PersistenceException ex){
-
-      String mensaje = "Este estudio y/o encuesta ya se encuentra registrado";
-      ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
-
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
-
-    }catch (LimiteExcepcion ex){
+    }
+    catch (ProblemaExcepcion ex){
 
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), ex.getMessage(), "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
-    }catch (Exception ex){
+    }
+    catch (Exception ex){
 
       String mensaje = "Ha ocurrido un error en el servidor";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
@@ -86,9 +75,12 @@ public class ServicioEstudio extends AplicacionBase {
    */
   @GET
   @Path("/getestudio/{estudioId}")
-  public Response getEstudioById(@PathParam("estudioId") long id){
+  public Response getEstudioById(@HeaderParam("authorization") String token, @PathParam("estudioId") long id){
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEstudio comandoGetEstudio = Fabrica.crearComandoConId(ComandoGetEstudio.class, id);
       comandoGetEstudio.execute();
@@ -117,9 +109,12 @@ public class ServicioEstudio extends AplicacionBase {
    */
   @GET
   @Path("/getall")
-  public Response getEstudios(){
+  public Response getEstudios(@HeaderParam("authorization") String token){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoGetEstudios comandoGetEstudios = Fabrica.crear(ComandoGetEstudios.class);
       comandoGetEstudios.execute();

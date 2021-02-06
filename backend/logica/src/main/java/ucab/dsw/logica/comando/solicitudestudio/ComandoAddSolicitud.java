@@ -6,14 +6,17 @@ import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.SolicitudEstudio;
 import ucab.dsw.excepciones.LimiteExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.muestra.ServicioMuestra;
 import ucab.sw.mapper.solicitudestudio.MapperSolicitud;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class ComandoAddSolicitud implements ComandoBase {
@@ -36,6 +39,15 @@ public class ComandoAddSolicitud implements ComandoBase {
       inicializarMuestra(solicitudEstudio);
 
       this.solicitudEstudioDto = MapperSolicitud.MapEntityToSolicitudDto(resultado);
+
+    }catch (LimiteExcepcion ex){
+
+      throw new ProblemaExcepcion(ex.getMessage(), "Los limites posiblemente estan invertidos");
+
+    }
+    catch (SolicitudPendienteExcepcion ex){
+
+      throw new ProblemaExcepcion(ex.getMessage(), "El cliente ya posee una solicitud de estudio con las mismas caracteristicas en espera");
 
     }catch (Exception ex){
       throw ex;

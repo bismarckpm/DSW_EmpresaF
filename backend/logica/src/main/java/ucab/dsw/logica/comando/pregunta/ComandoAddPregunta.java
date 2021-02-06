@@ -9,13 +9,16 @@ import ucab.dsw.entidades.Opcion;
 import ucab.dsw.entidades.Pregunta;
 import ucab.dsw.entidades.PreguntaOpcion;
 import ucab.dsw.excepciones.LimiteExcepcion;
+import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.opcion.MapperOpcion;
 import ucab.sw.mapper.pregunta.MapperPregunta;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +95,10 @@ public class ComandoAddPregunta implements ComandoBase {
       }
 
       this.preguntaDto = MapperPregunta.MapEntityToPreguntaDto(preguntaAgregada);
+
+    } catch (javax.persistence.PersistenceException ex) {
+
+      throw new ProblemaExcepcion("Esta pregunta ya se encuentra añadida", ex.getMessage());
 
     }catch (Exception ex){
       throw ex;

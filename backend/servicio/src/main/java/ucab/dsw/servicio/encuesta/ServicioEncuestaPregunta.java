@@ -1,23 +1,13 @@
 package ucab.dsw.servicio.encuesta;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import ucab.dsw.accesodatos.*;
+
 import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.dtos.PreguntaEncuestaDto;
-import ucab.dsw.entidades.*;
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.encuesta.ComandoAddPreguntaEncuesta;
 import ucab.dsw.logica.comando.encuesta.ComandoGetPreguntasAgregables;
 import ucab.dsw.logica.comando.encuesta.ComandoGetPreguntasEncuesta;
@@ -46,21 +36,23 @@ public class ServicioEncuestaPregunta {
      */
     @POST
     @Path("/{id}/pregunta")
-    public Response addPreguntaToEncuesta(@PathParam("id") long _idEncuesta, PreguntaDto preguntaDto) {
+    public Response addPreguntaToEncuesta(@HeaderParam("authorization") String token, @PathParam("id") long _idEncuesta, PreguntaDto preguntaDto) {
 
         try {
+
+          ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+          comandoDecode.execute();
 
           ComandoAddPreguntaEncuesta comandoAddPreguntaEncuesta = Fabrica.crearComandoConAmbos( ComandoAddPreguntaEncuesta.class, _idEncuesta, preguntaDto);
           comandoAddPreguntaEncuesta.execute();
 
           return Response.ok().entity(comandoAddPreguntaEncuesta.getResultado()).build();
 
-        } catch (javax.persistence.PersistenceException ex) {
+        } catch (ProblemaExcepcion ex){
 
-          String mensaje = "Hay opciones que ya se encuentran añadidas";
           ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-          return Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+          return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
         } catch (Exception ex) {
 
@@ -85,9 +77,12 @@ public class ServicioEncuestaPregunta {
      */
     @GET
     @Path("/{id}/preguntas")
-    public Response getPreguntas(@PathParam("id") long _idEncuesta) {
+    public Response getPreguntas(@HeaderParam("authorization") String token, @PathParam("id") long _idEncuesta) {
 
       try {
+
+        ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+        comandoDecode.execute();
 
         ComandoGetPreguntasEncuesta comandoGetPreguntasEncuesta = Fabrica.crearComandoConId(ComandoGetPreguntasEncuesta.class, _idEncuesta);
         comandoGetPreguntasEncuesta.execute();
@@ -117,9 +112,12 @@ public class ServicioEncuestaPregunta {
     */
     @GET
     @Path("/{id}/preguntasagregables")
-    public Response getPreguntasAgregables(@PathParam("id") long _idEncuesta){
+    public Response getPreguntasAgregables(@HeaderParam("authorization") String token, @PathParam("id") long _idEncuesta){
 
       try{
+
+        ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+        comandoDecode.execute();
 
         ComandoGetPreguntasAgregables comandoGetPreguntasAgregables = Fabrica.crearComandoConId(ComandoGetPreguntasAgregables.class, _idEncuesta);
         comandoGetPreguntasAgregables.execute();

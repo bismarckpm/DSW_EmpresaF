@@ -1,9 +1,11 @@
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import ucab.dsw.dtos.EncuestaDto;
-import ucab.dsw.dtos.EstudioDto;
-import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.dtos.SubcategoriaDto;
+import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.autenticacion.Autenticacion;
+import ucab.dsw.dtos.*;
+import ucab.dsw.entidades.Usuario;
+import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.servicio.categoria.ServicioCategoria;
 import ucab.dsw.servicio.estudio.ServicioEstudio;
 
@@ -14,6 +16,27 @@ import java.util.List;
 
 public class ServicioEstudioTest {
 
+  private String token;
+
+  @Before
+  public void generateToken() throws PruebaExcepcion {
+
+    Autenticacion autenticacion = new Autenticacion();
+
+    UsuarioDto usuarioDto = new UsuarioDto();
+    usuarioDto.setId((long) 4);
+    usuarioDto.setNombreUsuario("administrador1@gmail.com");
+    usuarioDto.setContrasena("12345");
+
+    DaoUsuario daoUsuario = new DaoUsuario();
+    Usuario usuario = daoUsuario.find((long) 4, Usuario.class);
+
+    this.token = autenticacion.generateToken(usuarioDto);
+    usuario.set_token(this.token);
+    daoUsuario.update(usuario);
+
+  }
+
   @Test
   public void addEstudioTest() throws Exception {
 
@@ -21,10 +44,10 @@ public class ServicioEstudioTest {
 
     EstudioDto estudioDto = new EstudioDto();
 
-    estudioDto.setNombreEstudio("Estudio prueba");
+    estudioDto.setNombreEstudio("Estudio prueba Con Tken");
 
     EncuestaDto encuestaDto = new EncuestaDto();
-    encuestaDto.setNombreEncuesta("Encuesta prueba");
+    encuestaDto.setNombreEncuesta("Encuesta prueba con token");
 
     SubcategoriaDto subcategoriaDto = new SubcategoriaDto(30);
     encuestaDto.setSubcategoria(subcategoriaDto);
@@ -44,7 +67,7 @@ public class ServicioEstudioTest {
 
     estudioDto.setPreguntas(preguntas);
 
-    Response resultado = servicioEstudio.addEstudio(178, estudioDto);
+    Response resultado = servicioEstudio.addEstudio(this.token, 189, estudioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
     System.out.println(respuesta);
 
@@ -57,7 +80,7 @@ public class ServicioEstudioTest {
 
     ServicioEstudio servicioEstudio = new ServicioEstudio();
 
-    Response resultado = servicioEstudio.getEstudioById(21);
+    Response resultado = servicioEstudio.getEstudioById(this.token, 27);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("nombreEstudio"));
@@ -69,11 +92,11 @@ public class ServicioEstudioTest {
 
     ServicioEstudio servicioEstudio = new ServicioEstudio();
 
-    Response resultado = servicioEstudio.getEstudios();
+    Response resultado = servicioEstudio.getEstudios(this.token);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
-    System.out.println(respuesta);
 
-    Assert.assertNotNull(respuesta.get("estudios"));
+    Assert.assertNotEquals(respuesta.get("estudios").toString().length(), 2);
 
   }
+
 }

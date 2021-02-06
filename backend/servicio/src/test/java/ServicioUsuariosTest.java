@@ -30,12 +30,12 @@ public class ServicioUsuariosTest {
     Autenticacion autenticacion = new Autenticacion();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setId((long) 1);
+    usuarioDto.setId((long) 4);
     usuarioDto.setNombreUsuario("administrador1@gmail.com");
     usuarioDto.setContrasena("12345");
 
     DaoUsuario daoUsuario = new DaoUsuario();
-    Usuario usuario = daoUsuario.find((long) 1, Usuario.class);
+    Usuario usuario = daoUsuario.find((long) 4, Usuario.class);
 
     this.tokenAdmin = autenticacion.generateToken(usuarioDto);
     usuario.set_token(this.tokenAdmin);
