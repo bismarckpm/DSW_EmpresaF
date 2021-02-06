@@ -1,14 +1,14 @@
 package ucab.dsw.servicio.marca;
 
-import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.dtos.MarcaDto;
 
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.marca.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,9 +32,12 @@ public class ServicioMarca extends AplicacionBase {
    */
   @POST
   @Path("/add")
-  public Response addMarca (MarcaDto marcaDto){
+  public Response addMarca (@HeaderParam("authorization") String token, MarcaDto marcaDto){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddMarca comandoAddMarca = Fabrica.crearComandoConDto(ComandoAddMarca.class,marcaDto);
       comandoAddMarca.execute();
@@ -42,12 +45,11 @@ public class ServicioMarca extends AplicacionBase {
       return  Response.ok().entity(comandoAddMarca.getResultado()).build();
 
     }
-    catch (PersistenceException | DatabaseException ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta marca ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -73,22 +75,24 @@ public class ServicioMarca extends AplicacionBase {
    */
   @PUT
   @Path("/update/{marcaId}")
-  public Response updateMarca(@PathParam("marcaId") long id, MarcaDto marcaDto){
+  public Response updateMarca(@HeaderParam("authorization") String token, @PathParam("marcaId") long id, MarcaDto marcaDto){
 
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdateMarca comandoUpdateMarca = Fabrica.crearComandoConAmbos(ComandoUpdateMarca.class,id,marcaDto);
       comandoUpdateMarca.execute();
 
       return  Response.ok().entity(comandoUpdateMarca.getResultado()).build();
 
-    }catch (PersistenceException | DatabaseException  ex){
+    }catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta marca ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -174,10 +178,13 @@ public class ServicioMarca extends AplicacionBase {
    */
   @PUT
   @Path("/disable/{marcaId}")
-  public Response disableMarca(@PathParam("marcaId") long id) {
+  public Response disableMarca(@HeaderParam("authorization") String token, @PathParam("marcaId") long id) {
 
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarMarca comandoDesactivarMarca = Fabrica.crearComandoConId(ComandoDesactivarMarca.class,id);
       comandoDesactivarMarca.execute();
@@ -208,10 +215,13 @@ public class ServicioMarca extends AplicacionBase {
    */
   @PUT
   @Path("/enable/{marcaId}")
-  public Response enableMarca(@PathParam("marcaId") long id) {
+  public Response enableMarca(@HeaderParam("authorization") String token, @PathParam("marcaId") long id) {
 
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarMarca comandoActivarMarca = Fabrica.crearComandoConId(ComandoActivarMarca.class,id);
       comandoActivarMarca.execute();
@@ -227,4 +237,5 @@ public class ServicioMarca extends AplicacionBase {
     }
 
   }
+
 }

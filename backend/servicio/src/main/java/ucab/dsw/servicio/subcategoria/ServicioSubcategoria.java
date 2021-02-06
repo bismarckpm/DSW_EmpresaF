@@ -1,15 +1,15 @@
 package ucab.dsw.servicio.subcategoria;
 
-import org.eclipse.persistence.exceptions.DatabaseException;
 import ucab.dsw.dtos.SubcategoriaDto;
 
 
+import ucab.dsw.excepciones.ProblemaExcepcion;
+import ucab.dsw.logica.comando.autenticacion.ComandoDecode;
 import ucab.dsw.logica.comando.subcategoria.*;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.dsw.servicio.AplicacionBase;
 
-import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,9 +33,12 @@ public class ServicioSubcategoria extends AplicacionBase {
    */
   @POST
   @Path("/add")
-  public Response addSubcategoria(SubcategoriaDto subcategoriaDto){
+  public Response addSubcategoria(@HeaderParam("authorization") String token, SubcategoriaDto subcategoriaDto){
 
     try {
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoAddSubcategoria comandoAddSubcategoria = Fabrica.crearComandoConDto(ComandoAddSubcategoria.class, subcategoriaDto);
       comandoAddSubcategoria.execute();
@@ -44,12 +47,11 @@ public class ServicioSubcategoria extends AplicacionBase {
       return Response.ok().entity(comandoAddSubcategoria.getResultado()).build();
 
     }
-    catch (PersistenceException | DatabaseException ex){
+    catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta subcategoria ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -106,22 +108,24 @@ public class ServicioSubcategoria extends AplicacionBase {
    */
   @PUT
   @Path("/update/{subcategoriaId}")
-  public Response updateSubcategoria(@PathParam("subcategoriaId") long id, SubcategoriaDto subcategoriaDto){
+  public Response updateSubcategoria(@HeaderParam("authorization") String token, @PathParam("subcategoriaId") long id, SubcategoriaDto subcategoriaDto){
 
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoUpdateSubcategoria comandoUpdateSubcategoria = Fabrica.crearComandoConAmbos(ComandoUpdateSubcategoria.class,id,subcategoriaDto);
       comandoUpdateSubcategoria.execute();
 
       return Response.ok().entity(comandoUpdateSubcategoria.getResultado()).build();
 
-    }catch (PersistenceException | DatabaseException  ex){
+    }catch (ProblemaExcepcion ex){
 
-      String mensaje = "Esta subcategoria ya se encuentra agregada en el sistema";
       ManejadorExcepcion manejadorExcepcion = Fabrica.crear(ManejadorExcepcion.class);
 
-      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMessage(), mensaje, "error", 400)).build();
+      return  Response.status(400).entity(manejadorExcepcion.getMensajeError(ex.getMensaje_soporte(), ex.getMensaje(), "error", 400)).build();
 
     }
     catch (Exception ex){
@@ -174,9 +178,12 @@ public class ServicioSubcategoria extends AplicacionBase {
    */
   @PUT
   @Path("/disable/{subcategoriaId}")
-  public Response disableSubcategoria(@PathParam("subcategoriaId") long id) {
+  public Response disableSubcategoria(@HeaderParam("authorization") String token, @PathParam("subcategoriaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoDesactivarSubcategoria comandoDesactivarSubcategoria = Fabrica.crearComandoConId(ComandoDesactivarSubcategoria.class,id);
       comandoDesactivarSubcategoria.execute();
@@ -205,9 +212,12 @@ public class ServicioSubcategoria extends AplicacionBase {
    */
   @PUT
   @Path("/enable/{subcategoriaId}")
-  public Response enableSubcategoria(@PathParam("subcategoriaId") long id) {
+  public Response enableSubcategoria(@HeaderParam("authorization") String token, @PathParam("subcategoriaId") long id) {
 
     try{
+
+      ComandoDecode comandoDecode = Fabrica.crearComandoSeguridad(ComandoDecode.class, token);
+      comandoDecode.execute();
 
       ComandoActivarSubcategoria comandoActivarSubcategoria = Fabrica.crearComandoConId(ComandoActivarSubcategoria.class,id);
       comandoActivarSubcategoria.execute();
