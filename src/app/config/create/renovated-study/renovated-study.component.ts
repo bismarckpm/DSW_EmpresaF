@@ -104,6 +104,37 @@ export class RenovatedStudyComponent implements OnInit {
   }
 
   getExistingQuestions(){
+    /*this.adminService.getQuestionsSu(this.idSolicitud)  
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.preguntas = auxRes.preguntas;
+              console.log('preguntas su');
+              if (auxRes.data.length==0){
+                this.adminService.getQuestions()
+                  .subscribe(
+                    res => {
+                      let auxRes:any;
+                      auxRes = res;
+                      if(auxRes.estado == 'success'){
+                        this.preguntas = auxRes.preguntas;
+                        console.log('preguntas');
+                      }
+                    },
+                    err => {
+                      console.log(err)
+                    }
+                  )
+              }
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )*/
+    
     this.adminService.getQuestions()
     .subscribe(
       res => {
