@@ -91,11 +91,12 @@ export class RequestStudyComponent implements OnInit {
     this.genero = this.requestStudyForm.get('selectGenero').value;
     let userStorage = localStorage.getItem('clientLogged');
     this.cliente = JSON.parse(userStorage);
+    let token = this.cliente.token; 
     this.cliente = this.cliente.id;
     this.parroquia = this.requestStudyForm.get('selectParroquia').value;
     this.subcategoria = this.requestStudyForm.get('selectSubcategoria').value;
     this.nivelSocioeconomico = this.requestStudyForm.get('selecNivelS').value;
-    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.subcategoria,this.nivelSocioeconomico)
+    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.subcategoria,this.nivelSocioeconomico,token)
     .subscribe(
       res => {
         let auxRes:any;

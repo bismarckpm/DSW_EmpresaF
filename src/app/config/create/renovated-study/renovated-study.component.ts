@@ -104,7 +104,10 @@ export class RenovatedStudyComponent implements OnInit {
   }
 
   getExistingQuestions(){
-    this.adminService.getQuestions()
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getQuestions(token)
     .subscribe(
       res => {
         let auxRes:any
@@ -202,6 +205,9 @@ export class RenovatedStudyComponent implements OnInit {
     data: []
   };
   createStudy(){
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     this.nombreEstudio = this.estudioFormGroup.get('Nombre').value;
     this.nombreEncuesta = this.encuestaFormGroup.get('Nombre').value;
     this.sub = this.route.params.subscribe(params => {
@@ -209,7 +215,7 @@ export class RenovatedStudyComponent implements OnInit {
     })
     if(this.seleccion_pregunta ==  true){
       let preguntasElegidas:any = this.obj.data;
-      this.adminService.newCreateStudy(this.nombreEstudio,this.nombreEncuesta,preguntasElegidas,this.idSolicitud,this.seleccion_pregunta)
+      this.adminService.newCreateStudy(this.nombreEstudio,this.nombreEncuesta,preguntasElegidas,this.idSolicitud,this.seleccion_pregunta,token)
       .subscribe(
         res => {
           let auxRes:any = res;
@@ -241,7 +247,7 @@ export class RenovatedStudyComponent implements OnInit {
         i++
       }
       //console.log(this.objPregunta.data)
-      this.adminService.newCreateStudy(this.nombreEstudio,this.nombreEncuesta,this.objPregunta.data,this.idSolicitud,this.seleccion_pregunta)
+      this.adminService.newCreateStudy(this.nombreEstudio,this.nombreEncuesta,this.objPregunta.data,this.idSolicitud,this.seleccion_pregunta,token)
       .subscribe(
         res => {
           let auxRes:any = res;

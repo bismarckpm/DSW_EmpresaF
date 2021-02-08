@@ -505,7 +505,12 @@ export class AdminService extends ApiService {
     }
 
     /*Crear estudio nuevo flujo */
-    newCreateStudy(nombreEstudio:string,nombreEncuesta:string,preguntas:any,idSolicitud:number,preguntaExistente:boolean){
+    newCreateStudy(nombreEstudio:string,nombreEncuesta:string,preguntas:any,idSolicitud:number,preguntaExistente:boolean,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       if(preguntaExistente == true){
         return this.http.post(this.API_URL+'api/estudio/add/'+idSolicitud,
                               {
@@ -515,7 +520,7 @@ export class AdminService extends ApiService {
                                 },
                                 "preguntas":preguntas
                             },
-                             this.httpOptions);
+                             this.httpOptions2);
       }
       else if(preguntaExistente == false) {
         console.log({
@@ -533,7 +538,7 @@ export class AdminService extends ApiService {
                                 },
                                 "preguntas":preguntas
                             },
-                            this.httpOptions);
+                            this.httpOptions2);
       }
     }
 }

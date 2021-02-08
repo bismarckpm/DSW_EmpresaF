@@ -20,13 +20,14 @@ export class RequestStudyComponent implements OnInit{
     getEstudios(){
       let adminStorage = localStorage.getItem('administrador');
       let admin = JSON.parse(adminStorage);
-      admin = admin.id;
       let token = admin.token;
+      admin = admin.id;
       this.adminService.getRequestedStudies(admin,token)
       .subscribe(
           res => {
             let auxRes:any;
             auxRes = res;
+            console.log(auxRes)
             if(auxRes.estado == 'success'){
                 this.studies = auxRes.solicitudes;
             }
