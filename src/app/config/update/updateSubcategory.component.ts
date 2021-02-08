@@ -74,6 +74,9 @@ export class UpdateSubcategoryComponent implements OnInit {
 
 
   handleUpdateSubategoria(){
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     let val=0;
     this.nombre = this.updateSubcategoriaForm.get('nombre').value;
     if (!this.nombre){
@@ -88,7 +91,7 @@ export class UpdateSubcategoryComponent implements OnInit {
     if(val!=2){
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.adminService.updateSubcategoria(this.nombre,this.categoria,this.id)
+        this.adminService.updateSubcategoria(this.nombre,this.categoria,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;

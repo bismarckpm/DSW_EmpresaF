@@ -32,8 +32,11 @@ export class UpdateUserComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.rol = params['rol'];
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token; 
       if (this.rol=='administrador'){
-        this.adminService.getAdministrador(this.id).
+        this.adminService.getAdministrador(this.id,token).
         subscribe(
           res =>{
             let auxRes:any = res;
@@ -44,7 +47,7 @@ export class UpdateUserComponent implements OnInit {
           }
         )
       }else if(this.rol=='analista'){
-        this.adminService.getAnalista(this.id).
+        this.adminService.getAnalista(this.id,token).
         subscribe(
           res =>{
             let auxRes:any = res;
@@ -65,7 +68,10 @@ export class UpdateUserComponent implements OnInit {
   }
 
   updateAdmin(){
-    this.adminService.updateAdministrador(this.oldnombre,this.contrasena,this.id)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token; 
+    this.adminService.updateAdministrador(this.oldnombre,this.contrasena,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;
@@ -85,7 +91,10 @@ export class UpdateUserComponent implements OnInit {
   }
 
   updateAnalis(){
-    this.adminService.updateAnalista(this.oldnombre,this.contrasena,this.id)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token; 
+    this.adminService.updateAnalista(this.oldnombre,this.contrasena,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;

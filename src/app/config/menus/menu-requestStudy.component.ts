@@ -21,7 +21,8 @@ export class RequestStudyComponent implements OnInit{
       let adminStorage = localStorage.getItem('administrador');
       let admin = JSON.parse(adminStorage);
       admin = admin.id;
-      this.adminService.getRequestedStudies(admin)
+      let token = admin.token;
+      this.adminService.getRequestedStudies(admin,token)
       .subscribe(
           res => {
             let auxRes:any;
