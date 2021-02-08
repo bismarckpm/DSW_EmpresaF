@@ -35,8 +35,10 @@ export class AddCategoryComponent implements OnInit{
   handleCreateCategoria(){
     this.nombreCategoria = this.createCategoriaForm.get('Nombre').value;
     console.log(this.nombreCategoria)
-    this.adminService.createCategoria(this.nombreCategoria)
-    this.adminService.createCategoria(this.nombreCategoria)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token; 
+    this.adminService.createCategoria(this.nombreCategoria,token)
     .subscribe(
       res => {
         let auxRes:any = res;

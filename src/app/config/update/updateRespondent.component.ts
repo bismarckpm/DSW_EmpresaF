@@ -78,7 +78,10 @@ export class UpdateRespondentComponent implements OnInit {
     getRespondant(){
         this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.adminService.getEncuestado(this.id).
+        let adminStorage = localStorage.getItem('administrador');
+        let admin = JSON.parse(adminStorage);
+        let token = admin.token; 
+        this.adminService.getEncuestado(this.id,token).
         subscribe(
           res =>{
             let auxRes:any = res;
@@ -156,7 +159,10 @@ export class UpdateRespondentComponent implements OnInit {
       if(val!=7){
           this.sub = this.route.params.subscribe(params => {
           this.id = +params['id'];
-            this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.id)
+          let adminStorage = localStorage.getItem('administrador');
+          let admin = JSON.parse(adminStorage);
+          let token = admin.token; 
+            this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.id,token)
             .subscribe(
               res => {
                 let auxRes:any = res;

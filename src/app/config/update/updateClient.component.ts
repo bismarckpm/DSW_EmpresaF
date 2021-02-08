@@ -36,7 +36,10 @@ export class UpdateClientComponent implements OnInit {
   getClient(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.adminService.getCliente(this.id).
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token; 
+      this.adminService.getCliente(this.id,token).
       subscribe(
         res =>{
           let auxRes:any = res;
@@ -58,7 +61,10 @@ export class UpdateClientComponent implements OnInit {
     if(this.nombre){
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.adminService.updateCliente(this.nombre,this.contrasena,this.id)
+        let adminStorage = localStorage.getItem('administrador');
+        let admin = JSON.parse(adminStorage);
+        let token = admin.token; 
+        this.adminService.updateCliente(this.nombre,this.contrasena,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;
