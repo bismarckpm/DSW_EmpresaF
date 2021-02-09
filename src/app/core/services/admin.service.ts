@@ -302,7 +302,7 @@ export class AdminService extends ApiService {
     parroquiaId:number,
     _codigoArea:any,
     _numeroTelefono:any,
-    /*contrasena:string*/
+    nombreUsuario: string,
     id:number,
     token:any
     ){
@@ -326,7 +326,8 @@ export class AdminService extends ApiService {
           "_numeroTelefono":_numeroTelefono
         }]
       },
-        "contrasena":null /*Problemas al cambiar contraseña*/
+        "nombreUsuario":nombreUsuario,
+        "contrasena":null 
     },
           this.httpOptions2);
     }
@@ -383,14 +384,19 @@ export class AdminService extends ApiService {
       this.httpOptions)
     }
 
-    createStudy(nombreEstudio:string,idEncuesta:number){
+    createStudy(nombreEstudio:string,idEncuesta:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.post(this.API_URL+'api/estudio/add',
       { "nombreEstudio":nombreEstudio,
         "encuesta":{
           "id":idEncuesta
         }
       },
-      this.httpOptions)
+      this.httpOptions2)
     }
 
     getAdministradores(token:any){
