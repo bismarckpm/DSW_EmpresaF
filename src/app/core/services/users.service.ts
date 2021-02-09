@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,12 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
 
-  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,subcategoria:number,nivelSocioeconomico:number){
+  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,subcategoria:number,nivelSocioeconomico:number,token){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/solicitud/add',
                           {
                           "edadInicial": edadInicial,
@@ -64,15 +70,20 @@ export class UsersService extends ApiService{
                           "subcategoria": subcategoria,
                           "nivelSocioeconomico": nivelSocioeconomico
                           },
-                          this.httpOptions)
+                          this.httpOptions2)
     }
     
   getParroquias(){
     return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
 
-  getSpecificStudies(idSolicitud:number){
-    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
+  getSpecificStudies(idSolicitud:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions2);
   }
 
   getEstudioEncuestado(idEncuestado:number){

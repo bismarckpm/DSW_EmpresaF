@@ -36,7 +36,10 @@ export class PasswordProfileComponent implements OnInit {
     let userStorage = localStorage.getItem('administrador');
     this.iduser = JSON.parse(userStorage);
     this.iduser = this.iduser.id;
-    this.adminService.getAdministrador(this.iduser).
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token; 
+    this.adminService.getAdministrador(this.iduser,token).
     subscribe(
       res =>{
         let auxRes:any = res;
@@ -52,7 +55,10 @@ export class PasswordProfileComponent implements OnInit {
     if (this.passwordForm.valid) {
       console.log(this.passwordForm.value);
       this.contrasena = this.passwordForm.get('contrasena').value;
-      this.adminService.updateAdministrador(this.nombre,this.contrasena,this.iduser)
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token; 
+      this.adminService.updateAdministrador(this.nombre,this.contrasena,this.iduser,token)
         .subscribe(
           res => {
             let auxRes:any = res;

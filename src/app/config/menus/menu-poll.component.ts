@@ -13,7 +13,8 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuPollComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['encuestaId', 'nombreEncuesta','subcategoria','icons'];
+  x:number;
+  displayedColumns: string[] = ['encuestaId', 'nombreEncuesta','subcategoria','preguntas','icons'];
   constructor(private router: Router,private adminService:AdminService) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -27,6 +28,31 @@ export class MenuPollComponent implements OnInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  
+  getQuestions(idEncuesta:number){
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token;
+      this.adminService.getQuestionP(idEncuesta,token)
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){   
+            if (auxRes.data.length!=0){
+              this.x = 1;
+              this.updateEncuesta(idEncuesta);
+            }else{
+              this.x = 0;
+            }
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
+  }
+
   getEncuestas(){
     this.adminService.getEncuesta()
     .subscribe(
@@ -52,7 +78,7 @@ export class MenuPollComponent implements OnInit{
   }
 
   updateEncuesta(idEncuesta){
-    this.router.navigate(['/config/updatePoll/'+idEncuesta]);
+    this.router.navigate(['/config/pollquestion/'+idEncuesta+'/'+this.x]);
     console.log(idEncuesta)
   }
 

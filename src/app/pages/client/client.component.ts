@@ -26,8 +26,9 @@ export class ClientComponent implements OnInit{
   getEstudios(){
     let userStorage = localStorage.getItem('clientLogged');
     let user = JSON.parse(userStorage);
+    let token = user.token; 
     user = user.id;  
-    this.userService.getSpecificStudies(user)
+    this.userService.getSpecificStudies(user,token)
     .subscribe(
       res => {
         let auxRes:any;

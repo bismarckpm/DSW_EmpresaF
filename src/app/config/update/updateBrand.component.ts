@@ -87,6 +87,9 @@ export class UpdateBrandComponent implements OnInit {
 
   handleUpdateMarca(){
     let val=0;
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     this.nombre = this.updateMarcaForm.get('nombre').value;
     if (!this.nombre){
       this.nombre = this.oldnombre;
@@ -116,7 +119,7 @@ export class UpdateBrandComponent implements OnInit {
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
         console.log(this.nombre,this.tipo,this.capacidad,this.unidad,this.subcategoria,this.id)
-        this.adminService.updateMarca(this.nombre,this.tipo,this.capacidad,this.unidad,this.subcategoria,this.id)
+        this.adminService.updateMarca(this.nombre,this.tipo,this.capacidad,this.unidad,this.subcategoria,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;

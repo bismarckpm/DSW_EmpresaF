@@ -44,7 +44,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getClients(){
-    this.adminService.getClientes().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getClientes(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -64,7 +67,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getRespondents(){
-    this.adminService.getEncuestados().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getEncuestados(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -85,7 +91,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getAdminis(){
-    this.adminService.getAdministradores().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getAdministradores(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -106,7 +115,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getAnalitics(){
-    this.adminService.getAnalistas().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getAnalistas(token).
     subscribe(
       res => {
         let auxRes:any;

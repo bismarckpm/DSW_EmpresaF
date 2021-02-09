@@ -71,7 +71,10 @@ export class AddQuestionComponent implements OnInit{
     if(this.tipoPregunta == "desarrollo"){
       this.opciones = null;
     }
-    this.adminService.createQuestion(this.descripcionPregunta,this.tipoPregunta,this.min,this.max,this.opciones)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.createQuestion(this.descripcionPregunta,this.tipoPregunta,this.min,this.max,this.opciones,token)
     .subscribe(
       res => {
         let auxRes:any;

@@ -38,16 +38,19 @@ export class AddPollQuestionComponent implements OnInit{
 
   handlePollQuestion(){
     this.IdPreguntas = this.EncuestaPreguntaForm.get('itemRows').value;
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.adminService.setQuestions(this.id,this.IdPreguntas)
+        this.adminService.setQuestions(this.id,this.IdPreguntas,token)
         .subscribe(
           res => {
             let auxRes:any;
             auxRes = res;
             if(auxRes.estado == 'success'){          
             this.openSnackBar("Pregunta añadida");
-            this.router.navigate(['/config/updatePoll/'+this.id]);
+            this.router.navigate(['/config/menupoll']);
             }
           },
           err => {
@@ -60,9 +63,12 @@ export class AddPollQuestionComponent implements OnInit{
   getPreguntas(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token;
       let x : number;
       x= +params['x'];
-        this.adminService.getQuestionsNo(this.id)
+        this.adminService.getQuestionsNo(this.id,token)
         .subscribe(
           res => {
             let auxRes:any;
@@ -96,5 +102,6 @@ export class AddPollQuestionComponent implements OnInit{
   deleteRow(index: number) {
     this.formArr.removeAt(index);
   }
+  
   
 }

@@ -13,7 +13,7 @@ import { AdminService } from 'src/app/core/services/admin.service';
 export class MenuCQuestionComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['id', 'descripcion', 'tipo','opcion','icons'];
+  displayedColumns: string[] = ['id', 'descripcion', 'tipo','opcion'];
   opcion:any;
   constructor(private router: Router,private adminService: AdminService) { }
   
@@ -30,7 +30,10 @@ export class MenuCQuestionComponent implements OnInit{
   }
 
   getQuestions(){
-    this.adminService.getQuestions()
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getQuestions(token)
     .subscribe(
       res => {
         let auxRes:any;

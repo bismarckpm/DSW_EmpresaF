@@ -55,7 +55,10 @@ export class AddUserComponent implements OnInit{
       this.nombre = this.registerClienteForm.get('nombre').value;
       this.nombreUsuario = this.registerClienteForm.get('nombreCliente').value
       this.contrasena = this.registerClienteForm.get('contrasenaC').value
-      this.adminService.registerCliente(this.nombre,this.nombreUsuario,this.contrasena)
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token; 
+      this.adminService.registerCliente(this.nombre,this.nombreUsuario,this.contrasena,token)
       .subscribe(
         res => {
           let auxRes:any = res;
@@ -79,8 +82,11 @@ export class AddUserComponent implements OnInit{
       this.contrasena = this.registerUserForm.get('contrasenaU').value
       this.rol = this.registerUserForm.get('rol').value
       console.log(this.nombreUsuario,this.contrasena,this.rol)
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token; 
       if (this.rol=='Administrador'){
-        this.adminService.registerAdministrador(this.nombreUsuario,this.contrasena)
+        this.adminService.registerAdministrador(this.nombreUsuario,this.contrasena,token)
       .subscribe(
         res => {
           let auxRes:any = res;
@@ -98,7 +104,7 @@ export class AddUserComponent implements OnInit{
         }
       )
       }else if (this.rol=='Analista'){
-      this.adminService.registerAnalista(this.nombreUsuario,this.contrasena)
+      this.adminService.registerAnalista(this.nombreUsuario,this.contrasena,token)
       .subscribe(
         res => {
           let auxRes:any = res;

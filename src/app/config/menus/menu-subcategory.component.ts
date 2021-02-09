@@ -53,8 +53,11 @@ export class MenuSubcategoryComponent implements OnInit{
   }
 
   deleteSubcategory(idSubcategoria,estadoSubategoria){
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     if (estadoSubategoria=='activo'){
-      this.adminService.inactiveSubcategory(idSubcategoria).
+      this.adminService.inactiveSubcategory(idSubcategoria,token).
       subscribe(
         res => {
           let auxRes:any;
@@ -69,7 +72,7 @@ export class MenuSubcategoryComponent implements OnInit{
         }
       )
     }else{
-      this.adminService.activeSubcategory(idSubcategoria).
+      this.adminService.activeSubcategory(idSubcategoria,token).
       subscribe(
         res => {
           let auxRes:any;

@@ -89,8 +89,11 @@ export class ResultsComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
     this.id = +params['id'];
     })
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token; 
     var i:number = 0;
-    this.adminService.getRespuestaEncuesta(this.id)
+    this.adminService.getRespuestaEncuesta(this.id,token)
     .subscribe(
       res => {
         let auxRes:any;

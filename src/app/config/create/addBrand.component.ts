@@ -47,7 +47,10 @@ export class AddBrandComponent implements OnInit{
     this.capacidad = this.createMarcaForm.get('Capacidad').value;
     this.unidad = this.createMarcaForm.get('Unidad').value;
     idSubcategoria = this.createMarcaForm.get('selectSubCategoria').value;
-    this.adminService.createMarca(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,idSubcategoria)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.createMarca(this.nombreMarca,this.tipoMarca,this.capacidad,this.unidad,idSubcategoria,token)
     .subscribe(
       res => {
         let auxRes:any;

@@ -1,19 +1,31 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { map } from 'rxjs/operators';
-
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 
 export class AdminService extends ApiService {
 
-  createCategoria(nombreCategoria:string){
-    return this.http.post(this.API_URL+'api/categoria/add',{"nombreCategoria":nombreCategoria},this.httpOptions)
+ 
+  
+  createCategoria(nombreCategoria:string,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.post(this.API_URL+'api/categoria/add',{"nombreCategoria":nombreCategoria},this.httpOptions2)
   }
 
-  updateCategoria(nombreCategoria:string,id:number){
-    return this.http.put(this.API_URL+'api/categoria/update/'+id,{"nombreCategoria":nombreCategoria},this.httpOptions)
+  updateCategoria(nombreCategoria:string,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/categoria/update/'+id,{"nombreCategoria":nombreCategoria},this.httpOptions2)
   }
  
   getCategoria(id:number){
@@ -24,20 +36,40 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/categoria/getall',this.httpOptions);
   }
 
-  activeCategory(id:number){
-    return this.http.put(this.API_URL+'api/categoria/enable/'+id,this.httpOptions);
+  activeCategory(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/categoria/enable/'+id,this.httpOptions2);
   }
 
-  inactiveCategory(id:number){
-    return this.http.put(this.API_URL+'api/categoria/disable/'+id,this.httpOptions);
+  inactiveCategory(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/categoria/disable/'+id,this.httpOptions2);
   }
 
-  createSubCategoria(nombreSubcategoria,id){
-    return this.http.post(this.API_URL+'api/subcategoria/add',{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":id}},this.httpOptions)
+  createSubCategoria(nombreSubcategoria,id,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.post(this.API_URL+'api/subcategoria/add',{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":id}},this.httpOptions2)
   }
 
-  updateSubcategoria(nombreSubcategoria:string,idSubcategoria:number,id:number){
-    return this.http.put(this.API_URL+'api/subcategoria/update/'+id,{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":idSubcategoria}},this.httpOptions)
+  updateSubcategoria(nombreSubcategoria:string,idSubcategoria:number,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/subcategoria/update/'+id,{"nombreSubcategoria":nombreSubcategoria,"categoria": {"id":idSubcategoria}},this.httpOptions2)
   }
  
   getSubcategoria(id:number){
@@ -48,12 +80,22 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
   }
 
-  activeSubcategory(id:number){
-    return this.http.put(this.API_URL+'api/subcategoria/enable/'+id,this.httpOptions);
+  activeSubcategory(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/subcategoria/enable/'+id,this.httpOptions2);
   }
 
-  inactiveSubcategory(id:number){
-    return this.http.put(this.API_URL+'api/subcategoria/disable/'+id,this.httpOptions);
+  inactiveSubcategory(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/subcategoria/disable/'+id,this.httpOptions2);
   }
 
   getMarcas(){
@@ -64,7 +106,12 @@ export class AdminService extends ApiService {
     return this.http.get(this.API_URL+'api/marca/getmarca/'+id,this.httpOptions)
   }
 
-  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,id:number){
+  createMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/marca/add',
                                                       {
                                                         "nombreMarca": nombreMarca,
@@ -74,10 +121,15 @@ export class AdminService extends ApiService {
                                                         "subcategoria":{
                                                             "id": id
                                                         }
-                                                      },this.httpOptions)
+                                                      },this.httpOptions2)
   }
 
-  updateMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,idsub:number,id:number){
+  updateMarca(nombreMarca:string,tipoMarca:string,capacidad:number,unidad:string,idsub:number,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.put(this.API_URL+'api/marca/update/'+id,
                                                       {
                                                         "nombreMarca": nombreMarca,
@@ -87,7 +139,7 @@ export class AdminService extends ApiService {
                                                         "subcategoria":{
                                                             "id": idsub
                                                         }
-                                                      },this.httpOptions)
+                                                      },this.httpOptions2)
   }
 
   activeBrand(id:number){
@@ -99,46 +151,87 @@ export class AdminService extends ApiService {
   }
 
 
-  getRequestedStudies(idAdmin:number){
-    return this.http.get(this.API_URL+'api/administrador/getsolicitudespendientes/'+idAdmin,this.httpOptions);
+  getRequestedStudies(idAdmin:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/administrador/getsolicitudespendientes/'+idAdmin,this.httpOptions2);
   }
 
-  getStudies(){
-    return this.http.get(this.API_URL+'api/estudio/getall',this.httpOptions);
+  getStudies(token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+
+    return this.http.get(this.API_URL+'api/estudio/getall',this.httpOptions2);
   }
 
   assignStudy(idSolicitud:number,idEstudio:number){
     return this.http.put(this.API_URL+'api/administrador/asignarsolicitud/'+idSolicitud,{"estudio": idEstudio,},this.httpOptions);
   }
 
-  createQuestion(descripcionPregunta:string,tipoPregunta:string,min:number,max:number,opciones:any){
+  createQuestion(descripcionPregunta:string,tipoPregunta:string,min:number,max:number,opciones:any,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/preguntas',
     {"descripcionPregunta":descripcionPregunta,
     "tipoPregunta": tipoPregunta,
     "min":min,
     "max":max,
     "opciones":opciones
-    },this.httpOptions)
+    },this.httpOptions2)
   }
 
-  getQuestions(){
-    return this.http.get(this.API_URL+'api/preguntas',this.httpOptions);
+  getQuestions(token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/preguntas',this.httpOptions2);
   }
 
-  getQuestionsSu(idEncuesta){/*Preguntas sugeridas para la encuesta*/
-    return this.http.get(this.API_URL+'api/preguntas/'+idEncuesta+'/sugerencias',this.httpOptions);
+  getQuestionsSu(idEncuesta,token:any){/*Preguntas sugeridas para la encuesta*/
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/preguntas/'+idEncuesta+'/sugerencias',this.httpOptions2);
   }
 
-  getQuestionsNo(idEncuesta){/*Preguntas que no estan en la encuesta*/ 
-    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntasagregables',this.httpOptions);
+  getQuestionsNo(idEncuesta,token:any){/*Preguntas que no estan en la encuesta*/ 
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntasagregables',this.httpOptions2);
   }
 
-  getQuestionP(id:number){/*Preguntas que esten en una encuesta*/
-    return this.http.get(this.API_URL+'api/encuestas/'+id+'/preguntas',this.httpOptions);
+  getQuestionP(id:number,token:any){/*Preguntas que esten en una encuesta*/
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/'+id+'/preguntas',this.httpOptions2);
   }
 
-  setQuestions(idEncuesta:number,Ids :any){/*Agrega preguntas a una encuesta*/
-    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/pregunta',{"preguntas":Ids},this.httpOptions)
+  setQuestions(idEncuesta:number,Ids :any,token:any){/*Agrega preguntas a una encuesta*/
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.post(this.API_URL+'api/encuestas/'+idEncuesta+'/pregunta',{"preguntas":Ids},this.httpOptions2)
   }
 
   addQuestiontoPoll(idEncuesta:number,idPregunta:number){/*Agrega una pregunta a la encuesta NO SE ESTA USANDO*/
@@ -146,24 +239,49 @@ export class AdminService extends ApiService {
 
   }
 
-  getCliente(id:number){
-    return this.http.get(this.API_URL+'api/cliente/getuser/'+id,this.httpOptions);
+  getCliente(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/cliente/getuser/'+id,this.httpOptions2);
   }
 
-  getClientes(){
-    return this.http.get(this.API_URL+'api/cliente/getall',this.httpOptions);
+  getClientes(token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/cliente/getall',this.httpOptions2);
 
   }
 
-  getEncuestado(id:number){
-    return this.http.get(this.API_URL+'api/encuestado/getuser/'+id,this.httpOptions);
+  getEncuestado(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+id,this.httpOptions2);
   }
 
-  getEncuestados(){
-    return this.http.get(this.API_URL+'api/encuestado/getall',this.httpOptions);
+  getEncuestados(token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getall',this.httpOptions2);
   }
 
-  updateCliente(nombre:string,contrasena:string,id:number){
+  updateCliente(nombre:string,contrasena:string,id:number,token){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.put(this.API_URL+'api/cliente/update/'+id,
                           {"clienteDto":
                             {
@@ -171,7 +289,7 @@ export class AdminService extends ApiService {
                             },
                             "contrasena":contrasena
                           },
-                          this.httpOptions)
+                          this.httpOptions2)
   }
 
   updateEncuestado( 
@@ -185,9 +303,14 @@ export class AdminService extends ApiService {
     _codigoArea:any,
     _numeroTelefono:any,
     /*contrasena:string*/
-    id:number
+    id:number,
+    token:any
     ){
-
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
     return this.http.put(this.API_URL+'api/encuestado/update/'+id,
     {"encuestadoDto":
       { 
@@ -205,7 +328,7 @@ export class AdminService extends ApiService {
       },
         "contrasena":null /*Problemas al cambiar contraseña*/
     },
-          this.httpOptions);
+          this.httpOptions2);
     }
     
     activeClient(id:number){
@@ -228,7 +351,12 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
     }
 
-    registerCliente(nombre:string,nombreUsuario:string,contrasena:string){
+    registerCliente(nombre:string,nombreUsuario:string,contrasena:string,token){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.post(this.API_URL+'api/cliente/add',
                             {"clienteDto":
                               {
@@ -237,7 +365,7 @@ export class AdminService extends ApiService {
                               "nombreUsuario":nombreUsuario,
                               "contrasena":contrasena
                             },
-                            this.httpOptions)
+                            this.httpOptions2)
     }
 
     getEncuesta(){
@@ -265,12 +393,22 @@ export class AdminService extends ApiService {
       this.httpOptions)
     }
 
-    getAdministradores(){
-      return this.http.get(this.API_URL+'api/administrador/getall',this.httpOptions);
+    getAdministradores(token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.get(this.API_URL+'api/administrador/getall',this.httpOptions2);
     }
 
-    getAdministrador(id:number){
-      return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+    getAdministrador(id:number,token){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions2);
     }
 
     activeAdministrador(id:number){
@@ -281,26 +419,46 @@ export class AdminService extends ApiService {
       return this.http.put(this.API_URL+'api/administrador/disable/'+id,this.httpOptions);
     }
 
-    registerAdministrador(nombreUsuario:string,contrasena:string){
+    registerAdministrador(nombreUsuario:string,contrasena:string,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.post(this.API_URL+'api/administrador/add',
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
-                             this.httpOptions);
+                             this.httpOptions2);
     }
 
-    updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+    updateAdministrador(nombreUsuario:string,contrasena:string,id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.put(this.API_URL+'api/administrador/update/'+id,
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
-                             this.httpOptions);
+                             this.httpOptions2);
     }
 
-    getAnalistas(){
-      return this.http.get(this.API_URL+'api/analista/getall',this.httpOptions);
+    getAnalistas(token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.get(this.API_URL+'api/analista/getall',this.httpOptions2);
     }
 
-    getAnalista(id:number){
-      return this.http.get(this.API_URL+'api/analista/getuser/'+id,this.httpOptions);
+    getAnalista(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.get(this.API_URL+'api/analista/getuser/'+id,this.httpOptions2);
     }
 
     activeAnalista(id:number){
@@ -311,27 +469,48 @@ export class AdminService extends ApiService {
       return this.http.put(this.API_URL+'api/analista/disable/'+id,this.httpOptions);
     }
   
-    registerAnalista(nombreUsuario:string,contrasena:string){
+    registerAnalista(nombreUsuario:string,contrasena:string,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.post(this.API_URL+'api/analista/add',
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
-                             this.httpOptions);
+                             this.httpOptions2);
     }
 
-    updateAnalista(nombreUsuario:string,contrasena:string,id:number){
+    updateAnalista(nombreUsuario:string,contrasena:string,id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.put(this.API_URL+'api/analista/update/'+id,
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
-                             this.httpOptions);
+                             this.httpOptions2);
     }
 
-    getRespuestaEncuesta(idEncuesta:number){
-      return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions)
+    getRespuestaEncuesta(idEncuesta:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+  
+      return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions2)
       .pipe(map(resultado => resultado))
     }
 
     /*Crear estudio nuevo flujo */
-    newCreateStudy(nombreEstudio:string,nombreEncuesta:string,preguntas:any,idSolicitud:number,preguntaExistente:boolean){
+    newCreateStudy(nombreEstudio:string,nombreEncuesta:string,preguntas:any,idSolicitud:number,preguntaExistente:boolean,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       if(preguntaExistente == true){
         return this.http.post(this.API_URL+'api/estudio/add/'+idSolicitud,
                               {
@@ -341,7 +520,7 @@ export class AdminService extends ApiService {
                                 },
                                 "preguntas":preguntas
                             },
-                             this.httpOptions);
+                             this.httpOptions2);
       }
       else if(preguntaExistente == false) {
         console.log({
@@ -359,7 +538,7 @@ export class AdminService extends ApiService {
                                 },
                                 "preguntas":preguntas
                             },
-                            this.httpOptions);
+                            this.httpOptions2);
       }
     }
 }

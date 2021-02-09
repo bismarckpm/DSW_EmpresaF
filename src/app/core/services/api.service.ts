@@ -10,7 +10,7 @@ export class ApiService {
   API_URL = environment.apiUrl;
 
   httpOptions:any = new Headers({'Content-Type': 'application/json'})
-
+  httpOptions2:any;
 
   constructor(protected http: HttpClient) { }
 }
