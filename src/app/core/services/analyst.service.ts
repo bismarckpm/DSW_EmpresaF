@@ -1,21 +1,32 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalystService extends ApiService{
 
-  getSolicitudes(idAnalista:number){
-    return this.http.get(this.API_URL+'api/analista/getsolicitudespendientes/'+idAnalista,this.httpOptions);
+  getSolicitudes(idAnalista:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/analista/getsolicitudespendientes/'+idAnalista,this.httpOptions2);
   }
 
   activarSolicitud(idSolicitud:number){
     return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions)
   }
 
-  getMyStudies(idAnalista:number){
-    return this.http.get(this.API_URL+'api/analista/obtenerestudios/'+idAnalista,this.httpOptions);
+  getMyStudies(idAnalista:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/analista/obtenerestudios/'+idAnalista,this.httpOptions2);
   }
 
   getRespuestaEncuesta(idEncuesta:number){
@@ -85,5 +96,23 @@ export class AnalystService extends ApiService{
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
                              this.httpOptions);
+    }
+
+    finishStudy(idStudio:number,resultado:string,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/analista/finalizar/'+idStudio,{"resultado":resultado},this.httpOptions2)
+    }
+
+    removeToken(idUsuario:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,this.httpOptions2)
     }
 }

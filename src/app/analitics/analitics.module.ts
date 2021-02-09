@@ -15,12 +15,13 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ResultsComponent } from './results/results.component';;
-import { AddSampleComponent } from 'src/app/analitics/addSample/addSample.component'
+import { AddSampleComponent } from 'src/app/analitics/addSample/addSample.component';
+import { FinishStudyComponent } from './finish-study/finish-study.component'
 
 @NgModule({
     declarations: [MenuAnaliticsComponent,GlobalMenuAComponent,SampleComponent,UpdateSampleComponent,
        InterviewSurveyComponent,  DescriptionCardComponent, OptionCardComponent, RangeCardComponent, AnalysisComponent,
-       PasswordProfileComponent,ProfileComponent,MyStudiesComponent, ResultsComponent,AddSampleComponent
+       PasswordProfileComponent,ProfileComponent,MyStudiesComponent, ResultsComponent,AddSampleComponent, FinishStudyComponent
     ],
     imports: [
       AnaliticsRoutingModule,

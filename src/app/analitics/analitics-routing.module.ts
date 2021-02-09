@@ -15,7 +15,7 @@ import { PasswordProfileComponent } from './profile/password-profile.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ResultsComponent } from 'src/app/analitics/results/results.component';
 import { AddSampleComponent } from 'src/app/analitics/addSample/addSample.component'
-
+import { FinishStudyComponent } from 'src/app/analitics/finish-study/finish-study.component'
 const routes: Routes = [
     {
       path: "",
@@ -34,6 +34,7 @@ const routes: Routes = [
         { path: "profile", component: ProfileComponent},
         { path: "results/:id", component: ResultsComponent},
         { path: "addsample/:id", component: AddSampleComponent},
+        { path: "finishStudy/:id", component: FinishStudyComponent},
       ]
     }
   ];
