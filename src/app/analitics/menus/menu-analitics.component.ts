@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MenuAnaliticsComponent implements OnInit{
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','marca','tipoMarca','unidadMarca','icons'];
+  displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','nivelSocioeconomico','parroquia','subcategoria','icons'];
   constructor(private analisService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,12 +37,14 @@ export class MenuAnaliticsComponent implements OnInit{
   getEstudios(){
     let analistStorage = localStorage.getItem('analistaLogged');
     let analista = JSON.parse(analistStorage);
+    let token = analista.token;
     analista = analista.id; 
-    this.analisService.getSolicitudes(analista)
+    this.analisService.getSolicitudes(analista,token)
     .subscribe(
       res => {
         let auxRes:any;
         auxRes = res;
+        console.log(auxRes)
         if(auxRes.estado == 'success'){
             this.element = auxRes.solicitudes;
             this.dataSource = new MatTableDataSource(auxRes.solicitudes);
