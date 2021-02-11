@@ -55,8 +55,11 @@ export class MenuBrandComponent implements OnInit{
   }
 
   deleteMarca(idMarca,estadoMarca){
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     if (estadoMarca=='activo'){
-      this.adminService.inactiveBrand(idMarca).
+      this.adminService.inactiveBrand(idMarca,token).
       subscribe(
         res => {
           let auxRes:any;
@@ -71,7 +74,7 @@ export class MenuBrandComponent implements OnInit{
         }
       )
     }else{
-      this.adminService.activeBrand(idMarca).
+      this.adminService.activeBrand(idMarca,token).
       subscribe(
         res => {
           let auxRes:any;

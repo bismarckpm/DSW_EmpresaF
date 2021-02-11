@@ -51,4 +51,8 @@ export class ClientComponent implements OnInit{
   solicitarEstudio(){
     this.router.navigate(['/pages/request-study']);
   }
+
+  verResultados(idEncuesta){
+    this.router.navigate(['/pages/results/'+idEncuesta]);
+  }
 }
