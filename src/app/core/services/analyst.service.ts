@@ -113,6 +113,6 @@ export class AnalystService extends ApiService{
         'authorization': token,
         })
       }
-      return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,this.httpOptions2)
+      return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
     }
 }

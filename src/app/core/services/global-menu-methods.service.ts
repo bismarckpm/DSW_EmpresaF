@@ -12,12 +12,44 @@ export class GlobalMenuMethodsService {
 
   signOut(){
     if(localStorage.getItem('administrador')){
-      localStorage.removeItem('administrador');
-      this.router.navigate([''], { replaceUrl: true });
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token;
+      let idAdmin = admin.id;
+      this.adminService.removeToken(idAdmin,token)
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            localStorage.removeItem('administrador');
+            this.router.navigate([''], { replaceUrl: true });
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
     }
     else if(localStorage.getItem('clientLogged')){
-      localStorage.removeItem('clientLogged');
-      this.router.navigate([''], { replaceUrl: true });
+      let clientStorage = localStorage.getItem('clientLogged');
+      let client = JSON.parse(clientStorage);
+      let token = client.token;
+      let idClient = client.id;
+      this.adminService.removeToken(idClient,token)
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            localStorage.removeItem('clientLogged');
+            this.router.navigate([''], { replaceUrl: true });
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
     }
     else if(localStorage.getItem('analistaLogged')){
       let analistStorage = localStorage.getItem('analistaLogged');
@@ -41,8 +73,24 @@ export class GlobalMenuMethodsService {
       )
     }
     else if(localStorage.getItem('encuestadoLogged')){
-      localStorage.removeItem('encuestadoLogged');
-      this.router.navigate([''], { replaceUrl: true });
+      let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+      let encuestado = JSON.parse(encuestadoStorage);
+      let token = encuestado.token;
+      let idEncuestado = encuestado.id;
+      this.adminService.removeToken(idEncuestado,token)
+      .subscribe(
+        res => {
+          let auxRes:any;
+          auxRes = res;
+          if(auxRes.estado == 'success'){
+            localStorage.removeItem('encuestadoLogged');
+            this.router.navigate([''], { replaceUrl: true });
+          }
+        },
+        err => {
+          console.log(err)
+        }
+      )
     }
   }
 

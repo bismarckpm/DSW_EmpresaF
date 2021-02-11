@@ -7,9 +7,10 @@ import { ClientComponent } from './client/client.component';
 import { RequestStudyComponent } from './request-study/request-study.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
-  declarations: [GlobalMenuPComponent,ClientComponent, RequestStudyComponent,PasswordProfileComponent,ProfileComponent],
+  declarations: [GlobalMenuPComponent,ClientComponent, RequestStudyComponent,PasswordProfileComponent,ProfileComponent, ResultsComponent],
   imports: [
     PagesRoutingModule,
     CommonModule,
