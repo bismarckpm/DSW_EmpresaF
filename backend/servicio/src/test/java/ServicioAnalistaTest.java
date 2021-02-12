@@ -40,8 +40,8 @@ public class ServicioAnalistaTest {
   public void addUserTest(){
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario("prueba202token@gmail.com");
-    usuarioDto.setContrasena("1234");
+    usuarioDto.setNombreUsuario("analistadsw@gmail.com");
+    usuarioDto.setContrasena("12345");
 
     ServicioAnalista servicioAnalista = new ServicioAnalista();
 
@@ -71,10 +71,10 @@ public class ServicioAnalistaTest {
     ServicioAnalista servicioAnalista = new ServicioAnalista();
 
     UsuarioDto usuarioDto = new UsuarioDto();
-    usuarioDto.setNombreUsuario("prueba202token@gmail.com");
+    usuarioDto.setNombreUsuario("analista1@gmail.com");
     usuarioDto.setContrasena("12345");
 
-    Response resultado = servicioAnalista.changePassword(this.token, 177, usuarioDto);
+    Response resultado = servicioAnalista.changePassword(this.token, 1, usuarioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("estado"));
@@ -85,7 +85,7 @@ public class ServicioAnalistaTest {
   public void desactivarUserTest(){
 
     ServicioAnalista servicioAnalista= new ServicioAnalista();
-    Response resultado = servicioAnalista.disableUser(this.token,177);
+    Response resultado = servicioAnalista.disableUser(this.token,1);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
@@ -97,7 +97,7 @@ public class ServicioAnalistaTest {
   public void activarUserTest(){
 
     ServicioAnalista servicioAnalista = new ServicioAnalista();
-    Response resultado = servicioAnalista.enableUser(this.token, 177);
+    Response resultado = servicioAnalista.enableUser(this.token, 1);
 
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 

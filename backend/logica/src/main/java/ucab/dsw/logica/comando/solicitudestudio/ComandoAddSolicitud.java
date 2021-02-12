@@ -9,9 +9,10 @@ import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.excepciones.ProblemaExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
 import ucab.dsw.logica.comando.ComandoBase;
+import ucab.dsw.logica.comando.muestra.ComandoAddMuestra;
 import ucab.dsw.logica.exepcionhandler.ManejadorExcepcion;
 import ucab.dsw.logica.fabrica.Fabrica;
-import ucab.dsw.servicio.muestra.ServicioMuestra;
+//import ucab.dsw.servicio.muestra.ServicioMuestra;
 import ucab.sw.mapper.solicitudestudio.MapperSolicitud;
 
 import javax.json.Json;
@@ -95,8 +96,30 @@ public class ComandoAddSolicitud implements ComandoBase {
 
     }
 
-    ServicioMuestra servicioMuestra = Fabrica.crear(ServicioMuestra.class);
-    servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);
+    /*ServicioMuestra servicioMuestra = Fabrica.crear(ServicioMuestra.class);
+    servicioMuestra.addMuestra(usuariosEncuestados, solicitudEstudio);*/
+    addMuestra(usuariosEncuestados, solicitudEstudio);
+
+  }
+
+  /**
+   * Metodo para añadir usuarios encuestados a la muestra de una solicitud de estudio de forma automatica
+   * al crearse una solicitud de estudio
+   *
+   * @param encuestados lista de encuestados
+   * @param solicitudEstudio Solicitud de estudio
+   *
+   */
+  private static void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio) throws Exception{
+
+    try {
+
+      ComandoAddMuestra comandoAddMuestra = new ComandoAddMuestra(encuestados, solicitudEstudio);
+      comandoAddMuestra.execute();
+
+    }catch (Exception ex){
+      throw  ex;
+    }
 
   }
 

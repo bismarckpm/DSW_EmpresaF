@@ -52,7 +52,7 @@ public class ComandoGetRespuestasEncuesta implements ComandoBase {
         if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
 
           List<Opcion> opciones;
-          opciones = preguntaEncuesta.get_pregunta().getOpciones();
+          opciones = pregunta.getOpciones();
 
           for(Opcion opcion:opciones){
 

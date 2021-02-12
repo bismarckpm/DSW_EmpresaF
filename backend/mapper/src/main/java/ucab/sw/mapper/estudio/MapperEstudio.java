@@ -95,10 +95,10 @@ public class MapperEstudio {
 
           }
 
-          pregun.set_id(preguntaAgregada.get_id());
+          //pregun.set_id(preguntaAgregada.get_id());
 
           List<OpcionDto> opcionesDtos = pregunta.getOpciones();
-          List<Opcion> opciones = new ArrayList<>();
+          //List<Opcion> opciones = new ArrayList<>();
 
           if (opcionesDtos != null) {
 
@@ -110,24 +110,19 @@ public class MapperEstudio {
               op.set_descripcion(opcion.getDescripcion());
               op = dao.insert(op);
 
-              opciones.add(op);
-              opcion.setId(op.get_id());
-
-            }
-
-            DaoPreguntaOpcion daoPreguntaOpcion = Fabrica.crear(DaoPreguntaOpcion.class);
-
-            for (Opcion opcion : opciones) {
-
+              /*opciones.add(op);
+              opcion.setId(op.get_id());*/
+              DaoPreguntaOpcion daoPreguntaOpcion = Fabrica.crear(DaoPreguntaOpcion.class);
               PreguntaOpcion preguntaOpcion = Fabrica.crear(PreguntaOpcion.class);
-              preguntaOpcion.set_opcion(opcion);
+              preguntaOpcion.set_opcion(op);
               preguntaOpcion.set_pregunta(preguntaAgregada);
 
               daoPreguntaOpcion.insert(preguntaOpcion);
 
             }
 
-            pregun.setOpciones(opciones);
+
+            //pregun.setOpciones(opciones);
 
           }
 

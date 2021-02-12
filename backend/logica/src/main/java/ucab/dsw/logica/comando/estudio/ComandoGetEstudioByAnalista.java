@@ -69,6 +69,7 @@ public class ComandoGetEstudioByAnalista implements ComandoBase {
 
             JsonObject estudio = Json.createObjectBuilder()
               .add("estado", estudioDto.getEstado())
+              .add("estudioId", estu.get_id())
               .add("id", solicitudes.get_id())
               .add("nombreEstudio", estudioDto.getNombreEstudio())
               .add("resultadoEstudio", resultadoEstudio)

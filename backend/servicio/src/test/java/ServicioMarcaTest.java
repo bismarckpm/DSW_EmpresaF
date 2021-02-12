@@ -42,12 +42,12 @@ public class ServicioMarcaTest {
     ServicioMarca servicio = new ServicioMarca();
     MarcaDto marcaDto = new MarcaDto();
 
-    marcaDto.setNombreMarca("Pepsi");
-    marcaDto.setTipoMarca("Botella");
-    marcaDto.setCapacidad(2.0);
-    marcaDto.setUnidad("Litros");
+    marcaDto.setNombreMarca("Oscar Mayer");
+    marcaDto.setTipoMarca("Solido");
+    marcaDto.setCapacidad(0.200);
+    marcaDto.setUnidad("Kilos");
 
-    SubcategoriaDto subcategoriaDto = new SubcategoriaDto(30);
+    SubcategoriaDto subcategoriaDto = new SubcategoriaDto(3);
     marcaDto.setSubcategoria(subcategoriaDto);
 
     Response resultado = servicio.addMarca(this.token, marcaDto);
@@ -62,7 +62,7 @@ public class ServicioMarcaTest {
 
     ServicioMarca servicioMarca = new ServicioMarca();
 
-    Response resultado = servicioMarca.getMarcaById(7);
+    Response resultado = servicioMarca.getMarcaById(2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("id"));
@@ -86,12 +86,12 @@ public class ServicioMarcaTest {
     ServicioMarca servicioMarca = new ServicioMarca();
     MarcaDto marcaDto = new MarcaDto();
 
-    marcaDto.setNombreMarca("Pepsi");
+    marcaDto.setNombreMarca("PepsiCola");
     marcaDto.setTipoMarca("Botella");
     marcaDto.setCapacidad(1.0);
     marcaDto.setUnidad("Litro");
 
-    Response resultado = servicioMarca.updateMarca(this.token,7,marcaDto);
+    Response resultado = servicioMarca.updateMarca(this.token,1,marcaDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("marca"));
@@ -103,7 +103,7 @@ public class ServicioMarcaTest {
 
     ServicioMarca servicioMarca = new ServicioMarca();
 
-    Response resultado = servicioMarca.disableMarca(this.token, 7);
+    Response resultado = servicioMarca.disableMarca(this.token, 1);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
     System.out.println(respuesta);
 
@@ -116,7 +116,7 @@ public class ServicioMarcaTest {
 
     ServicioMarca servicioMarca = new ServicioMarca();
 
-    Response resultado = servicioMarca.enableMarca(this.token, 7);
+    Response resultado = servicioMarca.enableMarca(this.token, 1);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("marca"));

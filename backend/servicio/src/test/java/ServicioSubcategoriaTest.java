@@ -43,9 +43,9 @@ public class ServicioSubcategoriaTest {
     ServicioSubcategoria servicio = new ServicioSubcategoria();
     SubcategoriaDto subcategoriaDto = new SubcategoriaDto();
 
-    subcategoriaDto.setNombreSubcategoria("Piña");
+    subcategoriaDto.setNombreSubcategoria("Uva");
 
-    CategoriaDto categoriaDto = new CategoriaDto(59);
+    CategoriaDto categoriaDto = new CategoriaDto(1);
     subcategoriaDto.setCategoria(categoriaDto);
 
     Response resultado = servicio.addSubcategoria(this.token, subcategoriaDto);
@@ -62,7 +62,7 @@ public class ServicioSubcategoriaTest {
     SubcategoriaDto subcategoriaDto = new SubcategoriaDto();
     subcategoriaDto.setNombreSubcategoria("Manzana");
 
-    Response resultado = servicioSubcategoria.updateSubcategoria(this.token, 31,subcategoriaDto);
+    Response resultado = servicioSubcategoria.updateSubcategoria(this.token, 1,subcategoriaDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("subcategoria"));
@@ -74,7 +74,7 @@ public class ServicioSubcategoriaTest {
 
     ServicioSubcategoria servicioSubcategoria = new ServicioSubcategoria();
 
-    Response resultado = servicioSubcategoria.getSubcategoriaById(31);
+    Response resultado = servicioSubcategoria.getSubcategoriaById(1);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("id"));
@@ -97,7 +97,7 @@ public class ServicioSubcategoriaTest {
 
     ServicioSubcategoria servicioSubcategoria = new ServicioSubcategoria();
 
-    Response resultado = servicioSubcategoria.disableSubcategoria(this.token, 30);
+    Response resultado = servicioSubcategoria.disableSubcategoria(this.token, 2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("subcategoria"));
@@ -109,7 +109,7 @@ public class ServicioSubcategoriaTest {
 
     ServicioSubcategoria servicioSubcategoria = new ServicioSubcategoria();
 
-    Response resultado = servicioSubcategoria.enableSubcategoria(this.token, 30);
+    Response resultado = servicioSubcategoria.enableSubcategoria(this.token, 2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("subcategoria"));

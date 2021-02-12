@@ -32,7 +32,7 @@ public class ServicioMuestra {
    * @param solicitudEstudio Solicitud de estudio
    *
    */
-  public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio) throws Exception{
+  /*public void addMuestra(List<Encuestado> encuestados, SolicitudEstudio solicitudEstudio) throws Exception{
 
     try {
 
@@ -43,7 +43,7 @@ public class ServicioMuestra {
       throw  ex;
     }
 
-  }
+  }*/
 
   /**
    * Metodo para agregar usuarios a la muestra de una soicitud de estudio

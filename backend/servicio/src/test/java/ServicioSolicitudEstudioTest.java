@@ -42,8 +42,8 @@ public class ServicioSolicitudEstudioTest {
     ServicioSolicitudEstudio servicio = new ServicioSolicitudEstudio();
     SolicitudEstudioDto solicitudEstudioDto = new SolicitudEstudioDto();
 
-    solicitudEstudioDto.setEdadInicial(45);
-    solicitudEstudioDto.setEdadfinal(50);
+    solicitudEstudioDto.setEdadInicial(14);
+    solicitudEstudioDto.setEdadfinal(16);
     solicitudEstudioDto.setGenero("masculino");
 
     UsuarioDto usuariocliente = new UsuarioDto(153);

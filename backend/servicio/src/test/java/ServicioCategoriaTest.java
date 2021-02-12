@@ -41,7 +41,7 @@ public class ServicioCategoriaTest {
     ServicioCategoria servicio = new ServicioCategoria();
     CategoriaDto categoriaDto = new CategoriaDto();
 
-    categoriaDto.setNombreCategoria("perfumesitos 10");
+    categoriaDto.setNombreCategoria("lacteos");
 
     Response resultado = servicio.addCategoria(this.token, categoriaDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
@@ -55,9 +55,9 @@ public class ServicioCategoriaTest {
 
     ServicioCategoria servicioCategoria = new ServicioCategoria();
     CategoriaDto categoriaDto = new CategoriaDto();
-    categoriaDto.setNombreCategoria("perfumes actualizado");
+    categoriaDto.setNombreCategoria("energizante actualizado");
 
-    Response resultado = servicioCategoria.updateCategoria(this.token, 85, categoriaDto);
+    Response resultado = servicioCategoria.updateCategoria(this.token, 3, categoriaDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotEquals(respuesta.get("categoria"), 0);
@@ -69,7 +69,7 @@ public class ServicioCategoriaTest {
 
     ServicioCategoria servicioCategoria = new ServicioCategoria();
 
-    Response resultado = servicioCategoria.getCategoriaById(84);
+    Response resultado = servicioCategoria.getCategoriaById(2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("id"));
@@ -93,7 +93,7 @@ public class ServicioCategoriaTest {
 
     ServicioCategoria servicioCategoria = new ServicioCategoria();
 
-    Response resultado = servicioCategoria.disableCategoria(this.token, 84);
+    Response resultado = servicioCategoria.disableCategoria(this.token, 2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("categoria"));
@@ -105,7 +105,7 @@ public class ServicioCategoriaTest {
 
     ServicioCategoria servicioCategoria = new ServicioCategoria();
 
-    Response resultado = servicioCategoria.enableCategoria(this.token, 84);
+    Response resultado = servicioCategoria.enableCategoria(this.token, 2);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("categoria"));
