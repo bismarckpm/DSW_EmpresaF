@@ -86,32 +86,62 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions2);
   }
 
-  getEstudioEncuestado(idEncuestado:number){
-    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions);
+  getEstudioEncuestado(idEncuestado:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions2);
   }
 
-  getPreguntaEncuesta(idEncuesta:number){
-    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions);
+  getPreguntaEncuesta(idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions2);
   }
 
-  respuestaEncuesta(respuesta:any,idEncuesta:number){
+  respuestaEncuesta(respuesta:any,idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,
-    {respuestas: respuesta},this.httpOptions)
+    {respuestas: respuesta},this.httpOptions2)
   }
 
-  getIdEncuestado(idEncuestado:number){
-    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
+  getIdEncuestado(idEncuestado:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions2);
   }
 
-  getAdministrador(id:number){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
-    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+  getAdministrador(id:number,token:any){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions2);
   }
 
-  updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+  updateAdministrador(nombreUsuario:string,contrasena:string,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.put(this.API_URL+'api/administrador/update/'+id,
                           {"nombreUsuario":nombreUsuario,
                            "contrasena":contrasena},
-                           this.httpOptions);
+                           this.httpOptions2);
   }
 
   getSubcategorias(){
@@ -136,3 +166,4 @@ export class UsersService extends ApiService{
     return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
   }
 }
+

@@ -107,19 +107,39 @@ export class RenovatedStudyComponent implements OnInit {
     let adminStorage = localStorage.getItem('administrador');
     let admin = JSON.parse(adminStorage);
     let token = admin.token;
-    this.adminService.getQuestions(token)
-    .subscribe(
-      res => {
-        let auxRes:any
-        auxRes = res;
-        if(auxRes.estado == 'success'){
-          this.preguntas = auxRes.data;
-        }
-      },
-      err => {
-        console.log(err)
-      }
-    )
+    this.sub = this.route.params.subscribe(params => {
+      this.idSolicitud = +params['id'];
+      this.adminService.getQuestionsSu(this.idSolicitud,token)  
+          .subscribe(
+            res => {
+              let auxRes:any;
+              auxRes = res;
+              if(auxRes.estado == 'success'){
+                this.preguntas = auxRes.preguntas;
+                console.log('preguntas su');
+                if (auxRes.preguntas.length==0){
+                  this.adminService.getQuestions(token)
+                    .subscribe(
+                      res => {
+                        let auxRes:any;
+                        auxRes = res;
+                        if(auxRes.estado == 'success'){
+                          this.preguntas = auxRes.preguntas;
+                          console.log('preguntas');
+                        }
+                      },
+                      err => {
+                        console.log(err)
+                      }
+                    )
+                }
+              }
+            },
+            err => {
+              console.log(err)
+            }
+          )
+      });
   }
 
   private readonly obj: ObjType = {

@@ -22,6 +22,7 @@ export class UpdateRespondentComponent implements OnInit {
     parroquiaId:any;
     cod:any;
     tel:any;
+    usuario: any;
     oldnumiden: any;
     oldnombre:any;
     oldapellido:any;
@@ -85,6 +86,7 @@ export class UpdateRespondentComponent implements OnInit {
         subscribe(
           res =>{
             let auxRes:any = res;
+            console.log(auxRes);
             this.oldnumiden = auxRes.numero_de_identificacion;
             this.oldnombre = auxRes.primer_nombre;
             this.oldapellido = auxRes.primer_apellido;
@@ -95,6 +97,7 @@ export class UpdateRespondentComponent implements OnInit {
             this.oldparroquiaId = auxRes.parroquiaId;
             this.tel = auxRes.telefonos[0].numeroTelefono;
             this.cod = auxRes.telefonos[0].codigoArea;
+            this.usuario = auxRes.nombreUsuario;
           },
           err =>{
             console.log(err)
@@ -162,7 +165,7 @@ export class UpdateRespondentComponent implements OnInit {
           let adminStorage = localStorage.getItem('administrador');
           let admin = JSON.parse(adminStorage);
           let token = admin.token; 
-            this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.id,token)
+            this.adminService.updateEncuestado(this.numiden,this.nombre,this.apellido,this.genero,this.estadocivil,this.ocupacion,this.parroquiaId,this.cod,this.tel,this.usuario,this.id,token)
             .subscribe(
               res => {
                 let auxRes:any = res;

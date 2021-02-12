@@ -77,8 +77,9 @@ export class QuestionsComponent implements OnInit {
   getIdEncuestado(){
     let encuestadoStorage = localStorage.getItem('encuestadoLogged');
     let encuestado = JSON.parse(encuestadoStorage);
+    let token = encuestado.token;
     encuestado = encuestado.id; 
-    this.userService.getIdEncuestado(encuestado)
+    this.userService.getIdEncuestado(encuestado,token)
         .subscribe(
           res => {
             let auxRes:any;
@@ -93,8 +94,11 @@ export class QuestionsComponent implements OnInit {
 
   getPreguntas(){
     this.sub = this.route.params.subscribe(params => {
+    let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+    let encuestado = JSON.parse(encuestadoStorage);
+    let token = encuestado.token;
     this.id = +params['id']; // (+) converts string 'id' to a number
-    this.userService.getPreguntaEncuesta(this.id )
+    this.userService.getPreguntaEncuesta(this.id,token)
       .subscribe(
         res => {
           let auxRes:any;
@@ -185,7 +189,10 @@ export class QuestionsComponent implements OnInit {
       }
       console.log(this.auxObj.data)*/
       if(this.obj.data.length > 0){
-        this.userService.respuestaEncuesta(this.obj.data,this.id) 
+        let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+        let encuestado = JSON.parse(encuestadoStorage);
+        let token = encuestado.token;
+        this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
         .subscribe(
           res => {
             let auxRes:any;
@@ -202,7 +209,10 @@ export class QuestionsComponent implements OnInit {
         )
       }
       else if(this.auxObj.data.length > 0){
-        this.userService.respuestaEncuesta(this.auxObj.data,this.id) 
+        let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+        let encuestado = JSON.parse(encuestadoStorage);
+        let token = encuestado.token;
+        this.userService.respuestaEncuesta(this.auxObj.data,this.id,token) 
         .subscribe(
           res => {
             let auxRes:any;
