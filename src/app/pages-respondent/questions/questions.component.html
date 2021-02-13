@@ -13,13 +13,13 @@
                             </mat-radio-group>
                         </div>
                         <div *ngIf="pregunta.tipo=='multiple'">
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="multipleSelected[item.idOpcion]">
+                            <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[item.idOpcion]">
                                 <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
                             </mat-radio-group>
                         </div>
                         <div *ngIf="pregunta.tipo=='desarrollo'">
                             <mat-form-field >
-                                <input matInput type="text" [(ngModel)]="radioSelected[item.idOpcion]">
+                                <input matInput [value]="item" [(ngModel)]="radioSelected[i+1]">
                             </mat-form-field>
                         </div>
                     </div>
