@@ -90,7 +90,10 @@ export class ResultsComponent implements OnInit {
     this.id = +params['id'];
     })
     var i:number = 0;
-    this.analistService.getRespuestaEncuesta(this.id)
+    let userStorage = localStorage.getItem('analistaLogged');
+    let user = JSON.parse(userStorage);
+    let token = user.token;
+    this.analistService.getRespuestaEncuesta(this.id,token)
     .subscribe(
       res => {
         let auxRes:any;

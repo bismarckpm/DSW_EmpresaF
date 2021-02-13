@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MenuAnaliticsComponent implements OnInit{
   element:any;
   dataSource:any;
+  token:any;
   displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','marca','tipoMarca','unidadMarca','icons'];
   constructor(private analisService:AnalystService,public _snackBar: MatSnackBar) { }
   
@@ -37,8 +38,9 @@ export class MenuAnaliticsComponent implements OnInit{
   getEstudios(){
     let analistStorage = localStorage.getItem('analistaLogged');
     let analista = JSON.parse(analistStorage);
+    this.token = analista.token;
     analista = analista.id; 
-    this.analisService.getSolicitudes(analista)
+    this.analisService.getSolicitudes(analista,this.token)
     .subscribe(
       res => {
         let auxRes:any;
@@ -57,7 +59,7 @@ export class MenuAnaliticsComponent implements OnInit{
   }
 
   activarSolicitud(idSolicitud:number){
-    this.analisService.activarSolicitud(idSolicitud)
+    this.analisService.activarSolicitud(idSolicitud,this.token)
     .subscribe(
       res => {
           let auxRes:any;

@@ -85,7 +85,10 @@ export class InterviewSurveyComponent implements OnInit {
     let encuestadoStorage = localStorage.getItem('encuesta');
     let encuestado = JSON.parse(encuestadoStorage);
     this.id = encuestado.encuestaId; 
-    this.userService.getPreguntaEncuesta(this.id)
+    let userStorage = localStorage.getItem('analistaLogged');
+    let user = JSON.parse(userStorage);
+    let token = user.token;
+    this.userService.getPreguntaEncuesta(this.id,token)
       .subscribe(
         res => {
           let auxRes:any;
@@ -173,7 +176,10 @@ export class InterviewSurveyComponent implements OnInit {
       }
       console.log(this.auxObj.data)*/
       if(this.obj.data.length > 0){
-        this.userService.respuestaEncuesta(this.obj.data,this.id) 
+        let userStorage = localStorage.getItem('analistaLogged');
+        let user = JSON.parse(userStorage);
+        let token = user.token;
+        this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
         .subscribe(
           res => {
             let auxRes:any;
@@ -190,7 +196,10 @@ export class InterviewSurveyComponent implements OnInit {
         )
       }
       else if(this.auxObj.data.length > 0){
-        this.userService.respuestaEncuesta(this.auxObj.data,this.id) 
+        let userStorage = localStorage.getItem('analistaLogged');
+        let user = JSON.parse(userStorage);
+        let token = user.token;
+        this.userService.respuestaEncuesta(this.auxObj.data,this.id,token) 
         .subscribe(
           res => {
             let auxRes:any;

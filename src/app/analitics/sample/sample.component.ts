@@ -33,7 +33,10 @@ export class SampleComponent implements OnInit{
   getMuestras(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.analistService.getSample(this.id).
+      let userStorage = localStorage.getItem('analistaLogged');
+      let user = JSON.parse(userStorage);
+      let token = user.token;
+      this.analistService.getSample(this.id,token).
       subscribe(
         res =>{
           let auxRes:any = res;

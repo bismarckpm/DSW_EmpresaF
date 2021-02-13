@@ -32,8 +32,9 @@ export class MyStudiesComponent implements OnInit {
   getMyStudies(){
     let analistStorage = localStorage.getItem('analistaLogged');
     let analista = JSON.parse(analistStorage);
+    let token = analista.token;
     analista = analista.id; 
-    this.analistService.getMyStudies(analista)
+    this.analistService.getMyStudies(analista,token)
     .subscribe(
       res => {
         let auxRes:any;
