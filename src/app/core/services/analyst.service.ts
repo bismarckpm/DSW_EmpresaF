@@ -16,8 +16,13 @@ export class AnalystService extends ApiService{
     return this.http.get(this.API_URL+'api/analista/getsolicitudespendientes/'+idAnalista,this.httpOptions2);
   }
 
-  activarSolicitud(idSolicitud:number){
-    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions)
+  activarSolicitud(idSolicitud:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions2)
   }
 
   getMyStudies(idAnalista:number,token:any){
@@ -29,28 +34,53 @@ export class AnalystService extends ApiService{
     return this.http.get(this.API_URL+'api/analista/obtenerestudios/'+idAnalista,this.httpOptions2);
   }
 
-  getRespuestaEncuesta(idEncuesta:number){
-    return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions)
+  getRespuestaEncuesta(idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions2)
   }
 
-  getSample(idSolicitud:number){
-    return this.http.get(this.API_URL+'api/muestra/getmuestra/'+idSolicitud,this.httpOptions)
+  getSample(idSolicitud:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/muestra/getmuestra/'+idSolicitud,this.httpOptions2)
   }
 
-  getEncuestados(idSolicitud:number){
-    return this.http.get(this.API_URL+'api/muestra/usuarioagregable/'+idSolicitud,this.httpOptions)
+  getEncuestados(idSolicitud:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/muestra/usuarioagregable/'+idSolicitud,this.httpOptions2)
   }
 
-  setEncuestados(idSolicitud:number,Ids :any){
-    return this.http.post(this.API_URL+'api/muestra/add/'+idSolicitud,{"encuestados":Ids},this.httpOptions)
+  setEncuestados(idSolicitud:number,Ids :any,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.post(this.API_URL+'api/muestra/add/'+idSolicitud,{"encuestados":Ids},this.httpOptions2)
   }
 
   getParroquias(){
     return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
 
-  getEncuestado(id:number){
-    return this.http.get(this.API_URL+'api/encuestado/getuser/'+id,this.httpOptions);
+  getEncuestado(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+id,this.httpOptions2);
   }
 
   updateEncuestado( 
@@ -63,9 +93,15 @@ export class AnalystService extends ApiService{
     parroquiaId:number,
     _codigoArea:any,
     _numeroTelefono:any,
-    /*contrasena:string*/
-    id:number
+    nombreUsuario: string,
+    id:number,
+    token:any
     ){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
 
     return this.http.put(this.API_URL+'api/encuestado/update/'+id,
     {"encuestadoDto":
@@ -82,20 +118,31 @@ export class AnalystService extends ApiService{
           "_numeroTelefono":_numeroTelefono
         }]
       },
-        "contrasena":null /*Problemas al cambiar contraseña*/
+        "nombreUsuario":nombreUsuario,
+        "contrasena":null
     },
-          this.httpOptions);
+          this.httpOptions2);
     }
 
-    getAdministrador(id:number){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
-      return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+    getAdministrador(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
     }
+    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions2);
+  }
 
-    updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+    updateAdministrador(nombreUsuario:string,contrasena:string,id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
       return this.http.put(this.API_URL+'api/administrador/update/'+id,
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
-                             this.httpOptions);
+                             this.httpOptions2);
     }
 
     finishStudy(idStudio:number,resultado:string,token:any){

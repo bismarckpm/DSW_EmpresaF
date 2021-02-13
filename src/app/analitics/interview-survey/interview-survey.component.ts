@@ -171,8 +171,6 @@ export class InterviewSurveyComponent implements OnInit {
           }
         )
       }
-      
-     
   }
 
 
