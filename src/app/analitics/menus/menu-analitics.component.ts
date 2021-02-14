@@ -13,8 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MenuAnaliticsComponent implements OnInit{
   element:any;
   dataSource:any;
-  token:any;
-  displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','marca','tipoMarca','unidadMarca','icons'];
+  displayedColumns: string[] = ['id','edadInicial','edadFinal','genero','estado','nivelSocioeconomico','parroquia','subcategoria','icons'];
   constructor(private analisService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -38,13 +37,14 @@ export class MenuAnaliticsComponent implements OnInit{
   getEstudios(){
     let analistStorage = localStorage.getItem('analistaLogged');
     let analista = JSON.parse(analistStorage);
-    this.token = analista.token;
+    let token = analista.token;
     analista = analista.id; 
-    this.analisService.getSolicitudes(analista,this.token)
+    this.analisService.getSolicitudes(analista,token)
     .subscribe(
       res => {
         let auxRes:any;
         auxRes = res;
+        console.log(auxRes)
         if(auxRes.estado == 'success'){
             this.element = auxRes.solicitudes;
             this.dataSource = new MatTableDataSource(auxRes.solicitudes);
@@ -59,13 +59,17 @@ export class MenuAnaliticsComponent implements OnInit{
   }
 
   activarSolicitud(idSolicitud:number){
-    this.analisService.activarSolicitud(idSolicitud,this.token)
+    let analistStorage = localStorage.getItem('analistaLogged');
+    let analista = JSON.parse(analistStorage);
+    let token = analista.token;
+    this.analisService.activarSolicitud(idSolicitud,token)
     .subscribe(
       res => {
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
             this.openSnackBar("Solicitud activada");
+            location.reload();
           }
           else{
             this.openSnackBar("Ocurrio un problema");

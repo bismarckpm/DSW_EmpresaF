@@ -16,7 +16,9 @@
             <mat-form-field appearance="outline">
                 <mat-label>Categorias</mat-label>
                 <mat-select formControlName="selectCategoria">
-                    <mat-option *ngFor="let categoria of categorias" [value]="categoria.id"><span *ngIf="categoria.estado=='activo'">{{categoria.nombreCategoria}}</span></mat-option>
+                    <div *ngFor="let categoria of categorias">
+                        <mat-option [value]="categoria.id" *ngIf="categoria.estado=='activo'"><span >{{categoria.nombreCategoria}}</span></mat-option>
+                    </div>
                 </mat-select>
             </mat-form-field>  
             <button mat-raised-button class="create-btn width-100" [disabled]="!createSubCategoriaForm.valid">Crear</button>

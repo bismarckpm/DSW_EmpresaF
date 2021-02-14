@@ -22,7 +22,7 @@ export class AnalystService extends ApiService{
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions2)
+    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,null,this.httpOptions2)
   }
 
   getMyStudies(idAnalista:number,token:any){
@@ -143,5 +143,23 @@ export class AnalystService extends ApiService{
                             {"nombreUsuario":nombreUsuario,
                              "contrasena":contrasena},
                              this.httpOptions2);
+    }
+
+    finishStudy(idStudio:number,resultado:string,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/analista/finalizar/'+idStudio,{"resultado":resultado},this.httpOptions2)
+    }
+
+    removeToken(idUsuario:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
     }
 }

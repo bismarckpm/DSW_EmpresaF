@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/servicio-1.0-SNAPSHOT/'
+  apiUrl: 'http://45.76.60.252:8080/empresaf_10/'
 };
 
 /*

@@ -147,5 +147,23 @@ export class UsersService extends ApiService{
   getSubcategorias(){
     return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
   }
+
+  getRespuestaEncuesta(idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions2)
+  }
+
+  removeToken(idUsuario:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
+  }
 }
 

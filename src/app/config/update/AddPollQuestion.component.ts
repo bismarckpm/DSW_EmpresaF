@@ -63,11 +63,42 @@ export class AddPollQuestionComponent implements OnInit{
   getPreguntas(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
+      let x : number;
+      let y : number;
       let adminStorage = localStorage.getItem('administrador');
       let admin = JSON.parse(adminStorage);
       let token = admin.token;
-      let x : number;
       x= +params['x'];
+      if (x==0){
+        this.adminService.getQuestionsSu(this.id,token)  
+        .subscribe(
+          res => {
+            let auxRes:any;
+            auxRes = res;
+            if(auxRes.estado == 'success'){
+              this.Preguntas = auxRes.preguntas;
+              if (auxRes.preguntas.length==0){
+                this.adminService.getQuestionsNo(this.id,token)
+                  .subscribe(
+                    res => {
+                      let auxRes:any;
+                      auxRes = res;
+                      if(auxRes.estado == 'success'){
+                        this.Preguntas = auxRes.preguntas;
+                      }
+                    },
+                    err => {
+                      console.log(err)
+                    }
+                  )
+              }
+            }
+          },
+          err => {
+            console.log(err)
+          }
+        )
+      }else if (x==1){ 
         this.adminService.getQuestionsNo(this.id,token)
         .subscribe(
           res => {
@@ -80,7 +111,8 @@ export class AddPollQuestionComponent implements OnInit{
           err => {
             console.log(err)
           }
-        ) 
+        )
+      }  
     });
   }
 

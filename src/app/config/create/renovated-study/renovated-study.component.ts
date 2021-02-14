@@ -58,7 +58,7 @@ export class RenovatedStudyComponent implements OnInit {
   tipos:any;
 
   survey:FormGroup
-  constructor(private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar,private route: ActivatedRoute) { }
+  constructor(private router: Router,private formBuilder: FormBuilder,private adminService:AdminService,public _snackBar: MatSnackBar,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.estudioFormGroup = this.formBuilder.group({
@@ -241,7 +241,7 @@ export class RenovatedStudyComponent implements OnInit {
           let auxRes:any = res;
           if(auxRes.estado == 'success'){
             this.openSnackBar("Estudio creado con exito");
-            location.reload();
+            this.router.navigate(['/config/menuRequeststudies/']);
           }
         },
         err => {
@@ -266,14 +266,14 @@ export class RenovatedStudyComponent implements OnInit {
         this.objPregunta.data[i] = dataCopy;
         i++
       }
-      //console.log(this.objPregunta.data)
+      console.log(this.objPregunta.data)
       this.adminService.newCreateStudy(this.nombreEstudio,this.nombreEncuesta,this.objPregunta.data,this.idSolicitud,this.seleccion_pregunta,token)
       .subscribe(
         res => {
           let auxRes:any = res;
           if(auxRes.estado == 'success'){
             this.openSnackBar("Estudio creado con exito");
-            location.reload();
+            this.router.navigate(['/config/menuRequeststudies/']);
             //this.createPreguntaForm.reset();
           }
         },

@@ -119,7 +119,7 @@ export class RequestStudyComponent implements OnInit {
     this.generos = [
       {id:1,descripcion:'masculino'},
       {id:2,descripcion:'femenino'},
-      {id:2,descripcion:'ambos'},
+      {id:3,descripcion:'ambos'},
     ]
   }
 }

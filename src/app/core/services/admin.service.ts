@@ -42,7 +42,7 @@ export class AdminService extends ApiService {
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/categoria/enable/'+id,this.httpOptions2);
+    return this.http.put(this.API_URL+'api/categoria/enable/'+id,null,this.httpOptions2);
   }
 
   inactiveCategory(id:number,token:any){
@@ -51,7 +51,7 @@ export class AdminService extends ApiService {
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/categoria/disable/'+id,this.httpOptions2);
+    return this.http.put(this.API_URL+'api/categoria/disable/'+id,null,this.httpOptions2);
   }
 
   createSubCategoria(nombreSubcategoria,id,token:any){
@@ -86,7 +86,7 @@ export class AdminService extends ApiService {
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/subcategoria/enable/'+id,this.httpOptions2);
+    return this.http.put(this.API_URL+'api/subcategoria/enable/'+id,null,this.httpOptions2);
   }
 
   inactiveSubcategory(id:number,token:any){
@@ -95,7 +95,7 @@ export class AdminService extends ApiService {
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/subcategoria/disable/'+id,this.httpOptions2);
+    return this.http.put(this.API_URL+'api/subcategoria/disable/'+id,null,this.httpOptions2);
   }
 
   getMarcas(){
@@ -142,12 +142,22 @@ export class AdminService extends ApiService {
                                                       },this.httpOptions2)
   }
 
-  activeBrand(id:number){
-    return this.http.put(this.API_URL+'api/marca/enable/'+id,this.httpOptions);
+  activeBrand(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/marca/enable/'+id,null,this.httpOptions2);
   }
 
-  inactiveBrand(id:number){
-    return this.http.put(this.API_URL+'api/marca/disable/'+id,this.httpOptions);
+  inactiveBrand(id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/marca/disable/'+id,null,this.httpOptions2);
   }
 
 
@@ -332,20 +342,40 @@ export class AdminService extends ApiService {
           this.httpOptions2);
     }
     
-    activeClient(id:number){
-      return this.http.put(this.API_URL+'api/cliente/enable/'+id,this.httpOptions);
+    activeClient(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/cliente/enable/'+id,null,this.httpOptions2);
     }
 
-    inactiveClient(id:number){
-      return this.http.put(this.API_URL+'api/cliente/disable/'+id,this.httpOptions);
+    inactiveClient(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/cliente/disable/'+id,null,this.httpOptions2);
     }
 
-    activeRespondent(id:number){
-      return this.http.put(this.API_URL+'api/encuestado/enable/'+id,this.httpOptions);
+    activeRespondent(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/encuestado/enable/'+id,null,this.httpOptions2);
     }
 
-    inactiveRespondent(id:number){
-      return this.http.put(this.API_URL+'api/encuestado/disable/'+id,this.httpOptions);
+    inactiveRespondent(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/encuestado/disable/'+id,null,this.httpOptions2);
     }
 
     getParroquias(){
@@ -417,12 +447,22 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions2);
     }
 
-    activeAdministrador(id:number){
-      return this.http.put(this.API_URL+'api/administrador/enable/'+id,this.httpOptions);
+    activeAdministrador(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/administrador/enable/'+id,null,this.httpOptions2);
     }
 
-    inactiveAdministrador(id:number){
-      return this.http.put(this.API_URL+'api/administrador/disable/'+id,this.httpOptions);
+    inactiveAdministrador(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/administrador/disable/'+id,null,this.httpOptions2);
     }
 
     registerAdministrador(nombreUsuario:string,contrasena:string,token:any){
@@ -467,12 +507,22 @@ export class AdminService extends ApiService {
       return this.http.get(this.API_URL+'api/analista/getuser/'+id,this.httpOptions2);
     }
 
-    activeAnalista(id:number){
-      return this.http.put(this.API_URL+'api/analista/enable/'+id,this.httpOptions);
+    activeAnalista(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/analista/enable/'+id,null,this.httpOptions2);
     }
 
-    inactiveAnalista(id:number){
-      return this.http.put(this.API_URL+'api/analista/disable/'+id,this.httpOptions);
+    inactiveAnalista(id:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/analista/disable/'+id,null,this.httpOptions2);
     }
   
     registerAnalista(nombreUsuario:string,contrasena:string,token:any){
@@ -546,5 +596,14 @@ export class AdminService extends ApiService {
                             },
                             this.httpOptions2);
       }
+    }
+
+    removeToken(idUsuario:number,token:any){
+      this.httpOptions2 = {
+        headers: new HttpHeaders({
+        'authorization': token,
+        })
+      }
+      return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
     }
 }

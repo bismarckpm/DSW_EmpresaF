@@ -85,9 +85,9 @@ export class InterviewSurveyComponent implements OnInit {
     let encuestadoStorage = localStorage.getItem('encuesta');
     let encuestado = JSON.parse(encuestadoStorage);
     this.id = encuestado.encuestaId; 
-    let userStorage = localStorage.getItem('analistaLogged');
-    let user = JSON.parse(userStorage);
-    let token = user.token;
+    let analistStorage = localStorage.getItem('analistaLogged');
+    let analista = JSON.parse(analistStorage);
+    let token = analista.token;
     this.userService.getPreguntaEncuesta(this.id,token)
       .subscribe(
         res => {
@@ -118,17 +118,7 @@ export class InterviewSurveyComponent implements OnInit {
   handleRespuesta(){
     let i:number = 0;
     for(let item in this.radioSelected){
-        if(this.radioSelected[item].descripcion == undefined && this.radioSelected[item].idOpcion == undefined ){
-          const dataCopy : DataItem = {
-            pregunta: {id:this.radioSelected[item].idPregunta},
-            descripcion: this.radioSelected[item],
-            rango: 0,
-            encuestado : {id:this.idEncuestado},
-            opciones: [{id:item}],
-          };
-          this.obj.data[i] = dataCopy;
-        }
-        else{
+        if(this.radioSelected[item].descripcion != undefined && this.radioSelected[item].idOpcion != undefined ){
           const dataCopy : DataItem = {
             pregunta: {id:this.radioSelected[item].idPregunta},
             descripcion: "",
@@ -137,32 +127,12 @@ export class InterviewSurveyComponent implements OnInit {
             opciones: [{id:this.radioSelected[item].idOpcion}],
           };
           this.obj.data[i] = dataCopy;
-      }
+        }
+        
       i++; 
     }
-    console.log(this.idEncuestado)
-    let j = 0;
-    for(let item in this.multipleSelected){
-      const auxDataCopy : respuestFormulada = {
-        pregunta: {id:this.multipleSelected[item].idPregunta},
-        descripcion: "",
-        rango: 0,
-        encuestado : {id:this.idEncuestado},
-        opciones: [{id:this.multipleSelected[item].idOpcion}],
-      };
-      this.auxObj.data[j] = auxDataCopy;
-      j++; 
-    }
-    if(this.obj.data.length > 0){
-      j = 0;
-      for(let item in this.obj.data){
-        if(this.obj.data[item].pregunta.id == undefined){
-          this.obj.data[item].pregunta.id = this.auxPreguntas[j-1]
-        }
-        j++
-      }
-    }
-
+    
+    console.log(this.obj.data)
       /*for(let item in this.obj.data){
         const auxDataCopy : respuestFormulada = {
           pregunta: {id:this.auxPreguntas[j]},
@@ -173,12 +143,12 @@ export class InterviewSurveyComponent implements OnInit {
         };
         this.auxObj.data[j] = auxDataCopy;
         j++
-      }
-      console.log(this.auxObj.data)*/
+      }*/
+      //console.log(this.auxObj.data)
       if(this.obj.data.length > 0){
-        let userStorage = localStorage.getItem('analistaLogged');
-        let user = JSON.parse(userStorage);
-        let token = user.token;
+        let analistStorage = localStorage.getItem('analistaLogged');
+        let analista = JSON.parse(analistStorage);
+        let token = analista.token;
         this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
         .subscribe(
           res => {
@@ -186,6 +156,8 @@ export class InterviewSurveyComponent implements OnInit {
             auxRes = res;
             console.log(auxRes)
             if(auxRes.estado == 'success'){
+              this.openSnackBar("Encuesta respondida");
+              this.router.navigate(['analitics/myStudies']);
               console.log('en proceso')
               this.first= true;
             }
@@ -195,29 +167,6 @@ export class InterviewSurveyComponent implements OnInit {
           }
         )
       }
-      else if(this.auxObj.data.length > 0){
-        let userStorage = localStorage.getItem('analistaLogged');
-        let user = JSON.parse(userStorage);
-        let token = user.token;
-        this.userService.respuestaEncuesta(this.auxObj.data,this.id,token) 
-        .subscribe(
-          res => {
-            let auxRes:any;
-            auxRes = res;
-            console.log(auxRes)
-            if(auxRes.estado == 'success'){
-              this.second = true
-            }
-          },
-          err => {
-            console.log(err)
-          }
-        )
-      }
-      localStorage.removeItem('encuesta');
-      this.openSnackBar("Encuesta respondida");
-      this.router.navigate(['analitics/myStudies']);
-    
   }
 
 
