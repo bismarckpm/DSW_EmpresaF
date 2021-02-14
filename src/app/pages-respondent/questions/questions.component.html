@@ -1,33 +1,33 @@
 <div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center"  style="padding-left: 30px;padding-top: 20px;">
-        <div *ngFor="let pregunta of preguntas,index as i" style="line-height: 2;">
-            <div >
-                <mat-card >
-                    <div >
-                        <div>• {{pregunta.descripcion}}</div>
-                        <div>{{pregunta.tipo}}</div>
+    <div *ngFor="let pregunta of preguntas,index as i" style="line-height: 2;">
+        <div >
+            <mat-card >
+                <div >
+                    <div>• {{pregunta.descripcion}}</div>
+                    <div>{{pregunta.tipo}}</div>
+                </div>
+                <div *ngFor="let item of pregunta.opciones,index as j">
+                    <div *ngIf="pregunta.tipo=='simple'">
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[i+1]">
+                            <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
+                        </mat-radio-group>
                     </div>
-                    <div *ngFor="let item of pregunta.opciones,index as j">
-                        <div *ngIf="pregunta.tipo=='simple'">
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[i+1]">
-                                <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                        <div *ngIf="pregunta.tipo=='multiple'">
-                            <mat-radio-group aria-label="Select an option" [(ngModel)]="multipleSelected[item.idOpcion]">
-                                <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                        <div *ngIf="pregunta.tipo=='desarrollo'">
-                            <mat-form-field >
-                                <input matInput type="text" [(ngModel)]="radioSelected[item.idOpcion]">
-                            </mat-form-field>
-                        </div>
+                    <div *ngIf="pregunta.tipo=='multiple'">
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="radioSelected[item.idOpcion]">
+                            <mat-radio-button [value]="item">{{item.descripcion}}</mat-radio-button>
+                        </mat-radio-group>
                     </div>
-                </mat-card>
-            </div>
-        <br>
+                    <div *ngIf="pregunta.tipo=='desarrollo'">
+                        <mat-form-field >
+                            <input matInput [value]="item" [(ngModel)]="radioSelected[i+1]">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card>
         </div>
-        <button mat-raised-button class="create-btn " color="primary" (click)="handleRespuesta()" >Enviar</button>
-        <br>
-        <!--<pre>{{ radioSelected | json }}</pre>-->
+    <br>
+    </div>
+    <button mat-raised-button class="create-btn " color="primary" (click)="handleRespuesta()" >Enviar</button>
+    <br>
+    <!--<pre>{{ radioSelected | json }}</pre>-->
 </div>

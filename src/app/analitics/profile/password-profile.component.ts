@@ -14,6 +14,7 @@ export class PasswordProfileComponent implements OnInit {
   contrasena:any;
   iduser:any;
   nombre:any;
+  token: any;
   constructor(private formBuilder: FormBuilder,private router: Router,public _snackBar: MatSnackBar,private analisService:AnalystService) {
 
       this.passwordForm = this.formBuilder.group({
@@ -35,8 +36,9 @@ export class PasswordProfileComponent implements OnInit {
   getUser(){  
     let userStorage = localStorage.getItem('analistaLogged');
     this.iduser = JSON.parse(userStorage);
+    this.token = this.iduser.token
     this.iduser = this.iduser.id;
-    this.analisService.getAdministrador(this.iduser).
+    this.analisService.getAdministrador(this.iduser,this.token).
     subscribe(
       res =>{
         let auxRes:any = res;
@@ -52,7 +54,7 @@ export class PasswordProfileComponent implements OnInit {
     if (this.passwordForm.valid) {
       console.log(this.passwordForm.value);
       this.contrasena = this.passwordForm.get('contrasena').value;
-      this.analisService.updateAdministrador(this.nombre,this.contrasena,this.iduser)
+      this.analisService.updateAdministrador(this.nombre,this.contrasena,this.iduser,this.token)
         .subscribe(
           res => {
             let auxRes:any = res;

@@ -17,7 +17,7 @@ export class SampleComponent implements OnInit{
   id: number;
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','icons'];
+  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','button','icons'];
   constructor(private route: ActivatedRoute,private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,7 +33,10 @@ export class SampleComponent implements OnInit{
   getMuestras(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.analistService.getSample(this.id).
+      let userStorage = localStorage.getItem('analistaLogged');
+      let user = JSON.parse(userStorage);
+      let token = user.token;
+      this.analistService.getSample(this.id,token).
       subscribe(
         res =>{
           let auxRes:any = res;

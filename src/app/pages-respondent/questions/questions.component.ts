@@ -77,8 +77,9 @@ export class QuestionsComponent implements OnInit {
   getIdEncuestado(){
     let encuestadoStorage = localStorage.getItem('encuestadoLogged');
     let encuestado = JSON.parse(encuestadoStorage);
+    let token = encuestado.token;
     encuestado = encuestado.id; 
-    this.userService.getIdEncuestado(encuestado)
+    this.userService.getIdEncuestado(encuestado,token)
         .subscribe(
           res => {
             let auxRes:any;
@@ -93,8 +94,11 @@ export class QuestionsComponent implements OnInit {
 
   getPreguntas(){
     this.sub = this.route.params.subscribe(params => {
+    let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+    let encuestado = JSON.parse(encuestadoStorage);
+    let token = encuestado.token;
     this.id = +params['id']; // (+) converts string 'id' to a number
-    this.userService.getPreguntaEncuesta(this.id )
+    this.userService.getPreguntaEncuesta(this.id,token)
       .subscribe(
         res => {
           let auxRes:any;
@@ -125,17 +129,7 @@ export class QuestionsComponent implements OnInit {
   handleRespuesta(){
     let i:number = 0;
     for(let item in this.radioSelected){
-        if(this.radioSelected[item].descripcion == undefined && this.radioSelected[item].idOpcion == undefined ){
-          const dataCopy : DataItem = {
-            pregunta: {id:this.radioSelected[item].idPregunta},
-            descripcion: this.radioSelected[item],
-            rango: 0,
-            encuestado : {id:this.idEncuestado},
-            opciones: [{id:item}],
-          };
-          this.obj.data[i] = dataCopy;
-        }
-        else{
+        if(this.radioSelected[item].descripcion != undefined && this.radioSelected[item].idOpcion != undefined ){
           const dataCopy : DataItem = {
             pregunta: {id:this.radioSelected[item].idPregunta},
             descripcion: "",
@@ -144,34 +138,16 @@ export class QuestionsComponent implements OnInit {
             opciones: [{id:this.radioSelected[item].idOpcion}],
           };
           this.obj.data[i] = dataCopy;
-      }
+        }
+        
       i++; 
     }
     this.sub = this.route.params.subscribe(params => {
     this.id = +params['id'];
     })
-    let j = 0;
-    for(let item in this.multipleSelected){
-      const auxDataCopy : respuestFormulada = {
-        pregunta: {id:this.multipleSelected[item].idPregunta},
-        descripcion: "",
-        rango: 0,
-        encuestado : {id:this.idEncuestado},
-        opciones: [{id:this.multipleSelected[item].idOpcion}],
-      };
-      this.auxObj.data[j] = auxDataCopy;
-      j++; 
-    }
-    if(this.obj.data.length > 0){
-      j = 0;
-      for(let item in this.obj.data){
-        if(this.obj.data[item].pregunta.id == undefined){
-          this.obj.data[item].pregunta.id = this.auxPreguntas[j-1]
-        }
-        j++
-      }
-    }
-
+   
+    
+    console.log(this.obj.data)
       /*for(let item in this.obj.data){
         const auxDataCopy : respuestFormulada = {
           pregunta: {id:this.auxPreguntas[j]},
@@ -185,13 +161,18 @@ export class QuestionsComponent implements OnInit {
       }
       console.log(this.auxObj.data)*/
       if(this.obj.data.length > 0){
-        this.userService.respuestaEncuesta(this.obj.data,this.id) 
+        let encuestadoStorage = localStorage.getItem('encuestadoLogged');
+        let encuestado = JSON.parse(encuestadoStorage);
+        let token = encuestado.token;
+        this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
         .subscribe(
           res => {
             let auxRes:any;
             auxRes = res;
             console.log(auxRes)
             if(auxRes.estado == 'success'){
+              this.openSnackBar("Encuesta respondida");
+              this.router.navigate(['/pages-respondent/respondent']);
               console.log('en proceso')
               this.first= true;
             }
@@ -201,24 +182,7 @@ export class QuestionsComponent implements OnInit {
           }
         )
       }
-      else if(this.auxObj.data.length > 0){
-        this.userService.respuestaEncuesta(this.auxObj.data,this.id) 
-        .subscribe(
-          res => {
-            let auxRes:any;
-            auxRes = res;
-            console.log(auxRes)
-            if(auxRes.estado == 'success'){
-              this.second = true
-            }
-          },
-          err => {
-            console.log(err)
-          }
-        )
-      }
-      this.openSnackBar("Encuesta respondida");
-      this.router.navigate(['/pages-respondent/respondent']);
-    
+      
+     
   }
 }

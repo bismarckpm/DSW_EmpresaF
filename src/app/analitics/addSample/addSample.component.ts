@@ -41,8 +41,10 @@ export class AddSampleComponent implements OnInit{
     this.IdEncuestados = this.EstudioMuestraForm.get('itemRows').value;
     this.sub = this.route.params.subscribe(params => {
         this.idE = +params['id'];
-        console.log(this.ids)
-        this.analistService.setEncuestados(this.idE,this.IdEncuestados)
+        let userStorage = localStorage.getItem('analistaLogged');
+        let user = JSON.parse(userStorage);
+        let token = user.token;
+        this.analistService.setEncuestados(this.idE,this.IdEncuestados,token)
         .subscribe(
           res => {
             let auxRes:any;
@@ -62,7 +64,10 @@ export class AddSampleComponent implements OnInit{
   getEncuestado(){
     this.sub = this.route.params.subscribe(params => {
       this.idE = +params['id'];
-      this.analistService.getEncuestados(this.idE)
+      let userStorage = localStorage.getItem('analistaLogged');
+      let user = JSON.parse(userStorage);
+      let token = user.token;
+      this.analistService.getEncuestados(this.idE,token)
       .subscribe(
         res => {
           let auxRes:any;

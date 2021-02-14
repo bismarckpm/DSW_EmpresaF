@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -76,7 +76,7 @@ export class RequestStudyComponent implements OnInit {
       }
     )
   }
-
+  
   getNivelSocioeconomico(){
     this.nivelS = [
       {id:1,descripcionS:'baja'},
@@ -119,6 +119,7 @@ export class RequestStudyComponent implements OnInit {
     this.generos = [
       {id:1,descripcion:'masculino'},
       {id:2,descripcion:'femenino'},
+      {id:3,descripcion:'ambos'},
     ]
   }
 }

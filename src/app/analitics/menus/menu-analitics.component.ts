@@ -59,13 +59,17 @@ export class MenuAnaliticsComponent implements OnInit{
   }
 
   activarSolicitud(idSolicitud:number){
-    this.analisService.activarSolicitud(idSolicitud)
+    let analistStorage = localStorage.getItem('analistaLogged');
+    let analista = JSON.parse(analistStorage);
+    let token = analista.token;
+    this.analisService.activarSolicitud(idSolicitud,token)
     .subscribe(
       res => {
           let auxRes:any;
           auxRes = res;
           if(auxRes.estado == 'success'){
             this.openSnackBar("Solicitud activada");
+            location.reload();
           }
           else{
             this.openSnackBar("Ocurrio un problema");
