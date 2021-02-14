@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
 import { UsersService } from 'src/app/core/services/users.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -12,7 +12,7 @@ export class RequestStudyComponent implements OnInit {
   requestStudyForm: FormGroup;
   parroquias:any;
   Parroquias:any;
-  marcas:any;
+  subcategorias:any;
   nivelS:any;
   generos:any;
   edadInicial:number;
@@ -20,7 +20,7 @@ export class RequestStudyComponent implements OnInit {
   genero:string;
   cliente:any;
   parroquia:number;
-  marca:number;
+  subcategoria:number;
   nivelSocioeconomico:number;
   constructor(private formBuilder: FormBuilder, private userService:UsersService,public _snackBar: MatSnackBar) { }
 
@@ -29,11 +29,11 @@ export class RequestStudyComponent implements OnInit {
       edadInicial: ['', Validators.required],
       edadFinal: ['',Validators.required],
       selectParroquia: ['',Validators.required],
-      selectMarca: ['',Validators.required],
+      selectSubcategoria: ['',Validators.required],
       selecNivelS: ['',Validators.required],
       selectGenero: ['',Validators.required],
     });
-    this.getMarcas();
+    this.getSubcategorias();
     this.getParroquia();
     this.getNivelSocioeconomico();
     this.getGeneros();
@@ -45,14 +45,14 @@ export class RequestStudyComponent implements OnInit {
     });
   }
 
-  getMarcas(){
-    this.userService.getMarcas()
+  getSubcategorias(){
+    this.userService.getSubcategorias()
     .subscribe(
       res => {
         let auxRes:any;
         auxRes = res;
         if(auxRes.estado == 'success'){
-          this.marcas = auxRes.marcas;
+          this.subcategorias = auxRes.subcategorias;
         }
       },
       err => {
@@ -76,7 +76,7 @@ export class RequestStudyComponent implements OnInit {
       }
     )
   }
-
+  
   getNivelSocioeconomico(){
     this.nivelS = [
       {id:1,descripcionS:'baja'},
@@ -91,11 +91,12 @@ export class RequestStudyComponent implements OnInit {
     this.genero = this.requestStudyForm.get('selectGenero').value;
     let userStorage = localStorage.getItem('clientLogged');
     this.cliente = JSON.parse(userStorage);
+    let token = this.cliente.token; 
     this.cliente = this.cliente.id;
     this.parroquia = this.requestStudyForm.get('selectParroquia').value;
-    this.marca = this.requestStudyForm.get('selectMarca').value;
+    this.subcategoria = this.requestStudyForm.get('selectSubcategoria').value;
     this.nivelSocioeconomico = this.requestStudyForm.get('selecNivelS').value;
-    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.marca,this.nivelSocioeconomico)
+    this.userService.requestStudy(this.edadInicial,this.edadfinal,this.genero,this.cliente,this.parroquia,this.subcategoria,this.nivelSocioeconomico,token)
     .subscribe(
       res => {
         let auxRes:any;
@@ -118,6 +119,7 @@ export class RequestStudyComponent implements OnInit {
     this.generos = [
       {id:1,descripcion:'masculino'},
       {id:2,descripcion:'femenino'},
+      {id:3,descripcion:'ambos'},
     ]
   }
 }

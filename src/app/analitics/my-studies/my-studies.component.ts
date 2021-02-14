@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MyStudiesComponent implements OnInit {
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['estado', 'nombreEstudio','icons'];
+  displayedColumns: string[] = ['estado', 'nombreEstudio','finalizarEstudio','icons'];
 
   constructor(private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
@@ -32,12 +32,14 @@ export class MyStudiesComponent implements OnInit {
   getMyStudies(){
     let analistStorage = localStorage.getItem('analistaLogged');
     let analista = JSON.parse(analistStorage);
+    let token = analista.token;
     analista = analista.id; 
-    this.analistService.getMyStudies(analista)
+    this.analistService.getMyStudies(analista,token)
     .subscribe(
       res => {
         let auxRes:any;
         auxRes = res;
+        console.log(auxRes)
         if(auxRes.estado == 'success'){
           this.element = auxRes.estudios;
           this.dataSource = new MatTableDataSource(auxRes.estudios);
@@ -59,4 +61,7 @@ export class MyStudiesComponent implements OnInit {
     this.router.navigate(['/analitics/sample/'+idEstudio]);
   }
 
+  finishStudy(idEstudio){
+    this.router.navigate(['/analitics/finishStudy/'+idEstudio]);
+  }
 }

@@ -18,8 +18,9 @@ export class ProfileComponent implements OnInit {
   getUser(){  
     let userStorage = localStorage.getItem('encuestadoLogged');
     this.iduser = JSON.parse(userStorage);
+    let token = this.iduser.token;
     this.iduser = this.iduser.id;
-    this.userService.getAdministrador(this.iduser).
+    this.userService.getAdministrador(this.iduser,token).
     subscribe(
       res =>{
         let auxRes:any = res;

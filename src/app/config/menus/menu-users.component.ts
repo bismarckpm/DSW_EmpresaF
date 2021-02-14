@@ -44,7 +44,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getClients(){
-    this.adminService.getClientes().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getClientes(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -64,7 +67,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getRespondents(){
-    this.adminService.getEncuestados().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getEncuestados(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -85,7 +91,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getAdminis(){
-    this.adminService.getAdministradores().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getAdministradores(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -106,7 +115,10 @@ export class MenuUsersComponent implements OnInit{
   }
 
   getAnalitics(){
-    this.adminService.getAnalistas().
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getAnalistas(token).
     subscribe(
       res => {
         let auxRes:any;
@@ -127,9 +139,12 @@ export class MenuUsersComponent implements OnInit{
   }
 
   deleteUser(rolUsuario,estadoUsuario,idUsuario){
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
     if (rolUsuario=='cliente'){
       if (estadoUsuario=='activo'){
-        this.adminService.inactiveClient(idUsuario).
+        this.adminService.inactiveClient(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -144,7 +159,7 @@ export class MenuUsersComponent implements OnInit{
           }
         )
       }else{
-        this.adminService.activeClient(idUsuario).
+        this.adminService.activeClient(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -161,7 +176,7 @@ export class MenuUsersComponent implements OnInit{
       }
     }else if(rolUsuario=='encuestado'){
       if (estadoUsuario=='activo'){
-        this.adminService.inactiveRespondent(idUsuario).
+        this.adminService.inactiveRespondent(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -176,7 +191,7 @@ export class MenuUsersComponent implements OnInit{
           }
         )
       }else{
-        this.adminService.activeRespondent(idUsuario).
+        this.adminService.activeRespondent(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -193,7 +208,7 @@ export class MenuUsersComponent implements OnInit{
       }
     }else if(rolUsuario=='administrador'){
       if (estadoUsuario=='activo'){
-        this.adminService.inactiveAdministrador(idUsuario).
+        this.adminService.inactiveAdministrador(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -208,7 +223,7 @@ export class MenuUsersComponent implements OnInit{
           }
         )
       }else{
-        this.adminService.activeAdministrador(idUsuario).
+        this.adminService.activeAdministrador(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -225,7 +240,7 @@ export class MenuUsersComponent implements OnInit{
       }
     }else if (rolUsuario=='analista'){
       if (estadoUsuario=='activo'){
-        this.adminService.inactiveAnalista(idUsuario).
+        this.adminService.inactiveAnalista(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;
@@ -240,7 +255,7 @@ export class MenuUsersComponent implements OnInit{
           }
         )
       }else{
-        this.adminService.activeAnalista(idUsuario).
+        this.adminService.activeAnalista(idUsuario,token).
         subscribe(
           res => {
             let auxRes:any;

@@ -34,6 +34,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
 import { AddPollQuestionComponent } from 'src/app/config/update/AddPollQuestion.component';
 import { ResultsComponent } from './menus/results/results.component';
+import { RenovatedStudyComponent } from './create/renovated-study/renovated-study.component';
 
 @NgModule({
   declarations: [QuestionsSetupComponent,MenuConfigComponent,MenuCategoryComponent,MenuSubcategoryComponent,
@@ -41,7 +42,7 @@ import { ResultsComponent } from './menus/results/results.component';
     AddBrandComponent,AddCategoryComponent,AddPollComponent,AddQuestionComponent,AddStudyComponent,AddSubcategoryComponent,
     GlobalMenuComponent,AddUserComponent,UpdateBrandComponent,UpdateCategoryComponent,UpdatePollComponent,UpdateQuestionComponent,
     UpdateStudiesComponent,UpdateSubcategoryComponent,UpdateUserComponent,RequestStudyComponent,UpdateClientComponent,UpdateRespondentComponent
-    , AssignStudyComponent, ProfileComponent, PasswordProfileComponent,AddPollQuestionComponent, ResultsComponent
+    , AssignStudyComponent, ProfileComponent, PasswordProfileComponent,AddPollQuestionComponent, ResultsComponent, RenovatedStudyComponent
 
   ],
   imports: [

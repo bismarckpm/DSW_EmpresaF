@@ -37,7 +37,10 @@ export class AddSubcategoryComponent implements OnInit{
   handleCreateSubCategoria(){
     this.nombreSubcategoria = this.createSubCategoriaForm.get('Nombre').value;
     this.idCategoria = this.createSubCategoriaForm.get('selectCategoria').value;
-    this.adminService.createSubCategoria(this.nombreSubcategoria,this.idCategoria)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.createSubCategoria(this.nombreSubcategoria,this.idCategoria,token)
     .subscribe(
       res => {
         let auxRes:any;

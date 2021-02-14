@@ -37,7 +37,10 @@ export class AssignStudyComponent implements OnInit {
   }
 
   getStudies(){  
-    this.adminService.getStudies()
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.getStudies(token)
     .subscribe(
       res => {
         let auxRes:any;

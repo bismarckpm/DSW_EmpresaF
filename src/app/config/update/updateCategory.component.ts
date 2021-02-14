@@ -52,7 +52,10 @@ export class UpdateCategoryComponent implements OnInit {
     if (this.nombre){
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id'];
-        this.adminService.updateCategoria(this.nombre,this.id)
+        let adminStorage = localStorage.getItem('administrador');
+        let admin = JSON.parse(adminStorage);
+        let token = admin.token; 
+        this.adminService.updateCategoria(this.nombre,this.id,token)
         .subscribe(
           res => {
             let auxRes:any = res;

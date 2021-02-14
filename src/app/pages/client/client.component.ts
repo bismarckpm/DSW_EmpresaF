@@ -26,8 +26,9 @@ export class ClientComponent implements OnInit{
   getEstudios(){
     let userStorage = localStorage.getItem('clientLogged');
     let user = JSON.parse(userStorage);
+    let token = user.token; 
     user = user.id;  
-    this.userService.getSpecificStudies(user)
+    this.userService.getSpecificStudies(user,token)
     .subscribe(
       res => {
         let auxRes:any;
@@ -49,5 +50,9 @@ export class ClientComponent implements OnInit{
 
   solicitarEstudio(){
     this.router.navigate(['/pages/request-study']);
+  }
+
+  verResultados(idEncuesta){
+    this.router.navigate(['/pages/results/'+idEncuesta]);
   }
 }

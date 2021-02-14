@@ -52,7 +52,11 @@
                       </mat-chip-list>
                   </div>
               </div>
-             
+              <div>
+                <div style="margin-right: 10px;cursor: pointer;" *ngIf="item.encuestaId != 0" (click)="verResultados(item.encuestaId)">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
           </mat-card>
       </ng-container>
   </div>

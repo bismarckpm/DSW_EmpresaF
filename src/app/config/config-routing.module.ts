@@ -33,6 +33,7 @@ import { RequestStudyComponent } from 'src/app/config/menus/menu-requestStudy.co
 import { AssignStudyComponent } from 'src/app/config/menus/assign-study/assign-study.component';
 import { AddStudyComponent } from 'src/app/config/create/addStudy.component';
 import { ResultsComponent } from 'src/app/config/menus/results/results.component';
+import { RenovatedStudyComponent } from 'src/app/config/create/renovated-study/renovated-study.component';
 
 const routes: Routes = [
   {
@@ -71,6 +72,7 @@ const routes: Routes = [
     { path: "profile", component: ProfileComponent},
     { path: "passwordProfile", component: PasswordProfileComponent},
     { path: "results/:id", component: ResultsComponent},
+    { path: "newStudy/:id", component: RenovatedStudyComponent},
     ],
   },
   { path: 'assign/:id', component: AssignStudyComponent },

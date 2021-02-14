@@ -8,7 +8,7 @@
       <mat-form-field>
           <mat-label>Buscar</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-          <i class="fas fa-plus fa-lg" (click)="addEncuesta()"></i>
+          <!--<i class="fas fa-plus fa-lg" (click)="addEncuesta()"></i>-->
       </mat-form-field>
   </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -32,10 +32,22 @@
           <td mat-cell *matCellDef="let element"> {{element.subcategoria}} </td>
         </ng-container>
 
+        <!-- mis Preguntas Column -->
+        <ng-container matColumnDef="preguntas">
+          <th mat-header-cell *matHeaderCellDef>Mis preguntas</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field appearance="ourline" >
+              <mat-select >
+                  <mat-option *ngFor="let pregunta of element.preguntas" [value]="pregunta.id" style="color: black;" disabled>{{pregunta.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>  
+          </td>
+        </ng-container>
+
         <!-- Symbol Icon -->
         <ng-container matColumnDef="icons">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-edit" style="margin-left: 15px;cursor: pointer;" (click)="updateEncuesta(element.encuestaId)"></i></span></td>
+            <th mat-header-cell *matHeaderCellDef>Agregar preguntas</th>
+            <td mat-cell *matCellDef="let element"> <span><i class="fas fa-plus fa-lg" style="margin-left: 15px;cursor: pointer;color: #94d82d;padding-left: 0px !important;" (click)="getQuestions(element.encuestaId)"></i></span></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

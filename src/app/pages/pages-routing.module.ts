@@ -6,6 +6,7 @@ import { ClientComponent } from './client/client.component';
 import { RequestStudyComponent } from "src/app/pages/request-study/request-study.component";
 import { ProfileComponent } from './profile/profile.component';
 import { PasswordProfileComponent } from './profile/password-profile.component';
+import { ResultsComponent } from 'src/app/pages/results/results.component';
 
 const routes: Routes = [
   { 
@@ -15,7 +16,8 @@ const routes: Routes = [
     { path: "client", component: ClientComponent},
     { path: "request-study", component: RequestStudyComponent},
     { path: "profile", component: ProfileComponent},
-    { path: "password", component: PasswordProfileComponent} 
+    { path: "password", component: PasswordProfileComponent},
+    { path: "results/:id", component: ResultsComponent}  
     ],
   },
 ];

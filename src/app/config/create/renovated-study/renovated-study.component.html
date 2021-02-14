@@ -1,0 +1,88 @@
+<div class="menu-bg" fxFill fxLayout="column" fxLayoutAlign="center center ">
+    <mat-card class="example-card">
+        <button mat-raised-button (click)="isEditable = !isEditable">
+            {{!isEditable ? 'Habilitar edit' : 'Deshabilitar edit'}}
+          </button>
+          <mat-horizontal-stepper linear #stepper>
+            <mat-step [stepControl]="estudioFormGroup" [editable]="isEditable">
+              <form [formGroup]="estudioFormGroup">
+                <ng-template matStepLabel>Estudio</ng-template>
+                <mat-form-field>
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="Nombre">
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperNext>Siguiente</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="encuestaFormGroup" [editable]="isEditable">
+              <form [formGroup]="encuestaFormGroup" fxLayout="column">
+                <ng-template matStepLabel>Encuesta</ng-template>
+                <mat-form-field>
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="Nombre" >
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Atras</button>
+                  <button mat-button matStepperNext>Siguiente</button>
+                </div>
+              </form>
+            </mat-step>
+          
+            <mat-step>
+                <ng-template matStepLabel>Pregunta</ng-template>
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="seleccion_pregunta">
+                    <mat-radio-button [value]="true" >Sugeridas</mat-radio-button>
+                    <mat-radio-button [value]="false">Crear nueva pregunta</mat-radio-button>
+                </mat-radio-group>
+                <form [formGroup]="preguntaFormGroup" fxLayout="column" *ngIf="seleccion_pregunta==true">
+                    <br>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Preguntas</mat-label>
+                        <mat-select multiple formControlName="id" (selectionChange)="selectQuestions(this.preguntaFormGroup.get('id').value)" >
+                            <mat-option *ngFor="let pregunta of preguntas" [value]="pregunta.preguntaId">{{pregunta.descripcionPregunta}}  Tipo:{{pregunta.tipoPregunta}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>     
+                </form>
+                <form [formGroup]="survey" (ngSubmit)="handleCreatePregunta()" fxLayout="column" fxLayoutAlign="center center" *ngIf="seleccion_pregunta==false" style="margin-top: 10px;">
+                  <div formArrayName="sections">
+                    <div *ngFor="let section of getSections(survey); let i = index" [formGroupName]="i">
+                      <mat-form-field appearance="outline" >
+                        <mat-label>Descripcion</mat-label>
+                        <input matInput formControlName="Nombre" type="text">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="tipoPregunta" >
+                            <mat-option *ngFor="let tipo of tipos" [value]="tipo.name">{{tipo.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field> 
+                      <div formArrayName="opciones">
+                          <div *ngFor="let question of getQuestions(section); let j = index" [formGroupName]="j" >
+                              <mat-form-field appearance="outline" >
+                                  <mat-label>Opcion</mat-label>
+                                  <input matInput formControlName="descripcion" type="text">
+                              </mat-form-field>
+                              <br>
+                              <div fxLayout="row" fxLayoutAlign="space-between center">
+                                  <button *ngIf="getQuestions(section).length > 1" (click)="removeQuestion(i)" mat-raised-button class="delete-btn" >Eliminar</button>
+                              </div>
+                              <br>
+                              <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 10px;">
+                                <button mat-raised-button class="add-option width-100"  (click)="addQuestion(i)" >Agregar opcion</button>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                    <button mat-raised-button class="add-question width-100"  (click)="addSection()" >Agregar pregunta</button>
+                  </div>
+                  <br>
+                </form>
+                <button mat-raised-button color="primary" [disabled]="!survey.valid" *ngIf="seleccion_pregunta==false" (click)="createStudy()">Crear</button>
+                <button mat-raised-button color="primary" [disabled]="!preguntaFormGroup.valid " *ngIf="seleccion_pregunta==true" (click)="createStudy()">Crear</button>
+            </mat-step>
+          </mat-horizontal-stepper>
+    </mat-card>
+    <!--<pre>{{survey.value | json}}</pre>-->
+</div>   

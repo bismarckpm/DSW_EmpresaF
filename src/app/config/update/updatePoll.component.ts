@@ -37,7 +37,10 @@ export class UpdatePollComponent implements OnInit{
   getQuestions(){
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.adminService.getQuestionP(this.id)
+      let adminStorage = localStorage.getItem('administrador');
+      let admin = JSON.parse(adminStorage);
+      let token = admin.token;
+      this.adminService.getQuestionP(this.id,token)
       .subscribe(
         res => {
           let auxRes:any;

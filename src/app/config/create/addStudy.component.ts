@@ -37,7 +37,10 @@ export class AddStudyComponent implements OnInit{
   handleCreateStudy(){
     this.nombre = this.createStudyForm.get('Nombre').value;
     this.idEncuesta = this.createStudyForm.get('selectEncuesta').value;
-    this.adminService.createStudy(this.nombre,this.idEncuesta)
+    let adminStorage = localStorage.getItem('administrador');
+    let admin = JSON.parse(adminStorage);
+    let token = admin.token;
+    this.adminService.createStudy(this.nombre,this.idEncuesta,token)
     .subscribe(
       res => {
         let auxRes:any;

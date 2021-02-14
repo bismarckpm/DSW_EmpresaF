@@ -30,9 +30,12 @@
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>Marca</mat-label>
-                <mat-select formControlName="selectMarca">
-                    <mat-option *ngFor="let marca of marcas" [value]="marca.id"><span *ngIf="marca.estado=='activo'">{{marca.nombreMarca}}</span></mat-option>
+                <mat-label>Subcategoria</mat-label>
+                <mat-select formControlName="selectSubcategoria">
+                    <div *ngFor="let subcategoria of subcategorias">
+                        <mat-option  [value]="subcategoria.id"  *ngIf="subcategoria.estado=='activo'"><span>{{subcategoria.nombreSubcategoria}}</span></mat-option>
+                    </div>
+                   
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -44,4 +47,4 @@
             <button mat-raised-button class="create-btn width-100" [disabled]="!requestStudyForm.valid">Enviar solicitud</button>
         </form>
     </mat-card>
-</div>   
+</div> 

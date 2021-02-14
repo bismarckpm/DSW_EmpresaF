@@ -31,8 +31,9 @@ import { UsersService } from 'src/app/core/services/users.service';
     getEstudios(){
       let encuestadoStorage = localStorage.getItem('encuestadoLogged');
       let encuestado = JSON.parse(encuestadoStorage);
+      let token = encuestado.token;
       encuestado = encuestado.id;
-      this.userService.getEstudioEncuestado(encuestado) 
+      this.userService.getEstudioEncuestado(encuestado,token) 
       .subscribe(
         res => {
           let auxRes:any;

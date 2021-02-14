@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,12 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/marca/getall',this.httpOptions);
   }
 
-  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,marca:number,nivelSocioeconomico:number){
+  requestStudy(edadInicial:number,edadfinal:number,genero:string,cliente:number,parroquia:number,subcategoria:number,nivelSocioeconomico:number,token){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/solicitud/add',
                           {
                           "edadInicial": edadInicial,
@@ -61,45 +67,103 @@ export class UsersService extends ApiService{
                           "genero": genero,
                           "cliente": cliente,
                           "parroquia": parroquia,
-                          "marca": marca,
+                          "subcategoria": subcategoria,
                           "nivelSocioeconomico": nivelSocioeconomico
                           },
-                          this.httpOptions)
+                          this.httpOptions2)
     }
     
   getParroquias(){
     return this.http.get(this.API_URL+'api/parroquia/getall',this.httpOptions);
   }
 
-  getSpecificStudies(idSolicitud:number){
-    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions);
+  getSpecificStudies(idSolicitud:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/cliente/getsolicitudes/'+idSolicitud,this.httpOptions2);
   }
 
-  getEstudioEncuestado(idEncuestado:number){
-    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions);
+  getEstudioEncuestado(idEncuestado:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getestudios/'+idEncuestado,this.httpOptions2);
   }
 
-  getPreguntaEncuesta(idEncuesta:number){
-    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions);
+  getPreguntaEncuesta(idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions2);
   }
 
-  respuestaEncuesta(respuesta:any,idEncuesta:number){
+  respuestaEncuesta(respuesta:any,idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.post(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,
-    {respuestas: respuesta},this.httpOptions)
+    {respuestas: respuesta},this.httpOptions2)
   }
 
-  getIdEncuestado(idEncuestado:number){
-    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions);
+  getIdEncuestado(idEncuestado:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestado/getuser/'+idEncuestado,this.httpOptions2);
   }
 
-  getAdministrador(id:number){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
-    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions);
+  getAdministrador(id:number,token:any){ /*Aun que digan administrator estos metodos cambian al usuario, no al administrador */
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/administrador/getuser/'+id,this.httpOptions2);
   }
 
-  updateAdministrador(nombreUsuario:string,contrasena:string,id:number){
+  updateAdministrador(nombreUsuario:string,contrasena:string,id:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
     return this.http.put(this.API_URL+'api/administrador/update/'+id,
                           {"nombreUsuario":nombreUsuario,
                            "contrasena":contrasena},
-                           this.httpOptions);
+                           this.httpOptions2);
+  }
+
+  getSubcategorias(){
+    return this.http.get(this.API_URL+'api/subcategoria/getall',this.httpOptions);
+  }
+
+  getRespuestaEncuesta(idEncuesta:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.get(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,this.httpOptions2)
+  }
+
+  removeToken(idUsuario:number,token:any){
+    this.httpOptions2 = {
+      headers: new HttpHeaders({
+      'authorization': token,
+      })
+    }
+    return this.http.put(this.API_URL+'api/auth/logout/'+idUsuario,null,this.httpOptions2)
   }
 }
+
