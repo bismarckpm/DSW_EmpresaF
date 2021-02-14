@@ -17,7 +17,7 @@ export class SampleComponent implements OnInit{
   id: number;
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','icons'];
+  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','button','icons'];
   constructor(private route: ActivatedRoute,private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;

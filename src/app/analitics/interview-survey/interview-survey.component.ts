@@ -131,10 +131,6 @@ export class InterviewSurveyComponent implements OnInit {
         
       i++; 
     }
-    this.sub = this.route.params.subscribe(params => {
-    this.id = +params['id'];
-    })
-   
     
     console.log(this.obj.data)
       /*for(let item in this.obj.data){
@@ -147,8 +143,8 @@ export class InterviewSurveyComponent implements OnInit {
         };
         this.auxObj.data[j] = auxDataCopy;
         j++
-      }
-      console.log(this.auxObj.data)*/
+      }*/
+      //console.log(this.auxObj.data)
       if(this.obj.data.length > 0){
         let analistStorage = localStorage.getItem('analistaLogged');
         let analista = JSON.parse(analistStorage);

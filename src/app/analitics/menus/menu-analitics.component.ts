@@ -69,6 +69,7 @@ export class MenuAnaliticsComponent implements OnInit{
           auxRes = res;
           if(auxRes.estado == 'success'){
             this.openSnackBar("Solicitud activada");
+            location.reload();
           }
           else{
             this.openSnackBar("Ocurrio un problema");

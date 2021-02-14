@@ -22,7 +22,7 @@ export class AnalystService extends ApiService{
       'authorization': token,
       })
     }
-    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,this.httpOptions2)
+    return this.http.put(this.API_URL+'api/analista/activarestudio/'+idSolicitud,null,this.httpOptions2)
   }
 
   getMyStudies(idAnalista:number,token:any){
