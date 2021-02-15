@@ -28,7 +28,7 @@
 
           <ng-container matColumnDef="finalizarEstudio">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"><button mat-raised-button class="finish-study" (click)="finishStudy(element.estudioId)"><strong>Finalizar estudio</strong></button></td>
+            <td mat-cell *matCellDef="let element"><button mat-raised-button class="finish-study" *ngIf="element.estado!='culminado'" (click)="finishStudy(element.estudioId)"><strong>Finalizar estudio</strong></button></td>
           </ng-container>
   
           <ng-container matColumnDef="icons">
