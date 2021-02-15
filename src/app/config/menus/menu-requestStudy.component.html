@@ -42,6 +42,13 @@
             </mat-card>
         </ng-container>
     </div>
+    <mat-card style="width: 30%; border: 1px solid #FFC300;border-radius: 40px 40px;" fxLayout="row" fxLayoutAlign="center center" *ngIf="!studies">
+        <div fxLayout="column">
+          <h3 style="margin-bottom: 10px;">No hay solicitudes</h3>
+          <i class="fas fa-exclamation-triangle fa-7x" style="color: #FFC300;"></i>
+        </div>
+      </mat-card>
+      <br>
   </div>
   
   
