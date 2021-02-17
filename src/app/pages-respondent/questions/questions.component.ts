@@ -142,9 +142,12 @@ export class QuestionsComponent implements OnInit {
         
       i++; 
     }
+    let solicitudId;
     this.sub = this.route.params.subscribe(params => {
     this.id = +params['id'];
+    solicitudId = +params['solicitudId'];
     })
+    
    
     
     console.log(this.obj.data)
@@ -164,7 +167,7 @@ export class QuestionsComponent implements OnInit {
         let encuestadoStorage = localStorage.getItem('encuestadoLogged');
         let encuestado = JSON.parse(encuestadoStorage);
         let token = encuestado.token;
-        this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
+        this.userService.respuestaEncuesta(this.obj.data,this.id,solicitudId,token) 
         .subscribe(
           res => {
             let auxRes:any;

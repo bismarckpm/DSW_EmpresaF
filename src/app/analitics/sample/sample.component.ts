@@ -68,8 +68,8 @@ export class SampleComponent implements OnInit{
     console.log(idUsuario)
   }
 
-  interviewMuestra(encuestadoId){
-    this.router.navigate(['/analitics/interview/'+encuestadoId]);
+  interviewMuestra(encuestadoId,solicitudId){
+    this.router.navigate(['/analitics/interview/'+encuestadoId+'/'+solicitudId]);
   }
 
 }

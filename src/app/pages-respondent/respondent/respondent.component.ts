@@ -51,8 +51,8 @@ import { UsersService } from 'src/app/core/services/users.service';
   
     }
   
-    verEncuesta(idEncuesta){
-      this.router.navigate(['pages-respondent/questions', idEncuesta]);
+    verEncuesta(idEncuesta,solicitudId){
+      this.router.navigate(['pages-respondent/questions/'+ idEncuesta+'/'+solicitudId]);
       console.log(idEncuesta)
     }
   
