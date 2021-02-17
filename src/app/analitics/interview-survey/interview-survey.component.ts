@@ -50,6 +50,7 @@ export class InterviewSurveyComponent implements OnInit {
   multipleSelected:any;
   first: boolean = false;
   second: boolean = false;
+  solicitudId:any;
   constructor(private router: Router, private userService:UsersService,public _snackBar: MatSnackBar,private formBuilder: FormBuilder,private route: ActivatedRoute) { }
 
   openSnackBar(message: string){
@@ -78,6 +79,7 @@ export class InterviewSurveyComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
     let encuestado = +params['id'];
     this.idEncuestado = encuestado;
+    this.solicitudId = +params['solicitudId'];
     })
   }
 
@@ -149,7 +151,7 @@ export class InterviewSurveyComponent implements OnInit {
         let analistStorage = localStorage.getItem('analistaLogged');
         let analista = JSON.parse(analistStorage);
         let token = analista.token;
-        this.userService.respuestaEncuesta(this.obj.data,this.id,token) 
+        this.userService.respuestaEncuesta(this.obj.data,this.id,this.solicitudId,token) 
         .subscribe(
           res => {
             let auxRes:any;

@@ -15,7 +15,7 @@ const routes: Routes = [
     component:GlobalMenuPComponent,
     children: [
     { path: "respondent", component: RespondentComponent},
-    { path: "questions/:id", component: QuestionsComponent},
+    { path: "questions/:id/:solicitudId", component: QuestionsComponent},
     { path: "study", component: StudyComponent},
     { path: 'poll/:id', component: PollComponent },
     { path: "password", component: PasswordProfileComponent},

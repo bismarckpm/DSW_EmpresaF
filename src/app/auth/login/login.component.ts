@@ -71,12 +71,14 @@ export class LoginComponent implements OnInit {
           return;
         }
         else if(auxRes.estado == 'error'){
-          this.openSnackBar(auxRes.error);
+          this.bSignIn = false;
+          this.openSnackBar('Inicio de sesion invalido');
         }
         console.log(res);
       },
       err => {
-        this.openSnackBar(err);
+        this.bSignIn = false;
+        this.openSnackBar('Inicio de sesion invalido');
       }
     )
   } 
