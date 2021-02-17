@@ -25,7 +25,7 @@ const routes: Routes = [
         { path: "myStudies", component: MyStudiesComponent},
         { path: "sample/:id", component: SampleComponent},
         { path: "updatesample/:id", component: UpdateSampleComponent},
-        { path: "interview/:id", component: InterviewSurveyComponent},
+        { path: "interview/:id/:solicitudId", component: InterviewSurveyComponent},
         { path: "card-desc", component: DescriptionCardComponent},
         { path: "card-range", component: RangeCardComponent},
         { path: "card-op", component: OptionCardComponent},

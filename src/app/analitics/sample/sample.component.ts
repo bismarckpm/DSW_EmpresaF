@@ -17,7 +17,8 @@ export class SampleComponent implements OnInit{
   id: number;
   element:any;
   dataSource:any;
-  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','button','icons'];
+  telefono:any;
+  displayedColumns: string[] = ['nombreUsuario','apellidoUsuario','numeroTelefono','button','icons'];
   constructor(private route: ActivatedRoute,private router: Router, private analistService:AnalystService,public _snackBar: MatSnackBar) { }
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -67,8 +68,8 @@ export class SampleComponent implements OnInit{
     console.log(idUsuario)
   }
 
-  interviewMuestra(encuestadoId){
-    this.router.navigate(['/analitics/interview/'+encuestadoId]);
+  interviewMuestra(encuestadoId,solicitudId){
+    this.router.navigate(['/analitics/interview/'+encuestadoId+'/'+solicitudId]);
   }
 
 }

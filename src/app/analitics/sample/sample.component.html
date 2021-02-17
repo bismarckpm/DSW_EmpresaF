@@ -1,5 +1,5 @@
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div class="title-container">
+    <div class="title-container" style="margin-top: 60px;">
         <h1 class="sign-in-title text-center">Muestra del estudio</h1>
     </div>
     <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
@@ -26,10 +26,15 @@
           <td mat-cell *matCellDef="let element"> {{element.encuestadoApellido}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="numeroTelefono">
+          <th mat-header-cell *matHeaderCellDef> Numero telefonico </th>
+          <td mat-cell *matCellDef="let element"> {{element.telefono[0].codigoArea}}-{{element.telefono[0].numeroTelefono}} </td>
+        </ng-container>
+
          <!-- Symbol Icon -->
          <ng-container matColumnDef="button">
           <th mat-header-cell *matHeaderCellDef>Encuesta</th>
-          <td mat-cell *matCellDef="let element"><button mat-raised-button class="finish-study" (click)="interviewMuestra(element.encuestadoId)"><strong>Responder encuesta</strong></button></td>
+          <td mat-cell *matCellDef="let element"><button mat-raised-button *ngIf="element.estadoMuestra != 'completo'" class="finish-study" (click)="interviewMuestra(element.encuestadoId,element.solicitudId)"><strong>Responder encuesta</strong></button><div *ngIf="element.estadoMuestra == 'completo'"><strong>No hay encuestas por responder</strong></div></td>
         </ng-container>
 
         <!-- Symbol Icon -->

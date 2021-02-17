@@ -104,14 +104,19 @@ export class UsersService extends ApiService{
     return this.http.get(this.API_URL+'api/encuestas/'+idEncuesta+'/preguntas',this.httpOptions2);
   }
 
-  respuestaEncuesta(respuesta:any,idEncuesta:number,token:any){
+  respuestaEncuesta(respuesta:any,idEncuesta:number,solicitudId,token:any){
     this.httpOptions2 = {
       headers: new HttpHeaders({
       'authorization': token,
       })
     }
     return this.http.post(this.API_URL+'api/encuestas/respuesta/'+idEncuesta,
-    {respuestas: respuesta},this.httpOptions2)
+                                                                            {"solicitudEstudioDto":
+                                                                              {
+                                                                                "id": solicitudId
+                                                                              },
+                                                                              respuestas: respuesta
+                                                                            },this.httpOptions2)
   }
 
   getIdEncuestado(idEncuestado:number,token:any){

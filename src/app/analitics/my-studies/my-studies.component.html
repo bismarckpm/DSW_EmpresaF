@@ -1,6 +1,6 @@
 
 <div fxFill class="menu-bg content" fxLayout="column" fxLayoutAlign="center center">
-    <div class="texto-entrada">
+    <div class="texto-entrada" style="margin-top: 60px;">
       <h1 >Mis estudios</h1>
     </div>
     <div fxLayout="row" style="width: 80%;"  fxLayoutAlign="space-between center">
@@ -27,7 +27,7 @@
           </ng-container>
 
           <ng-container matColumnDef="finalizarEstudio">
-            <th mat-header-cell *matHeaderCellDef></th>
+            <th mat-header-cell *matHeaderCellDef>Estudio</th>
             <td mat-cell *matCellDef="let element"><button mat-raised-button class="finish-study" *ngIf="element.estado!='culminado'" (click)="finishStudy(element.estudioId)"><strong>Finalizar estudio</strong></button></td>
           </ng-container>
   
