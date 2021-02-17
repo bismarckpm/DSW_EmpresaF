@@ -1,12 +1,8 @@
 package ucab.dsw.logica.comando.solicitudestudio;
 
-import ucab.dsw.accesodatos.DaoEncuesta;
-import ucab.dsw.accesodatos.DaoEstudio;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.SolicitudEstudioDto;
-import ucab.dsw.entidades.Encuesta;
-import ucab.dsw.entidades.Estudio;
-import ucab.dsw.entidades.SolicitudEstudio;
+import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.excepciones.PruebaExcepcion;
 import ucab.dsw.excepciones.RangoExcepcion;
@@ -35,7 +31,7 @@ public class ComandoGetSolicitudesByCliente implements ComandoBase {
 
     long estudioId;
     long encuestaId;
-    String resultadoEstudio;
+    String resultadoEstudio = null;
 
     try {
 
@@ -50,9 +46,12 @@ public class ComandoGetSolicitudesByCliente implements ComandoBase {
 
         }
 
-        if(solicitud.get_cliente().get_id() == this.idCliente){
+        DaoUsuario daoCliente = Fabrica.crear(DaoUsuario.class);
+        Usuario cliente = daoCliente.find(solicitud.get_cliente().get_id(), Usuario.class);
 
-          if(solicitud.get_estudio()!=null && solicitud.get_estudio().get_resultado()!=null) {
+        if(cliente.get_id() == this.idCliente){
+
+          if(solicitud.get_estudio()!=null) {
 
             DaoEstudio daoEstudio = Fabrica.crear(DaoEstudio.class);
             Estudio estudio = daoEstudio.find(solicitud.get_estudio().get_id(), Estudio.class);
@@ -62,7 +61,12 @@ public class ComandoGetSolicitudesByCliente implements ComandoBase {
 
             estudioId = estudio.get_id();
             encuestaId = encuesta.get_id();
-            resultadoEstudio = estudio.get_resultado();
+
+            if(estudio.get_resultado()!=null) {
+              resultadoEstudio = estudio.get_resultado();
+            }else{
+              resultadoEstudio = "Sin resultados hasta el momento";
+            }
 
           }else {
 

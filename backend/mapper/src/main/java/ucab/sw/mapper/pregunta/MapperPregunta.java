@@ -1,14 +1,10 @@
 package ucab.sw.mapper.pregunta;
 
-import ucab.dsw.accesodatos.DaoOpcion;
-import ucab.dsw.accesodatos.DaoPreguntaOpcion;
 import ucab.dsw.dtos.PreguntaDto;
-import ucab.dsw.dtos.PreguntaOpcionDto;
-import ucab.dsw.entidades.Categoria;
 import ucab.dsw.entidades.Opcion;
 import ucab.dsw.entidades.Pregunta;
 import ucab.dsw.entidades.PreguntaOpcion;
-import ucab.dsw.logica.fabrica.Fabrica;
+
 
 public class MapperPregunta {
 
@@ -16,7 +12,7 @@ public class MapperPregunta {
 
     try {
 
-      Pregunta pregunta = Fabrica.crear(Pregunta.class);
+      Pregunta pregunta = new Pregunta();
       pregunta.set_descripcionPregunta(preguntaDto.getDescripcionPregunta());
       pregunta.set_min(preguntaDto.getMin());
       pregunta.set_max(preguntaDto.getMax());
@@ -35,7 +31,7 @@ public class MapperPregunta {
 
     try {
 
-      PreguntaDto preguntaDto = Fabrica.crear(PreguntaDto.class);
+      PreguntaDto preguntaDto = new PreguntaDto();
       preguntaDto.setId(pregunta.get_id());
       preguntaDto.setDescripcionPregunta(pregunta.get_descripcionPregunta());
       preguntaDto.setMin(pregunta.get_min());
@@ -55,7 +51,7 @@ public class MapperPregunta {
 
     try {
 
-      PreguntaOpcion preguntaOpcion = Fabrica.crear(PreguntaOpcion.class);
+      PreguntaOpcion preguntaOpcion = new PreguntaOpcion();
       preguntaOpcion.set_pregunta(pregunta);
       preguntaOpcion.set_opcion(opcion);
 

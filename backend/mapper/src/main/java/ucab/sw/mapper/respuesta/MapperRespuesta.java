@@ -2,7 +2,6 @@ package ucab.sw.mapper.respuesta;
 
 import ucab.dsw.dtos.RespuestaDto;
 import ucab.dsw.entidades.Respuesta;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 public class MapperRespuesta {
 
@@ -10,7 +9,7 @@ public class MapperRespuesta {
 
     try {
 
-      RespuestaDto respuestaDto = Fabrica.crear(RespuestaDto.class);
+      RespuestaDto respuestaDto = new RespuestaDto();
       respuestaDto.setDescripcion(respuesta.get_descripcion());
       respuestaDto.setRango(respuesta.get_rango());
 

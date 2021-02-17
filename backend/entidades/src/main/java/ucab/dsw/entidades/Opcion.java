@@ -86,7 +86,7 @@ public class Opcion extends EntidadBase {
     public void set_respuestasOpciones(List<RespuestaOpcion> _respuestasOpciones) {
         this._respuestasOpciones = _respuestasOpciones;
     }
-    
+
     public List<Respuesta> get_respuestas() {
         return get_respuestasOpciones()
                 .stream()

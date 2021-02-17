@@ -101,21 +101,22 @@ public class ComandoAddRespuestaEncuesta implements ComandoBase {
       DaoEstudio dao = Fabrica.crear(DaoEstudio.class);
       Estudio est = dao.getEstudioByEncuesta(encuesta);
 
-      for(SolicitudEstudio solicitudEstudio: est.get_solicitudesEstudio()){
+      DaoSolicitudEstudio daoSolicitudEstudio = Fabrica.crear(DaoSolicitudEstudio.class);
+      SolicitudEstudio solicitudEstudio = daoSolicitudEstudio.find(this.baseRespuestaDto.getSolicitudEstudioDto().getId(), SolicitudEstudio.class);
 
-        List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
+      List<Muestra> muestras = daoMuestra.findAll(Muestra.class);
 
-        for (Muestra muestra:muestras) {
+      for (Muestra muestra:muestras) {
 
-          if (solicitudEstudio.get_id() == muestra.get_solicitudEstudio().get_id() && encuestado.get_id() == muestra.get_encuestado().get_id()){
+            DaoEncuestado daoEncuestado = Fabrica.crear(DaoEncuestado.class);
+            Encuestado encuestadoMuestra =  daoEncuestado.find(muestra.get_encuestado().get_id(), Encuestado.class);
 
-            Muestra muestraActualizada = MapperMuestra.MappMuestraToEntity(muestra);
-            daoMuestra.update(muestraActualizada);
+            SolicitudEstudio solicitudEstudioMuestra = daoSolicitudEstudio.find(muestra.get_solicitudEstudio().get_id(), SolicitudEstudio.class);
 
-          }
-
+        if (encuestadoMuestra.get_id() == encuestado.get_id() && solicitudEstudio.get_id() == solicitudEstudioMuestra.get_id()){
+          Muestra muestraActualizada = MapperMuestra.MappMuestraToEntity(muestra);
+          daoMuestra.update(muestraActualizada);
         }
-
       }
 
     }catch (RangoExcepcion ex){

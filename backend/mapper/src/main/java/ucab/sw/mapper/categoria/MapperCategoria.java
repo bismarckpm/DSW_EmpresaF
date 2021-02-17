@@ -2,7 +2,7 @@ package ucab.sw.mapper.categoria;
 
 import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.entidades.Categoria;
-import ucab.dsw.logica.fabrica.Fabrica;
+
 
 public class MapperCategoria {
 
@@ -10,7 +10,7 @@ public class MapperCategoria {
 
     try {
 
-      Categoria categoria = Fabrica.crear(Categoria.class);
+      Categoria categoria = new Categoria();
       categoria.set_nombreCategoria(categoriaDto.getNombreCategoria());
       categoria.set_estado("activo");
 
@@ -43,7 +43,7 @@ public class MapperCategoria {
 
     try{
 
-      CategoriaDto categoriaDto = Fabrica.crear(CategoriaDto.class);
+      CategoriaDto categoriaDto = new CategoriaDto();
       categoriaDto.setId(categoria.get_id());
       categoriaDto.setNombreCategoria(categoria.get_nombreCategoria());
       categoriaDto.setEstado(categoria.get_estado());

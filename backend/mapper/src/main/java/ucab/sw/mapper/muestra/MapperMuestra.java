@@ -3,7 +3,6 @@ package ucab.sw.mapper.muestra;
 import ucab.dsw.entidades.Encuestado;
 import ucab.dsw.entidades.Muestra;
 import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 public class MapperMuestra {
 
@@ -26,7 +25,7 @@ public class MapperMuestra {
 
     try{
 
-      Muestra muestraAgregar = Fabrica.crear(Muestra.class);
+      Muestra muestraAgregar = new Muestra();
       muestraAgregar.set_encuestado(encuestado);
       muestraAgregar.set_solicitudEstudio(solicitudEstudio);
       muestraAgregar.set_estado("pendiente");

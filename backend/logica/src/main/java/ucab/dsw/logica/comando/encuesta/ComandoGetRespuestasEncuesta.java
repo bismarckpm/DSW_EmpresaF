@@ -49,25 +49,32 @@ public class ComandoGetRespuestasEncuesta implements ComandoBase {
         Pregunta pregunta = daoPregunta.find(preguntaEncuesta.get_pregunta().get_id(), Pregunta.class);
         PreguntaDto preguntaDto = MapperEncuesta.MapEntityToPreguntaInEncuestaDto(pregunta);
 
-        if(preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("simple") || preguntaEncuesta.get_pregunta().get_tipoPregunta().equals("multiple")){
+        if(pregunta.get_tipoPregunta().equals("simple") || pregunta.get_tipoPregunta().equals("multiple")){
 
-          List<Opcion> opciones;
-          opciones = pregunta.getOpciones();
+          DaoPreguntaOpcion daoPreguntaOpcion = Fabrica.crear(DaoPreguntaOpcion.class);
+          List<PreguntaOpcion> preguntaOpcions = daoPreguntaOpcion.findAll(PreguntaOpcion.class);
 
-          for(Opcion opcion:opciones){
+          for(PreguntaOpcion preguntaOpcion: preguntaOpcions){
 
-            DaoRespuestaOpcion daoRespuestaOpcion = Fabrica.crear(DaoRespuestaOpcion.class);
-            Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
+            if(preguntaOpcion.get_pregunta().get_id() == pregunta.get_id()) {
 
-            OpcionDto opcionDto = MapperOpcion.MapOpcionToDto(opcion);
+              DaoOpcion daoOpcion = Fabrica.crear(DaoOpcion.class);
+              Opcion opcion = daoOpcion.find(preguntaOpcion.get_opcion().get_id(), Opcion.class);
 
-            JsonObject option = Json.createObjectBuilder()
-              .add("opcion",opcionDto.getDescripcion())
-              .add("opcionId", opcionDto.getId())
-              .add("conteo",respuestaCont)
-              .build();
+              DaoRespuestaOpcion daoRespuestaOpcion = Fabrica.crear(DaoRespuestaOpcion.class);
+              Integer respuestaCont = daoRespuestaOpcion.contRespuesta(opcion);
 
-            opcionArray.add(option);
+              OpcionDto opcionDto = MapperOpcion.MapOpcionToDto(opcion);
+
+              JsonObject option = Json.createObjectBuilder()
+                .add("opcion", opcionDto.getDescripcion())
+                .add("opcionId", opcionDto.getId())
+                .add("conteo", respuestaCont)
+                .build();
+
+              opcionArray.add(option);
+
+            }
 
           }
 

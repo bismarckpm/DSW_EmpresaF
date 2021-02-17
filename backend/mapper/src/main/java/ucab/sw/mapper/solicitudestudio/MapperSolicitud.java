@@ -1,12 +1,10 @@
 package ucab.sw.mapper.solicitudestudio;
 
 import ucab.dsw.accesodatos.*;
-import ucab.dsw.dtos.CategoriaDto;
 import ucab.dsw.dtos.SolicitudEstudioDto;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.excepciones.SolicitudPendienteExcepcion;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class MapperSolicitud {
 
     try {
 
-      SolicitudEstudio solicitudEstudio = Fabrica.crear(SolicitudEstudio.class);
+      SolicitudEstudio solicitudEstudio = new SolicitudEstudio();
       solicitudEstudio.set_estado("solicitado");
 
       if(solicitudEstudioDto.getEdadInicial() > solicitudEstudioDto.getEdadfinal()){
@@ -32,19 +30,19 @@ public class MapperSolicitud {
 
       solicitudEstudio.set_genero(solicitudEstudioDto.getGenero());
 
-      DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
+      DaoUsuario daoUsuario = new DaoUsuario();
       Usuario cliente = daoUsuario.find(solicitudEstudioDto.getCliente().getId(), Usuario.class);
       solicitudEstudio.set_cliente(cliente);
 
-      DaoParroquia daoParroquia = Fabrica.crear(DaoParroquia.class);
+      DaoParroquia daoParroquia = new DaoParroquia();
       Parroquia parroquia = daoParroquia.find(solicitudEstudioDto.getParroquia().getId(), Parroquia.class);
       solicitudEstudio.set_parroquia(parroquia);
 
-      DaoSubcategoria daoSubcategoria = Fabrica.crear(DaoSubcategoria.class);
+      DaoSubcategoria daoSubcategoria = new DaoSubcategoria();
       Subcategoria subcategoria = daoSubcategoria.find(solicitudEstudioDto.getSubcategoria().getId(), Subcategoria.class);
       solicitudEstudio.set_subcategoria(subcategoria);
 
-      DaoNivelSocioeconomico daoNivelSocioeconomico =  Fabrica.crear(DaoNivelSocioeconomico.class);
+      DaoNivelSocioeconomico daoNivelSocioeconomico =  new DaoNivelSocioeconomico();
       NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(solicitudEstudioDto.getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       solicitudEstudio.set_nivelSocioeconomico(nivelSocioeconomico);
 
@@ -64,7 +62,7 @@ public class MapperSolicitud {
         }
 
       }else{
-        DaoUsuario dao = Fabrica.crear(DaoUsuario.class);
+        DaoUsuario dao = new DaoUsuario();
         Integer id = 4;
         Usuario usuario = dao.find(id.longValue(), Usuario.class);
         solicitudEstudio.set_administrador(usuario);
@@ -82,7 +80,7 @@ public class MapperSolicitud {
 
     try{
 
-      SolicitudEstudioDto solicitudEstudioDto = Fabrica.crear(SolicitudEstudioDto.class);
+      SolicitudEstudioDto solicitudEstudioDto = new SolicitudEstudioDto();
       solicitudEstudioDto.setId(solicitudEstudio.get_id());
       solicitudEstudioDto.setEdadInicial(solicitudEstudio.get_edadInicial());
       solicitudEstudioDto.setEdadfinal(solicitudEstudio.get_edadfinal());

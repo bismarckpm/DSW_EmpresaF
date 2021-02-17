@@ -46,20 +46,20 @@ public class DaoMuestra extends Dao<Muestra>{
     }
   }
 
-  public Muestra getMuestraBySolicitudAndEncuestado(SolicitudEstudio solicitudEstudio, Encuestado encuestado){
+  public String getEstadoByMuestra(Encuestado encuestado, SolicitudEstudio solicitudEstudio){
+    try {
+      TypedQuery<String> muestraEstado = this._em.createNamedQuery("getEstadoByMuestra", String.class);
+      muestraEstado.setParameter("encuestado", encuestado);
+      muestraEstado.setParameter("solicitudEstudio", solicitudEstudio);
 
-    try{
-      TypedQuery<Muestra> muestra = this._em.createNamedQuery("getMuestraBySolicitudAndEncuestado", Muestra.class);
-      muestra.setParameter("solicitud", solicitudEstudio)
-      .setParameter("encuestado", encuestado);
-
-      Muestra resultado = muestra.getSingleResult();
+      String resultado = muestraEstado.getSingleResult();
       return resultado;
     }
     catch (Exception ex){
       return null;
     }
   }
+
 
   public Encuestado getEncuestadoAgregable(Encuestado encuestado, SolicitudEstudio solicitudEstudio){
     try {
@@ -74,4 +74,5 @@ public class DaoMuestra extends Dao<Muestra>{
       return null;
     }
   }
+
 }

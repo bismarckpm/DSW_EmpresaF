@@ -66,7 +66,7 @@ public class ComandoGetPreguntasSugeridas implements ComandoBase {
       }
 
     }catch (Exception ex){
-
+      ex.printStackTrace();
     }
 
   }

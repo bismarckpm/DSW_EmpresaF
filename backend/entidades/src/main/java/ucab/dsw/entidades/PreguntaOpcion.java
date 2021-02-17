@@ -4,6 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pregunta_opcion")
+@NamedQueries({
+  @NamedQuery(name = "findOptionsByQuestion", query = "select p._opcion from PreguntaOpcion p where p._pregunta=:pregunta")
+})
 public class PreguntaOpcion {
 
   @Id

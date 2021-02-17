@@ -5,10 +5,9 @@ import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.*;
 import ucab.dsw.excepciones.LimiteExcepcion;
 import ucab.dsw.excepciones.PruebaExcepcion;
-import ucab.dsw.logica.fabrica.Fabrica;
+
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,14 +17,14 @@ public class MapperEstudio {
 
     try {
 
-      Estudio estudio = Fabrica.crear(Estudio.class);
+      Estudio estudio = new Estudio();
       estudio.set_nombreEstudio(estudioDto.getNombreEstudio());
       estudio.set_estado("procesado");
 
-      Date fecha = Fabrica.crear(Date.class);
+      Date fecha = new Date();
       estudio.set_fechaInicio(fecha);
 
-      Encuesta encuesta = Fabrica.crear(Encuesta.class);
+      Encuesta encuesta = new Encuesta();
       encuesta.set_nombreEncuesta(estudioDto.getEncuesta().getNombreEncuesta());
 
       DaoSolicitudEstudio daoSolicitudEstudio = new DaoSolicitudEstudio();
@@ -37,24 +36,25 @@ public class MapperEstudio {
 
       estudio.set_encuesta(encuesta);
 
-      DaoEstudio daoEstudio = Fabrica.crear(DaoEstudio.class);
+      DaoEstudio daoEstudio = new DaoEstudio();
       Estudio estudioAgregado = daoEstudio.insert(estudio);
 
       solicitudEstudio.set_estudio(estudioAgregado);
       solicitudEstudio.set_estado("procesado");
 
-      Usuario usuario = Fabrica.crearComandoConId(Usuario.class, 2);
+      DaoUsuario daoUsuario = new DaoUsuario();
+      Usuario usuario = daoUsuario.find((long) 2, Usuario.class);
       solicitudEstudio.set_analista(usuario);
 
       daoSolicitudEstudio.update(solicitudEstudio);
 
-      DaoPregunta daoPregunta = Fabrica.crear(DaoPregunta.class);
+      DaoPregunta daoPregunta = new DaoPregunta();
 
       for(PreguntaDto pregunta:estudioDto.getPreguntas()){
 
         if(pregunta.getId() <= 0 ){
 
-          Pregunta pregun = Fabrica.crear(Pregunta.class);
+          Pregunta pregun = new Pregunta();
           pregun.set_descripcionPregunta(pregunta.getDescripcionPregunta());
 
           if(pregunta.getMin() > pregunta.getMax()){
@@ -72,9 +72,9 @@ public class MapperEstudio {
 
           Pregunta preguntaAgregada = daoPregunta.insert(pregun);
 
-          DaoPreguntaEncuesta daoPreguntaEncuesta = Fabrica.crear(DaoPreguntaEncuesta.class);
+          DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
 
-          PreguntaEncuesta preguntaEncuesta = Fabrica.crear(PreguntaEncuesta.class);
+          PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
           preguntaEncuesta.set_pregunta(preguntaAgregada);
           preguntaEncuesta.set_encuesta(encuesta);
 
@@ -82,12 +82,12 @@ public class MapperEstudio {
 
           if(pregun.get_tipoPregunta().equals("desarrollo")){
 
-            DaoOpcion daoOpcion = Fabrica.crear(DaoOpcion.class);
+            DaoOpcion daoOpcion = new DaoOpcion();
             Integer id = 8;
             Opcion opcion = daoOpcion.find(id.longValue(), Opcion.class);
 
-            DaoPreguntaOpcion daoPreguntaOpcion = Fabrica.crear(DaoPreguntaOpcion.class);
-            PreguntaOpcion preguntaOpcion = Fabrica.crear(PreguntaOpcion.class);
+            DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+            PreguntaOpcion preguntaOpcion = new PreguntaOpcion();
             preguntaOpcion.set_pregunta(preguntaAgregada);
             preguntaOpcion.set_opcion(opcion);
 
@@ -95,41 +95,35 @@ public class MapperEstudio {
 
           }
 
-          //pregun.set_id(preguntaAgregada.get_id());
-
           List<OpcionDto> opcionesDtos = pregunta.getOpciones();
-          //List<Opcion> opciones = new ArrayList<>();
 
-          if (opcionesDtos != null) {
+          if (opcionesDtos != null && ((pregun.get_tipoPregunta().equals("multiple")) || pregun.get_tipoPregunta().equals("simple"))) {
 
             for (OpcionDto opcion : opcionesDtos) {
 
-              DaoOpcion dao = Fabrica.crear(DaoOpcion.class);
-              Opcion op = Fabrica.crear(Opcion.class);
+              DaoOpcion dao = new DaoOpcion();
+              Opcion op = new Opcion();
 
               op.set_descripcion(opcion.getDescripcion());
-              op = dao.insert(op);
+              Opcion opcioAgregada = dao.insert(op);
 
-              /*opciones.add(op);
-              opcion.setId(op.get_id());*/
-              DaoPreguntaOpcion daoPreguntaOpcion = Fabrica.crear(DaoPreguntaOpcion.class);
-              PreguntaOpcion preguntaOpcion = Fabrica.crear(PreguntaOpcion.class);
-              preguntaOpcion.set_opcion(op);
+              DaoPreguntaOpcion daoPreguntaOpcion = new DaoPreguntaOpcion();
+              PreguntaOpcion preguntaOpcion = new PreguntaOpcion();
+
+              preguntaOpcion.set_opcion(opcioAgregada);
               preguntaOpcion.set_pregunta(preguntaAgregada);
 
               daoPreguntaOpcion.insert(preguntaOpcion);
+              System.out.println("Inserté en pregunta opcion");
 
             }
-
-
-            //pregun.setOpciones(opciones);
 
           }
 
         }else{
 
-          DaoPreguntaEncuesta daoPreguntaEncuesta = Fabrica.crear(DaoPreguntaEncuesta.class);
-          PreguntaEncuesta preguntaEncuesta = Fabrica.crear(PreguntaEncuesta.class);
+          DaoPreguntaEncuesta daoPreguntaEncuesta = new DaoPreguntaEncuesta();
+          PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
           preguntaEncuesta.set_encuesta(encuesta);
 
           Pregunta question = daoPregunta.find(pregunta.getId(), Pregunta.class);
@@ -153,24 +147,7 @@ public class MapperEstudio {
 
     try{
 
-      EstudioDto estudioDto = Fabrica.crear(EstudioDto.class);
-      estudioDto.setId(estudio.get_id());
-      estudioDto.setNombreEstudio(estudio.get_nombreEstudio());
-
-      return estudioDto;
-
-    }catch (Exception ex){
-      ex.printStackTrace();
-      return null;
-    }
-
-  }
-
-  public static EstudioDto MapEntityToEstudioDtoByEncuestado(Estudio estudio){
-
-    try{
-
-      EstudioDto estudioDto = Fabrica.crear(EstudioDto.class);
+      EstudioDto estudioDto = new EstudioDto();
       estudioDto.setId(estudio.get_id());
       estudioDto.setNombreEstudio(estudio.get_nombreEstudio());
 
@@ -188,7 +165,7 @@ public class MapperEstudio {
 
     try{
 
-      EstudioDto estudioDto = Fabrica.crear(EstudioDto.class);
+      EstudioDto estudioDto = new EstudioDto();
       estudioDto.setId(estudio.get_id());
       estudioDto.setNombreEstudio(estudio.get_nombreEstudio());
       estudioDto.setEstado(estudio.get_estado());

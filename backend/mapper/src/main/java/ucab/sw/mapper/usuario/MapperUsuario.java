@@ -5,7 +5,6 @@ import ucab.dsw.accesodatos.DaoNivelSocioeconomico;
 import ucab.dsw.accesodatos.DaoParroquia;
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.*;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,7 +16,7 @@ public class MapperUsuario {
 
     try {
 
-      Usuario usuario = Fabrica.crear(Usuario.class);
+      Usuario usuario = new Usuario();
       usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
       usuario.set_estado("activo");
 
@@ -53,11 +52,11 @@ public class MapperUsuario {
 
     try {
 
-      Cliente cliente = Fabrica.crear(Cliente.class);
+      Cliente cliente = new Cliente();
       cliente.setNombre(usuarioDto.getClienteDto().getNombre());
       cliente.set_estado("activo");
 
-      Usuario usuario = Fabrica.crear(Usuario.class);
+      Usuario usuario = new Usuario();
       usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
       usuario.set_estado("activo");
 
@@ -80,7 +79,7 @@ public class MapperUsuario {
 
     try {
 
-      Encuestado encuestado = Fabrica.crear(Encuestado.class);
+      Encuestado encuestado = new Encuestado();
       encuestado.set_numeroIdentificacion(usuarioDto.getEncuestadoDto().getNumeroIdentificacion());
       encuestado.set_primerNombre(usuarioDto.getEncuestadoDto().getPrimerNombre());
       encuestado.set_segundoNombre(usuarioDto.getEncuestadoDto().getSegundoNombre());
@@ -109,7 +108,7 @@ public class MapperUsuario {
       NivelSocioeconomico nivelSocioeconomico = daoNivelSocioeconomico.find(usuarioDto.getEncuestadoDto().getNivelSocioeconomico().getId(), NivelSocioeconomico.class);
       encuestado.set_nivelSocioeconomico(nivelSocioeconomico);
 
-      Usuario usuario = Fabrica.crear(Usuario.class);
+      Usuario usuario = new Usuario();
       usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
       usuario.set_estado("activo");
 
@@ -160,7 +159,7 @@ public class MapperUsuario {
 
     try {
 
-      Usuario usuario = Fabrica.crear(Usuario.class);
+      Usuario usuario = new Usuario();
       usuario.set_nombreUsuario(usuarioDto.getNombreUsuario());
       usuario.set_estado("activo");
 
@@ -181,7 +180,7 @@ public class MapperUsuario {
 
     try{
 
-      UsuarioDto usuarioDto = Fabrica.crear(UsuarioDto.class);
+      UsuarioDto usuarioDto = new UsuarioDto();
       usuarioDto.setId(usuario.get_id());
       usuarioDto.setNombreUsuario(usuario.get_nombreUsuario());
       usuarioDto.setEstado(usuario.get_estado());
@@ -199,12 +198,12 @@ public class MapperUsuario {
 
     try{
 
-      UsuarioDto usuarioDto = Fabrica.crear(UsuarioDto.class);
+      UsuarioDto usuarioDto = new UsuarioDto();
       usuarioDto.setId(usuario.get_id());
       usuarioDto.setNombreUsuario(usuario.get_nombreUsuario());
       usuarioDto.setEstado(usuario.get_estado());
 
-      ClienteDto clienteDto = Fabrica.crear(ClienteDto.class);
+      ClienteDto clienteDto = new ClienteDto();
       clienteDto.setNombre(usuario.get_cliente().getNombre());
 
       usuarioDto.setClienteDto(clienteDto);
@@ -222,19 +221,19 @@ public class MapperUsuario {
 
     try {
 
-      UsuarioDto usuarioDto = Fabrica.crear(UsuarioDto.class);
+      UsuarioDto usuarioDto = new UsuarioDto();
       usuarioDto.setId(usuario.get_id());
       usuarioDto.setNombreUsuario(usuario.get_nombreUsuario());
       usuarioDto.setEstado(usuario.get_estado());
 
-      EncuestadoDto encuestadoDto = Fabrica.crear(EncuestadoDto.class);
+      EncuestadoDto encuestadoDto = new EncuestadoDto();
       encuestadoDto.setId(usuario.get_encuestado().get_id());
       encuestadoDto.setPrimerNombre(usuario.get_encuestado().get_primerNombre());
       encuestadoDto.setPrimerApellido(usuario.get_encuestado().get_primerApellido());
       encuestadoDto.setNumeroIdentificacion(usuario.get_encuestado().get_numeroIdentificacion());
       encuestadoDto.setGenero(usuario.get_encuestado().get_genero());
 
-      ParroquiaDto parroquiaDto = Fabrica.crear(ParroquiaDto.class);
+      ParroquiaDto parroquiaDto = new ParroquiaDto();
       parroquiaDto.setId(usuario.get_encuestado().get_parroquia().get_id());
       parroquiaDto.setNombreParroquia(usuario.get_encuestado().get_parroquia().get_nombreParroquia());
       encuestadoDto.setParroquia(parroquiaDto);
@@ -257,7 +256,7 @@ public class MapperUsuario {
 
     try {
 
-      EncuestadoDto encuestadoDto = Fabrica.crear(EncuestadoDto.class);
+      EncuestadoDto encuestadoDto = new EncuestadoDto();
       encuestadoDto.setId(encuestado.get_id());
       encuestadoDto.setPrimerNombre(encuestado.get_primerNombre());
       encuestadoDto.setPrimerApellido(encuestado.get_primerApellido());

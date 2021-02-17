@@ -2,7 +2,6 @@ package ucab.sw.mapper.opcion;
 
 import ucab.dsw.dtos.OpcionDto;
 import ucab.dsw.entidades.Opcion;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 
 public class MapperOpcion {
@@ -11,7 +10,7 @@ public class MapperOpcion {
 
     try{
 
-      OpcionDto opcionDto = Fabrica.crear(OpcionDto.class);
+      OpcionDto opcionDto = new OpcionDto();
       opcionDto.setId(opcion.get_id());
       opcionDto.setDescripcion(opcion.get_descripcion());
 
@@ -28,7 +27,7 @@ public class MapperOpcion {
 
     try{
 
-      Opcion opcion = Fabrica.crear(Opcion.class);
+      Opcion opcion = new Opcion();
       opcion.set_descripcion(opcionDto.getDescripcion());
 
       return opcion;

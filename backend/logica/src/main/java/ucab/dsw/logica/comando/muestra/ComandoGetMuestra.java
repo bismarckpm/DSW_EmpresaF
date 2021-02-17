@@ -1,12 +1,8 @@
 package ucab.dsw.logica.comando.muestra;
 
-import ucab.dsw.accesodatos.DaoMuestra;
-import ucab.dsw.accesodatos.DaoSolicitudEstudio;
-import ucab.dsw.accesodatos.DaoUsuario;
+import ucab.dsw.accesodatos.*;
 import ucab.dsw.dtos.EncuestadoDto;
-import ucab.dsw.entidades.Encuestado;
-import ucab.dsw.entidades.SolicitudEstudio;
-import ucab.dsw.entidades.Usuario;
+import ucab.dsw.entidades.*;
 import ucab.dsw.logica.comando.ComandoBase;
 import ucab.dsw.logica.fabrica.Fabrica;
 import ucab.sw.mapper.usuario.MapperUsuario;
@@ -20,6 +16,7 @@ public class ComandoGetMuestra implements ComandoBase {
 
   private long idSolicitud;
   private JsonArrayBuilder encuestadosArray = Json.createArrayBuilder();
+  private JsonArrayBuilder telefonosArray = Json.createArrayBuilder();
 
   public ComandoGetMuestra(long idSolicitud) {
     this.idSolicitud = idSolicitud;
@@ -41,13 +38,35 @@ public class ComandoGetMuestra implements ComandoBase {
         DaoUsuario daoUsuario = Fabrica.crear(DaoUsuario.class);
         Usuario usuario = daoUsuario.find(encuestado.get_usuario().get_id(), Usuario.class);
 
+        String muestra = daoMuestra.getEstadoByMuestra(encuestado, solicitudEstudio);
+
+        DaoTelefono daoTelefono = Fabrica.crear(DaoTelefono.class);
+        List<Telefono> telefonos = daoTelefono.findAll(Telefono.class);
+
+        for(Telefono telefono:telefonos){
+
+          if(telefono.get_encuestado().get_id() == encuestado.get_id()){
+
+            JsonObject phones = Json.createObjectBuilder()
+              .add("codigoArea", telefono.get_codigoArea())
+              .add("numeroTelefono", telefono.get_numeroTelefono()).build();
+
+            telefonosArray.add(phones);
+
+          }
+
+        }
+
         EncuestadoDto encuestadoDto = MapperUsuario.MapEntityToEncuestadoDto(encuestado);
 
         JsonObject encu = Json.createObjectBuilder()
           .add("encuestadoId", encuestadoDto.getId())
           .add("encuestadoNombre", encuestadoDto.getPrimerNombre())
           .add("encuestadoApellido", encuestadoDto.getPrimerApellido())
+          .add("solicitudId", this.idSolicitud)
+          .add("telefono", telefonosArray)
           .add("usuarioId", usuario.get_id())
+          .add("estadoMuestra", muestra)
           .build();
 
         encuestadosArray.add(encu);

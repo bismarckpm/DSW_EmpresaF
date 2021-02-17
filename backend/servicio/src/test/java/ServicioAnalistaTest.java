@@ -148,9 +148,9 @@ public class ServicioAnalistaTest {
     ServicioAnalista servicio = new ServicioAnalista();
 
     EstudioDto estudioDto = new EstudioDto();
-    estudioDto.setResultado("Estudiesaso");
+    estudioDto.setResultado("Se concluye que la poblacion suele ingerir más gaseosas negras que otro tipo de bebidas");
 
-    Response resultado = servicio.finalizarEstudio(this.token,21, estudioDto);
+    Response resultado = servicio.finalizarEstudio(this.token,29, estudioDto);
     JsonObject respuesta = (JsonObject) resultado.getEntity();
 
     Assert.assertNotNull(respuesta.get("estudioCulminado"));

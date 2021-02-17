@@ -2,7 +2,6 @@ package ucab.sw.mapper.encuesta;
 
 import ucab.dsw.dtos.*;
 import ucab.dsw.entidades.*;
-import ucab.dsw.logica.fabrica.Fabrica;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ public class MapperEncuesta {
 
     try{
 
-      EncuestaDto encuestaDto = Fabrica.crear(EncuestaDto.class);
+      EncuestaDto encuestaDto = new EncuestaDto();
       encuestaDto.setId(encuesta.get_id());
       encuestaDto.setNombreEncuesta(encuesta.get_nombreEncuesta());
 
@@ -30,7 +29,7 @@ public class MapperEncuesta {
 
     try{
 
-      PreguntaEncuesta preguntaEncuesta = Fabrica.crear(PreguntaEncuesta.class);
+      PreguntaEncuesta preguntaEncuesta = new PreguntaEncuesta();
       preguntaEncuesta.set_encuesta(encuesta);
       preguntaEncuesta.set_pregunta(pregunta);
 
@@ -47,7 +46,7 @@ public class MapperEncuesta {
 
     try{
 
-      Respuesta respuesta = Fabrica.crear(Respuesta.class);
+      Respuesta respuesta = new Respuesta();
       respuesta.set_fecha(fecha);
       respuesta.set_descripcion(respuestaDto.getDescripcion());
       respuesta.set_encuestado(encuestado);
@@ -67,7 +66,7 @@ public class MapperEncuesta {
 
     try{
 
-      RespuestaOpcion respuestaOpcion = Fabrica.crear(RespuestaOpcion.class);
+      RespuestaOpcion respuestaOpcion = new RespuestaOpcion();
 
       respuestaOpcion.set_opcion(opcion);
       respuestaOpcion.set_respuesta(respuestaAgregada);
@@ -85,7 +84,7 @@ public class MapperEncuesta {
 
     try{
 
-      PreguntaEncuestaDto preguntaEncuestaDto = Fabrica.crear(PreguntaEncuestaDto.class);
+      PreguntaEncuestaDto preguntaEncuestaDto = new PreguntaEncuestaDto();
       preguntaEncuestaDto.setId(preguntaEncuesta.get_id());
 
       return preguntaEncuestaDto;
@@ -102,7 +101,7 @@ public class MapperEncuesta {
 
     try{
 
-      PreguntaDto preguntaDto = Fabrica.crear(PreguntaDto.class);
+      PreguntaDto preguntaDto = new PreguntaDto();
       preguntaDto.setId(pregunta.get_id());
       preguntaDto.setDescripcionPregunta(pregunta.get_descripcionPregunta());
       preguntaDto.setTipoPregunta(pregunta.get_tipoPregunta());

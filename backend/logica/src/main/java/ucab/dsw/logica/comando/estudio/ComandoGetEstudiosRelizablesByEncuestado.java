@@ -56,6 +56,7 @@ public class ComandoGetEstudiosRelizablesByEncuestado implements ComandoBase {
                 .add("estudioId", estudioDto.getId())
                 .add("nombreEstudio", estudioDto.getNombreEstudio())
                 .add("encuestaId", encuesta.get_id())
+                .add("solicitudId", solicitud.get_id())
                 .build();
 
               estudioRealizableArray.add(estu);
